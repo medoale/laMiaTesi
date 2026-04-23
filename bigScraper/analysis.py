@@ -11,6 +11,9 @@ from database import (
     insert_commit_activity,
     insert_spike,
     insert_recent_commits,
+    insert_issue_activity,
+    insert_issue_spike,
+    insert_recent_issues,
 )
 
 logger = logging.getLogger('bigScraper')
@@ -87,6 +90,105 @@ def collect_repos(client: GitHubClient, target: int = 200) -> list[dict]:
     ranked = sorted(all_repos.values(), key=lambda r: r.get('stargazers_count', 0), reverse=True)
     logger.info(f'Collected {len(ranked)} unique repos, keeping top {target}.')
     return ranked[:target]
+
+
+def fetch_issue_weekly_counts(client: GitHubClient, full_name: str, weeks: int = 22) -> dict:
+    """
+    Fetch all issues created in the last `weeks` weeks and bin them by ISO week start (Monday).
+    Returns a dict {week_date_str: count} with an entry for every week in the range.
+    """
+    since = (datetime.now(timezone.utc) - timedelta(weeks=weeks)).isoformat()
+    all_issues = []
+    page = 1
+    while True:
+        data = client.get(f'/repos/{full_name}/issues', params={
+            'state': 'all',
+            'since': since,
+            'per_page': 100,
+            'page': page,
+        })
+        if not isinstance(data, list) or len(data) == 0:
+            break
+        # GitHub issues endpoint returns both issues and PRs; exclude PRs
+        all_issues.extend(i for i in data if 'pull_request' not in i)
+        if len(data) < 100:
+            break
+        page += 1
+        time.sleep(0.2)
+
+    # bin by week start (Monday)
+    counts: dict[str, int] = {}
+    now = datetime.now(timezone.utc)
+    for w in range(weeks):
+        week_start = (now - timedelta(weeks=w)).date()
+        week_start -= timedelta(days=week_start.weekday())  # back to Monday
+        counts[week_start.isoformat()] = 0
+
+    for issue in all_issues:
+        created = issue.get('created_at', '')
+        if not created:
+            continue
+        dt = datetime.fromisoformat(created.replace('Z', '+00:00'))
+        week_start = dt.date() - timedelta(days=dt.weekday())
+        key = week_start.isoformat()
+        if key in counts:
+            counts[key] += 1
+
+    return counts
+
+
+def compute_issue_spike(weekly_counts: dict) -> tuple[int, float, float, float] | None:
+    """Same spike logic as commits but over weekly issue counts."""
+    sorted_weeks = sorted(weekly_counts.keys())
+    if len(sorted_weeks) < 22:
+        return None
+    counts = [weekly_counts[w] for w in sorted_weeks]
+    recent_2w = counts[-1] + counts[-2]
+    baseline = counts[-22:-2]
+    if sum(1 for v in baseline if v > 0) < 4:
+        return None
+    avg = statistics.mean(baseline)
+    if avg < 0.5:
+        return None
+    std = statistics.stdev(baseline) if len(baseline) > 1 else 0.0
+    score = recent_2w / (avg * 2)
+    return recent_2w, avg, std, score
+
+
+def fetch_recent_issues(client: GitHubClient, full_name: str, since_days: int = 14) -> list[dict]:
+    since = (datetime.now(timezone.utc) - timedelta(days=since_days)).isoformat()
+    data = client.get(f'/repos/{full_name}/issues', params={
+        'state': 'all',
+        'since': since,
+        'per_page': 100,
+    })
+    if not isinstance(data, list):
+        return []
+    return [i for i in data if 'pull_request' not in i]
+
+
+def process_issue_spikes(client: GitHubClient, repos: list[dict], conn: sqlite3.Connection) -> None:
+    for i, repo in enumerate(repos, 1):
+        full_name = repo['full_name']
+        vendor = repo.get('_vendor', '')
+        logger.info(f'[{i}/{len(repos)}] {full_name} ({vendor}) — issues spike')
+
+        weekly_counts = fetch_issue_weekly_counts(client, full_name)
+        insert_issue_activity(conn, full_name, weekly_counts)
+
+        result = compute_issue_spike(weekly_counts)
+        if result is None:
+            logger.debug(f'  Not enough issue data for {full_name}.')
+        else:
+            recent, avg, std, score = result
+            insert_issue_spike(conn, full_name, recent, avg, std, score)
+            logger.info(f'  issue_spike_score={score:.2f}  recent={recent}  baseline_avg={avg:.1f}')
+
+        issues = fetch_recent_issues(client, full_name)
+        insert_recent_issues(conn, full_name, issues)
+
+        conn.commit()
+        time.sleep(0.5)
 
 
 def fetch_recent_commits(client: GitHubClient, full_name: str, since_days: int = 14) -> list[dict]:

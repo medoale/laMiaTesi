@@ -15,9 +15,29 @@ def print_top_spikes(conn: sqlite3.Connection, top_n: int = 20) -> None:
         LIMIT ?
     """, (today, top_n)).fetchall()
 
+    _print_table(rows, f'TOP {top_n} COMMIT SPIKES  —  {today}')
+
+
+def print_top_issue_spikes(conn: sqlite3.Connection, top_n: int = 20) -> None:
+    today = datetime.now(timezone.utc).date().isoformat()
+    rows = conn.execute("""
+        SELECT s.repo_full_name, r.vendor, r.stars,
+               s.recent_2w_issues, s.baseline_avg, s.spike_score
+        FROM issue_spike_analysis s
+        JOIN repos r ON r.full_name = s.repo_full_name
+        WHERE s.analysis_date = ?
+          AND s.spike_score IS NOT NULL
+        ORDER BY s.spike_score DESC
+        LIMIT ?
+    """, (today, top_n)).fetchall()
+
+    _print_table(rows, f'TOP {top_n} ISSUE (BUG REPORT) SPIKES  —  {today}')
+
+
+def _print_table(rows: list, title: str) -> None:
     w = 82
     print(f'\n{"─" * w}')
-    print(f'  TOP {top_n} COMMIT SPIKES  —  {today}')
+    print(f'  {title}')
     print(f'{"─" * w}')
     print(f'  {"Repo":<37} {"Vendor":<14} {"Stars":>8}  {"Recent":>7}  {"Avg":>7}  {"Score":>7}')
     print(f'{"─" * w}')

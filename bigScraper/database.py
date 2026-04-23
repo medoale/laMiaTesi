@@ -42,6 +42,33 @@ def init_db(conn: sqlite3.Connection) -> None:
             message         TEXT,
             PRIMARY KEY (repo_full_name, sha)
         );
+
+        CREATE TABLE IF NOT EXISTS issue_activity (
+            repo_full_name  TEXT NOT NULL,
+            week_date       TEXT NOT NULL,
+            issue_count     INTEGER NOT NULL,
+            PRIMARY KEY (repo_full_name, week_date)
+        );
+
+        CREATE TABLE IF NOT EXISTS issue_spike_analysis (
+            repo_full_name      TEXT NOT NULL,
+            analysis_date       TEXT NOT NULL,
+            recent_2w_issues    INTEGER,
+            baseline_avg        REAL,
+            baseline_std        REAL,
+            spike_score         REAL,
+            PRIMARY KEY (repo_full_name, analysis_date)
+        );
+
+        CREATE TABLE IF NOT EXISTS recent_issues (
+            repo_full_name  TEXT NOT NULL,
+            issue_number    INTEGER NOT NULL,
+            title           TEXT,
+            state           TEXT,
+            created_at      TEXT,
+            html_url        TEXT,
+            PRIMARY KEY (repo_full_name, issue_number)
+        );
     """)
     conn.commit()
 
@@ -89,6 +116,41 @@ def insert_spike(conn: sqlite3.Connection, full_name: str,
             (repo_full_name, analysis_date, recent_2w_commits, baseline_avg, baseline_std, spike_score)
         VALUES (?, ?, ?, ?, ?, ?)
     """, (full_name, datetime.now(timezone.utc).date().isoformat(), recent, avg, std, score))
+
+
+def insert_issue_spike(conn: sqlite3.Connection, full_name: str,
+                       recent: int, avg: float, std: float, score: float) -> None:
+    conn.execute("""
+        INSERT OR REPLACE INTO issue_spike_analysis
+            (repo_full_name, analysis_date, recent_2w_issues, baseline_avg, baseline_std, spike_score)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (full_name, datetime.now(timezone.utc).date().isoformat(), recent, avg, std, score))
+
+
+def insert_issue_activity(conn: sqlite3.Connection, full_name: str, weekly_counts: dict) -> None:
+    rows = [(full_name, week_date, count) for week_date, count in weekly_counts.items()]
+    conn.executemany("""
+        INSERT OR REPLACE INTO issue_activity (repo_full_name, week_date, issue_count)
+        VALUES (?, ?, ?)
+    """, rows)
+
+
+def insert_recent_issues(conn: sqlite3.Connection, full_name: str, issues: list[dict]) -> None:
+    rows = [
+        (
+            full_name,
+            i['number'],
+            i.get('title', ''),
+            i.get('state', ''),
+            i.get('created_at', ''),
+            i.get('html_url', ''),
+        )
+        for i in issues
+    ]
+    conn.executemany("""
+        INSERT OR IGNORE INTO recent_issues (repo_full_name, issue_number, title, state, created_at, html_url)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, rows)
 
 
 def insert_recent_commits(conn: sqlite3.Connection, full_name: str, commits: list[dict]) -> None:
