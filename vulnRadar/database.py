@@ -1,5 +1,28 @@
 import sqlite3
+import logging
 from datetime import datetime, timezone
+
+logger = logging.getLogger('vulnRadar')
+
+# Columns added after the initial schema. We migrate existing DBs in place
+# so new fields (severity, CVSS, CWE…) appear without losing data.
+_CVE_MATCHES_EXTRA_COLUMNS = [
+    ('severity',             'TEXT'),
+    ('cvss_score',           'REAL'),
+    ('exploitability_score', 'REAL'),
+    ('cwe_ids',              'TEXT'),
+]
+
+
+def _ensure_columns(conn: sqlite3.Connection, table: str,
+                    columns: list[tuple[str, str]]) -> None:
+    """ALTER TABLE ADD COLUMN for any column not already present."""
+    existing = {row[1] for row in conn.execute(f'PRAGMA table_info({table})')}
+    for name, sql_type in columns:
+        if name not in existing:
+            conn.execute(f'ALTER TABLE {table} ADD COLUMN {name} {sql_type}')
+            logger.info(f'Migrated DB: added column {table}.{name}')
+    conn.commit()
 
 
 def init_db(conn: sqlite3.Connection) -> None:
@@ -19,13 +42,17 @@ def init_db(conn: sqlite3.Connection) -> None:
         CREATE INDEX IF NOT EXISTS idx_tracked_repos_task      ON tracked_repos(task);
 
         CREATE TABLE IF NOT EXISTS cve_matches (
-            id                  INTEGER PRIMARY KEY AUTOINCREMENT,
-            repo_full_name      TEXT NOT NULL,
-            cve_id              TEXT NOT NULL,
-            cve_published_date  TEXT,
-            first_selected_date TEXT,
-            days_until_cve      INTEGER,
-            matched_at          TEXT NOT NULL,
+            id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+            repo_full_name        TEXT NOT NULL,
+            cve_id                TEXT NOT NULL,
+            cve_published_date    TEXT,
+            first_selected_date   TEXT,
+            days_until_cve        INTEGER,
+            matched_at            TEXT NOT NULL,
+            severity              TEXT,
+            cvss_score            REAL,
+            exploitability_score  REAL,
+            cwe_ids               TEXT,
             UNIQUE (repo_full_name, cve_id)
         );
 
@@ -35,6 +62,8 @@ def init_db(conn: sqlite3.Connection) -> None:
         );
     """)
     conn.commit()
+    # Migrate older DBs that pre-date the new columns.
+    _ensure_columns(conn, 'cve_matches', _CVE_MATCHES_EXTRA_COLUMNS)
 
 
 def insert_tracked_repos(conn: sqlite3.Connection, repos: list[dict], task: str) -> int:
@@ -69,13 +98,19 @@ def insert_cve_matches(conn: sqlite3.Connection, matches: list[dict]) -> int:
             m.get('first_selected_date'),
             m.get('days_until_cve'),
             now,
+            m.get('severity'),
+            m.get('cvss_score'),
+            m.get('exploitability_score'),
+            m.get('cwe_ids'),
         )
         for m in matches
     ]
     cursor = conn.executemany("""
         INSERT OR IGNORE INTO cve_matches
-            (repo_full_name, cve_id, cve_published_date, first_selected_date, days_until_cve, matched_at)
-        VALUES (?, ?, ?, ?, ?, ?)
+            (repo_full_name, cve_id, cve_published_date, first_selected_date,
+             days_until_cve, matched_at, severity, cvss_score,
+             exploitability_score, cwe_ids)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, rows)
     conn.commit()
     return cursor.rowcount

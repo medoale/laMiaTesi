@@ -73,8 +73,25 @@ The URL extraction also filters out reserved GitHub paths (`advisories/`, `orgs/
 | Table | Description |
 |-------|-------------|
 | `tracked_repos` | One row per (repo, date, task) selection. Includes the selection score and a human-readable reason. The same repo can appear multiple times across days/tasks. |
-| `cve_matches`   | A repo we previously selected has been mentioned in a new CVE. Includes `days_until_cve` (always ≥ 0). Rows are never deleted (`INSERT OR IGNORE`). |
+| `cve_matches`   | A repo we previously selected has been mentioned in a new CVE. See fields below. Rows are never deleted (`INSERT OR IGNORE`). |
 | `last_check`    | Bookkeeping: timestamp of the upper bound of the last successful NVD fetch, so we only fetch new CVEs each run. |
+
+**`cve_matches` columns**:
+
+| Column | Meaning |
+|--------|---------|
+| `repo_full_name`        | The matched repository (`owner/repo`). |
+| `cve_id`                | The CVE that mentions it. |
+| `cve_published_date`    | When NVD published the CVE. |
+| `first_selected_date`   | When vulnRadar first selected this repo. |
+| `days_until_cve`        | `cve_published_date − first_selected_date` (always ≥ 0). |
+| `severity`              | `LOW` / `MEDIUM` / `HIGH` / `CRITICAL` (CVSS v3.1 → v3.0 → v2 fallback). |
+| `cvss_score`            | Numeric CVSS base score (0.0–10.0). |
+| `exploitability_score`  | NVD exploitability sub-score. |
+| `cwe_ids`               | Comma-separated list of CWE IDs (e.g. `CWE-79, CWE-89`). |
+| `matched_at`            | When the match was recorded by vulnRadar. |
+
+The schema migrates automatically: if the DB pre-dates the severity / CVSS / CWE columns, they are added in place via `ALTER TABLE ADD COLUMN` on the next run.
 
 ---
 

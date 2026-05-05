@@ -53,6 +53,41 @@ def extract_github_repos(cve_item: dict) -> set[str]:
     return repos
 
 
+def extract_cve_metrics(cve: dict) -> dict:
+    """Extract severity, CVSS score and exploitability score.
+    Tries CVSS v3.1 first, falls back to v3.0 then v2."""
+    metrics = cve.get('metrics', {}) or {}
+    for key in ('cvssMetricV31', 'cvssMetricV30', 'cvssMetricV2'):
+        items = metrics.get(key)
+        if not items:
+            continue
+        m = items[0]
+        cvss_data = m.get('cvssData', {}) or {}
+        severity = (
+            cvss_data.get('baseSeverity')   # v3.x
+            or m.get('baseSeverity')         # sometimes top-level
+            or cvss_data.get('severity')     # v2 fallback
+            or m.get('severity')
+        )
+        return {
+            'severity':             severity,
+            'cvss_score':           cvss_data.get('baseScore'),
+            'exploitability_score': m.get('exploitabilityScore'),
+        }
+    return {'severity': None, 'cvss_score': None, 'exploitability_score': None}
+
+
+def extract_cwe_ids(cve: dict) -> str | None:
+    """Concatenate all CWE-XXX identifiers found in the CVE's weaknesses field."""
+    cwes: set[str] = set()
+    for w in cve.get('weaknesses', []) or []:
+        for d in w.get('description', []) or []:
+            value = (d.get('value') or '').strip()
+            if value.startswith('CWE-'):
+                cwes.add(value)
+    return ', '.join(sorted(cwes)) if cwes else None
+
+
 def run(conn: sqlite3.Connection) -> int:
     last = get_last_check(conn, LAST_CHECK_KEY)
     if last is None:
@@ -80,7 +115,11 @@ def run(conn: sqlite3.Connection) -> int:
         cve = item.get('cve', {})
         cve_id = cve.get('id')
         published = cve.get('published')
-        for repo in extract_github_repos(item):
+        repos = extract_github_repos(item)
+        # Extract metadata once per CVE — same for every matched repo.
+        metrics = extract_cve_metrics(cve) if repos else None
+        cwe_ids = extract_cwe_ids(cve) if repos else None
+        for repo in repos:
             if repo not in tracked:
                 continue
             first_selected = tracked[repo]
@@ -101,6 +140,10 @@ def run(conn: sqlite3.Connection) -> int:
                 'cve_published_date': published,
                 'first_selected_date': first_selected,
                 'days_until_cve': days,
+                'severity':             metrics['severity'],
+                'cvss_score':           metrics['cvss_score'],
+                'exploitability_score': metrics['exploitability_score'],
+                'cwe_ids':              cwe_ids,
             })
 
     if skipped_pre_selection:

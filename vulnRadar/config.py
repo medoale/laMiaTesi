@@ -6,7 +6,7 @@ from configparser import ConfigParser
 # ----------------------------------------------------------------------------
 # Tunable parameters — change here to adjust behaviour
 # ----------------------------------------------------------------------------
-MAX_REPOS_PER_TASK = 100        # max repos selected per task per run
+MAX_REPOS_PER_TASK = 30         # max repos selected per task per run
 NVD_LOOKBACK_DAYS = 30          # how far back to look in NVD for "official" task
 HOT_LOOKBACK_DAYS = 7           # how far back to look for "hot" task
 TALKERS_LOOKBACK_DAYS = 7       # how far back to look for "talkers" task

@@ -244,12 +244,22 @@ p(
 p('tabella cve_matches', bold=True)
 p(
     'Registra ogni volta che un repository selezionato in passato compare in un '
-    'nuovo CVE. Include il giorno di pubblicazione del CVE, il primo giorno in cui '
-    'il repository era stato selezionato, e il numero di giorni intercorsi tra le '
-    'due date (days_until_cve, sempre ≥ 0). Il vincolo UNIQUE su (repo, cve_id) '
-    'garantisce che ogni match venga registrato una sola volta. Le righe non '
-    'vengono mai cancellate né sovrascritte: il sistema accumula una storia '
-    'permanente di "previsioni azzeccate".'
+    'nuovo CVE. Per ogni match vengono salvati anche i metadati di gravità della '
+    'vulnerabilità, estratti direttamente dalla risposta NVD:'
+)
+bullet('cve_id e cve_published_date — identificativo del CVE e data di pubblicazione')
+bullet('first_selected_date e days_until_cve — quando il repo era stato selezionato e quanti giorni di anticipo abbiamo avuto (sempre ≥ 0)')
+bullet('severity — categoria testuale (LOW / MEDIUM / HIGH / CRITICAL), preferenza per CVSS v3.1, fallback a v3.0 e v2')
+bullet('cvss_score — punteggio numerico CVSS base (da 0,0 a 10,0)')
+bullet('exploitability_score — sotto-punteggio NVD che misura quanto è facile sfruttare la vulnerabilità')
+bullet('cwe_ids — lista delle CWE associate (Common Weakness Enumeration), es. "CWE-79, CWE-89"')
+p(
+    'Il vincolo UNIQUE su (repo, cve_id) garantisce che ogni match venga '
+    'registrato una sola volta. Le righe non vengono mai cancellate né '
+    'sovrascritte: il sistema accumula una storia permanente di "previsioni '
+    'azzeccate", ognuna corredata dalle informazioni di severità necessarie '
+    'per analisi successive (es. "quanti dei nostri match riguardano CVE '
+    'critiche?", "qual è la CWE più frequente fra quelle azzeccate?").'
 )
 
 p('tabella last_check', bold=True)

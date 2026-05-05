@@ -1,10 +1,19 @@
 import sqlite3
+import sys
+from pathlib import Path
 
-DB = '/home/medo/laMiaTesi/cveFixes/CVEfixes/Code/Data/CVEfixes.db'
+# Path relative to this script — works on any machine.
+DB = Path(__file__).resolve().parent / 'CVEfixes' / 'Code' / 'Data' / 'CVEfixes.db'
 
 
 def conn():
-    return sqlite3.connect(DB)
+    if not DB.exists():
+        print(f'ERRORE: database non trovato in {DB}')
+        print('Il file CVEfixes.db non è su GitHub (escluso dal .gitignore perché 7GB).')
+        print('Devi rigenerarlo eseguendo CVEfixes/Code/collect_projects.py')
+        print('oppure copiarlo manualmente dal vecchio PC.')
+        sys.exit(1)
+    return sqlite3.connect(str(DB))
 
 
 def q1_conteggio_tabelle():
