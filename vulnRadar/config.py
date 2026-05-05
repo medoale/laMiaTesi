@@ -52,7 +52,12 @@ def read_config() -> None:
     if not cfg.read(locations):
         logger.error('Cannot find .CVEfixes.ini — add GitHub token there.')
         sys.exit(1)
-    TOKEN = cfg.get('GitHub', 'token', fallback=None)
+    # Prefer a vulnRadar-specific GitHub token if present, otherwise fall back
+    # to the shared one used by CVEfixes.
+    TOKEN = (
+        cfg.get('GitHubVulnRadar', 'token', fallback=None)
+        or cfg.get('GitHub', 'token', fallback=None)
+    )
     NVD_API_KEY = cfg.get('NVD', 'api_key', fallback=None)
     data_path = Path(cfg.get('CVEfixes', 'database_path', fallback='Data'))
     data_path.mkdir(parents=True, exist_ok=True)
