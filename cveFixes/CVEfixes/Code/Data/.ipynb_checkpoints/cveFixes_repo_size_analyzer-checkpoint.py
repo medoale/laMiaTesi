@@ -8,9 +8,10 @@ counts all files and their lines. The clone is deleted as soon as it is done.
 
 The GitHub token is read from CVEfixes.ini (same paths as the tool).
 
-Output: repo_analysis.csv, one row per (repo_url, commit) pair with number of
-files, total lines and average lines per file. If the execution is
-interrupted, the next run skips the pairs already present in the CSV.
+Output: repo_analysis_v2.csv, one row per (repo_url, commit) pair with number of
+files, total lines, average lines per file and the size on disk of the whole
+clone. If the execution is interrupted, the next run skips the pairs already
+present in the CSV.
 """
 import ast
 import csv
@@ -26,7 +27,7 @@ from pathlib import Path
 # Path relative to this script — assumes the script sits next to CVEfixes.db
 # (e.g. .../cveFixes/CVEfixes/Code/Data/), works on any machine.
 DB = Path(__file__).resolve().parent / 'CVEfixes.db'
-OUT_CSV = Path(__file__).resolve().parent / 'repo_analysis.csv'
+OUT_CSV = Path(__file__).resolve().parent / 'repo_analysis_v2.csv'
 
 # Publication year of the CVEs to consider.
 CVE_YEAR = '2026'
@@ -35,7 +36,7 @@ CVE_YEAR = '2026'
 CLONE_TIMEOUT = 1800
 
 # Path to the CVEfixes.ini file holding the [GitHub] token.
-CVEFIXES_INI = '/home/students/s346086/AlessandroMedvescek/CVEfixes.ini'
+CVEFIXES_INI = '/home/medo/.CVEfixes.ini'
 
 
 def read_github_token():
@@ -106,6 +107,20 @@ def count_files_and_lines(root):
     return n_files, total_lines
 
 
+def clone_size_mb(root):
+    """Size on disk of the whole clone, in MB, .git history included.
+
+    Unlike the file and line counts, this is dominated by .git, which depends on
+    the repository's entire history rather than on the commit checked out: two
+    snapshots of the same repo differ only by their working tree."""
+    total_bytes = 0
+    for p in root.rglob('*'):
+        if p.is_symlink() or not p.is_file():
+            continue
+        total_bytes += p.stat().st_size
+    return round(total_bytes / (1024 * 1024), 2)
+
+
 def main():
     token = read_github_token()
     print('GitHub token:', 'found' if token else 'NOT found (anonymous clones)')
@@ -127,8 +142,8 @@ def main():
     with open(OUT_CSV, 'a', newline='') as f_out:
         w = csv.writer(f_out)
         if is_new:
-            w.writerow(['repo_url', 'commit', 'parent',
-                        'n_files', 'total_lines', 'avg_lines_per_file', 'status'])
+            w.writerow(['repo_url', 'commit', 'parent', 'n_files', 'total_lines',
+                        'avg_lines_per_file', 'clone_size_mb', 'status'])
 
         for repo_url, commits in per_repo.items():
             todo = [(h, p) for h, p in commits
@@ -147,7 +162,7 @@ def main():
                         subprocess.TimeoutExpired, OSError) as e:
                     for hash_, parent in todo:
                         done += 1
-                        w.writerow([repo_url, hash_, parent, '', '', '',
+                        w.writerow([repo_url, hash_, parent, '', '', '', '',
                                     f'clone error: {type(e).__name__}'])
                     print(f'[{done}/{n_commits}] {repo_url}: CLONE ERROR '
                           f'({type(e).__name__})')
@@ -159,13 +174,14 @@ def main():
                         git('checkout', '-q', '--force', parent, cwd=tmp)
                         n_files, lines = count_files_and_lines(Path(tmp))
                         avg = round(lines / n_files, 1) if n_files else 0
+                        size_mb = clone_size_mb(Path(tmp))
                         w.writerow([repo_url, hash_, parent,
-                                    n_files, lines, avg, 'ok'])
+                                    n_files, lines, avg, size_mb, 'ok'])
                         print(f'[{done}/{n_commits}] {repo_url} @{parent[:9]}: '
-                              f'{n_files} files, {lines} lines')
+                              f'{n_files} files, {lines} lines, {size_mb} MB')
                     except (subprocess.CalledProcessError,
                             subprocess.TimeoutExpired, OSError) as e:
-                        w.writerow([repo_url, hash_, parent, '', '', '',
+                        w.writerow([repo_url, hash_, parent, '', '', '', '',
                                     f'checkout error: {type(e).__name__}'])
                         print(f'[{done}/{n_commits}] {repo_url} @{parent[:9]}: '
                               f'CHECKOUT ERROR ({type(e).__name__})')
