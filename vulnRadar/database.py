@@ -13,6 +13,13 @@ _CVE_MATCHES_EXTRA_COLUMNS = [
     ('cwe_ids',              'TEXT'),
 ]
 
+# Full selection timestamp. `selected_date` alone is not enough to tell a CVE
+# published hours BEFORE the selection from one published after it, on the same
+# day. Rows written before this migration keep it NULL.
+_TRACKED_REPOS_EXTRA_COLUMNS = [
+    ('selected_at', 'TEXT'),
+]
+
 
 def _ensure_columns(conn: sqlite3.Connection, table: str,
                     columns: list[tuple[str, str]]) -> None:
@@ -64,15 +71,18 @@ def init_db(conn: sqlite3.Connection) -> None:
     conn.commit()
     # Migrate older DBs that pre-date the new columns.
     _ensure_columns(conn, 'cve_matches', _CVE_MATCHES_EXTRA_COLUMNS)
+    _ensure_columns(conn, 'tracked_repos', _TRACKED_REPOS_EXTRA_COLUMNS)
 
 
 def insert_tracked_repos(conn: sqlite3.Connection, repos: list[dict], task: str) -> int:
-    today = datetime.now(timezone.utc).date().isoformat()
+    now = datetime.now(timezone.utc)
+    today = now.date().isoformat()
     rows = [
         (
             r['full_name'],
             r.get('url') or f"https://github.com/{r['full_name']}",
             today,
+            now.isoformat(),
             task,
             r.get('score'),
             r.get('reason', ''),
@@ -81,8 +91,8 @@ def insert_tracked_repos(conn: sqlite3.Connection, repos: list[dict], task: str)
     ]
     cursor = conn.executemany("""
         INSERT OR IGNORE INTO tracked_repos
-            (full_name, url, selected_date, task, score, reason)
-        VALUES (?, ?, ?, ?, ?, ?)
+            (full_name, url, selected_date, selected_at, task, score, reason)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     """, rows)
     conn.commit()
     return cursor.rowcount
@@ -129,11 +139,32 @@ def set_last_check(conn: sqlite3.Connection, key: str, value: str) -> None:
     conn.commit()
 
 
-def get_tracked_repo_first_selection(conn: sqlite3.Connection) -> dict[str, str]:
-    """Return mapping {full_name: earliest_selected_date} across all tasks."""
+def get_tracked_repo_first_selection(conn: sqlite3.Connection) -> dict[str, dict]:
+    """Return the earliest selection of each repo across all tasks, as
+    {full_name_lower: {'full_name', 'selected_date', 'selected_at'}}.
+
+    Keyed on the lowercased name because GitHub URLs are case-insensitive:
+    a CVE referencing github.com/imagemagick/imagemagick must still match the
+    repo we tracked as ImageMagick/ImageMagick. `full_name` keeps the original
+    casing, so matches are recorded under the canonical name.
+    `selected_at` is NULL for rows written before that column existed."""
     rows = conn.execute("""
-        SELECT full_name, MIN(selected_date)
-        FROM tracked_repos
-        GROUP BY full_name
+        SELECT full_name, selected_date, selected_at
+        FROM (
+            SELECT full_name, selected_date, selected_at,
+                   ROW_NUMBER() OVER (
+                       PARTITION BY lower(full_name)
+                       ORDER BY selected_date, id
+                   ) AS rn
+            FROM tracked_repos
+        )
+        WHERE rn = 1
     """).fetchall()
-    return {full_name: date for full_name, date in rows}
+    return {
+        full_name.lower(): {
+            'full_name':     full_name,
+            'selected_date': selected_date,
+            'selected_at':   selected_at,
+        }
+        for full_name, selected_date, selected_at in rows
+    }

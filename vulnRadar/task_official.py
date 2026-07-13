@@ -1,40 +1,46 @@
 """
 Task 1 — Official:
-For each (vendor, product) pair found in recent NVD CVEs, find the most likely
-GitHub repository that hosts that product. Score is the number of CVE
-occurrences for that pair, so the most-frequently affected products surface
-first. We try four resolution strategies in order until we find a real repo.
+For each (vendor, product) pair found in recent NVD CVEs, find the GitHub
+repository that hosts that product. Score is the number of CVE occurrences for
+that pair, so the most-frequently affected products surface first.
+
+The repo name is never guessed. Two resolution strategies, in order:
+  1) direct lookup of /repos/{vendor}/{product}
+  2) the github.com URLs the CVEs of that product list in their own references
+
+A product that resolves to neither is dropped. Usually it simply is not hosted
+on GitHub (Chrome, Windows, macOS…) — and those are exactly the products with
+the most CVEs, so guessing a repo name for them used to put false positives at
+the very top of the ranking.
 """
 import time
 import logging
-from collections import Counter
+from collections import Counter, defaultdict
 
 from github_client import GitHubClient
 from nvd_client import fetch_cves_last_n_days
+from cve_matcher import extract_github_repos
 import config
 
 logger = logging.getLogger('vulnRadar')
 
-# Only mappings where the NVD vendor name differs from the GitHub org handle.
-# For everything else we try the vendor name directly as an org/user handle.
-VENDOR_TO_GH_ORG = {
-    'wordpress': 'WordPress',
-    'jenkins':   'jenkinsci',
-    'gitlab':    'gitlabhq',
-    'ibm':       'IBM',
-    'nvidia':    'NVIDIA',
-    'cisco':     'cisco-open-source',
-    'rust':      'rust-lang',
-    'go':        'golang',
-    'node':      'nodejs',
-}
+# A repo must be referenced by at least this many distinct CVEs of a product
+# before we accept it as that product's repo. A repo linked by a single CVE is
+# often the reporter's proof-of-concept, not the affected product itself.
+MIN_REFERENCE_HITS = 2
 
 
-def extract_vendor_products(cves: list[dict]) -> Counter:
-    """Count distinct CVEs per (vendor, product) pair.
+def extract_vendor_products(cves: list[dict]) -> tuple[Counter, dict[tuple[str, str], Counter]]:
+    """Count distinct CVEs per (vendor, product) pair, and collect the GitHub
+    repos referenced by the CVEs of each pair.
+
     Multiple CPE entries within the same CVE that point to the same pair
-    (different affected versions) are counted only once."""
+    (different affected versions) are counted only once. Reference hits are
+    counted per distinct CVE too, so a repo linked five times by one CVE
+    counts once.
+    """
     counter: Counter = Counter()
+    references: dict[tuple[str, str], Counter] = defaultdict(Counter)
     for item in cves:
         cve = item.get('cve', {})
         seen_in_this_cve: set[tuple[str, str]] = set()
@@ -47,53 +53,53 @@ def extract_vendor_products(cves: list[dict]) -> Counter:
                         product = parts[4].lower()
                         if vendor and product:
                             seen_in_this_cve.add((vendor, product))
+        if not seen_in_this_cve:
+            continue
+        repos = extract_github_repos(item)
         for pair in seen_in_this_cve:
             counter[pair] += 1
-    return counter
+            for repo in repos:
+                references[pair][repo] += 1
+    return counter, references
 
 
 _REPO_CACHE: dict[tuple[str, str], dict | None] = {}
 
 
-def find_repo_for_product(client: GitHubClient, vendor: str, product: str) -> dict | None:
-    """Try three strategies to map a (vendor, product) pair to a real GitHub repo.
-    Cached per-process to avoid hitting the API for the same pair twice.
+def find_repo_for_product(client: GitHubClient, vendor: str, product: str,
+                          referenced: Counter) -> dict | None:
+    """Map a (vendor, product) pair to a real GitHub repo, without ever guessing
+    the repo name. Cached per-process to avoid hitting the API twice for the
+    same pair.
 
-    1) /repos/{vendor}/{product}              direct lookup
-    2) /repos/{mapped_vendor}/{product}        if vendor needs a mapping
-    3) /search/repositories?q=product in:name org:{vendor}   product as repo name in vendor's org
+    1) /repos/{vendor}/{product} — the product lives under its own vendor name.
+    2) the repos the product's own CVEs reference, most-referenced first, keeping
+       only those that clear MIN_REFERENCE_HITS. This recovers the cases where
+       the GitHub org differs from the NVD vendor name (jenkins → jenkinsci):
+       the CVE itself names the repo, so we do not have to invent it.
 
-    A global fuzzy search is intentionally NOT used: it produces too many
-    false positives (forks and unrelated projects with the same name).
+    Every candidate is confirmed against the API, so a resolved repo always
+    exists and carries GitHub's own canonical casing.
     """
     cache_key = (vendor, product)
     if cache_key in _REPO_CACHE:
         return _REPO_CACHE[cache_key]
 
-    candidates: list[tuple[str, str]] = [(vendor, product)]
-    mapped = VENDOR_TO_GH_ORG.get(vendor)
-    if mapped and (mapped, product) not in candidates:
-        candidates.append((mapped, product))
+    # Strategy 1: direct lookup.
+    repo = client.get(f'/repos/{vendor}/{product}')
+    if isinstance(repo, dict) and 'full_name' in repo:
+        _REPO_CACHE[cache_key] = repo
+        return repo
 
-    # Strategies 1 + 2: direct repo lookup
-    for owner, repo_name in candidates:
-        repo = client.get(f'/repos/{owner}/{repo_name}')
+    # Strategy 2: the repos this product's CVEs point at.
+    for full_name, hits in referenced.most_common():
+        if hits < MIN_REFERENCE_HITS:
+            break  # most_common() is sorted, everything below is under threshold
+        repo = client.get(f'/repos/{full_name}')
         if isinstance(repo, dict) and 'full_name' in repo:
             _REPO_CACHE[cache_key] = repo
             return repo
-
-    # Strategy 3: search within the vendor org by repo name
-    for owner in (vendor, mapped) if mapped else (vendor,):
-        data = client.get('/search/repositories', params={
-            'q':        f'{product} in:name org:{owner}',
-            'sort':     'stars',
-            'order':    'desc',
-            'per_page': 1,
-        })
-        if isinstance(data, dict) and data.get('items'):
-            _REPO_CACHE[cache_key] = data['items'][0]
-            return data['items'][0]
-        time.sleep(2)  # search rate limit
+        time.sleep(0.2)
 
     _REPO_CACHE[cache_key] = None
     return None
@@ -105,7 +111,7 @@ def run(client: GitHubClient) -> list[dict]:
     cves, _ = fetch_cves_last_n_days(config.NVD_LOOKBACK_DAYS)
     logger.info(f'  → got {len(cves)} CVEs from NVD')
 
-    pairs = extract_vendor_products(cves)
+    pairs, references = extract_vendor_products(cves)
     logger.info(f'  → distinct (vendor, product) pairs: {len(pairs)}')
 
     selected: list[dict] = []
@@ -113,7 +119,8 @@ def run(client: GitHubClient) -> list[dict]:
     for (vendor, product), count in pairs.most_common():
         if len(selected) >= config.MAX_REPOS_PER_TASK:
             break
-        repo = find_repo_for_product(client, vendor, product)
+        repo = find_repo_for_product(client, vendor, product,
+                                     references[(vendor, product)])
         if not repo:
             continue
         full_name = repo['full_name']

@@ -77,6 +77,30 @@ def extract_cve_metrics(cve: dict) -> dict:
     return {'severity': None, 'cvss_score': None, 'exploitability_score': None}
 
 
+def parse_dt(value: str) -> datetime | None:
+    """Parse an ISO timestamp. NVD publishes naive values that are UTC, so we
+    attach UTC when absent — otherwise they cannot be compared with the
+    timezone-aware selection timestamps."""
+    try:
+        dt = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    except (ValueError, AttributeError, TypeError):
+        return None
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+def selection_moment(info: dict) -> datetime | None:
+    """The instant a repo was selected, used as the cut-off for predictions.
+
+    Rows written before `selected_at` existed only carry a date: we do not know
+    the hour, so we place them at the END of that day. That discards same-day
+    CVEs for those repos, which is the safe choice — a same-day CVE is far more
+    likely to be one that triggered the selection than one predicted by it."""
+    if info['selected_at']:
+        return parse_dt(info['selected_at'])
+    day = parse_dt(info['selected_date'])
+    return day.replace(hour=23, minute=59, second=59) if day else None
+
+
 def extract_cwe_ids(cve: dict) -> str | None:
     """Concatenate all CWE-XXX identifiers found in the CVE's weaknesses field."""
     cwes: set[str] = set()
@@ -120,25 +144,26 @@ def run(conn: sqlite3.Connection) -> int:
         metrics = extract_cve_metrics(cve) if repos else None
         cwe_ids = extract_cwe_ids(cve) if repos else None
         for repo in repos:
-            if repo not in tracked:
+            info = tracked.get(repo.lower())
+            if info is None:
                 continue
-            first_selected = tracked[repo]
-            try:
-                pub_date = datetime.fromisoformat(published.replace('Z', '+00:00')).date()
-                sel_date = datetime.fromisoformat(first_selected).date()
-                days = (pub_date - sel_date).days
-            except (ValueError, AttributeError):
+            pub_dt = parse_dt(published)
+            sel_dt = selection_moment(info)
+            if pub_dt is None or sel_dt is None:
                 continue
-            # Only count this as a real "prediction" if the CVE was published
-            # AFTER (or the same day as) our first selection of the repo.
-            if days < 0:
+            # Only a real "prediction" if the CVE was published AFTER we picked
+            # the repo. Comparing full timestamps (not just dates) is what keeps
+            # out the CVEs that caused the selection in the first place: those
+            # are published hours before the run, on the same calendar day.
+            if pub_dt <= sel_dt:
                 skipped_pre_selection += 1
                 continue
+            days = (pub_dt.date() - sel_dt.date()).days
             matches.append({
-                'repo_full_name': repo,
+                'repo_full_name': info['full_name'],
                 'cve_id': cve_id,
                 'cve_published_date': published,
-                'first_selected_date': first_selected,
+                'first_selected_date': info['selected_date'],
                 'days_until_cve': days,
                 'severity':             metrics['severity'],
                 'cvss_score':           metrics['cvss_score'],
