@@ -15,18 +15,17 @@ The pipeline runs immediately and then re-runs once a day. Watch the log with `t
 
 ## How it works
 
-Three tasks run **in parallel** (one thread each), each producing up to `MAX_REPOS_PER_TASK` repositories (default **100**):
+Three tasks run **in parallel** (one thread each), each producing up to `MAX_REPOS_PER_TASK` repositories (default **30**):
 
 ### Task 1 — Official (NVD-driven, product-aware)
 Queries the **NVD API** for CVEs published in the last 30 days and extracts every distinct `(vendor, product)` pair from CPE strings (a single CVE that lists 5 different versions of the same product still counts once for that pair). Pairs are then ranked by frequency.
 
-For each top pair, the task tries to find the actual GitHub repository hosting that product, in this order:
+For each top pair, the task resolves the actual GitHub repository hosting that product — **the repo name is never guessed** — in this order:
 
 1. `/repos/{vendor}/{product}` — direct lookup
-2. `/repos/{mapped_vendor}/{product}` — if the NVD vendor name needs mapping (e.g. `nvidia` → `NVIDIA`, `cisco` → `cisco-open-source`)
-3. `/search/repositories?q={product} in:name org:{vendor}` — search by repo name within the vendor's org
+2. the `github.com/owner/repo` URLs that the CVEs of that product list in their own `references`, most-referenced first, accepted only when at least `MIN_REFERENCE_HITS` (default 2) **distinct CVEs** point to the same repo (a repo linked by a single CVE is often the reporter's proof-of-concept). This recovers the products whose GitHub org differs from the NVD vendor name (`openwebui` → `open-webui/open-webui`, `linuxfoundation/nats-server` → `nats-io/nats-server`): the CVE itself names the repo.
 
-A global fuzzy search is intentionally avoided to prevent false positives on forks and unrelated projects. Resolved pairs are cached in-process, so a `(vendor, product)` that recurs across many CVEs costs only one API call.
+A product that resolves to neither is **dropped**. Usually it is simply not hosted on GitHub (Chrome, Windows, macOS, …) — and those are exactly the products with the most CVEs, so the previous approach (a static vendor→org map plus a name search inside the org) used to fill the top of the ranking with false positives such as `google/coding-with-chrome` for `google/chrome`. A global fuzzy search remains intentionally avoided. Resolved pairs are cached in-process, so a `(vendor, product)` that recurs across many CVEs costs only one API call.
 
 ### Task 2 — Hot (security-keyword commits + silent patch signals)
 Searches GitHub for **commits authored in the last 7 days** whose messages contain security-related keywords (`CVE`, `vulnerability`, `exploit`, `injection`, `XSS`, `overflow`, `RCE`, `sanitize`, `auth bypass`, `credential`, `patch`, …). Up to 3 pages (300 commits) per keyword are paginated, and commits are deduplicated by SHA so a single commit matching multiple keywords is counted only once.
@@ -61,7 +60,7 @@ After the three tasks finish, vulnRadar fetches CVEs from NVD published since th
 
 Two important guarantees:
 
-- **No false predictions** — matches are only counted when the CVE was published *on or after* the day the repo was first selected. CVEs that pre-date the selection are skipped (logged as `skipped_pre_selection`).
+- **No false predictions** — a match is counted only when the CVE was published **after the exact moment** the repo was first selected (`selected_at`, full timestamp): a CVE published a few hours *before* the daily run — typically one of the very CVEs that caused the selection — is skipped (logged as `skipped_pre_selection`). Rows written before the `selected_at` column existed only carry a date and are conservatively treated as selected at the *end* of that day, so their same-day CVEs are discarded too. Repo comparison is **case-insensitive** (GitHub URLs are), and matches are recorded under the canonical tracked name.
 - **No silent data loss** — the NVD client splits long ranges into ≤119-day windows (NVD's hard limit) and returns the upper bound of the most recent window that succeeded. The `last_check` cursor is advanced only to that point, never to `now()`. If a window fails mid-fetch, the missing tail will be retried on the next run.
 
 The URL extraction also filters out reserved GitHub paths (`advisories/`, `orgs/`, `sponsors/`, `marketplace/`, `pulls/`, `issues/`, …) that look like `owner/repo` but are not real repositories.
@@ -72,7 +71,7 @@ The URL extraction also filters out reserved GitHub paths (`advisories/`, `orgs/
 
 | Table | Description |
 |-------|-------------|
-| `tracked_repos` | One row per (repo, date, task) selection. Includes the selection score and a human-readable reason. The same repo can appear multiple times across days/tasks. |
+| `tracked_repos` | One row per (repo, date, task) selection. Includes the selection score, a human-readable reason and the exact selection timestamp (`selected_at`, added by automatic migration; NULL on rows that pre-date it). The same repo can appear multiple times across days/tasks. |
 | `cve_matches`   | A repo we previously selected has been mentioned in a new CVE. See fields below. Rows are never deleted (`INSERT OR IGNORE`). |
 | `last_check`    | Bookkeeping: timestamp of the upper bound of the last successful NVD fetch, so we only fetch new CVEs each run. |
 
@@ -100,12 +99,15 @@ The schema migrates automatically: if the DB pre-dates the severity / CVSS / CWE
 All tunable parameters live at the top of `config.py`:
 
 ```python
-MAX_REPOS_PER_TASK    = 100   # cap per task per run
+MAX_REPOS_PER_TASK    = 30    # cap per task per run
 NVD_LOOKBACK_DAYS     = 30    # window for the Official task
 HOT_LOOKBACK_DAYS     = 7     # window for the Hot task
 TALKERS_LOOKBACK_DAYS = 7     # window for the Talkers task
 SECURITY_KEYWORDS     = [...]  # keywords used by the Hot task
 ```
+
+Per-task tuning for Task 1 lives at the top of `task_official.py`
+(`MIN_REFERENCE_HITS`).
 
 Per-task tuning:
 
@@ -155,9 +157,11 @@ vulnRadar/
 ├── config.py          ← tunable parameters + .CVEfixes.ini reader
 ├── github_client.py   ← thread-safe GitHub HTTP client (rate limit aware)
 ├── nvd_client.py      ← NVD client: 119-day windowing, robust pagination, partial-failure safe
-├── database.py        ← SQLite schema and insert helpers
-├── task_official.py   ← Task 1 — NVD vendor/product analysis with caching
+├── database.py        ← SQLite schema, automatic migrations and insert helpers
+├── task_official.py   ← Task 1 — NVD vendor/product analysis (direct lookup + CVE references)
 ├── task_hot.py        ← Task 2 — security keyword commit search + silent-patch signals
 ├── task_talkers.py    ← Task 3 — most active repos right now
-└── cve_matcher.py     ← cross-reference selections vs new CVEs (no false predictions)
+├── cve_matcher.py     ← cross-reference selections vs new CVEs (no false predictions)
+├── vulnRadar_results_analysis.ipynb  ← analysis notebook on the collected matches
+└── Data/vulnRadar.db  ← SQLite database with selections and matches
 ```
