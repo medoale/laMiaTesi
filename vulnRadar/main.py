@@ -10,24 +10,27 @@ from database import init_db, insert_tracked_repos
 import task_official
 import task_hot
 import task_talkers
+import task_osv
 import cve_matcher
 
 
 def run_pipeline(client: GitHubClient) -> None:
-    """One full execution: three tasks in parallel, then CVE matching.
+    """One full execution: four tasks in parallel, then CVE matching.
     Results are stored in the SQLite DB; logs report only summary numbers."""
     conn = sqlite3.connect(config.DATABASE)
     try:
         init_db(conn)
 
-        with ThreadPoolExecutor(max_workers=3, thread_name_prefix='task') as pool:
+        with ThreadPoolExecutor(max_workers=4, thread_name_prefix='task') as pool:
             f_official = pool.submit(task_official.run, client)
             f_hot      = pool.submit(task_hot.run, client)
             f_talkers  = pool.submit(task_talkers.run, client)
+            f_osv      = pool.submit(task_osv.run, client)
             results = {
                 'official': f_official.result(),
                 'hot':      f_hot.result(),
                 'talkers':  f_talkers.result(),
+                'osv':      f_osv.result(),
             }
 
         for task, repos in results.items():

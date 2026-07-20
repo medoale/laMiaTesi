@@ -11,6 +11,10 @@ _CVE_MATCHES_EXTRA_COLUMNS = [
     ('cvss_score',           'REAL'),
     ('exploitability_score', 'REAL'),
     ('cwe_ids',              'TEXT'),
+    # Which feed found this match: 'nvd' or 'osv'. The same (repo, cve_id)
+    # pair is never inserted twice (UNIQUE constraint below) — whichever
+    # source's matcher pass runs first wins; the other is silently ignored.
+    ('source',               'TEXT'),
 ]
 
 # Full selection timestamp. `selected_date` alone is not enough to tell a CVE
@@ -112,6 +116,7 @@ def insert_cve_matches(conn: sqlite3.Connection, matches: list[dict]) -> int:
             m.get('cvss_score'),
             m.get('exploitability_score'),
             m.get('cwe_ids'),
+            m.get('source'),
         )
         for m in matches
     ]
@@ -119,8 +124,8 @@ def insert_cve_matches(conn: sqlite3.Connection, matches: list[dict]) -> int:
         INSERT OR IGNORE INTO cve_matches
             (repo_full_name, cve_id, cve_published_date, first_selected_date,
              days_until_cve, matched_at, severity, cvss_score,
-             exploitability_score, cwe_ids)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             exploitability_score, cwe_ids, source)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, rows)
     conn.commit()
     return cursor.rowcount
