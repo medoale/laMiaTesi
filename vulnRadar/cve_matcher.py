@@ -23,7 +23,7 @@ from database import (
     get_tracked_repo_first_selection,
 )
 from nvd_client import fetch_cves_since
-from osv_client import fetch_recent_ids, fetch_vuln
+from osv_client import fetch_recent_ids, fetch_vulns
 
 logger = logging.getLogger('vulnRadar')
 
@@ -32,11 +32,12 @@ NVD_LAST_CHECK_KEY = 'nvd_last_check'
 OSV_LAST_CHECK_KEY = 'osv_last_check'
 
 # How many OSV entries to inspect per run when catching up a stale cursor.
-# The modified_id.csv stream is dominated by Linux distro advisories (~99% in
-# samples) — same cost rationale as task_osv.MAX_ENTRIES_TO_CHECK, just more
-# generous here since matching (a dict lookup) is cheaper than resolving a
-# new repo (which costs extra GitHub API calls).
-OSV_MAX_ENTRIES_PER_RUN = 2000
+# A live measurement found ~9,400 entries modified in a single 24h window —
+# this must stay comfortably above that or the cursor advances so rarely it
+# is effectively frozen (see osv_client.fetch_recent_ids: the cursor only
+# moves once the WHOLE window is covered). Fetches run concurrently
+# (osv_client.fetch_vulns), so this cap is a volume margin, not a time one.
+OSV_MAX_ENTRIES_PER_RUN = 15000
 
 # First path segments under github.com/ that are NOT user/org names but
 # reserved GitHub product paths. We must not interpret them as repo owners.
@@ -267,7 +268,7 @@ def run(conn: sqlite3.Connection) -> int:
         datetime.now(timezone.utc) - timedelta(days=30)
     logger.info(f'CVE matcher — fetching OSV vulnerabilities since {osv_since.isoformat()}')
     osv_ids, osv_new_cursor = fetch_recent_ids(osv_since, OSV_MAX_ENTRIES_PER_RUN)
-    vulns = [v for v in (fetch_vuln(i) for i in osv_ids) if v is not None]
+    vulns = fetch_vulns(osv_ids)
     logger.info(f'  → {len(vulns)}/{len(osv_ids)} OSV records fetched')
 
     osv_matches, osv_skipped = build_matches(

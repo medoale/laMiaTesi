@@ -13,6 +13,7 @@ we have enough recent entries — no need to download the whole multi-million-ro
 file to get "the last 30 days".
 """
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 import requests
@@ -21,6 +22,13 @@ logger = logging.getLogger('vulnRadar')
 
 MODIFIED_IDS_URL = 'https://osv-vulnerabilities.storage.googleapis.com/modified_id.csv'
 VULN_URL = 'https://api.osv.dev/v1/vulns/{id}'
+
+# OSV needs no token, so there is no shared rate-limit budget to protect
+# (unlike GitHubClient) — 20 concurrent requests measured cleanly at ~27
+# req/s with no errors. Fetching one ID at a time made checking a realistic
+# daily volume (~9,400 modified entries observed in 24h) take nearly two
+# hours; this is what makes a higher per-run cap practical.
+DEFAULT_MAX_WORKERS = 20
 
 
 def fetch_recent_ids(since: datetime, max_ids: int) -> tuple[list[str], datetime | None]:
@@ -74,3 +82,19 @@ def fetch_vuln(vuln_id: str) -> dict | None:
     except requests.RequestException as e:
         logger.warning(f'OSV vuln fetch failed for {vuln_id}: {e}')
         return None
+
+
+def fetch_vulns(vuln_ids: list[str], max_workers: int = DEFAULT_MAX_WORKERS) -> list[dict]:
+    """Fetch many vulnerability records concurrently. Only the successfully
+    fetched ones are returned (fetch_vuln's None failures are dropped here,
+    so callers no longer need their own `if v is not None` filter).
+
+    Doing this one ID at a time made checking a realistic day's worth of OSV
+    activity impractically slow (~0.66s/request sequentially); concurrency is
+    safe here because OSV needs no token, so unlike GitHubClient there is no
+    shared rate limit to protect across calls."""
+    if not vuln_ids:
+        return []
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        results = list(pool.map(fetch_vuln, vuln_ids))
+    return [v for v in results if v is not None]

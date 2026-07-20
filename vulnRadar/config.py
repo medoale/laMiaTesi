@@ -10,6 +10,7 @@ MAX_REPOS_PER_TASK = 30         # max repos selected per task per run
 NVD_LOOKBACK_DAYS = 30          # how far back to look in NVD for "official" task
 HOT_LOOKBACK_DAYS = 7           # how far back to look for "hot" task
 TALKERS_LOOKBACK_DAYS = 7       # how far back to look for "talkers" task
+OSV_LOOKBACK_DAYS = 30          # how far back to look in OSV for "osv" task
 
 # Daemon mode: when run as `python3 main.py`, the program loops forever and
 # triggers a full pipeline once per day at this UTC hour (24-hour clock).

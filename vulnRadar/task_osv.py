@@ -34,17 +34,16 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
 
 from github_client import GitHubClient
-from osv_client import fetch_recent_ids, fetch_vuln
+from osv_client import fetch_recent_ids, fetch_vulns
 from cve_matcher import extract_github_repos
 import config
 
 logger = logging.getLogger('vulnRadar')
 
-# How far back to look, and how many of the most recent OSV entries in that
-# window to actually check — the modified_id.csv stream is dominated by Linux
-# distro advisories (~99% in samples), so a 30-day window can hold far more
-# entries than are worth an API call each; this caps the cost per run.
-OSV_LOOKBACK_DAYS = 30
+# How many of the most recent OSV entries in config.OSV_LOOKBACK_DAYS to
+# actually check — the modified_id.csv stream is dominated by Linux distro
+# advisories (~99% in samples), so the window can hold far more entries than
+# are worth an API call each; this caps the cost per run.
 MAX_ENTRIES_TO_CHECK = 500
 
 # Same threshold and same rationale as official: a repo referenced by a
@@ -117,15 +116,15 @@ def find_repo_for_package(client: GitHubClient, ecosystem: str, name: str,
 
 def run(client: GitHubClient) -> list[dict]:
     """Returns a list of selected repos, capped at MAX_REPOS_PER_TASK."""
-    since = datetime.now(timezone.utc) - timedelta(days=OSV_LOOKBACK_DAYS)
+    since = datetime.now(timezone.utc) - timedelta(days=config.OSV_LOOKBACK_DAYS)
     logger.info(f'TASK (osv) — fetching up to {MAX_ENTRIES_TO_CHECK} OSV entries '
-               f'from last {OSV_LOOKBACK_DAYS} days…')
+               f'from last {config.OSV_LOOKBACK_DAYS} days…')
     ids, _ = fetch_recent_ids(since, MAX_ENTRIES_TO_CHECK)   # cursor not needed here:
     # this task re-samples the most recent window fresh every run, same as
     # official's fresh NVD query every day — no persistent state to advance.
     logger.info(f'  → {len(ids)} candidate vulnerability IDs')
 
-    vulns = [v for v in (fetch_vuln(i) for i in ids) if v is not None]
+    vulns = fetch_vulns(ids)
     logger.info(f'  → {len(vulns)} vulnerability records fetched')
 
     pairs, references = extract_packages(vulns)
