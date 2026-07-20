@@ -16,13 +16,6 @@ TALKERS_LOOKBACK_DAYS = 7       # how far back to look for "talkers" task
 # Set to None to disable the loop and run only once.
 DAILY_RUN_HOUR_UTC: int | None = 6
 
-# Security-related keywords used by the "hot" task
-SECURITY_KEYWORDS = [
-    'CVE', 'vulnerability', 'exploit', 'security',
-    'injection', 'XSS', 'CSRF', 'overflow', 'RCE',
-    'sanitize', 'auth bypass', 'credential', 'patch',
-]
-
 # ----------------------------------------------------------------------------
 # Logging
 # ----------------------------------------------------------------------------

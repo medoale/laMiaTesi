@@ -63,14 +63,14 @@ def extract_vendor_products(cves: list[dict]) -> tuple[Counter, dict[tuple[str, 
     return counter, references
 
 
-_REPO_CACHE: dict[tuple[str, str], dict | None] = {}
+# Successes only — see the docstring below for why failures are never cached.
+_REPO_CACHE: dict[tuple[str, str], dict] = {}
 
 
 def find_repo_for_product(client: GitHubClient, vendor: str, product: str,
                           referenced: Counter) -> dict | None:
     """Map a (vendor, product) pair to a real GitHub repo, without ever guessing
-    the repo name. Cached per-process to avoid hitting the API twice for the
-    same pair.
+    the repo name.
 
     1) /repos/{vendor}/{product} — the product lives under its own vendor name.
     2) the repos the product's own CVEs reference, most-referenced first, keeping
@@ -80,6 +80,15 @@ def find_repo_for_product(client: GitHubClient, vendor: str, product: str,
 
     Every candidate is confirmed against the API, so a resolved repo always
     exists and carries GitHub's own canonical casing.
+
+    Caching is asymmetric and deliberately so. The process runs as a daemon
+    that keeps this cache alive for days, while `referenced` is derived from a
+    sliding NVD_LOOKBACK_DAYS window that changes every run. A resolved repo
+    never stops being the right answer, so successes are cached forever. An
+    unresolved pair can become resolvable later purely because the window
+    shifted — e.g. a repo cited by 1 CVE today (below MIN_REFERENCE_HITS) may
+    be cited by 3 CVEs once more of them land in the window — so failures are
+    retried on every call instead of being cached.
     """
     cache_key = (vendor, product)
     if cache_key in _REPO_CACHE:
@@ -101,8 +110,7 @@ def find_repo_for_product(client: GitHubClient, vendor: str, product: str,
             return repo
         time.sleep(0.2)
 
-    _REPO_CACHE[cache_key] = None
-    return None
+    return None   # not cached: see the caching note in the docstring above
 
 
 def run(client: GitHubClient) -> list[dict]:

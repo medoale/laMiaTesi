@@ -6,6 +6,12 @@ import requests
 logger = logging.getLogger('vulnRadar')
 
 
+class GitHubAuthError(RuntimeError):
+    """Raised on HTTP 401: the token is missing or invalid. Retrying would
+    not help, and silently returning None would make this indistinguishable
+    from a 404 (resource genuinely absent) to the caller."""
+
+
 class GitHubClient:
     BASE = 'https://api.github.com'
 
@@ -32,12 +38,18 @@ class GitHubClient:
             if r.status_code == 200:
                 self._check_rate_limit(r)
                 return r.json()
+            elif r.status_code == 401:
+                raise GitHubAuthError(f'HTTP 401 for {url} — token missing or invalid')
             elif r.status_code == 202:
                 logger.debug(f'202 — stats computing for {url}, retrying in 5s…')
                 time.sleep(5)
                 continue
             elif r.status_code == 403 and 'rate limit' in r.text.lower():
                 self._wait_for_reset(r)
+                continue
+            elif r.status_code >= 500:
+                logger.warning(f'HTTP {r.status_code} for {url}, retrying in 5s…')
+                time.sleep(5)
                 continue
             elif r.status_code == 422:
                 # Search query exhausted (e.g., > 1000 results)
