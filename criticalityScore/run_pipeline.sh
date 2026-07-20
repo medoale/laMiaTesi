@@ -14,31 +14,39 @@
 # same relationship CVEfixes.db has with the collect_projects.py script.
 #
 # RESUMABLE: a run that gets interrupted (network blip, closed terminal, a
-# single failed repo) can be restarted with the same command and picks up
-# where it left off, at both stages:
-#   - Stage 1 only commits its output under its final name once
-#     enumerate_github exits successfully (temp file + rename-on-success), so
-#     an interrupted stage 1 is simply redone from scratch on the next run —
-#     a partial candidate list is never mistaken for a complete one.
+# single failed repo, GitHub rate-limiting) can be restarted with the same
+# command and picks up where it left off, at both stages:
+#   - Stage 1 enumerates one YEAR at a time (2008 is old enough that a single
+#     enumerate_github call spanning it all can run for over an hour — losing
+#     all of it to one failed retry, as happened in practice, defeats the
+#     point of being "resumable"). Each year's chunk is written to its own
+#     temp file and only appended to the growing candidate list once that
+#     specific `enumerate_github` call has exited successfully; the year is
+#     then recorded in a small "done" marker file. On restart, years already
+#     marked done are skipped — an interruption costs at most one year of
+#     re-work, not the whole 2008-to-now range.
 #   - Stage 2 keeps a stable, un-dated working file (scored_in_progress.csv)
 #     that candidates are appended to. On restart, candidates already present
 #     in that file are skipped (diffed out before the next criticality_score
 #     call), so only what's left gets processed with -append.
 #   - Only once ALL candidates are scored is the working file copied to a
-#     dated final snapshot AND the working state is deleted — so the next
-#     periodic refresh (weeks/months later) starts genuinely fresh instead of
-#     "resuming" a run that actually finished.
+#     dated final snapshot AND the working state (both stages') is deleted —
+#     so the next periodic refresh (weeks/months later) starts genuinely
+#     fresh instead of "resuming" a run that actually finished.
 set -euo pipefail
 cd "$(dirname "$0")"
 
 # --- Tunable parameters ------------------------------------------------------
 MIN_STARS=3000          # candidate pool: how popular a repo must be to be scored
 WORKERS=1                # 1 worker per GitHub token (see tool's own README)
+START_YEAR=2008          # enumerate_github's own earliest supported date is 2008-01-01
 CVEFIXES_INI="/home/medo/.CVEfixes.ini"
 
 DATA_DIR="Data"
 CANDIDATES_FILE="$DATA_DIR/candidates.txt"           # final name: only exists once complete
-CANDIDATES_TMP="$DATA_DIR/candidates.txt.partial"     # written to during stage 1
+CANDIDATES_TMP="$DATA_DIR/candidates.txt.partial"     # growing list across completed year-chunks
+CHUNK_TMP="$DATA_DIR/candidates_chunk.txt.partial"    # single year currently being enumerated
+CHUNKS_DONE_FILE="$DATA_DIR/enumerate_chunks_done.txt"  # one completed year per line
 SCORED_WIP="$DATA_DIR/scored_in_progress.csv"         # stable across resumed runs
 REMAINING_FILE="$DATA_DIR/candidates_remaining.txt"   # stage-2 input on a resumed run
 
@@ -66,20 +74,50 @@ export GITHUB_TOKEN="$TOKEN"
 
 cd criticality_score
 
-# --- Stage 1: enumerate candidate repos ---------------------------------------
+# --- Stage 1: enumerate candidate repos, one year at a time --------------------
 # Reused as-is if a PREVIOUS run already completed it (final name exists).
-# An interrupted stage 1 never leaves the final name behind, only the .partial
-# file, so it is redone from scratch rather than resumed from a partial list.
 if [ -s "../$CANDIDATES_FILE" ]; then
     echo "=== Stage 1/2: reusing existing candidate list (already completed) ==="
 else
-    echo "=== Stage 1/2: enumerating repos with >= $MIN_STARS stars ==="
-    go run ./cmd/enumerate_github \
-        -min-stars="$MIN_STARS" \
-        -workers="$WORKERS" \
-        -out="../$CANDIDATES_TMP" \
-        -force
-    mv "../$CANDIDATES_TMP" "../$CANDIDATES_FILE"   # only reached on success
+    echo "=== Stage 1/2: enumerating repos with >= $MIN_STARS stars, year by year ==="
+    touch "../$CHUNKS_DONE_FILE"
+    CURRENT_YEAR=$(date -u +%Y)
+    TODAY=$(date -u +%Y-%m-%d)
+
+    for YEAR in $(seq "$CURRENT_YEAR" -1 "$START_YEAR"); do
+        if grep -qxF "$YEAR" "../$CHUNKS_DONE_FILE"; then
+            echo "  $YEAR already enumerated, skipping"
+            continue
+        fi
+
+        CHUNK_START="${YEAR}-01-01"
+        # The current year isn't over yet — asking enumerate_github for dates
+        # beyond today doesn't make sense (and there is nothing there yet).
+        if [ "$YEAR" -eq "$CURRENT_YEAR" ]; then
+            CHUNK_END="$TODAY"
+        else
+            CHUNK_END="${YEAR}-12-31"
+        fi
+
+        echo "  enumerating $CHUNK_START to $CHUNK_END..."
+        go run ./cmd/enumerate_github \
+            -start="$CHUNK_START" \
+            -end="$CHUNK_END" \
+            -min-stars="$MIN_STARS" \
+            -workers="$WORKERS" \
+            -out="../$CHUNK_TMP" \
+            -force
+
+        # Reached only if the year's enumeration succeeded: fold it into the
+        # growing candidate list and record the year as done, so a failure on
+        # the NEXT year never re-does this one.
+        cat "../$CHUNK_TMP" >> "../$CANDIDATES_TMP"
+        rm -f "../$CHUNK_TMP"
+        echo "$YEAR" >> "../$CHUNKS_DONE_FILE"
+    done
+
+    mv "../$CANDIDATES_TMP" "../$CANDIDATES_FILE"   # only reached once every year succeeded
+    rm -f "../$CHUNKS_DONE_FILE"
 fi
 
 N_CANDIDATES=$(wc -l < "../$CANDIDATES_FILE")
@@ -160,6 +198,7 @@ for r in rows[:5]:
 "
 
 # Clean up working state so the NEXT periodic refresh starts genuinely fresh
-# instead of thinking there is a run to resume.
-rm -f "$CANDIDATES_FILE" "$SCORED_WIP" "$REMAINING_FILE"
+# instead of thinking there is a run to resume. CHUNKS_DONE_FILE is already
+# removed right after stage 1 succeeds; included here too as a safety net.
+rm -f "$CANDIDATES_FILE" "$SCORED_WIP" "$REMAINING_FILE" "$CHUNKS_DONE_FILE"
 echo "Working state cleared — next run will start a fresh enumeration."
