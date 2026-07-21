@@ -56,6 +56,8 @@ CHUNK_TMP="$DATA_DIR/candidates_chunk.txt.partial"    # single year currently be
 CHUNKS_DONE_FILE="$DATA_DIR/enumerate_chunks_done.txt"  # one completed year per line
 SCORED_WIP="$DATA_DIR/scored_in_progress.csv"         # stable across resumed runs
 REMAINING_FILE="$DATA_DIR/candidates_remaining.txt"   # stage-2 input on a resumed run
+FAILED_FILE="$DATA_DIR/failed_repos.txt"              # repos that error out every time, skipped for good
+STDERR_LOG="$DATA_DIR/criticality_score_stderr.log"   # captured per attempt, to find WHICH repo just failed
 
 mkdir -p "$DATA_DIR"
 
@@ -140,51 +142,95 @@ N_CANDIDATES=$(wc -l < "../$CANDIDATES_FILE")
 echo "  -> $N_CANDIDATES candidate repos"
 
 # --- Stage 2: score every candidate, resumable ---------------------------------
-if [ -s "../$SCORED_WIP" ]; then
-    echo "  found partial results from a previous interrupted run, resuming..."
+touch "../$FAILED_FILE"   # repos already known to always fail (see the retry loop below)
+
+# Remaining = candidates minus (already scored) minus (known to always fail).
+# Both sets can grow WHILE stage 2 runs (criticality_score writes rows to
+# SCORED_WIP incrementally, and the retry loop below adds to FAILED_FILE), so
+# this is a function, re-run after every attempt — not just computed once —
+# otherwise a retry would re-process (and duplicate) repos that were already
+# written to SCORED_WIP earlier in the SAME crashed attempt.
+recompute_remaining() {
     python3 -c "
 import csv
 
-# Defensive: if criticality_score's -append ever repeats a header line, don't
-# let it be mistaken for a scored repo (its 'repo.url' cell would literally
-# read 'repo.url').
 done = set()
-with open('../$SCORED_WIP') as f:
-    for row in csv.DictReader(f):
-        url = row.get('repo.url')
-        if url and url != 'repo.url':
-            done.add(url)
+try:
+    with open('../$SCORED_WIP') as f:
+        for row in csv.DictReader(f):
+            url = row.get('repo.url')
+            # Defensive: if criticality_score's -append ever repeats a header
+            # line, don't let it be mistaken for a scored repo (its 'repo.url'
+            # cell would literally read 'repo.url').
+            if url and url != 'repo.url':
+                done.add(url)
+except FileNotFoundError:
+    pass
+
+with open('../$FAILED_FILE') as f:
+    failed = {line.strip() for line in f if line.strip()}
 
 with open('../$CANDIDATES_FILE') as f:
     all_urls = [line.strip() for line in f if line.strip()]
 
-remaining = [u for u in all_urls if u not in done]
+remaining = [u for u in all_urls if u not in done and u not in failed]
 with open('../$REMAINING_FILE', 'w') as f:
     f.write('\n'.join(remaining) + ('\n' if remaining else ''))
 
-print(f'  {len(done)} already scored, {len(remaining)} remaining')
+print(f'  {len(done)} already scored, {len(failed)} permanently failed (skipped), '
+      f'{len(remaining)} remaining')
 "
-    INPUT_FILE="../$REMAINING_FILE"
+}
+
+if [ -s "../$SCORED_WIP" ]; then
+    echo "  found partial results from a previous interrupted run, resuming..."
     APPEND_OR_FORCE="-append"
 else
-    INPUT_FILE="../$CANDIDATES_FILE"
-    APPEND_OR_FORCE="-force"
+    APPEND_OR_FORCE="-force"   # only for the very first invocation, to create the file
 fi
+recompute_remaining
+INPUT_FILE="../$REMAINING_FILE"
 
 N_REMAINING=$(wc -l < "$INPUT_FILE" 2>/dev/null || echo 0)
 if [ "$N_REMAINING" -eq 0 ]; then
     echo "=== Stage 2/2: nothing left to score ==="
 else
     echo "=== Stage 2/2: scoring $N_REMAINING repos (~2.5s each with 1 worker) ==="
-    go run ./cmd/criticality_score \
-        -workers="$WORKERS" \
-        -format=csv \
-        -scoring-config=config/scorer/pike_depsdev.yml \
-        -gcp-project-id="$GCP_PROJECT_ID" \
-        -depsdev-expiration="$DEPSDEV_TABLE_EXPIRATION_HOURS" \
-        -out="../$SCORED_WIP" \
-        "$APPEND_OR_FORCE" \
-        "$INPUT_FILE"
+
+    # A single repo whose signal collection errors out (e.g. a contributor
+    # whose GitHub login is a bot like "Copilot", unresolvable by the GraphQL
+    # query criticality_score uses for org-diversity) crashes the tool's
+    # ENTIRE process — it does not skip and continue on its own. So: on
+    # failure, find which repo just failed from its own JSON error log, add
+    # it to the permanent skip-list, recompute what's left (dropping both
+    # that failure AND whatever was already written to SCORED_WIP before the
+    # crash), and retry — until a run succeeds or nothing is left to try.
+    while true; do
+        go run ./cmd/criticality_score \
+            -workers="$WORKERS" \
+            -format=csv \
+            -scoring-config=config/scorer/pike_depsdev.yml \
+            -gcp-project-id="$GCP_PROJECT_ID" \
+            -depsdev-expiration="$DEPSDEV_TABLE_EXPIRATION_HOURS" \
+            -out="../$SCORED_WIP" \
+            "$APPEND_OR_FORCE" \
+            "$INPUT_FILE" 2>&1 | tee "../$STDERR_LOG" && break
+
+        BAD_URL=$(grep -o '"url": "[^"]*"' "../$STDERR_LOG" | tail -1 | sed -E 's/"url": "(.*)"/\1/')
+        if [ -z "$BAD_URL" ]; then
+            echo "ERROR: criticality_score failed and no repo URL could be found in its error output — see above, aborting."
+            exit 1
+        fi
+        echo "  $BAD_URL always fails signal collection (see error above) — skipping it for good and retrying"
+        echo "$BAD_URL" >> "../$FAILED_FILE"
+        APPEND_OR_FORCE="-append"   # SCORED_WIP now has a header + rows from this attempt
+        recompute_remaining
+        N_REMAINING=$(wc -l < "$INPUT_FILE" 2>/dev/null || echo 0)
+        if [ "$N_REMAINING" -eq 0 ]; then
+            echo "  no candidates left after removing failures."
+            break
+        fi
+    done
 fi
 
 cd ..
