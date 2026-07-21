@@ -60,6 +60,15 @@ gcloud auth application-default print-access-token >/dev/null 2>&1 || {
     exit 1
 }
 
+# criticality_score's deps.dev/BigQuery collector cannot always auto-detect
+# the project to bill against — read it from the active gcloud config
+# instead of hardcoding it, so this works on any machine without editing.
+GCP_PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
+[ -n "$GCP_PROJECT_ID" ] || {
+    echo "ERROR: no active GCP project. Run: gcloud config set project <PROJECT_ID>"
+    exit 1
+}
+
 # The GitHub token lives in CVEfixes.ini (same source every other script in
 # this project uses); the Go tools only read it from an environment variable.
 TOKEN=$(python3 -c "
@@ -164,6 +173,7 @@ else
         -workers="$WORKERS" \
         -format=csv \
         -scoring-config=config/scorer/pike_depsdev.yml \
+        -gcp-project-id="$GCP_PROJECT_ID" \
         -out="../$SCORED_WIP" \
         "$APPEND_OR_FORCE" \
         "$INPUT_FILE"
