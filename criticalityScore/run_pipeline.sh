@@ -40,7 +40,7 @@ cd "$(dirname "$0")"
 MIN_STARS=3000          # candidate pool: how popular a repo must be to be scored
 WORKERS=1                # 1 worker per GitHub token (see tool's own README)
 START_YEAR=2008          # enumerate_github's own earliest supported date is 2008-01-01
-CVEFIXES_INI="/home/medo/.CVEfixes.ini"
+CVEFIXES_INI="/home/students/s346086/AlessandroMedvescek/CVEfixes.ini"
 
 DATA_DIR="Data"
 CANDIDATES_FILE="$DATA_DIR/candidates.txt"           # final name: only exists once complete
