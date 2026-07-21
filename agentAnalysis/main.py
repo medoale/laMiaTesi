@@ -17,6 +17,7 @@ import csv
 import json
 import shutil
 import sqlite3
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -55,21 +56,48 @@ CLONE_TIMEOUT = 1800
 SLEEP_BETWEEN_CALLS = 1
 
 
+# How many repositories the sample keeps (see filter_rows).
+SAMPLE_SIZE = 30
+
+
 def filter_rows(rows):
-    """Placeholder for the custom selection of CSV rows.
-    Currently keeps every row; replace with your own logic (e.g. keep only
-    some repos, a size range, a sample...). Each row is a dict with keys
-    repo_url, commit, parent."""
-    return rows
+    """Sample selection: the SAMPLE_SIZE repositories whose size (total_lines,
+    at the pre-fix parent commit) is closest to the mean repo size in the
+    whole dataset — the same computation as repo_size in
+    cveFixes/CVEfixes/Code/Data/cvefixes_analysis.ipynb (section "Repository
+    size at fix time"):
+
+      1) collapse each repo's snapshots to their MEDIAN total_lines (a repo
+         with several qualifying commits must not weigh more than one with a
+         single commit — matches the notebook's per-repo aggregation);
+      2) take the mean of those medians across all repos;
+      3) rank repos by |median - mean| and keep the closest SAMPLE_SIZE.
+
+    ALL rows of a selected repo are kept — a repo with several qualifying
+    commits contributes one agent run per commit, not just one for the repo.
+    """
+    by_repo: dict[str, list[float]] = {}
+    for r in rows:
+        by_repo.setdefault(r['repo_url'], []).append(r['total_lines'])
+
+    medians = {repo: statistics.median(sizes) for repo, sizes in by_repo.items()}
+    mean_of_medians = statistics.mean(medians.values())
+
+    closest_repos = sorted(medians, key=lambda repo: abs(medians[repo] - mean_of_medians))
+    selected_repos = set(closest_repos[:SAMPLE_SIZE])
+
+    return [r for r in rows if r['repo_url'] in selected_repos]
 
 
 def load_csv_rows():
     """Rows of the CSV that were measured successfully. The parent hash is
-    kept because agents 2 and 3 need the pre-fix checkout."""
+    kept because agents 2 and 3 need the pre-fix checkout; total_lines is
+    kept for filter_rows' size-based sampling (not used past that point)."""
     with open(CSV_PATH, newline='') as f:
         return [{'repo_url': r['repo_url'],
                  'commit': r['commit'],
-                 'parent': r['parent']}
+                 'parent': r['parent'],
+                 'total_lines': float(r['total_lines'])}
                 for r in csv.DictReader(f) if r['status'] == 'ok']
 
 
