@@ -73,8 +73,9 @@ def filter_rows(rows):
       2) take the mean of those medians across all repos;
       3) rank repos by |median - mean| and keep the closest SAMPLE_SIZE.
 
-    ALL rows of a selected repo are kept — a repo with several qualifying
-    commits contributes one agent run per commit, not just one for the repo.
+    Only the MOST RECENT commit of each selected repo is kept (see
+    most_recent_commit_per_repo) — one agent run per repo, to keep a first
+    test run small rather than one run per qualifying commit.
     """
     by_repo: dict[str, list[float]] = {}
     for r in rows:
@@ -86,7 +87,31 @@ def filter_rows(rows):
     closest_repos = sorted(medians, key=lambda repo: abs(medians[repo] - mean_of_medians))
     selected_repos = set(closest_repos[:SAMPLE_SIZE])
 
-    return [r for r in rows if r['repo_url'] in selected_repos]
+    selected_rows = [r for r in rows if r['repo_url'] in selected_repos]
+    return most_recent_commit_per_repo(selected_rows)
+
+
+def most_recent_commit_per_repo(rows):
+    """Keep only the row with the latest commit (by committer_date, from
+    CVEfixes.db's commits table — repo_analysis_v2.csv itself carries no
+    date) for each repo_url."""
+    conn = sqlite3.connect(str(DB))
+    try:
+        dates = {}
+        for r in rows:
+            found = conn.execute(
+                'SELECT committer_date FROM commits WHERE hash = ?', (r['commit'],)
+            ).fetchone()
+            dates[r['commit']] = found[0] if found else ''
+    finally:
+        conn.close()
+
+    best_per_repo = {}
+    for r in rows:
+        current_best = best_per_repo.get(r['repo_url'])
+        if current_best is None or dates[r['commit']] > dates[current_best['commit']]:
+            best_per_repo[r['repo_url']] = r
+    return list(best_per_repo.values())
 
 
 def load_csv_rows():

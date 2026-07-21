@@ -87,7 +87,10 @@ def _post(api_key, payload):
     """One HTTP POST to OpenRouter with retries.
 
     429 (rate limit) and 5xx (server trouble) are retried with a growing
-    pause; anything else that fails raises immediately. Returns the assistant
+    pause. OpenRouter can also return HTTP 200 with an error body instead of
+    'choices' (e.g. the underlying free-model provider is overloaded) — that
+    is retried the same way, since raise_for_status() alone would miss it.
+    Anything else that fails raises immediately. Returns the assistant
     `message` object from the first choice."""
     headers = {'Authorization': f'Bearer {api_key}'}
     last_error = None
@@ -100,7 +103,12 @@ def _post(api_key, payload):
                 time.sleep(15 * (attempt + 1))
                 continue
             r.raise_for_status()
-            return r.json()['choices'][0]['message']
+            body = r.json()
+            if 'choices' not in body:
+                last_error = f'no choices in response: {body.get("error", body)}'
+                time.sleep(15 * (attempt + 1))
+                continue
+            return body['choices'][0]['message']
         except requests.RequestException as e:
             last_error = str(e)
             time.sleep(5)
