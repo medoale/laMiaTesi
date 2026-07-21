@@ -35,14 +35,19 @@ CVE_YEAR = '2026'
 # Maximum seconds for cloning a repository before marking it as failed.
 CLONE_TIMEOUT = 1800
 
-# Path to the CVEfixes.ini file holding the [GitHub] token.
-CVEFIXES_INI = '/home/medo/.CVEfixes.ini'
+# Candidate paths of the CVEfixes.ini file holding the [GitHub] token, tried
+# in order so the same code runs unmodified on the local machine or the
+# cluster; ConfigParser.read() silently skips any path that doesn't exist.
+CVEFIXES_INI_CANDIDATES = [
+    '/home/medo/.CVEfixes.ini',
+    '/home/students/s346086/AlessandroMedvescek/CVEfixes.ini',
+]
 
 
 def read_github_token():
-    """Read [GitHub] token from CVEFIXES_INI. Returns None if absent."""
+    """Read [GitHub] token from CVEFIXES_INI_CANDIDATES. Returns None if absent."""
     config = ConfigParser()
-    if config.read(CVEFIXES_INI):
+    if config.read(CVEFIXES_INI_CANDIDATES):
         token = config.get('GitHub', 'token', fallback=None)
         if token and token != 'None':
             return token

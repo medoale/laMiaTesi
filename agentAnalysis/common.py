@@ -6,20 +6,45 @@ Every entry point here is STATELESS across prompts: each call to
 an agent can never see anything from a previous prompt or a previous commit.
 """
 import json
+import re
 import time
 from configparser import ConfigParser
 from pathlib import Path
 
 import requests
 
-# Absolute path of the ini file that holds the [OpenRouter] api_key.
-CVEFIXES_INI = '/home/medo/.CVEfixes.ini'
+# Shared verdict format every agent's prompt ends with, so ONE parser
+# (parse_verdict, below) can extract a structured result from all three
+# regardless of how much free-text reasoning precedes it. Keeping this in
+# one place means the three prompts can never drift into incompatible
+# formats by accident.
+VERDICT_FORMAT = """
+
+You may reason above, but you MUST end your entire answer with exactly this
+block, using these exact field names, each on its own line, with nothing
+after it:
+
+VULNERABILITY_FOUND: yes or no
+CWE_ID: the CWE identifier (e.g. CWE-79), or "none" if VULNERABILITY_FOUND is no
+CWE_NAME: the short CWE name (e.g. "Cross-Site Scripting"), or "none"
+
+Use the single CWE that best matches. If more than one seems to apply, pick
+the most specific one."""
+
+# Candidate paths of the ini file that holds the [OpenRouter] api_key. Tried
+# in order so the same code runs unmodified on the local machine or the
+# cluster; ConfigParser.read() silently skips any path that doesn't exist.
+CVEFIXES_INI_CANDIDATES = [
+    '/home/medo/.CVEfixes.ini',
+    '/home/students/s346086/AlessandroMedvescek/CVEfixes.ini',
+]
 
 OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 # The model used for every agent. Agents 2 and 3 use tool calling, so the
-# model chosen here must support it (most ':free' models do not).
-MODEL = 'meta-llama/llama-3.3-70b-instruct:free'
+# model chosen here must support it. Verified (plain completion + tool
+# calling) against the live OpenRouter free tier.
+MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free'
 
 TEMPERATURE = 0        # reproducibility: same input -> same output as far as possible
 REQUEST_TIMEOUT = 600  # seconds to wait for a single completion
@@ -34,9 +59,9 @@ READ_FILE_MAX_CHARS = 50_000
 
 
 def read_api_key():
-    """Read [OpenRouter] api_key from CVEFIXES_INI. Returns None if absent."""
+    """Read [OpenRouter] api_key from CVEFIXES_INI_CANDIDATES. Returns None if absent."""
     config = ConfigParser()
-    if config.read(CVEFIXES_INI):
+    if config.read(CVEFIXES_INI_CANDIDATES):
         key = config.get('OpenRouter', 'api_key', fallback=None)
         if key and key != 'None':
             return key
@@ -240,3 +265,38 @@ def run_tool_loop(api_key, prompt, repo_dir):
         'messages': messages,
     })
     return message.get('content', '')
+
+
+# ---------------------------------------------------------------------------
+# Parsing the shared verdict format (see VERDICT_FORMAT above) out of an
+# agent's free-text response, for the classification-results CSV.
+# ---------------------------------------------------------------------------
+
+def _extract_field(text, field_name):
+    """Find `FIELD_NAME: value` anywhere in `text` (case-insensitive,
+    tolerant of markdown **bold** around the field name) and return `value`
+    up to the end of that line. None if the field is not present at all."""
+    m = re.search(rf'\**{field_name}\**\s*:\s*\**\s*([^\n*]+)', text, re.IGNORECASE)
+    return m.group(1).strip() if m else None
+
+
+def parse_verdict(response_text):
+    """Extract (found, cwe_id, cwe_name) from an agent's response, per
+    VERDICT_FORMAT. Each is None if that field is missing or explicitly
+    "none" — which also covers a response that ignored the format entirely
+    (all three come back None, visible as gaps in the results CSV rather
+    than silently wrong data)."""
+    if not response_text:
+        return None, None, None
+
+    found_str = _extract_field(response_text, 'VULNERABILITY_FOUND')
+    cwe_id = _extract_field(response_text, 'CWE_ID')
+    cwe_name = _extract_field(response_text, 'CWE_NAME')
+
+    found = found_str.strip().lower().startswith('yes') if found_str else None
+    if cwe_id and cwe_id.strip().lower() == 'none':
+        cwe_id = None
+    if cwe_name and cwe_name.strip().lower() == 'none':
+        cwe_name = None
+
+    return found, cwe_id, cwe_name

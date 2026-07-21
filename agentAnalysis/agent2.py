@@ -6,12 +6,25 @@ still-vulnerable version) through the list_dir / read_file tools.
 
 No memory: this agent knows nothing of agent 1 — the tool loop starts from a
 brand-new conversation containing only this prompt."""
-from common import format_code_sections, run_tool_loop
+from common import VERDICT_FORMAT, format_code_sections, run_tool_loop
 
-# Fill in the instructions for this agent. The numbered code sections are
-# appended below this text; the navigation tools are advertised to the model
-# by the API request itself (see TOOL_SCHEMAS in common.py).
-PROMPT_2 = """<WRITE PROMPT 2 HERE>"""
+# The numbered code sections are appended below this text; the navigation
+# tools are advertised to the model by the API request itself (see
+# TOOL_SCHEMAS in common.py); VERDICT_FORMAT fixes the required answer shape.
+PROMPT_2 = """You are a security code reviewer. Below is the code before and \
+after a single commit, plus its diff, for one or more files from a software \
+project. No other context is given — not the project name, not the file paths.
+
+You also have list_dir and read_file tools to explore the surrounding \
+repository (checked out at the version before this commit). Use them only \
+if the diff alone leaves you unsure — e.g. to see how a changed function \
+is used elsewhere, or to check related files for context.
+
+Task: decide whether this commit fixes a security vulnerability.
+- If yes, classify it with the single most accurate CWE (Common Weakness \
+Enumeration) identifier.
+- If no (e.g. a feature, a refactor, or a non-security bug fix), say so.""" \
+    + VERDICT_FORMAT
 
 
 def run(api_key, changes, repo_dir):

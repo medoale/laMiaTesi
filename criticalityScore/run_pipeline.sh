@@ -47,7 +47,12 @@ START_YEAR=2008          # enumerate_github's own earliest supported date is 200
 # working state for the deps.dev lookup, not our output, so letting them
 # expire costs nothing since this pipeline only runs occasionally anyway.
 DEPSDEV_TABLE_EXPIRATION_HOURS=1400
-CVEFIXES_INI="/home/students/s346086/AlessandroMedvescek/CVEfixes.ini"
+# Candidate paths for CVEfixes.ini, tried in order so the same script runs
+# unmodified on the local machine or the cluster.
+CVEFIXES_INI_CANDIDATES=(
+    "/home/medo/.CVEfixes.ini"
+    "/home/students/s346086/AlessandroMedvescek/CVEfixes.ini"
+)
 
 DATA_DIR="Data"
 CANDIDATES_FILE="$DATA_DIR/candidates.txt"           # final name: only exists once complete
@@ -80,14 +85,15 @@ GCP_PROJECT_ID=$(gcloud config get-value project 2>/dev/null)
 
 # The GitHub token lives in CVEfixes.ini (same source every other script in
 # this project uses); the Go tools only read it from an environment variable.
+CVEFIXES_INI_PY_LIST=$(printf "'%s', " "${CVEFIXES_INI_CANDIDATES[@]}")
 TOKEN=$(python3 -c "
 from configparser import ConfigParser
 cfg = ConfigParser()
-cfg.read('$CVEFIXES_INI')
+cfg.read([$CVEFIXES_INI_PY_LIST])
 tok = cfg.get('GitHubVulnRadar', 'token', fallback=None) or cfg.get('GitHub', 'token', fallback=None)
 print(tok or '')
 ")
-[ -n "$TOKEN" ] || { echo "ERROR: no GitHub token found in $CVEFIXES_INI"; exit 1; }
+[ -n "$TOKEN" ] || { echo "ERROR: no GitHub token found in any of: ${CVEFIXES_INI_CANDIDATES[*]}"; exit 1; }
 export GITHUB_TOKEN="$TOKEN"
 
 cd criticality_score
