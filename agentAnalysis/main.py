@@ -29,7 +29,7 @@ from pathlib import Path
 import agent1
 import agent2
 import agent3
-from common import CVEFIXES_INI, MODEL, read_api_key
+from common import CVEFIXES_INI_CANDIDATES, MODEL, read_api_key
 
 # ---------------------------------------------------------------------------
 # Paths. This folder lives in laMiaTesi/agentAnalysis/, the data lives in the
@@ -118,7 +118,7 @@ def read_github_token():
     """[GitHub] token from the same ini, used only to authenticate clones
     (private/rate-limited repos). None -> anonymous clones."""
     config = ConfigParser()
-    if config.read(CVEFIXES_INI):
+    if config.read(CVEFIXES_INI_CANDIDATES):
         token = config.get('GitHub', 'token', fallback=None)
         if token and token != 'None':
             return token
@@ -222,7 +222,7 @@ def build_grouped_results():
 def main():
     api_key = read_api_key()
     if not api_key:
-        print(f'ERROR: no [OpenRouter] api_key found in {CVEFIXES_INI}')
+        print(f'ERROR: no [OpenRouter] api_key found in any of {CVEFIXES_INI_CANDIDATES}')
         sys.exit(1)
     if not DB.exists():
         print(f'ERROR: database not found at {DB}')
