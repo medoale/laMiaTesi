@@ -40,6 +40,13 @@ cd "$(dirname "$0")"
 MIN_STARS=3000          # candidate pool: how popular a repo must be to be scored
 WORKERS=1                # 1 worker per GitHub token (see tool's own README)
 START_YEAR=2008          # enumerate_github's own earliest supported date is 2008-01-01
+# BigQuery "sandbox" projects (no billing account linked, no credit card
+# needed) cap table expiration at 60 days — criticality_score defaults to no
+# expiration at all, which sandbox projects reject outright. This just needs
+# to stay under 60*24=1440 hours; the tables in question are BigQuery-side
+# working state for the deps.dev lookup, not our output, so letting them
+# expire costs nothing since this pipeline only runs occasionally anyway.
+DEPSDEV_TABLE_EXPIRATION_HOURS=1400
 CVEFIXES_INI="/home/students/s346086/AlessandroMedvescek/CVEfixes.ini"
 
 DATA_DIR="Data"
@@ -174,6 +181,7 @@ else
         -format=csv \
         -scoring-config=config/scorer/pike_depsdev.yml \
         -gcp-project-id="$GCP_PROJECT_ID" \
+        -depsdev-expiration="$DEPSDEV_TABLE_EXPIRATION_HOURS" \
         -out="../$SCORED_WIP" \
         "$APPEND_OR_FORCE" \
         "$INPUT_FILE"
