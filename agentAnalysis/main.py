@@ -331,8 +331,11 @@ def main():
                         else:
                             response = agent3.run(api_key, repo_dir)
                         record.update(status='ok', response=response)
-                    except RuntimeError as e:
-                        record.update(status=f'error: {e}', response=None)
+                    except Exception as e:
+                        # Broad on purpose: one malformed API response must
+                        # fail only this call, never crash an unattended run.
+                        record.update(status=f'error: {type(e).__name__}: {e}',
+                                      response=None)
 
                     write(record)
                     time.sleep(SLEEP_BETWEEN_CALLS)
