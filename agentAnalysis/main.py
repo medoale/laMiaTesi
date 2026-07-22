@@ -15,6 +15,7 @@ on restart, calls already answered with status 'ok' are skipped.
 """
 import csv
 import json
+import re
 import shutil
 import sqlite3
 import statistics
@@ -40,14 +41,21 @@ DATA_DIR = Path(__file__).resolve().parent.parent / 'cveFixes' / 'CVEfixes' / 'C
 DB = DATA_DIR / 'CVEfixes.db'
 CSV_PATH = DATA_DIR / 'repo_analysis_v2.csv'
 
+# Filesystem-safe slug of MODEL (e.g. 'openai/gpt-oss-20b:free' ->
+# 'openai_gpt-oss-20b_free'), embedded in the output filenames below so that
+# switching MODEL starts a fresh set of output files automatically, instead
+# of silently mixing runs from different models under one "already done" log
+# (load_already_done only checks repo/commit/agent, not model).
+MODEL_SLUG = re.sub(r'[^A-Za-z0-9._-]+', '_', MODEL)
+
 # Raw log: one JSON line per single agent call, appended as soon as the call
 # ends. This is what makes fine-grained resume possible.
-OUT_JSONL = Path(__file__).resolve().parent / 'agent_responses.jsonl'
+OUT_JSONL = Path(__file__).resolve().parent / f'agent_responses_{MODEL_SLUG}.jsonl'
 
 # Consumable output: one JSON line per (repo, version) with the repo name and
 # version FIRST, then the three agent results together. Rebuilt from the raw
 # log at the end of every run.
-RESULTS_JSONL = Path(__file__).resolve().parent / 'results.jsonl'
+RESULTS_JSONL = Path(__file__).resolve().parent / f'results_{MODEL_SLUG}.jsonl'
 
 # Maximum seconds for cloning one repository before marking it as failed.
 CLONE_TIMEOUT = 1800
