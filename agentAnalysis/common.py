@@ -42,9 +42,13 @@ CVEFIXES_INI_CANDIDATES = [
 OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
 
 # The model used for every agent. Agents 2 and 3 use tool calling, so the
-# model chosen here must support it. Verified (plain completion + tool
-# calling) against the live OpenRouter free tier.
-MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free'
+# model chosen here must support it reliably: unlike nemotron-3-ultra (an
+# NVIDIA model whose native tool-call format needs server-side translation
+# into OpenAI-style tool_calls, occasionally leaking through as plain text
+# instead), gpt-oss-20b is an OpenAI model, so its native tool-call format
+# already IS the API's own convention — 3/3 trial calls produced a proper
+# structured tool_calls entry, no malformed text-based tool call seen.
+MODEL = 'openai/gpt-oss-20b:free'
 
 TEMPERATURE = 0        # reproducibility: same input -> same output as far as possible
 REQUEST_TIMEOUT = 600  # seconds to wait for a single completion
@@ -232,11 +236,21 @@ def run_tool_loop(api_key, prompt, repo_dir):
     The conversation starts fresh with ONLY `prompt`. Then, while the model
     answers with tool calls, each call is executed on the cloned repo and its
     result appended; the loop ends when the model produces a plain text
-    answer. The history that accumulates here lives only inside this single
-    loop — it is thrown away when the function returns.
+    answer that actually contains the required VERDICT_FORMAT block. The
+    history that accumulates here lives only inside this single loop — it is
+    thrown away when the function returns.
 
-    If the model is still calling tools after MAX_TOOL_TURNS, one last
-    request is sent WITHOUT tools to force a final text answer."""
+    Some models occasionally write a tool call as plain text (their own
+    native format leaking through instead of a structured tool_calls entry)
+    rather than a real tool invocation. Accepting that text as the final
+    answer would silently record a useless response as 'ok' — status main.py
+    never retries. So a text response missing VERDICT_FORMAT is treated as
+    an invalid turn: the model is asked to retry, consuming one of the turns
+    below rather than ending the loop.
+
+    If the model is still calling tools (or still failing to answer
+    properly) after MAX_TOOL_TURNS, one last request is sent WITHOUT tools
+    to force a final text answer, accepted as-is."""
     messages = [{'role': 'user', 'content': prompt}]
     for _ in range(MAX_TOOL_TURNS):
         message = _post(api_key, {
@@ -247,8 +261,19 @@ def run_tool_loop(api_key, prompt, repo_dir):
         })
         tool_calls = message.get('tool_calls')
         if not tool_calls:
-            # Plain text answer: the agent is done.
-            return message.get('content', '')
+            content = message.get('content', '')
+            if _extract_field(content, 'VULNERABILITY_FOUND') is not None:
+                return content   # a real final answer: the agent is done.
+
+            messages.append(message)
+            messages.append({
+                'role': 'user',
+                'content': 'Your last message was neither a valid tool call '
+                           'nor a final answer in the required format. '
+                           'Either call a tool properly, or give your final '
+                           'answer ending with the exact VERDICT_FORMAT block.',
+            })
+            continue
 
         # The assistant message that requested the tools must stay in the
         # conversation, followed by one 'tool' message per call, otherwise
