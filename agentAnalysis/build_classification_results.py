@@ -13,9 +13,9 @@ import csv
 import json
 
 from common import parse_verdict
-from main import MODEL_SLUG, RESULTS_JSONL
+from main import OUTPUT_DIR, RESULTS_JSONL
 
-OUT_CSV = f'classification_results_{MODEL_SLUG}.csv'
+OUT_CSV = OUTPUT_DIR / 'classification_results.csv'
 AGENT_NAMES = ['agent1', 'agent2', 'agent3']
 
 

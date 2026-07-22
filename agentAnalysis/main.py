@@ -41,21 +41,24 @@ DATA_DIR = Path(__file__).resolve().parent.parent / 'cveFixes' / 'CVEfixes' / 'C
 DB = DATA_DIR / 'CVEfixes.db'
 CSV_PATH = DATA_DIR / 'repo_analysis_v2.csv'
 
-# Filesystem-safe slug of MODEL (e.g. 'openai/gpt-oss-20b:free' ->
-# 'openai_gpt-oss-20b_free'), embedded in the output filenames below so that
-# switching MODEL starts a fresh set of output files automatically, instead
+# All outputs of one model go in their own folder outputs/<model>/, so
+# switching MODEL starts a fresh set of output files automatically instead
 # of silently mixing runs from different models under one "already done" log
-# (load_already_done only checks repo/commit/agent, not model).
+# (load_already_done only checks repo/commit/agent, not model). MODEL_SLUG is
+# a filesystem-safe version of MODEL (e.g. 'openai/gpt-oss-20b:free' ->
+# 'openai_gpt-oss-20b_free').
 MODEL_SLUG = re.sub(r'[^A-Za-z0-9._-]+', '_', MODEL)
+OUTPUT_DIR = Path(__file__).resolve().parent / 'outputs' / MODEL_SLUG
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Raw log: one JSON line per single agent call, appended as soon as the call
 # ends. This is what makes fine-grained resume possible.
-OUT_JSONL = Path(__file__).resolve().parent / f'agent_responses_{MODEL_SLUG}.jsonl'
+OUT_JSONL = OUTPUT_DIR / 'agent_responses.jsonl'
 
 # Consumable output: one JSON line per (repo, version) with the repo name and
 # version FIRST, then the three agent results together. Rebuilt from the raw
 # log at the end of every run.
-RESULTS_JSONL = Path(__file__).resolve().parent / f'results_{MODEL_SLUG}.jsonl'
+RESULTS_JSONL = OUTPUT_DIR / 'results.jsonl'
 
 # Maximum seconds for cloning one repository before marking it as failed.
 CLONE_TIMEOUT = 1800
