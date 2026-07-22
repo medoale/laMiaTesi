@@ -48,9 +48,11 @@ OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
 # through as plain text (as nemotron sometimes did — see run_tool_loop).
 MODEL = 'openai/gpt-oss-20b:free'
 
-TEMPERATURE = 0        # reproducibility: same input -> same output as far as possible
-REQUEST_TIMEOUT = 600  # seconds to wait for a single completion
-MAX_RETRIES = 3        # attempts per API call before giving up
+TEMPERATURE = 0          # reproducibility: same input -> same output as far as possible
+REQUEST_TIMEOUT = 600    # seconds to wait for a single completion
+MAX_RETRIES = 5          # attempts per API call before giving up
+RETRY_BACKOFF_BASE = 15  # base seconds for the growing pause between retries
+RETRY_WAIT_CAP = 120     # never wait longer than this on a single retry
 
 # Safety limits for the navigation tools. MAX_TOOL_TURNS caps how many
 # request/response rounds an agent may use before being forced to answer;
@@ -85,15 +87,30 @@ def format_code_sections(changes):
     return ''.join(parts)
 
 
+def _retry_wait(response, attempt):
+    """Seconds to wait before the next retry. Honors the server's Retry-After
+    header when present (429 and 503 usually send it, telling us exactly how
+    long the rate-limit window lasts), otherwise a linearly growing pause.
+    Capped so a single retry never blocks for too long."""
+    retry_after = response.headers.get('Retry-After')
+    if retry_after:
+        try:
+            return min(RETRY_WAIT_CAP, max(1.0, float(retry_after)))
+        except ValueError:
+            pass  # HTTP-date form rather than seconds: fall back to backoff
+    return min(RETRY_WAIT_CAP, RETRY_BACKOFF_BASE * (attempt + 1))
+
+
 def _post(api_key, payload):
     """One HTTP POST to OpenRouter with retries.
 
-    429 (rate limit) and 5xx (server trouble) are retried with a growing
-    pause. OpenRouter can also return HTTP 200 with an error body instead of
-    'choices' (e.g. the underlying free-model provider is overloaded) — that
-    is retried the same way, since raise_for_status() alone would miss it.
-    Anything else that fails raises immediately. Returns the assistant
-    `message` object from the first choice."""
+    429 (rate limit) and 5xx (server trouble) are retried, waiting the time
+    the server asks for via Retry-After when it sends one, else a growing
+    pause (see _retry_wait). OpenRouter can also return HTTP 200 with an
+    error body instead of 'choices' (e.g. the underlying free-model provider
+    is overloaded) — that is retried the same way, since raise_for_status()
+    alone would miss it. Anything else that fails raises immediately.
+    Returns the assistant `message` object from the first choice."""
     headers = {'Authorization': f'Bearer {api_key}'}
     last_error = None
     for attempt in range(MAX_RETRIES):
@@ -102,13 +119,13 @@ def _post(api_key, payload):
                               timeout=REQUEST_TIMEOUT)
             if r.status_code == 429 or r.status_code >= 500:
                 last_error = f'HTTP {r.status_code}'
-                time.sleep(15 * (attempt + 1))
+                time.sleep(_retry_wait(r, attempt))
                 continue
             r.raise_for_status()
             body = r.json()
             if 'choices' not in body:
                 last_error = f'no choices in response: {body.get("error", body)}'
-                time.sleep(15 * (attempt + 1))
+                time.sleep(_retry_wait(r, attempt))
                 continue
             return body['choices'][0]['message']
         except requests.RequestException as e:
