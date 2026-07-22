@@ -30,7 +30,7 @@ from pathlib import Path
 import agent1
 import agent2
 import agent3
-from common import CVEFIXES_INI_CANDIDATES, MODEL, read_api_key
+from common import CVEFIXES_INI_CANDIDATES, MODEL, parse_verdict, read_api_key
 
 # ---------------------------------------------------------------------------
 # Paths. This folder lives in laMiaTesi/agentAnalysis/, the data lives in the
@@ -341,7 +341,17 @@ def main():
                             response = agent2.run(api_key, changes, repo_dir)
                         else:
                             response = agent3.run(api_key, repo_dir)
-                        record.update(status='ok', response=response)
+                        # A response with no parseable verdict (empty, or the
+                        # model ignored the format) must NOT be stored as 'ok'
+                        # — 'ok' is never retried, so it would be a permanent
+                        # gap. Recorded as an error instead, to be retried on
+                        # the next run; the raw text is kept for inspection.
+                        found, _, _ = parse_verdict(response)
+                        if found is None:
+                            record.update(status='error: no valid verdict in response',
+                                          response=response)
+                        else:
+                            record.update(status='ok', response=response)
                     except Exception as e:
                         # Broad on purpose: one malformed API response must
                         # fail only this call, never crash an unattended run.
