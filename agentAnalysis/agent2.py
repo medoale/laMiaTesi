@@ -16,7 +16,9 @@ after a single commit, plus its diff, for one or more files from a software \
 project. No other context is given — not the project name, not the file paths.
 
 You also have list_dir and read_file tools to explore the surrounding \
-repository, checked out at the version before this commit.
+repository (checked out at the version before this commit). Use them only \
+if the diff alone leaves you unsure — e.g. to see how a changed function \
+is used elsewhere, or to check related files for context.
 
 Task: decide whether this commit fixes a security vulnerability.
 - If yes, classify it with the single most accurate CWE (Common Weakness \
