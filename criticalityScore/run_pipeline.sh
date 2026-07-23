@@ -37,7 +37,9 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 # --- Tunable parameters ------------------------------------------------------
-MIN_STARS=3000          # candidate pool: how popular a repo must be to be scored
+MIN_STARS=20000         # candidate pool: only the most popular repos, so the
+                        # scoring stage stays a few thousand repos (hours, not
+                        # days) — this task only needs the top-critical slice
 WORKERS=1                # 1 worker per GitHub token (see tool's own README)
 START_YEAR=2008          # enumerate_github's own earliest supported date is 2008-01-01
 # BigQuery "sandbox" projects (no billing account linked, no credit card
