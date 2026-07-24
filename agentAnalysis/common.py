@@ -46,7 +46,7 @@ OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
 # gpt-oss-20b's native tool-call format already IS the API's own convention,
 # instead of needing a server-side translation that can leak the call
 # through as plain text (as nemotron sometimes did — see run_tool_loop).
-MODEL = 'openai/gpt-oss-20b:free'
+MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free'
 
 TEMPERATURE = 0          # reproducibility: same input -> same output as far as possible
 REQUEST_TIMEOUT = 600    # seconds to wait for a single completion
