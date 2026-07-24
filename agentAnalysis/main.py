@@ -14,6 +14,7 @@ Answers are appended to agent_responses.jsonl (one JSON line per agent call);
 on restart, calls already answered with status 'ok' are skipped.
 """
 import csv
+import importlib
 import json
 import re
 import shutil
@@ -26,6 +27,16 @@ import time
 from configparser import ConfigParser
 from datetime import datetime, timezone
 from pathlib import Path
+
+# --- Backend selection -------------------------------------------------------
+# False -> OpenRouter backend (common.py); True -> Gemini backend
+# (common_gemini.py, rate-limited to the Google AI Studio free tier). The
+# chosen module is registered as 'common' BEFORE the agent modules are
+# imported, so agent1/2/3's own `import common` binds to the same backend and
+# everything (endpoint, key, model, output-folder name) switches with this one
+# flag. No other change is needed.
+USE_GEMINI = False
+sys.modules['common'] = importlib.import_module('common_gemini' if USE_GEMINI else 'common')
 
 import agent1
 import agent2
