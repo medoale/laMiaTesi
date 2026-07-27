@@ -119,12 +119,13 @@ def run(client: GitHubClient) -> list[dict]:
     since = datetime.now(timezone.utc) - timedelta(days=config.OSV_LOOKBACK_DAYS)
     logger.info(f'TASK (osv) — fetching up to {MAX_ENTRIES_TO_CHECK} OSV entries '
                f'from last {config.OSV_LOOKBACK_DAYS} days…')
-    ids, _ = fetch_recent_ids(since, MAX_ENTRIES_TO_CHECK)   # cursor not needed here:
-    # this task re-samples the most recent window fresh every run, same as
-    # official's fresh NVD query every day — no persistent state to advance.
+    ids, _ = fetch_recent_ids(since, MAX_ENTRIES_TO_CHECK)   # newest-first, cursor
+    # not needed here: this task re-samples the most recent window fresh every
+    # run, same as official's fresh NVD query every day — no persistent state
+    # to advance, so the completeness flag is irrelevant too.
     logger.info(f'  → {len(ids)} candidate vulnerability IDs')
 
-    vulns = fetch_vulns(ids)
+    vulns, _ = fetch_vulns(ids)
     logger.info(f'  → {len(vulns)} vulnerability records fetched')
 
     pairs, references = extract_packages(vulns)
