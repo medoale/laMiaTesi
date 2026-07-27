@@ -31,13 +31,22 @@ GITHUB_URL = re.compile(r'https?://github\.com/([^/\s]+)/([^/\s?#)]+)', re.I)
 NVD_LAST_CHECK_KEY = 'nvd_last_check'
 OSV_LAST_CHECK_KEY = 'osv_last_check'
 
-# How many OSV entries to inspect per run when catching up a stale cursor.
-# A live measurement found ~9,400 entries modified in a single 24h window —
-# this must stay comfortably above that or the cursor advances so rarely it
-# is effectively frozen (see osv_client.fetch_recent_ids: the cursor only
-# moves once the WHOLE window is covered). Fetches run concurrently
-# (osv_client.fetch_vulns), so this cap is a volume margin, not a time one.
+# How many OSV entries to inspect per run. This is now purely a per-run work
+# bound: fetch_recent_ids(newest_first=False) processes the window OLDEST-first
+# and the cursor advances to exactly the block covered, so any backlog larger
+# than the cap simply drains over several runs instead of freezing (a live
+# measurement found ~9,400 entries modified in a single 24h window, so a
+# caught-up daily run stays well under this and completes in one pass).
 OSV_MAX_ENTRIES_PER_RUN = 15000
+
+# Cold-start lookback for the OSV cursor (first run only, before it is set).
+# Deliberately short: unlike NVD's date-range API, a wide OSV window is a
+# backlog of hundreds of thousands of mostly-distro advisories fetched one ID
+# at a time. The matcher only cares about vulnerabilities published AFTER a
+# repo was selected, and on a cold start nothing was selected long ago, so a
+# few days of seed is enough; the advancing cursor safely covers everything
+# from there on, including after multi-day daemon downtime.
+OSV_COLD_START_DAYS = 2
 
 # First path segments under github.com/ that are NOT user/org names but
 # reserved GitHub product paths. We must not interpret them as repo owners.
@@ -265,10 +274,13 @@ def run(conn: sqlite3.Connection) -> int:
     # --- OSV --------------------------------------------------------------------
     osv_last = get_last_check(conn, OSV_LAST_CHECK_KEY)
     osv_since = datetime.fromisoformat(osv_last) if osv_last else \
-        datetime.now(timezone.utc) - timedelta(days=30)
+        datetime.now(timezone.utc) - timedelta(days=OSV_COLD_START_DAYS)
     logger.info(f'CVE matcher — fetching OSV vulnerabilities since {osv_since.isoformat()}')
-    osv_ids, osv_new_cursor = fetch_recent_ids(osv_since, OSV_MAX_ENTRIES_PER_RUN)
-    vulns = fetch_vulns(osv_ids)
+    # Oldest-first so the cursor can advance every run without skipping (see
+    # osv_client.fetch_recent_ids); a large backlog drains over several runs.
+    osv_ids, osv_new_cursor = fetch_recent_ids(
+        osv_since, OSV_MAX_ENTRIES_PER_RUN, newest_first=False)
+    vulns, osv_complete = fetch_vulns(osv_ids)
     logger.info(f'  → {len(vulns)}/{len(osv_ids)} OSV records fetched')
 
     osv_matches, osv_skipped = build_matches(
@@ -278,11 +290,18 @@ def run(conn: sqlite3.Connection) -> int:
     all_matches.extend(osv_matches)
     if osv_skipped:
         logger.info(f'  OSV: skipped {osv_skipped} vulnerabilities published before selection date')
-    if osv_new_cursor is not None:
-        set_last_check(conn, OSV_LAST_CHECK_KEY, osv_new_cursor.isoformat())
-    else:
-        logger.info('  OSV: per-run cap reached before covering the full window — '
+    # Advance only when the window was fully fetched (osv_complete); a partial
+    # fetch leaves the cursor so the missing IDs are retried, never skipped.
+    # In oldest-first mode a non-None cursor means there was a block to cover;
+    # a large backlog advances to its oldest chunk and continues next run.
+    if not osv_complete:
+        logger.info('  OSV: fetch incomplete (network/API trouble) — '
                    'cursor left unchanged, retrying the same window next run')
+    elif osv_new_cursor is not None:
+        set_last_check(conn, OSV_LAST_CHECK_KEY, osv_new_cursor.isoformat())
+        logger.info(f'  OSV: cursor advanced to {osv_new_cursor.isoformat()}')
+    else:
+        logger.info('  OSV: no new entries since last cursor — nothing to advance')
 
     inserted = insert_cve_matches(conn, all_matches) if all_matches else 0
     logger.info(f'CVE matcher — {len(all_matches)} matches found '
