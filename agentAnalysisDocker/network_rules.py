@@ -74,6 +74,16 @@ def agent_docker_args():
 
 
 def teardown():
-    """Remove the proxy container and the internal network (idempotent)."""
+    """Remove the proxy and the internal network (idempotent). Force-removes
+    ANY container still attached to the network first — otherwise 'network rm'
+    fails with 'network in use' (a stray agent/proxy left by a crashed run),
+    the network survives, and the next 'network create' hits 'already exists'
+    and aborts the whole run."""
     _docker('rm', '-f', PROXY_NAME, check=False)
+    attached = subprocess.run(
+        ['docker', 'network', 'inspect', NETWORK, '-f',
+         '{{range .Containers}}{{.ID}} {{end}}'],
+        capture_output=True, text=True).stdout.split()
+    if attached:
+        _docker('rm', '-f', *attached, check=False)
     _docker('network', 'rm', NETWORK, check=False)

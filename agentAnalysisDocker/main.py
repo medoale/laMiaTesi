@@ -199,16 +199,16 @@ def main():
     print(f'{len(rows)} commits x {len(AGENTS)} agents = {total} runs '
           f'({len(done)} already done)')
 
-    # Network isolation: bring up the egress proxy once (agents can then reach
-    # only the model API), and always tear it down at the end.
     net_args = []
-    if config.ISOLATE_NETWORK:
-        network_rules.setup()
-        net_args = network_rules.agent_docker_args()
-
     n = 0
     interrupted = False
     try:
+        # Bring up the egress proxy once (agents then reach only the model
+        # API). Inside the try, so a setup failure is still cleaned up below.
+        if config.ISOLATE_NETWORK:
+            network_rules.setup()
+            net_args = network_rules.agent_docker_args()
+
         with open(LOG, 'a') as log:
 
             def record(repo, commit, agent, status, response, out_path):
