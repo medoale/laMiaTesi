@@ -21,6 +21,10 @@ PROMPT="$(cat /output/PROMPT.txt)"
 # with an empty answer. It is safe here: the container is throwaway, the repo
 # is mounted read-only, and the network is locked to the model API only.
 cd /work 2>/dev/null || cd /
-opencode run -m "$OPENCODE_MODEL" --dangerously-skip-permissions "$PROMPT" \
+# --agent reviewer: the agent defined in opencode.json (tools, permissions,
+# maxSteps=200 tool-round cap, webfetch/websearch denied). --dangerously-skip-
+# permissions is kept as a belt so headless never stalls on a permission prompt.
+opencode run -m "$OPENCODE_MODEL" --agent reviewer \
+    --dangerously-skip-permissions --print-logs "$PROMPT" \
     >/output/answer.txt 2>/output/opencode.log
 echo "$?" >/output/exit_code.txt

@@ -1,0 +1,56 @@
+Let me explore the changes folder to understand the commit being reviewed.
+Now let me look at the actual source files to fully understand the context of these changes.
+Now let me verify the actual source state of the key files before the commit:
+Let me also check the admin component form view and the proposals component manifest:
+Now I have a thorough understanding of all the changes. Let me provide the final analysis.
+
+---
+
+## Security Analysis
+
+This commit makes extensive changes across 24 files in the Decidim participatory democracy framework. The changes touch on two distinct areas:
+
+### 1. Amendment Authorization System (Security Fix — most significant)
+
+The core of this commit is a complete overhaul of the amendment permission system. Before this change, the authorization logic had critical flaws:
+
+**A. Missing authorization checks against component settings (CWE-862)**
+
+The `amend_action?` method in `/work/decidim-core/app/permissions/decidim/permissions.rb` (lines 83-92 of the "before" code) unconditionally allowed all four amendment actions (`:create`, `:reject`, `:promote`, `:accept`) with `return allow!` — without ever checking whether the component had `amendments_enabled` or whether the specific step-level settings permitted each action. Any authenticated user could perform these actions regardless of how the component was configured by an administrator.
+
+The helper methods in the amendable helper (file_11) also lacked checks:
+- `amend_button_for` didn't check step-level `amendment_creation_enabled`
+- `can_react_to_emendation?` returned `true` unconditionally (after basic null checks)
+- `allowed_to_promote?` returned `true` unconditionally (after checking rejection & ownership)
+
+**B. Incorrect authorization logic in controller (CWE-863)**
+
+The controller (`amendments_controller.rb`, file_09) called `enforce_permission_to` but passed incomplete context — specifically, the `create` action omitted `current_component` entirely. While the permission check was "performed," it couldn't correctly scope the decision to the right component.
+
+**C. Fix applied**
+
+The commit adds:
+1. **New step-level settings** (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) to the proposals component manifest (file_22)
+2. **Proper permission logic** in `permissions.rb` (file_13) that checks `components.settings.amendments_enabled` first, then dispatches to the correct step-level setting per action
+3. **Controller context** — each `enforce_permission_to` call now passes `current_component: @form.component` (file_09)
+4. **Helper authorization** — UI helpers now check step-level settings before showing action buttons (file_11)
+
+### 2. Feature Work (Non-security additions)
+
+Several changes are non-security features:
+- New cell `ProposalLinkToRejectedEmendationCell` and base class `ProposalLinkedResourcesCell` (files 16-20) — displays links between promoted proposals and their source rejected emendations
+- New `promoted?` method and `linked_promoted_resource` (files 12, 15) — replaced the fragile ActionLog-based detection with proper resource linking
+- CSS styling for step-settings (file_02)
+- Refactored help_text mechanism in admin settings (files 01, 03, 04, 05) — moved from inline JS interpolation to proper ZURB Foundation help_text
+- Updated translations and announcement templates to support a "promoted" state (files 07, 14, 21)
+- Test refactoring (files 23, 24)
+
+### Conclusion
+
+**This commit fixes a security vulnerability.** The primary vulnerability is a **Missing Authorization** issue where the amendment permission system unconditionally allowed all actions (create, reject, promote, accept) without verifying component-level or step-level configuration settings. Any authenticated user could create, accept, reject, or promote amendments even when an administrator had disabled these features. The controller also passed incomplete context to the permission checks.
+
+Two CWEs genuinely apply: CWE-862 (Missing Authorization) for the helper methods and controller that lacked component/step-setting checks entirely, and CWE-863 (Incorrect Authorization) for the permissions class that performed a check but with incorrect logic.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862, CWE-863
+CWE_NAME: Missing Authorization, Incorrect Authorization

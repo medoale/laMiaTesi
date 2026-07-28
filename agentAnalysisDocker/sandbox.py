@@ -24,16 +24,23 @@ def run_agent(workspace_mounts, output_dir, api_key, extra_args=None):
     from network_rules.agent_docker_args()). Returns (exit_code, docker_stdout).
     The agent's answer is left in output_dir/answer.txt by the entrypoint."""
     name = f'agent_{uuid.uuid4().hex[:12]}'
-    cmd = ['docker', 'run', '--rm', '--name', name]
+    cmd = ['docker', 'run', '--rm', '--name', name, '--label', config.CONTAINER_LABEL]
 
     for host, container, mode in workspace_mounts:
         cmd += ['-v', f'{host}:{container}:{mode}']
     cmd += ['-v', f'{output_dir}:/output']
     cmd += ['-v', f'{config.ENTRYPOINT_SH}:/entrypoint.sh:ro']
 
-    # OpenCode reads these from the environment inside the container.
-    cmd += ['-e', f'OPENROUTER_API_KEY={api_key}']
+    # OpenCode reads these from the environment inside the container. The key
+    # env var name depends on the provider (config.KEY_ENV).
+    cmd += ['-e', f'{config.KEY_ENV}={api_key}']
     cmd += ['-e', f'OPENCODE_MODEL={config.OPENCODE_MODEL}']
+
+    # Custom provider definition (e.g. the Polito LiteLLM endpoint): mount the
+    # opencode.json and point OpenCode at it. Built-in providers need none.
+    if config.OPENCODE_CONFIG_FILE:
+        cmd += ['-v', f'{config.OPENCODE_CONFIG_FILE}:/opencode.json:ro']
+        cmd += ['-e', 'OPENCODE_CONFIG=/opencode.json']
 
     # Network isolation (or anything else the caller wants to add).
     cmd += extra_args or []

@@ -1,0 +1,30 @@
+Let me start by exploring the workspace structure.
+Let me analyze this change carefully.
+
+## Analysis
+
+This is a commit in **Suricata** (the IDS/IPS engine — visible from the copyright header and function names like `DetectEngineCtx`, `PacketAlert`, etc.).
+
+The diff shows changes to the `AlertQueueExpand()` function and the introduction of a new wrapper function `AlertQueueExpandDo()`.
+
+**Before the fix:** The `AlertQueueExpand()` function computed `new_cap` as `det_ctx->alert_queue_capacity * 2`. Since `alert_queue_capacity` is a `uint16_t`, this multiplication can **overflow**. For example, if `alert_queue_capacity` is already ≥ 32768 (`UINT16_MAX / 2 + 1`), multiplying by 2 will overflow the `uint16_t` type, wrapping to a small value. This small value is then passed to `SCRealloc()`, which allocates a much smaller buffer than expected. The code then sets `det_ctx->alert_queue_capacity = new_cap` (the wrapped small value), and the queue continues to be used as if it has that new small capacity — but subsequent writes at indices up to the *previous* larger capacity will write **out of bounds** of the smaller reallocated buffer.
+
+**After the fix:** The fix adds:
+1. A bounds check: if `alert_queue_capacity == UINT16_MAX`, return immediately (already at max).
+2. A safe overflow check: if `alert_queue_capacity > (UINT16_MAX / 2)`, cap at `UINT16_MAX` instead of overflowing.
+3. The reallocation logic is extracted into `AlertQueueExpandDo()`.
+
+### Security Impact
+
+This is an **integer overflow leading to a heap buffer overflow** (not just a wraparound — the wraparound causes `SCRealloc` to allocate a small buffer, then subsequent writes to the `alerts[i]` array write past the end of that buffer). This is exploitable: an attacker who can trigger enough alerts to fill and then double the queue beyond `UINT16_MAX/2` can cause `SCRealloc` to allocate too small a buffer, leading to heap corruption, which is a classic memory corruption vulnerability.
+
+**CWE Classification:**
+
+- **CWE-190** (Integer Overflow or Wraparound) — the root cause: `uint16_t` multiplication `det_ctx->alert_queue_capacity * 2` can overflow.
+- **CWE-122** (Heap-based Buffer Overflow) — the consequence: after the integer overflow, `SCRealloc()` allocates a buffer too small for the data written into it.
+
+Both genuinely apply here. CWE-190 is the root cause; CWE-122 is the direct consequence.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-190, CWE-122
+CWE_NAME: Integer Overflow or Wraparound, Heap-based Buffer Overflow

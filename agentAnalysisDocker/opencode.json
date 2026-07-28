@@ -1,0 +1,50 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "polito": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Polito LiteLLM",
+      "options": {
+        "baseURL": "https://llm.polito.it/v1",
+        "apiKey": "{env:POLITO_API_KEY}"
+      },
+      "models": {
+        "deepseek-v4": {
+          "options": {
+            "chat_template_kwargs": {
+              "thinking": false
+            }
+          }
+        },
+        "gpt-oss-120b": {},
+        "qwen3-235b": {},
+        "gemma-4-31b": {}
+      }
+    }
+  },
+  "agent": {
+    "reviewer": {
+      "description": "Security code reviewer (isolated container, read-only)",
+      "mode": "primary",
+      "temperature": 0,
+      "maxSteps": 200,
+      "tools": {
+        "bash": true,
+        "read": true,
+        "write": false,
+        "edit": false,
+        "glob": true,
+        "grep": true
+      },
+      "permission": {
+        "bash": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "You are a security code reviewer working inside an isolated, read-only container. Use your tools (read, grep, glob, bash) to inspect the workspace, then follow the user's task and finish with the exact required verdict block. Do not attempt to reach the internet."
+    }
+  }
+}

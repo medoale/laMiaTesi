@@ -40,14 +40,44 @@ OUTPUTS_DIR = BASE_DIR / 'outputs'
 # The prebuilt OpenCode sandbox image (see docs.docker.com/ai/sandboxes).
 DOCKER_IMAGE = 'docker/sandbox-templates:opencode'
 
+# Label put on every agent container, so an interrupted run can find and kill
+# them all — a container keeps running in the Docker daemon after main.py is
+# Ctrl+C'd, and would keep hitting the shared cluster until stopped.
+CONTAINER_LABEL = 'tool=agentAnalysisDocker'
+
 # The entrypoint script mounted into every container (runs OpenCode headlessly).
 ENTRYPOINT_SH = BASE_DIR / 'entrypoint.sh'
 
-# Model OpenCode uses inside the container, in the provider/model form OpenCode
-# expects. gpt-oss-120b (paid, but cheap): the ':free' 20b sibling was too weak
-# for the agentic loop — it produced malformed tool calls and never converged
-# to a verdict. Same reliable OpenAI tool-call format, far more capable.
-OPENCODE_MODEL = 'nemotron-3-ultra-550b:free'
+# --- Model provider ----------------------------------------------------------
+# Switch backend here: OpenRouter (cloud) or Polito (the local LiteLLM proxy on
+# the cluster, OpenAI-compatible). Everything else is derived from this: the
+# model, the ini section holding the key, the env var OpenCode reads the key
+# from, the host the agent may reach, and (for a custom endpoint) the
+# opencode.json that defines the provider.
+PROVIDER = 'polito'   # 'openrouter' | 'polito'
+
+_PROVIDERS = {
+    'openrouter': {
+        'model': 'openrouter/openai/gpt-oss-20b:free',
+        'ini_section': 'OpenRouter',
+        'key_env': 'OPENROUTER_API_KEY',   # OpenCode reads OpenRouter from this
+        'allowed_host': 'openrouter.ai',
+        'opencode_config': None,           # OpenRouter is built into OpenCode
+    },
+    'polito': {
+        # Models on the proxy: deepseek-v4, gpt-oss-120b, qwen3-235b, gemma-4-31b
+        'model': 'polito/deepseek-v4',
+        'ini_section': 'Polito',
+        'key_env': 'POLITO_API_KEY',       # referenced by opencode.json
+        'allowed_host': 'llm.polito.it',
+        'opencode_config': BASE_DIR / 'opencode.json',
+    },
+}
+_P = _PROVIDERS[PROVIDER]
+OPENCODE_MODEL = _P['model']
+INI_SECTION = _P['ini_section']
+KEY_ENV = _P['key_env']
+OPENCODE_CONFIG_FILE = _P['opencode_config']
 
 # Seconds a single container may run before we give up and tear it down.
 CONTAINER_TIMEOUT = 1800
@@ -62,27 +92,27 @@ CLONE_TIMEOUT = 1800
 #
 # ISOLATE_NETWORK toggles it: True in real runs; set False only to test the
 # OpenCode container without the proxy (then the agent has full internet).
-ISOLATE_NETWORK = False
+ISOLATE_NETWORK = True
 
-# Hosts the agent is allowed to reach. OpenRouter's API host; switch to
-# 'generativelanguage.googleapis.com' if you point OpenCode at Gemini.
-ALLOWED_EGRESS_HOSTS = ['openrouter.ai']
+# Hosts the agent is allowed to reach: only the selected provider's API host.
+ALLOWED_EGRESS_HOSTS = [_P['allowed_host']]
 
 
 # --- Credentials -------------------------------------------------------------
-# Same ini files as the rest of the project; the OpenRouter key is under
-# [OpenRouter]. Tried in order so it works locally or on the cluster.
+# Same ini files as the rest of the project; the key is under the selected
+# provider's section (INI_SECTION). Tried in order so it works on any machine.
 CVEFIXES_INI_CANDIDATES = [
     '/home/medo/.CVEfixes.ini',
     '/home/students/s346086/AlessandroMedvescek/CVEfixes.ini',
 ]
 
 
-def read_openrouter_key():
-    """Read [OpenRouter] api_key from the ini. Returns None if absent."""
+def read_api_key():
+    """Read the api_key of the selected provider's section (e.g. [Polito]).
+    Returns None if absent."""
     config = ConfigParser()
     if config.read(CVEFIXES_INI_CANDIDATES):
-        key = config.get('OpenRouter', 'api_key', fallback=None)
+        key = config.get(INI_SECTION, 'api_key', fallback=None)
         if key and key != 'None':
             return key
     return None

@@ -1,0 +1,46 @@
+Let me read the remaining files myself to verify all 24.
+he diff files to understand the changes.
+Let me also read the before and after files for the most security-relevant changes to get full context.
+Now let me also read the remaining diff files I haven't examined yet to be thorough.
+Now I have all the data I need. Let me provide my analysis.
+
+---
+
+## Analysis
+
+This commit fixes **authorization/access control vulnerabilities** in the Decidim participation platform's amendment system. Across 24 changed files (Ruby, JavaScript, CSS, YAML, and specs), the core security fix introduces granular amendment settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) and wires them into the permission system.
+
+**The vulnerability — Missing Authorization (CWE-862):**
+
+The old code in the `Permissions` class (`file_13`) had this pattern:
+
+```ruby
+def amend_action?
+  return unless permission_action.subject == :amendment
+  return allow! if permission_action.action == :create
+  return allow! if permission_action.action == :reject
+  return allow! if permission_action.action == :promote
+  return allow! if permission_action.action == :accept
+  ...
+end
+```
+
+All amendment actions (`:create`, `:reject`, `:promote`, `:accept`) were **unconditionally allowed** — no check whether the component had amendments enabled, no check whether the specific feature was enabled at the step level. Similarly, the `AmendmentsHelper` (`file_11`) had:
+
+- `can_react_to_emendation?` — returned `true` unconditionally (line 79: `true`), allowing anyone to see accept/reject buttons
+- `allowed_to_promote?` — returned `true` unconditionally (line 94: `true`), allowing any author of a rejected emendation to promote it
+
+Additionally, the `AmendmentsController` (`file_09`) called `enforce_permission_to` without passing `current_component`, so the permission system lacked the component context needed for scoped checks.
+
+**The fix** adds proper authorization at three layers:
+1. **Permissions class** (`file_13`): now checks `component.settings.amendments_enabled` and per-action step-level settings
+2. **Controller** (`file_09`): passes `current_component: @form.component` to all four `enforce_permission_to` calls
+3. **Helper** (`file_11`): adds checks for `amendment_creation_enabled`, `amendment_reaction_enabled`, and `amendment_promotion_enabled` before allowing actions
+
+A secondary hardening in `file_01` removes an HTML-injection pattern (`<p class="help-text">${$text}</p>` where `$text` came from a `data-text` attribute), though the source was a translation string (low practical exploitability).
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862
+CWE_NAME: Missing Authorization

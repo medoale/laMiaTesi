@@ -18,7 +18,10 @@ Resumable: one JSON line per agent run is appended to log.jsonl; on restart,
 """
 import csv
 import json
+import os
 import shutil
+import signal
+import subprocess
 import sys
 import tempfile
 from datetime import datetime, timezone
@@ -40,6 +43,15 @@ LOG = OUT_DIR / 'log.jsonl'
 # grouped together, rebuilt from the log at the end of every run. Same split
 # per model as the log (both live under outputs/<model>/).
 RESULTS = OUT_DIR / 'results.jsonl'
+# PID of the running process, so a background run can be stopped easily (stop.sh).
+PID_FILE = config.BASE_DIR / 'run.pid'
+
+
+def _on_terminate(signum, frame):
+    """Turn SIGTERM (e.g. `kill <pid>` / stop.sh for a background run) into a
+    KeyboardInterrupt, so main()'s finally runs and cleans up the containers
+    instead of leaving them on the shared cluster."""
+    raise KeyboardInterrupt
 
 
 def load_ground_truth():
@@ -116,9 +128,15 @@ def run_one(agent, output_dir, api_key, changes, repo_dir, workdir, net_args):
     if exit_code == 0 and found is not None:
         return 'ok', response
     # No usable verdict (empty answer, refusal, crash): record as error so it is
-    # retried on the next run, keeping the raw output for inspection.
+    # retried on the next run, keeping the raw output for inspection. Surface
+    # the tail of OpenCode's own stderr in the status, so WHY it failed (bad
+    # model id, rate limit, tool error...) is visible without opening files.
     reason = 'no valid verdict' if exit_code == 0 else f'container exit {exit_code}'
-    return f'error: {reason}', response
+    log_file = output_dir / 'opencode.log'
+    tail = ''
+    if log_file.exists():
+        tail = ' '.join(log_file.read_text().split())[-300:]
+    return f'error: {reason} | opencode: {tail}', response
 
 
 def build_grouped_results():
@@ -151,16 +169,32 @@ def build_grouped_results():
     print(f'Grouped results written to {RESULTS} ({len(grouped)} entries)')
 
 
+def kill_agent_containers():
+    """Force-remove every agent container we started (found by label). Docker
+    containers outlive main.py — on Ctrl+C the daemon keeps them running, and
+    they would keep hitting the shared cluster — so this must run on any exit."""
+    ids = subprocess.run(
+        ['docker', 'ps', '-qa', '--filter', f'label={config.CONTAINER_LABEL}'],
+        capture_output=True, text=True).stdout.split()
+    if ids:
+        subprocess.run(['docker', 'rm', '-f', *ids], capture_output=True, text=True)
+        print(f'Removed {len(ids)} leftover agent container(s).')
+
+
 def main():
-    api_key = config.read_openrouter_key()
+    api_key = config.read_api_key()
     if not api_key:
-        sys.exit(f'ERROR: no [OpenRouter] api_key in {config.CVEFIXES_INI_CANDIDATES}')
+        sys.exit(f'ERROR: no [{config.INI_SECTION}] api_key in {config.CVEFIXES_INI_CANDIDATES}')
     if not config.DB_PATH.exists():
         sys.exit(f'ERROR: database not found at {config.DB_PATH}')
+
+    # Stop cleanly on `kill <pid>` too, not only Ctrl+C (for background runs).
+    signal.signal(signal.SIGTERM, _on_terminate)
 
     rows = load_ground_truth()
     done = load_done()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    PID_FILE.write_text(str(os.getpid()))
     total = len(rows) * len(AGENTS)
     print(f'{len(rows)} commits x {len(AGENTS)} agents = {total} runs '
           f'({len(done)} already done)')
@@ -173,6 +207,7 @@ def main():
         net_args = network_rules.agent_docker_args()
 
     n = 0
+    interrupted = False
     try:
         with open(LOG, 'a') as log:
 
@@ -234,13 +269,20 @@ def main():
                 finally:
                     if repo_dir is not None:
                         shutil.rmtree(repo_dir, ignore_errors=True)
+    except KeyboardInterrupt:
+        interrupted = True
+        print('\nStopping — cleaning up containers...')
     finally:
+        # Always kill any container still running (Ctrl+C, kill, crash, or
+        # normal end) so nothing keeps hitting the shared cluster after we stop.
+        kill_agent_containers()
         if config.ISOLATE_NETWORK:
             network_rules.teardown()
+        # Rebuild the grouped result from the raw log, even on interruption.
+        build_grouped_results()
+        PID_FILE.unlink(missing_ok=True)
 
-    # Rebuild the grouped, consumable result from the raw log.
-    build_grouped_results()
-    print(f'\nDone. Log: {LOG}  |  Results: {RESULTS}')
+    print(f'\n{"Stopped" if interrupted else "Done"}. Log: {LOG}  |  Results: {RESULTS}')
 
 
 if __name__ == '__main__':
