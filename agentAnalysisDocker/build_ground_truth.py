@@ -25,7 +25,7 @@ import config
 
 # How many repositories the ground truth contains (one commit each). This is
 # the knob for the ground-truth size — change it and re-run this script.
-SAMPLE_SIZE = 10
+SAMPLE_SIZE = 50
 
 
 def repo_name_from_url(repo_url):

@@ -1,0 +1,35 @@
+Let me read all the diffs first:
+Let me also read the before/after versions and find the `ValidateDAGName` function definition:
+Now let me find the `ValidateDAGName` function to understand what validation it performs:
+Now let me read the test file for file_02 (`file_02/before.txt` and `after.txt`) for completeness:
+## Analysis
+
+This commit fixes a **path traversal** vulnerability across the DAG scheduler API (the "dagu" project). The changes span four files and address two attack vectors:
+
+### What changed
+
+**file_01** (main API handler): Added `validateDAGFileNameMiddleware` — a middleware registered on all API routes that uses reflection to find a `FileName` field in incoming request structs and validates it via `core.ValidateDAGName()`. Before this change, DAG filenames in API request bodies were accepted without validation.
+
+**file_04** (SSE topic parsing): Modified `canonicalizeTopicIdentifier` for `TopicTypeDAG` and `TopicTypeDAGHistory` to call `core.ValidateDAGName()` on the identifier. Before this change, topic identifiers like `dag:../../tmp/secret.yaml` were accepted without validation.
+
+**file_02** (API tests): Added `TestDAGFileNameRejectsEncodedTraversal` testing URL-encoded attacks (`..%2F..%2Ftmp%2Fsecret`) via GET (spec), DELETE (dag), and POST (start) endpoints, using raw HTTP requests to bypass automatic URL decoding.
+
+**file_03** (SSE tests): Added `TestParseTopicRejectsDAGTraversalIdentifiers` testing path traversal in topic identifiers (`../../tmp/secret.yaml`, `..%2F..%2Ftmp%2Fsecret.yaml`).
+
+### The vulnerability
+
+Before the fix, an attacker could supply path traversal sequences in DAG filenames through two entry points:
+
+1. **API endpoints**: `/api/v1/dags/..%2F..%2Ftmp%2Fsecret/spec` or `/api/v1/dags/../../tmp/secret` — allowing reading, modifying, deleting, or executing arbitrary files outside the intended DAG storage directory.
+
+2. **SSE stream topics**: `dag:../../tmp/secret.yaml` or `daghistory:..%2F..%2Ftmp%2Fsecret.yaml` — allowing subscription to events for files outside the intended directory.
+
+The fix introduces server-side validation via `core.ValidateDAGName()` that rejects names containing path separators (`/`), relative path components (`..`, `.`), and other traversal-like patterns.
+
+### Classification
+
+This is a classic **Path Traversal** vulnerability: user-supplied input is used as a file path component without proper sanitization, allowing an attacker to escape the intended directory. CWE-22 is the direct and most specific match. No other CWE is needed.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

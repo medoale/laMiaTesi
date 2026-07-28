@@ -1,0 +1,58 @@
+I'll start by exploring the repository structure and the changes folder to understand both the codebase and the specific commit being reviewed.
+Let me explore the changes in detail and understand the repository.
+Now let me read all the diffs and context files to understand the changes:
+Now let me look at the actual source files to understand the context better - specifically the main HelperFunctions file that was modified:
+Now let me read the before.txt to see the exact original code in the changes:
+Now I have a clear picture of all the changes. Let me analyze this comprehensively:
+
+## Analysis of the Changes
+
+This is the **Tandoor Recipes** application (a Django-based recipe manager). The commit being reviewed makes the following security-relevant changes:
+
+### 1. Server-Side Request Forgery (SSRF) Protection Enhancement in `validate_import_url`
+
+**The vulnerability (before):**
+- The `validate_import_url` function in `HelperFunctions.py` accepted URLs containing `http://` or `https://` schemes and validated the resolved IP was not private/reserved/loopback.
+- However, it passed the URL directly to Django's `URLValidator`, which could reject URLs with encoded characters (spaces, parentheses, etc.).
+- **Critical flaw**: It had NO handling for **encoded IP addresses** (DWORD, hex, octal). An attacker could use `http://2130706433/` (DWORD for 127.0.0.1), `http://0x7f000001/` (hex), or `http://017700000001/` (octal) to bypass the SSRF filter entirely.
+- The old code called `socket.gethostbyname()` on the hostname, which would resolve these encoded IPs to the actual local IP, making the request go to a local/private address without the validation catching it.
+
+**The fix:**
+- Added detection and parsing of encoded IPs (DWORD, hex, octal) before DNS resolution
+- Added control character filtering
+- Added URL normalization (encoding spaces and special characters)
+- Properly validates the decoded IP from encoded formats against the blocklist
+
+### 2. New `safe_request` Function for Redirect Chain Validation
+
+**The vulnerability (before):**
+- The code used `requests.get()` directly throughout the codebase (in 13+ different files).
+- `requests` library follows redirects by default, but the URL validation was only done on the **initial** URL, not on redirect targets.
+- This means an attacker could craft a URL that redirects from an allowed external server to `http://127.0.0.1/admin` or another internal service — a classic SSRF via open redirect.
+
+**The fix:**
+- Created `safe_request()` that manually handles redirects with validation at each step
+- Validates each redirect target URL using `validate_import_url` before following it
+- Prevents circular redirects, too many redirects, and switches to GET for 301/302/303 as per HTTP spec
+
+### 3. Patched all callers across the codebase
+
+All 13 files that were making direct `requests.get()` / `requests.post()` calls were updated to use `safe_request()` instead, ensuring all outbound HTTP requests are protected.
+
+---
+
+**This is clearly a security vulnerability fix addressing SSRF (Server-Side Request Forgery).**
+
+The primary vulnerability is **CWE-918: Server-Side Request Forgery (SSRF)**. The commit addresses two distinct SSRF bypass vectors:
+1. Encoded IP addresses (DWORD, hex, octal) that bypass the hostname-based validation
+2. Open redirect chains where a valid URL redirects to an internal/private address
+
+Additionally, this touches on **CWE-601: URL Redirection to Untrusted Site ('Open Redirect')**, as it prevents redirect-based SSRF attacks.
+
+Let me verify this is the workspace's version (before the commit):
+
+The workspace file (`/work/cookbook/helper/HelperFunctions.py`) matches the `before.txt` content exactly, confirming we're looking at the pre-commit code. This confirms the commit fixes security vulnerabilities.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918, CWE-601
+CWE_NAME: Server-Side Request Forgery (SSRF), URL Redirection to Untrusted Site ('Open Redirect')

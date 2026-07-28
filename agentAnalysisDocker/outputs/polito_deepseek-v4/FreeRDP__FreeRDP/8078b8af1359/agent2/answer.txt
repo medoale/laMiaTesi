@@ -1,0 +1,106 @@
+I'll start by exploring the repository structure and the changes folder to understand what we're working with.
+Let me read all the diffs and the file paths to understand what changes were made.
+Now let me understand the context better. This is FreeRDP, and these changes are in SSPI credential/context handle management code. Let me look at a few things to understand the existing code better.
+Now I have a clear picture. Let me also look at the `credssp_FreeCredentialsHandle` function from `file_01` to understand the full context of the original code paths where use-after-free issues could occur.
+Now I have a thorough understanding of all the changes. Let me analyze each:
+
+## Analysis of All Changes
+
+The changes are in FreeRDP's SSPI (Security Support Provider Interface) implementation across five security packages: CredSSP, Kerberos, NTLM, Negotiate, and Schannel.
+
+### The Common Pattern
+
+All changes move the call to `sspi_SecureHandleInvalidate(phCredential)` or `sspi_SecureHandleInvalidate(phContext)` to **before** the null check on the retrieved pointer (or before freeing the underlying object). This is the critical security fix.
+
+**Key insight about `sspi_SecureHandleGetLowerPointer`:** It decodes the pointer from `dwLower` using bitwise NOT (`~`), and returns `nullptr` if `dwLower` is 0. Meanwhile, `sspi_SecureHandleInvalidate` sets `dwLower = 0` and `dwUpper = 0`.
+
+### Why This Fixes a Use-After-Free / Double-Free Vulnerability
+
+Consider the **before** code pattern (using `creadssp_FreeCredentialsHandle` as example):
+```c
+static SECURITY_STATUS SEC_ENTRY credssp_FreeCredentialsHandle(PCredHandle phCredential)
+{
+    SSPI_CREDENTIALS* credentials = nullptr;
+    if (!phCredential)
+        return SEC_E_INVALID_HANDLE;
+    credentials = (SSPI_CREDENTIALS*)sspi_SecureHandleGetLowerPointer(phCredential);
+    if (!credentials)
+        return SEC_E_INVALID_HANDLE;
+    sspi_CredentialsFree(credentials);  // Frees the memory
+    return SEC_E_OK;  // BUT the handle is NOT invalidated!
+}
+```
+
+After `sspi_CredentialsFree(credentials)` is called, the `SecHandle` still points to the now-freed memory via its `dwLower` field (encoded). If another call is made using the same handle (e.g., a second call to `FreeCredentialsHandle`, or any API call that reads the lower pointer), `sspi_SecureHandleGetLowerPointer` will decode the stale pointer and return freed memory — a classic **use-after-free** vulnerability, or if `FreeCredentialsHandle` is called twice, a **double-free**.
+
+The `kerberos_FreeCredentialsHandle` in **file_02 (before changes)** already had `sspi_SecureHandleInvalidate` but it was placed *after* the credentials were freed — which is the same bug (free then invalidate, leaving a window where a concurrent caller could see a non-invalidated handle). Wait, actually looking more carefully at the before diff for file_02 (kerberos), the `before` already has both `credentials_unref(credentials)` and `sspi_SecureHandleInvalidate(phCredential)` — the diff shows the order being swapped: `Invalidate` is moved *before* `credentials_unref`. Hmm, but that's a different issue.
+
+Let me re-examine: Actually for file_02 (kerberos), the diff is rearranging code. The issue here is more nuanced: before the change, the function calls `credentials_unref(credentials)` first, then `sspi_SecureHandleInvalidate(phCredential)`. After the change, it calls `sspi_SecureHandleInvalidate(phCredential)` first, then `credentials_unref(credentials)`. This is important because `credentials_unref` decrements the reference count — but there might be other references to the same `KRB_CREDENTIALS` from a context (see `kerberos_ContextNew` which increments refCount). If someone holds a `KRB_CONTEXT` that still references these credentials, invalidating the handle first prevents any further lookup via the handle (defense in depth).
+
+But the **main security issue** is in the functions that were **missing** `sspi_SecureHandleInvalidate` calls entirely:
+
+### The Real Vulnerability: Missing Handle Invalidation After Free
+
+The **before** code for these five functions (and more through their nested calls) entirely lacks `sspi_SecureHandleInvalidate`:
+
+1. `credssp_FreeCredentialsHandle` (file_01) — No invalidation after free
+2. `credssp_DeleteSecurityContext` — Not implemented (nullptr in table), but the pattern matters
+3. `ntlm_FreeCredentialsHandle` (file_03) — No invalidation after free
+4. `ntlm_DeleteSecurityContext` (file_03) — No invalidation after free
+5. `negotiate_DeleteSecurityContext` (file_04) — No invalidation after free
+6. `negotiate_FreeCredentialsHandle` (file_04) — No invalidation after free
+7. `schannel_FreeCredentialsHandle` (file_05) — No invalidation after free
+8. `schannel_DeleteSecurityContext` (file_05) — No invalidation after free
+9. `kerberos_DeleteSecurityContext` and error paths in `kerberos_InitializeSecurityContextA` and `kerberos_AcceptSecurityContext` — No invalidation after free
+
+Without invalidating the handle after freeing the underlying memory:
+- **Use-After-Free**: A subsequent call to any function that dereferences the handle's lower pointer will access freed memory. 
+- **Double-Free**: If `FreeCredentialsHandle` is called twice on the same handle, `sspi_SecureHandleGetLowerPointer` will decode the stale pointer and return a non-null value, leading to `sspi_CredentialsFree` being called again on the same memory.
+- Authentication contexts contain sensitive key material (NTLM hashes, session keys, Kerberos tickets), making the UAF exploitable for credential theft.
+
+This is clearly a **security vulnerability** fix, specifically addressing **use-after-free** (and potentially **double-free**) scenarios where the secure handle pointer was not zeroed after deallocation.
+
+Now let me verify the specific CWE mappings:
+
+- **CWE-416: Use After Free** — The primary vulnerability. After freeing the underlying object, the handle still contains the encoded pointer. Any subsequent dereference via the handle will access freed memory.
+- **CWE-415: Double Free** — A secondary consequence. If `FreeCredentialsHandle` or `DeleteSecurityContext` is called twice on the same handle (without invalidation), the same pointer is retrieved and freed twice.
+
+The most specific and accurate CWE is CWE-416 (Use After Free), as the double-free scenario is a possible consequence but the core fix is preventing access to freed memory via the handle.
+
+Actually, let me also check if there's a separate file to determine the exact paths of these changed files:
+Good. The changes correspond to these source files in the repository:
+
+- **file_01** → `/work/winpr/libwinpr/sspi/CredSSP/credssp.c` — `credssp_FreeCredentialsHandle`
+- **file_02** → `/work/winpr/libwinpr/sspi/Kerberos/kerberos.c` — Multiple functions
+- **file_03** → `/work/winpr/libwinpr/sspi/NTLM/ntlm.c` — `ntlm_FreeCredentialsHandle`, `ntlm_DeleteSecurityContext`
+- **file_04** → `/work/winpr/libwinpr/sspi/Negotiate/negotiate.c` — `negotiate_DeleteSecurityContext`, `negotiate_FreeCredentialsHandle`
+- **file_05** → `/work/winpr/libwinpr/sspi/Schannel/schannel.c` — `schannel_FreeCredentialsHandle`, `schannel_DeleteSecurityContext`
+
+Now let me verify whether the existing kerberos code in the repository already has or doesn't have the invalidation in the DeleteSecurityContext and the other paths mentioned in the diff:
+Interesting — so in the *current* codebase (which is the BEFORE version), `sspi_SecureHandleInvalidate` is only called once: in `kerberos_FreeCredentialsHandle`. The changes in `file_02` (the diff) show modifications to `kerberos.c` — moving the existing invalidation before `credentials_unref`, and adding new invalidation calls for `kerberos_DeleteSecurityContext` and error paths in the initialize/accept functions.
+
+Let me verify the current state of `kerberos_DeleteSecurityContext` in the repo to confirm it lacks handle invalidation:
+Now let me verify the `negotiate_FreeCredentialsHandle` in the current repo too:
+I now have a complete picture. Let me provide the final verdict.
+
+---
+
+## Summary
+
+This commit fixes a **use-after-free** vulnerability across five SSP (Security Support Provider) packages in FreeRDP/WinPR's SSPI implementation. In the vulnerable (before) code, when `FreeCredentialsHandle` or `DeleteSecurityContext` is called, the underlying credential/context memory is freed but the `SecHandle` structure (`dwLower`/`dwUpper` fields) is **not** invalidated. This means:
+
+1. A subsequent call to any function that dereferences the handle will decode the stale pointer from `dwLower` and access freed memory (use-after-free).
+2. Double calls to `FreeCredentialsHandle` or `DeleteSecurityContext` on the same handle would double-free the same memory.
+
+The fix adds calls to `sspi_SecureHandleInvalidate()` (which zeroes out `dwLower` and `dwUpper`) **before** or at the point of freeing the underlying object, ensuring the handle cannot be used to reach freed memory.
+
+The exact vulnerable files/functions (before fix):
+- `winpr/libwinpr/sspi/CredSSP/credssp.c`: `credssp_FreeCredentialsHandle`
+- `winpr/libwinpr/sspi/Kerberos/kerberos.c`: `kerberos_DeleteSecurityContext`, and error cleanup paths in `kerberos_InitializeSecurityContextA` / `kerberos_AcceptSecurityContext`
+- `winpr/libwinpr/sspi/NTLM/ntlm.c`: `ntlm_FreeCredentialsHandle`, `ntlm_DeleteSecurityContext`
+- `winpr/libwinpr/sspi/Negotiate/negotiate.c`: `negotiate_DeleteSecurityContext`, `negotiate_FreeCredentialsHandle`
+- `winpr/libwinpr/sspi/Schannel/schannel.c`: `schannel_FreeCredentialsHandle`, `schannel_DeleteSecurityContext`
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-416
+CWE_NAME: Use After Free

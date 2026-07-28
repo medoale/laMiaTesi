@@ -1,0 +1,36 @@
+Let me read all the diff files and understand the changes being made.
+Let me look at the full before/after content of the most security-relevant files to understand the full context.
+Now let me examine the current workspace code to fully understand the context of these files.
+Now I have a complete picture of all the changes and their security implications. Here is my analysis:
+
+---
+
+## Analysis
+
+This commit makes security-focused changes across 12 files in the Frigate NVR authentication system. The three principal vulnerabilities being fixed are:
+
+### 1. CWE-620: Unverified Password Change (Primary)
+The old `update_password` endpoint (lines 785–788 of `frigate/api/auth.py`) accepted a new password and applied it **without verifying the current password**. Any authenticated user (or an attacker with a hijacked session) could change their own password without proving they knew the current one. The fix adds mandatory `old_password` verification before permitting the change, except when an admin resets another user's password (a legitimate admin function).
+
+### 2. CWE-613: Insufficient Session Expiration
+Before the fix, changing a password did **not invalidate existing JWT sessions**. The token refresh logic in the `/auth` endpoint only checked whether the user still existed in the database (line 626). After the fix:
+- JWT tokens now include an `iat` (issued-at) claim.
+- The `User` model gains a `password_changed_at` timestamp.
+- The refresh logic compares `iat` against `password_changed_at` and **rejects the refresh** if the token predates the password change.
+
+This forces stale sessions to re-authenticate after a password change (at most within the `refresh_time` window, now reduced from 12 hours to 30 minutes).
+
+### 3. CWE-521: Weak Password Requirements
+The old code had no password strength validation. The new `validate_password_strength()` function enforces: minimum 8 characters, at least one uppercase letter, at least one digit, and at least one special character. This is enforced on the backend and also surfaced as real-time validation in the frontend dialog.
+
+### Additional Hardening (defense-in-depth, also genuine but less central)
+- **CWE-276 (Incorrect Default Permissions)**: The JWT secret file is now created with `0o600` (owner read/write only) instead of the system-default umask-dependent permissions.
+- **CWE-367 (TOCTOU Race Condition)**: Adding `O_EXCL` to the `os.open()` call prevents a symlink-race / TOCTOU race when creating the JWT secret file.
+
+---
+
+**Verdict:**
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-620, CWE-613, CWE-521, CWE-276, CWE-367
+CWE_NAME: Unverified Password Change, Insufficient Session Expiration, Weak Password Requirements, Incorrect Default Permissions, Time-of-check Time-of-use (TOCTOU) Race Condition

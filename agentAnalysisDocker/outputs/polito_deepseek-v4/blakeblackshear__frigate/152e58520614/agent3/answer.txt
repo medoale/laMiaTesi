@@ -1,0 +1,55 @@
+Let me examine each potential vulnerability in detail.
+Now let me examine the specific vulnerable usage of `yaml.load` and the subprocess calls more carefully.
+Let me check the critical endpoints more closely - the `config/save` and `config/set` endpoints, the export endpoint for path traversal, and the JWK handling in auth.
+Now let me check a critical sink where `shlex.split` processes potentially user-controlled data:
+Let me also check the `/config/raw_paths` and `/vod/` endpoints and review the web side for any URL-based attacks:
+After my thorough analysis, here is my verdict:
+
+---
+
+## Analysis Summary
+
+I explored the entire repository systematically — Python backend (FastAPI), TypeScript/React frontend, Docker configs, shell scripts, YAML/JSON configs, and supporting utilities.
+
+### What I checked (and ruled out)
+
+| Category | Result |
+|---|---|
+| **CWE-78 (OS Command Injection)** | No `shell=True` subprocess calls; all use argument lists. The `shlex.split` in `get_ffmpeg_arg_list` is config-only (admin-gated). |
+| **CWE-79 (Cross-Site Scripting)** | Frontend uses React/TypeScript; zero instances of `dangerouslySetInnerHTML`, `innerHTML`, or `v-html`. |
+| **CWE-89 (SQL Injection)** | Uses peewee ORM with proper parameterization throughout. |
+| **CWE-502 (Deserialization)** | All `yaml.load()` calls use `ruamel.yaml.YAML()` which is safe by default (SafeConstructor). |
+| **CWE-22 (Path Traversal)** | File paths come from database records, ORM model fields, or `sanitize_filename` — never directly from user-controlled path segments. |
+| **CWE-798 (Hardcoded Credentials)** | JWT secret is generated at runtime via `secrets.token_hex(64)` or sourced from env/docker secrets. |
+| **Authentication bypass** | Nginx auth subrequest properly strips client-supplied headers (`proxy_pass_request_headers off;`) and injects `X-Server-Port` from its own `$server_port` variable. |
+
+### Confirmed Vulnerability
+
+**CWE-918: Server-Side Request Forgery (SSRF)**
+
+Multiple endpoints in `/work/frigate/api/camera.py` accept user-supplied URLs/hosts and make network requests to arbitrary destinations with no meaningful restriction on internal or cloud-metadata IP ranges:
+
+1. **`/ffprobe`** (line 170) — The `paths` query parameter is passed directly to `ffprobe_stream()` → `sp.run([ffprobe, ..., user_path])`. If the path doesn't start with `"camera"`, the raw user-supplied value (e.g., `http://169.254.169.254/latest/meta-data/` or `http://internal-service:8080`) is handed to `ffprobe`, which makes an outbound HTTP request to that URL. **No host validation at all.**
+
+2. **`/ffprobe/snapshot`** (line 302) — The `url` query parameter is passed directly to `run_ffmpeg_snapshot()` → `sp.run([ffmpeg, "-i", user_url, ...])`. Same behavior — arbitrary URL passed to ffmpeg, triggering an outbound request.
+
+3. **`/reolink/detect`** (line 336) — The `host` parameter is validated by `_is_valid_host()` which only blocks whitespace/control characters and requires `[a-zA-Z0-9.-]+`. This allows **any internal IP** (e.g., `10.0.0.1`, `192.168.1.1`, `169.254.169.254`). The `requests.get(f"http://{host}/api.cgi?...", timeout=5)` call then makes an unauthenticated HTTP GET to that host.
+
+4. **`/onvif/probe`** (line 469) — Same `_is_valid_host` validation; connects via `ONVIFCamera(host, port, ...)` and subsequently makes SOAP/HTTP requests to the attacker-specified host for device discovery, media probing, and RTSP stream collection. Also makes `requests.get()` calls to `http://{host}/api.cgi?...` via the Reolink endpoint.
+
+All four endpoints require the `admin` role, but an attacker who compromises an admin account (via credential theft, phishing, etc.) can use these to:
+- Scan internal RFC 1918 networks
+- Access cloud-provider metadata endpoints (`169.254.169.254`, `fd00:ec2::254`, etc.) to steal instance credentials
+- Probe other services inside the container's network namespace
+- Bypass network segmentation
+
+The `/ffprobe` endpoint is the most severe because it has **zero input validation** — the path goes straight from the query string to ffprobe's argument list.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

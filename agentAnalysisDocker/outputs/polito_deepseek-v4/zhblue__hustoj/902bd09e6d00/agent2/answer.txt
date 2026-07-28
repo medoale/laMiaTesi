@@ -1,0 +1,30 @@
+I'll start by exploring the repository and the /changes folder to understand what this commit does.
+Now let me look at which file this is in the repository:
+The changed file is `/work/trunk/web/admin/problem_import_qduoj.php`. Let me confirm by looking at the file:
+Now I have a clear understanding of the vulnerability.
+
+## Analysis
+
+The file `trunk/web/admin/problem_import_qduoj.php` is a problem import module for an online judge system. It accepts a ZIP file upload and extracts its contents.
+
+**The vulnerability:** The ZIP file entries' names are used directly without sanitization in the `$file_name` variable (line 121, 146 in the "before" version). The variable `$path` is undefined (so it's an empty string), and `zip_entry_name($dir_resource)` returns the entry name from the ZIP archive. A malicious ZIP archive can contain entries with `../` path traversal sequences in their filenames (e.g., `../../evil.php`).
+
+This path comes from an untrusted uploaded ZIP file and is used in multiple dangerous operations:
+1. **`file_put_contents($tempdir."/".$file_name, $file_content)`** (lines 132, 162) — writes arbitrary file content to a path controlled by the attacker.
+2. **`mkdir($tempdir."/".dirname($file_name), ...)`** (lines 131, 161) — creates directories at arbitrary locations.
+3. **`is_dir($file_name)`** (line 123, 148) — checks path at an attacker-controlled location.
+4. The `$file_name` eventually feeds into `system()` commands (lines 156-174) that use `mv` with user-controlled paths.
+
+By crafting a ZIP file with entries like `../../../../var/www/html/shell.php`, an attacker can write arbitrary PHP code to the web root, achieving **remote code execution**.
+
+**The fix:** The commit adds `$file_name=str_replace('../', '', $file_name);` on lines 122 and 148 (inside both ZIP extraction loops), which strips the `../` path traversal sequences from the filename.
+
+While this fix is better than nothing, it's worth noting that `str_replace('../', '', $file_name)` is not a fully robust defense — it can be bypassed with patterns like `....//` (which becomes `../` after the replacement) or using `..\` on Windows. However, the core intent and primary impact is to fix a **Path Traversal** vulnerability leading to **arbitrary file write**.
+
+**CWE Classification:**
+- **CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')** — The primary vulnerability. The ZIP entry names are not sanitized, allowing `../` sequences to escape the intended extraction directory.
+- This path traversal leads to arbitrary file writes, which can result in remote code execution, but CWE-22 is the root cause/class to use.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

@@ -1,0 +1,86 @@
+Let me systematically search for potential vulnerability patterns across the codebase.
+Let me verify the most critical findings by examining the actual source code.
+Let me now examine a few more critical areas and check the uninstall.rs more fully, plus verify some findings.
+Now I have a thorough understanding of the codebase. Let me check one more thing to finalize my analysis.
+After thorough analysis, I have a clear picture. Let me now check one final area to be comprehensive.
+Based on my thorough analysis of this codebase (the `uv` Python package manager by Astral), I have identified multiple genuine security vulnerabilities. Here is a summary:
+
+---
+
+### Vulnerability 1: ZipSlip (CWE-22) — `untar_zst_file` in `uv-extract`
+
+**File:** `crates/uv-extract/src/stream.rs:693–701`
+**Code:**
+```rust
+pub fn untar_zst_file<R: std::io::Read>(reader: R, target: impl AsRef<Path>) -> Result<(), Error> {
+    let reader = std::io::BufReader::with_capacity(DEFAULT_BUF_SIZE, reader);
+    let decompressed = zstd::Decoder::new(reader).map_err(Error::Io)?;
+    let mut archive = tar::Archive::new(decompressed);
+    archive.set_preserve_mtime(false);
+    archive.unpack(target).map_err(Error::io_or_compression)?;  // <-- No path validation
+    Ok(())
+}
+```
+The sync `untar_zst_file` calls `archive.unpack(target)` with **no** path traversal protection. Contrast with the async `untar_in` at line 568 which canonicalizes `dst` and uses `unpack_in_raw(&dst, &mut memo)` to validate every entry stays within bounds. This is called at `distribution_database.rs:815` to extract `.whl.zst` archives. A malicious wheel archive with entries like `../../etc/cron.d/evil` would write outside the target directory.
+
+---
+
+### Vulnerability 2: Path Traversal (CWE-22) — RECORD file in `uninstall_wheel`
+
+**File:** `crates/uv-install-wheel/src/uninstall.rs:40–41, 68–77`
+**Code:**
+```rust
+for entry in &record {
+    let path = site_packages.join(&entry.path);  // No `..` sanitization
+    // ...
+    match fs_err::remove_file(&path) {  // Can delete arbitrary files
+        Ok(()) => { ... }
+        Err(err) => match fs_err::remove_dir_all(&path) { ... }  // Can delete arbitrary dirs
+    }
+}
+```
+`read_record_file` (wheel.rs:794–809) only strips leading `/` — it does **not** reject or sanitize `..` components. A malicious wheel's RECORD file can contain entries like `../../../tmp/evil` that survive unchanged into the installed RECORD. During uninstallation, the joined path escapes `site-packages`, allowing arbitrary file/directory deletion. There is no `starts_with(site_packages)` guard on the main deletion loop (only on the empty-directory cleanup at line 92).
+
+---
+
+### Vulnerability 3: Improper Link Resolution (CWE-59) — `remove_virtualenv` symlink following
+
+**File:** `crates/uv-virtualenv/src/virtualenv.rs:613–624`
+**Code:**
+```rust
+for entry in fs_err::read_dir(location)? {
+    let entry = entry?;
+    let path = entry.path();
+    if path == location.join("pyvenv.cfg") { continue; }
+    if path.is_dir() {                    // Follows symlinks
+        fs_err::remove_dir_all(&path)?;    // Follows symlinks — deletes target!
+    } else {
+        fs_err::remove_file(&path)?;       // Follows symlinks — deletes target!
+    }
+}
+```
+No symlink check is performed before calling `path.is_dir()` or `remove_dir_all`/`remove_file`. An attacker with write access to the venv directory (e.g., on a shared filesystem or CI) can replace a regular child directory with a symlink to `/etc`, and `uv venv --clear` will recursively delete `/etc`.
+
+---
+
+### Vulnerability 4: Improper Link Resolution (CWE-59) — `set_readable`/`set_not_readonly` 
+**File:** `crates/uv-cache/src/removal.rs:189, 201`
+```rust
+fn set_readable(path: &Path) -> io::Result<bool> {
+    let mut perms = fs_err::metadata(path)?.permissions();  // Follows symlinks!
+    // changes permissions of symlink TARGET, not symlink itself
+}
+```
+Uses `metadata()` (follows symlinks) instead of `symlink_metadata()`. Can be exploited via TOCTOU to change permissions on arbitrary files.
+
+---
+
+### Vulnerability 5: Improper Link Resolution (CWE-59) — `LockedFile::create`
+**File:** `crates/uv-fs/src/lib.rs:837–873`
+On Unix, opens an existing lock file without `O_NOFOLLOW`. An attacker can replace the lock file path with a symlink to an arbitrary file, gaining a read/write file handle and exclusive lock on the target.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22, CWE-59
+CWE_NAME: Path Traversal, Improper Link Resolution Before File Access

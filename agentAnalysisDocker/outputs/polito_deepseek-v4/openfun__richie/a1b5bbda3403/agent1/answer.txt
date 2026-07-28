@@ -1,0 +1,25 @@
+I'll start by exploring the workspace structure and reading the changes.
+Now let me analyze the change:
+
+**Before the commit**: The signature comparison was done using the `==` operator:
+```python
+authorization_header == get_signature(message, secret)
+```
+
+**After the commit**: It uses `hmac.compare_digest`:
+```python
+hmac.compare_digest(authorization_header, get_signature(message, secret))
+```
+
+The `==` operator for string comparison in Python is not constant-time. When comparing cryptographic signatures (like HMAC digests), using `==` makes the comparison vulnerable to **timing attacks**. An attacker can measure how long each comparison takes and iteratively guess the signature byte-by-byte.
+
+`hmac.compare_digest()` is designed specifically to prevent this by performing the comparison in constant time, regardless of how many leading characters match.
+
+This is a textbook security vulnerability fix:
+
+- **CWE-208**: Improper handling of timing during comparison (Observable Timing Discrepancy) — the most specific CWE for timing attacks in comparison operations.
+- This is also related to **CWE-203** (Observable Discrepancy) but CWE-208 is the more specific one for timing attacks in comparison functions.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-208
+CWE_NAME: Observable Timing Discrepancy

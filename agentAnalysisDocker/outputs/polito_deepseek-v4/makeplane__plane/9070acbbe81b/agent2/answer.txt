@@ -1,0 +1,57 @@
+I'll start by exploring the workspace structure and examining the changes folder to understand what's being modified.
+Now let me examine the actual repository files to identify the exact file paths being modified.
+Let me look at both files to confirm the exact context of the changes.
+I now have a clear picture of both changes. Let me analyze them.
+
+## Analysis
+
+### Change 1: `ProjectAssetEndpoint.patch` (file `v2.py`, line 582)
+
+**Before:**
+```python
+asset = FileAsset.objects.get(id=pk)
+```
+
+**After:**
+```python
+asset = FileAsset.objects.get(id=pk, workspace__slug=slug, project_id=project_id)
+```
+
+This is in the `ProjectAssetEndpoint` which is scoped to a specific workspace (`slug`) and project (`project_id`). The original code only queried by `id=pk` (the primary key), meaning any user with the `ROLE.ADMIN`, `ROLE.MEMBER`, or `ROLE.GUEST` permission could patch *any* FileAsset in the entire system, regardless of what workspace or project it belonged to. An attacker could enumerate asset IDs from any other workspace/project and modify them.
+
+The fix adds `workspace__slug=slug` and `project_id=project_id` to the query, scoping the lookup to the correct workspace and project from the URL. This is an **access control / authorization** fix.
+
+### Change 2: `IssueAttachmentEndpoint.delete` (file `attachment.py`, line 63)
+
+**Before:**
+```python
+issue_attachment = FileAsset.objects.get(pk=pk)
+```
+
+**After:**
+```python
+issue_attachment = FileAsset.objects.filter(
+    pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id
+).first()
+if not issue_attachment:
+    return Response(status=status.HTTP_404_NOT_FOUND)
+```
+
+This is the `delete` method of `IssueAttachmentEndpoint`. The original code only queried by primary key (`pk`), ignoring the workspace slug, project ID, and issue ID from the URL. Although the `@allow_permission([ROLE.ADMIN], creator=True, model=FileAsset)` decorator provides some creator-based access control, it did **not** scope the actual database query to the correct workspace/project/issue. An attacker who knows a valid asset PK from a different project or issue could delete it. Worse, the `creator=True` check would be evaluated against the fetched object -- but since the query had no scoping, any asset could be fetched.
+
+The fix scopes the query to `pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id`, ensuring the attachment belongs to the requested issue within the correct project and workspace. This is also an **access control / authorization** fix.
+
+Both issues are instances of **Incorrect Authorization** (CWE-863) / **Missing Authorization** — the common pattern of querying database objects by primary key alone without verifying that the object belongs to the current user's tenant/workspace/project context. This is a classic **Insecure Direct Object Reference (IDOR)** vulnerability.
+
+The most specific CWE here is **CWE-639: Authorization Bypass Through User-Controlled Key** (IDOR), since the attacker provides a primary key (`pk`) that directly references an object, and the system fails to verify the user's authorization to that object within the proper scope.
+
+Let me also verify the actual repo state matches what we see in the changes:
+This confirms the repo is at the "before" version. Both files still have the vulnerable code.
+
+## Final Verdict
+
+Both changes fix **Insecure Direct Object Reference (IDOR)** vulnerabilities — a specific form of **Authorization Bypass Through User-Controlled Key**. In both cases, a database object was looked up solely by its primary key (`pk`) without scoping the query to the workspace, project, or issue that should define the authorization boundary. An attacker with valid (low-level) credentials could supply a primary key for an asset in a different workspace/project and operate on it without authorization.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

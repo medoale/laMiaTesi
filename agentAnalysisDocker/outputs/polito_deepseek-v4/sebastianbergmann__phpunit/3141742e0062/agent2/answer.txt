@@ -1,0 +1,60 @@
+I'll start by exploring the repository structure and the changes folder.
+Let me read all diffs and the corresponding files:
+Now let me explore the relevant source files in the repository to understand the full context:
+Now let me look at the related template file to understand the full picture of how coverage files are used in PHPT tests:
+Let me also check the PhptTestCase template to understand the full coverage pipeline:
+Now I have a complete understanding of the vulnerability. Let me analyze it thoroughly.
+
+**Understanding the vulnerability (Poisoned Pipeline Execution / PPE attack):**
+
+1. **The attack scenario**: PHPUnit supports PHPT (PHPT = PHPT Test) files for testing PHP itself. When code coverage collection is enabled for a PHPT test, the process works as follows:
+
+   - `getCoverageFiles()` computes paths for two temporary files: a `.coverage` file and a `.php` job file. These are placed in the same directory as the `.phpt` test file, with the same basename but different extensions.
+   
+   - `renderForCoverage()` writes the test's PHP code to the `.php` job file, then creates a wrapper script (the template) that runs the test in a subprocess. The wrapper script collects code coverage and **serializes the coverage data to the `.coverage` file**.
+   
+   - `cleanupForCoverage()` uses `@unserialize()` to read the `.coverage` file, extracts the coverage data, then deletes both `.coverage` and `.php` files.
+
+2. **The vulnerability in the before code**: In the constructor (`PhptTestCase::__construct`), there is **no check** for whether the `.coverage` file already exists before the test runs. An attacker who can submit a pull request containing a PHPT test file could also pre-place a `.coverage` file (which contains serialized PHP data) in the same directory. When PHPUnit processes this PHPT test in a CI/CD pipeline with coverage enabled:
+
+   - PHPUnit will render and run the test, which overwrites the `.coverage` file (via the template's `file_put_contents('{coverageFile}', serialize($output))`).
+   - `cleanupForCoverage()` reads it with `@unserialize()` — but the attacker-controlled coverage data could contain crafted serialized objects that exploit PHP's unserialization to achieve code execution.
+   - Even though `['allowed_classes' => false]` is passed to `unserialize()`, the pre-existing `.coverage` file could influence execution flow.
+
+   But more importantly, there's a simpler attack: by placing a pre-crafted `.coverage` file, before the test even runs, the `file_exists($files['coverage'])` check in `cleanupForCoverage()` would read the attacker's file. Even though `allowed_classes` is false, **the more critical issue is that the attacker could provide arbitrary `.coverage` content that gets `unserialize()`d**, and while `allowed_classes=false` prevents instantiation of arbitrary classes, there are still potential gadget chains in PHP with `__unserialize()` or `__destruct()` on built-in classes that can be exploited.
+
+   However, the **primary security issue** as described in the changelog is about **Poisoned Pipeline Execution (PPE)** — the attacker places a pre-crafted `.coverage` file before the test runs, so that when `cleanupForCoverage()` reads it, it processes attacker-controlled serialized data. The fix prevents this by checking **before the test runs** if the `.coverage` file already exists, and if so, refusing to execute the test entirely.
+
+3. **The fix**: The new `ensureCoverageFileDoesNotExist()` method in the constructor checks whether the `.coverage` file already exists before the test runs. If it does, it throws an Exception and refuses to execute the test, preventing the attacker from pre-placing a malicious `.coverage` file.
+
+**CWE classification**: This is primarily a **CWE-502: Deserialization of Untrusted Data** — the `.coverage` file is unserialized with `unserialize()` without proper integrity checking. An attacker who can place a crafted `.coverage` file in the test directory can supply malicious serialized data to be deserialized.
+
+It also relates to **CWE-829: Inclusion of Functionality from Untrusted Control Sphere** (the serialized coverage data comes from a file that could be attacker-controlled), but CWE-502 is the most specific and accurate primary classification.
+
+The changelog explicitly refers to "Poisoned Pipeline Execution (PPE) attacks using prepared `.coverage` files", which aligns with the concept of injecting malicious data into a CI/CD pipeline via pull requests. The core technical vulnerability it's fixing is the unsanitized deserialization of coverage data that could contain attacker-controlled serialized objects.
+
+Let me confirm the path of this file in the repository:
+Good — the current source file in `/work/src/Runner/PhptTestCase.php` matches the `before.txt` (the vulnerable version). The commit is the one that applies the fix.
+
+Now I have a complete understanding. Let me formulate the verdict.
+
+This commit fixes a security vulnerability. The core issue is:
+
+1. When PHPT tests are run with code coverage enabled, PHPUnit creates temporary `.coverage` files in the same directory as the test file.
+2. At cleanup time, it unserializes the content of this `.coverage` file: `@unserialize($buffer, ['allowed_classes' => false])`
+3. An attacker who can submit a PHPT test file via a pull request can also pre-place a `.coverage` file with malicious serialized content.
+4. The fix refuses to run the test if the `.coverage` file already exists before execution, preventing the attacker from injecting crafted serialized data.
+
+The most precise CWE is **CWE-502: Deserialization of Untrusted Data** because the `unserialize()` function processes data from a file whose origin (before the fix) could not be verified — an attacker could pre-stage a crafted `.coverage` file. The call uses `['allowed_classes' => false]` which mitigates typical PHP object injection gadget chains, but the data is still deserialized from an untrusted source.
+
+Additionally, **CWE-829: Inclusion of Functionality from Untrusted Control Sphere** applies because the `.coverage` file's content comes from an attacker-controlled source within the same directory.
+
+However, CWE-502 is the most specific and directly describes the technical flaw (untrusted deserialization), so I will use that.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

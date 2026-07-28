@@ -1,0 +1,33 @@
+Let me start by exploring the workspace structure to find the _CHANGES folder.
+Good, 13 files changed. Let me read all the diffs first to get a high-level picture.
+Now let me read the full before.txt and after.txt for the key file (file_01) to understand the complete context:
+Now I have a comprehensive understanding of this commit. Let me analyze it carefully.
+
+This is a **Server-Side Request Forgery (SSRF) vulnerability fix**. Here's my analysis:
+
+**The core vulnerability (before the fix):** The `validate_import_url` function in the original code had several severe bypasses:
+
+1. **No redirect validation**: The old code simply called `requests.get(url)` everywhere, which follows redirects automatically. An attacker could provide a URL to an external server that redirects to `http://127.0.0.1/admin` or `http://169.254.169.254/` (internal metadata endpoint). The original `validate_import_url` only checked the initial URL, not the redirect target.
+
+2. **No encoded IP detection**: The old code only resolved hostnames via DNS (`socket.gethostbyname`). Attackers could bypass the IP validation using:
+   - DWORD (decimal) IPs: `http://2130706433/` = 127.0.0.1
+   - Hex IPs: `http://0x7f000001/`
+   - Octal IPs: `http://017700000001/`
+
+3. **No control character validation**: URLs with control characters could potentially bypass URL parsers.
+
+**What the fix does:**
+- Adds URL normalization and control character detection
+- Detects encoded IP representations (DWORD, Hex, Octal) to prevent SSRF bypass
+- Introduces `safe_request()` which manually handles redirects, validating each redirect target against `validate_import_url` before following it
+- Replaces all `requests.get(url)` calls across the codebase with `safe_request('GET', url)`
+
+This is clearly a **security vulnerability fix** for **Server-Side Request Forgery (SSRF)**, which is CWE-918.
+
+There's also an argument for **CWE-601 (URL Redirection to Untrusted Site)** since the redirect-following behavior could also enable open redirect attacks, but the primary and most specific vulnerability class is SSRF (CWE-918), since the main goal is preventing requests to internal/private IP ranges.
+
+Let me verify whether there are additional CWE classes. The encoded IP bypass (DWORD, Hex, Octal) is a technique used in SSRF attacks — it's part of CWE-918, not a separate CWE. Similarly, automatic redirect following is a common SSRF vector. So CWE-918 is the most specific and appropriate classification.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

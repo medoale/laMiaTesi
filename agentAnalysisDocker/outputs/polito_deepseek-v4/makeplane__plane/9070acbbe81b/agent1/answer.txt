@@ -1,0 +1,23 @@
+I'll start by reading the _CHANGES folder to understand the structure of this review task.
+Let me read all files for both changes:
+Now let me analyze both changes carefully.
+
+**File 01 (diff.txt):**
+- **Change**: In `ProjectAssetEndpoint.patch()`, the query was changed from `FileAsset.objects.get(id=pk)` to `FileAsset.objects.get(id=pk, workspace__slug=slug, project_id=project_id)`.
+- **Before**: The PATCH endpoint would fetch any asset by `pk` alone, without verifying it belongs to the specified workspace and project. An attacker could provide a valid `pk` from a different project/workspace and modify its attributes.
+- **After**: The query now checks that the asset belongs to both the workspace (slug) and project (project_id), adding proper authorization/access control checks.
+
+This is an **Incorrect Access Control (CWE-863)** / **missing authorization** vulnerability. The PATCH endpoint allows modifying asset attributes (like `attributes`) of any asset regardless of project/workspace ownership.
+
+**File 02 (diff.txt):**
+- **Change**: In `IssueAttachmentEndpoint.delete()`, the query was changed from `FileAsset.objects.get(pk=pk)` to `FileAsset.objects.filter(pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id).first()` with a 404 check.
+- **Before**: The DELETE endpoint would fetch an attachment by `pk` alone, without verifying it belongs to the correct workspace, project, and issue. An attacker could delete attachments from other projects/issues.
+- **After**: Now checks all four scoping parameters. This is also an **Incorrect Access Control (CWE-863)** vulnerability fix.
+
+Note: There's also a secondary concern - the `@allow_permission([ROLE.ADMIN], creator=True, model=FileAsset)` decorator already checks that the user is the creator, but without the scoping fix, a user who created an attachment in project A could maliciously use project B's slug/project_id to delete an attachment in project A using a cross-project request, or an admin could delete attachments outside their workspace scope. The core fix here is ensuring the asset belongs to the right hierarchical scope.
+
+Both changes fix **Incorrect Access Control** (CWE-863) - they add missing authorization checks that verify the resource belongs to the correct workspace/project/issue context before allowing modification or deletion.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-863
+CWE_NAME: Incorrect Access Control

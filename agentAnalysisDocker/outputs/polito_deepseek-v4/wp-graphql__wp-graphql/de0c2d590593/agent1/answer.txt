@@ -1,0 +1,31 @@
+I'll start by exploring the workspace structure to find the _CHANGES folder and read the diff files.
+Good, there are two files with changes. Let me read all of them.
+Now I have a clear picture. Let me analyze both files.
+
+## Analysis
+
+This commit touches two GitHub Actions workflow YAML files. The changes are consistent across both files — they refactor how sensitive/value expressions are accessed in shell `run` steps.
+
+**The core vulnerability being fixed:** In GitHub Actions, when you embed `${{ }}` expressions directly inside a `run:` block (e.g., `echo '${{ toJSON(steps.release.outputs) }}'`), these expressions are **template-expanded by the GitHub Actions runner before being passed to the shell**. This means:
+1. **Untrusted data injection**: If an attacker can control the PR title (`github.event.pull_request.title`), the branch name (`github.head_ref`), or any expression output, they could inject shell metacharacters. Since the `${{ }}` is expanded by GitHub Actions itself (not by the shell), and the shell sees the literal value, injection is normally mitigated... **but** the problem is that the resulting string is then evaluated by the shell in an unquoted or poorly-quoted context, leading to **shell injection vulnerabilities**.
+2. More precisely, the issue is **Script Injection** / **Expression Language Injection in GitHub Actions** (CWE-94 / CWE-78). By putting `${{ }}` expressions directly inside `run:` blocks without proper quoting, a contributor/attacker who can influence the context (e.g., a PR title on a fork) can inject shell commands.
+
+Specifically, in the "before" code:
+- `PR_TITLE="${{ github.event.pull_request.title }}"` — an attacker who contributes a PR with a title like `` `id` `` could execute arbitrary commands.
+- `${{ toJSON(steps.release.outputs) }}` is used directly in `echo` commands in single quotes (`echo '${{ ... }}'`), but the quoting is fragile.
+
+In the "after" code:
+- All `${{ }}` expressions that contain untrusted or potentially-injectable data are moved to `env:` blocks, where the GitHub Actions runner still expands them, but they are then passed to the shell as **environment variables** (which are automatically shell-quoted/escaped by the runner). The shell `run:` block then references `$VARIABLE` (an environment variable) instead of re-expanding a template expression.
+- Additionally, arguments to `node scripts/` commands now quote the env variables (`--version="$VERSION"`) instead of using unquoted `${{ }}` inline expressions.
+
+This is a **security fix** addressing **GitHub Actions Script Injection** / **Indirect Injection via Expression Syntax** — sometimes called "template injection in GitHub Actions workflow files."
+
+**Relevant CWEs:**
+- **CWE-94** - Improper Control of Generation of Code ('Code Injection'): The `${{ }}` expressions were being expanded inline in shell scripts, allowing injection of arbitrary shell commands via attacker-controlled inputs like PR titles.
+- **CWE-78** - Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection'): The injected code would be executed as shell commands.
+
+The fix specifically mitigates the well-documented **GitHub Actions script injection** pattern (often tracked as CWE-94). The most precise classification is CWE-94 with a secondary of CWE-78.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-94, CWE-78
+CWE_NAME: Improper Control of Generation of Code ('Code Injection'), Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

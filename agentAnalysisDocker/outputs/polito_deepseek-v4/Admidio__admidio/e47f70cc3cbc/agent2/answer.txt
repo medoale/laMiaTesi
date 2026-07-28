@@ -1,0 +1,46 @@
+I'll start by exploring the repository structure and the /changes folder to understand the commit being reviewed.
+Now let me explore the repository to understand the context better, particularly the `$getUserUuid` parameter and how it's used.
+Now let me examine the key surrounding code in the actual file to understand the flow better. Let me also check the exact line numbers around the change to see the context.
+Now I understand the vulnerability. Let me verify my analysis by looking at line 47 where `$getUserUuid` is initialized and how it gets used in the participation flow.
+
+Let me also check the `admFuncVariableIsValid` function to understand how the UUID validation works.
+Now I have a clear understanding of the vulnerability. Let me also look at the `uuid` validation to understand the sanitization on the `user_uuid` parameter.
+Now I have a complete understanding of the vulnerability. Let me read the workspace's version of the file to confirm it matches the "before" state (before the fix):
+Good - the workspace version is the "before" version (without the fix). The `$getUserUuid` is never overridden for non-leaders in the workspace code.
+
+Now let me also check how `$user` is used with `$getUserUuid` more broadly:
+
+Looking at the code flow:
+
+1. **Line 47**: `$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', $gValidLogin ? array('defaultValue' => $gCurrentUser->getValue('usr_uuid')) : []);`
+   - The `user_uuid` is read from the GET parameter with a default of the current user's UUID.
+   - **However**, if a malicious user explicitly provides `?user_uuid=<some_other_users_uuid>`, that value is used instead of the default.
+
+2. **Line 77**: `$user->readDataByUuid($getUserUuid);`
+   - This reads the user data for whichever UUID was provided (possibly another user).
+
+3. **Line 425** (in the participation block): `$member->readDataByColumns(array('mem_rol_id' => ..., 'mem_usr_id' => $user->getValue('usr_id')));`
+   - This reads the membership of the **target user** (the one in `$getUserUuid`), not necessarily the current user.
+   
+4. **Lines 461, 469, 472, 480**: Various operations like `$member->startMembership(...)` or `$member->deleteMembership(...)` use `$user->getValue('usr_id')`.
+
+The critical vulnerability is an **Authorization Bypass / Insecure Direct Object Reference (IDOR)**:
+
+In the "participate", "participate_cancel", and "participate_maybe" modes (lines 405-495), the code uses `$getUserUuid` (from the GET parameter) to load a `$user` object, and then performs actions (add/remove/cancel participation) **for that user**. The authorization check at line 424 (`$event->possibleToParticipate() || $participants->isLeader($gCurrentUserId)`) only checks whether the **current user** can participate or is a leader — it does NOT verify that the `user_uuid` parameter belongs to the current user.
+
+So if a regular user (not a leader) can participate in an event, this user can manipulate the `user_uuid` GET parameter to:
+- Add any other user to an event (participate)
+- Cancel any other user's participation (participate_cancel)
+- Set any other user to "maybe" (participate_maybe)
+
+This is an **Authorization Bypass** vulnerability — the user can act on behalf of other users without proper authorization. The fix adds a check: if the current user is NOT a leader of the event, force `$getUserUuid` to the current user's UUID, preventing manipulation of other users' participation.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862 (Missing Authorization)
+The most accurate classification is CWE-862 (Missing Authorization) or CWE-639 (Insecure Direct Object Reference / Authorization Bypass Through User-Controlled Key). CWE-639 is a child of CWE-862 and describes the specific issue where a user-supplied identifier (`user_uuid`) is used to access/modify another user's data without proper authorization checks. Let me verify: the bug is that the server trusts `$getUserUuid` from the GET parameter to identify *which* user's participation to modify, but only checks if the *current* user has general participation rights — it never verifies the current user is allowed to act on the target user's behalf unless they are a leader. This is classic CWE-639.
+
+Actually, CWE-639 is more specific: "Authorization Bypass Through User-Controlled Key" — exactly what this is. The `user_uuid` parameter is the user-controlled key. Let me finalize.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

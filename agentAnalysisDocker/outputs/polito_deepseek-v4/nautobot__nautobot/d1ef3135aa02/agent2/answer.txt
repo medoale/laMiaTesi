@@ -1,0 +1,39 @@
+I'll start by reading the /changes folder to understand what the commit changed, and explore the repository to understand the codebase.
+This appears to be the Nautobot repository. Let me explore the changed files.
+Now let me identify the actual file paths in the workspace corresponding to these changes by looking at the code structure.
+Now I have a complete picture of the changes. Let me also find the CHANGELOG and settings schema files to understand which actual repo files correspond to the changes.
+
+Now let me analyze the commit comprehensively:
+
+**Summary of the 5 changed files:**
+
+1. **`/changes/file_01`** - A new changelog entry documenting the CVE-2026-34203 fix: "Added missing enforcement of any configured Django password validators when managing users via the REST API (CVE-2026-34203)."
+
+2. **`/changes/file_02`** - An update to the settings JSON schema (`/work/nautobot/core/settings.yaml` or similar) to add the `AUTH_PASSWORD_VALIDATORS` setting documentation.
+
+3. **`/changes/file_03`** - An update to the Security Notices page (`SECURITY.md`) adding the CVE-2026-34203 entry.
+
+4. **`/changes/file_04`** - The actual code fix in `/work/nautobot/users/api/serializers.py`:
+   - **Before**: The `UserSerializer.validate()` method did NOT call `validate_password()` at all. When a password was provided via the REST API, it passed through without any validation against Django's `AUTH_PASSWORD_VALIDATORS` settings.
+   - **After**: Added `from django.contrib.auth.password_validation import validate_password` import, and in the `validate()` method, added `elif "password" in validated_data: validate_password(validated_data["password"], user=self.instance)` to enforce any configured password validators.
+
+5. **`/changes/file_05`** - The corresponding test update in `/work/nautobot/users/tests/test_api.py`:
+   - Added `test_create_object_password_validation` and `test_update_object_password_validation` test methods, plus the `override_settings` import, to verify that password validators are enforced during REST API user creation/update.
+
+This is clearly a **security vulnerability fix** (CVE-2026-34203). The REST API for user creation and editing bypassed Django's `AUTH_PASSWORD_VALIDATORS`, meaning that even if an administrator configured password complexity rules (minimum length, common password checks, etc.), users could be created or updated via the REST API with passwords that violated those rules. This is a well-known category of weakness.
+
+The most precise CWE classification:
+
+- **CWE-521**: Weak Password Requirements - The software does not enforce password complexity requirements or validation rules, allowing weak passwords to be set.
+- **CWE-862**: Missing Authorization - Not the best fit since this is not about authorization but about validation.
+- Actually, CWE-521 is the most specific: it covers "Weak Password Requirements" which is exactly the case where password validation (like minimum length, complexity) is not enforced.
+
+Let me verify: The issue is that `AUTH_PASSWORD_VALIDATORS` configured in Django settings were not being applied when setting passwords via the REST API. This means weak passwords could be set, which is **CWE-521: Weak Password Requirements**.
+
+The CWE description for CWE-521: "The product does not confirm that the user-provided password follows the minimum security requirements enforced by the system (such as a minimum length, the inclusion of uppercase letters, etc.). This could allow users to create passwords that are easier to compromise."
+
+This is a perfect match.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-521
+CWE_NAME: Weak Password Requirements

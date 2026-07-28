@@ -1,0 +1,83 @@
+I'll start by exploring the repository structure and the /changes folder to understand what we're working with.
+Now let me understand the project and the change more clearly. This is the `malcontent` project by Chainguard — a security scanning tool for malware detection. Let me look at the specific file paths the changes correspond to.
+Let me check if the relevant source file contains the code in question (before the commit).
+I have all the information I need to analyze the commit. Let me summarize my analysis:
+
+## Analysis
+
+**Repository:** `malcontent` — a Chainguard malware content scanning tool that extracts and scans archives (tar, gzip, zip, etc.) for malware.
+
+**The Commit** changes one source file (`pkg/archive/archive.go`) and its corresponding test file.
+
+### The Vulnerability (Before)
+
+In the **before** version of `extractNestedArchive()` (lines 192-204 of `archive.go`):
+
+```go
+err = extract(ctx, archivePath, fullPath)
+if err != nil {
+    if c.ExitExtraction {
+        return fmt.Errorf("failed to extract archive: %w", err)
+    }
+    logger.Debugf("ignoring extraction error for %s: %s", f, err.Error())
+}
+
+extracted.Store(f, true)
+
+if err := os.Remove(fullPath); err != nil {    // <-- PROBLEM: removes even on failure
+    return fmt.Errorf("failed to remove archive file: %w", err)
+}
+```
+
+**The bug:** When extracting a nested archive file fails (and `ExitExtraction` is `false`), the code:
+1. Logs the error and continues
+2. Marks it as extracted in the `extracted` sync.Map
+3. **Then unconditionally deletes the nested archive file** (`os.Remove(fullPath)`)
+
+This means if a nested archive (like `bad_nested.tar.gz`) cannot be properly extracted, the original file is still deleted from the temp directory. Since it's deleted, the malware scanner will never scan it as a regular file — it simply disappears silently. An attacker could package malware inside a deliberately broken nested archive, and the scanning tool would delete it and never inspect its contents.
+
+### The Fix (After)
+
+In the **after** version:
+
+```go
+err = extract(ctx, archivePath, fullPath)
+if err != nil {
+    if c.ExitExtraction {
+        return fmt.Errorf("failed to extract archive: %w", err)
+    }
+    logger.Warnf("extraction failed for %s, retaining archive for scanning: %s", f, err.Error())
+}
+
+extracted.Store(f, true)
+
+// only attempt to remove the archive file if we don't encounter an extraction error
+// any archives which cannot be extracted will be scanned like non-archive files
+if err == nil {
+    if err := os.Remove(fullPath); err != nil {
+        return fmt.Errorf("failed to remove archive file: %w", err)
+    }
+}
+```
+
+The fix:
+1. Changes the log level from `Debugf` to `Warnf` with a clearer message
+2. **Conditionally removes the file only when extraction succeeded** (`if err == nil { ... }`)
+3. If extraction fails, the file is retained so it can still be scanned as a regular file
+
+### Security Classification
+
+This is a **security vulnerability** because it causes **evidence deletion** / **loss of scanning coverage**: malware hidden inside a deliberately broken nested archive would be silently deleted before the scanner can inspect it. This allows an attacker to evade malware detection by packaging malicious content inside an archive that extraction fails on.
+
+The most accurate CWE is **CWE-778: Insufficient Logging** as a secondary aspect, but the more direct classification is:
+
+The primary vulnerability is that the software fails to scan a file that could contain malware — the file is deleted before it can be inspected. This relates to **CWE-223: Omission of Security-relevant Information** (the file is omitted from scanning), but even more specifically:
+
+- **CWE-223: Omission of Security-relevant Information** — the nested archive file that could not be extracted is deleted, so its contents are never inspected for malware, effectively omitting it from security scanning.
+- **CWE-778: Insufficient Logging** — the original code used `Debugf` (a low-priority log level often not shown) and didn't indicate the security significance of the failure.
+
+However, the most fitting CWE is:
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-223
+CWE_NAME: Omission of Security-relevant Information

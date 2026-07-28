@@ -1,0 +1,83 @@
+timestamp=2026-07-28T18:01:52.179Z level=INFO run=826edd56 message="creating instance" directory=/work
+timestamp=2026-07-28T18:01:52.180Z level=INFO run=826edd56 message=fromDirectory directory=/work
+timestamp=2026-07-28T18:01:52.187Z level=INFO run=826edd56 message=bootstrapping directory=/work
+timestamp=2026-07-28T18:01:52.194Z level=INFO run=826edd56 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-07-28T18:01:52.196Z level=INFO run=826edd56 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-07-28T18:01:52.196Z level=INFO run=826edd56 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-07-28T18:01:52.196Z level=ERROR run=826edd56 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-07-28T18:01:52.196Z level=INFO run=826edd56 message=loading path=/opencode.json
+timestamp=2026-07-28T18:01:52.201Z level=INFO run=826edd56 message=loading path=/opencode.json
+timestamp=2026-07-28T18:01:52.322Z level=INFO run=826edd56 message="all LSPs are disabled"
+timestamp=2026-07-28T18:01:52.323Z level=INFO run=826edd56 message="all formatters are disabled"
+timestamp=2026-07-28T18:01:52.323Z level=INFO run=826edd56 message=init
+timestamp=2026-07-28T18:01:52.448Z level=INFO run=826edd56 message=created id=ses_0561c1bbfffeUAdx44iNgXYlhL slug=clever-mountain version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T18:01:52.448Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785261712448 time.updated=1785261712448
+timestamp=2026-07-28T18:01:52.473Z level=INFO run=826edd56 message="event connected"
+timestamp=2026-07-28T18:01:52.635Z level=WARN run=826edd56 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-07-28T18:01:52.638Z level=INFO run=826edd56 message=loop session.id=ses_0561c1bbfffeUAdx44iNgXYlhL step=0
+timestamp=2026-07-28T18:01:52.646Z level=INFO run=826edd56 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-07-28T18:01:52.651Z level=INFO run=826edd56 message=init count=1
+timestamp=2026-07-28T18:01:52.652Z level=INFO run=826edd56 message="booting location services" directory=/work workspaceID=undefined
+[0m
+> reviewer · deepseek-v4
+[0m
+timestamp=2026-07-28T18:01:52.666Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=true agent=title mode=primary
+timestamp=2026-07-28T18:01:52.707Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:01:52.729Z level=INFO run=826edd56 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-07-28T18:01:52.856Z level=INFO run=826edd56 message="project copy refresh started" projectID=global
+timestamp=2026-07-28T18:01:52.857Z level=INFO run=826edd56 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-07-28T18:01:53.430Z level=INFO run=826edd56 message=process session.id=ses_0561c1bbfffeUAdx44iNgXYlhL messageID=msg_fa9e3e5000011hPAPCaoYYumov
+timestamp=2026-07-28T18:01:53.431Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:01:53.528Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:02:04.250Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:02:06.262Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:02:06.265Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:02:13.977Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:02:17.992Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:02:17.995Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:02:23.600Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:02:26.264Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=true agent=title mode=primary error.error="AI_RetryError: Failed after 3 attempts. Last error: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:02:31.606Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:02:31.609Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:02:38.653Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:02:54.657Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:02:54.660Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:03:03.131Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:03:35.146Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:03:35.149Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:03:43.473Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:04:47.476Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:04:47.479Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:04:56.076Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:07:04.078Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:07:04.082Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:07:11.651Z level=ERROR run=826edd56 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-07-28T18:11:27.654Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:11:27.658Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:11:41.376Z level=INFO run=826edd56 message=evaluated permission=read pattern=work/_CHANGES action.permission=read action.action=allow action.pattern=*
+[0m→ [0mRead _CHANGES
+timestamp=2026-07-28T18:11:41.589Z level=INFO run=826edd56 message=loop session.id=ses_0561c1bbfffeUAdx44iNgXYlhL step=1
+timestamp=2026-07-28T18:11:41.599Z level=INFO run=826edd56 message=process session.id=ses_0561c1bbfffeUAdx44iNgXYlhL messageID=msg_fa9ece196001isJ17o6qZjNF1N
+timestamp=2026-07-28T18:11:41.599Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:11:41.600Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:11:52.619Z level=INFO run=826edd56 message=evaluated permission=read pattern=work/_CHANGES/file_01 action.permission=read action.action=allow action.pattern=*
+[0m→ [0mRead _CHANGES/file_01
+timestamp=2026-07-28T18:11:52.756Z level=INFO run=826edd56 message=loop session.id=ses_0561c1bbfffeUAdx44iNgXYlhL step=2
+timestamp=2026-07-28T18:11:52.767Z level=INFO run=826edd56 message=process session.id=ses_0561c1bbfffeUAdx44iNgXYlhL messageID=msg_fa9ed0d350011qKwiFmpqL41gQ
+timestamp=2026-07-28T18:11:52.768Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:11:52.769Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:12:04.161Z level=INFO run=826edd56 message=evaluated permission=read pattern=work/_CHANGES/file_01/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-07-28T18:12:04.176Z level=INFO run=826edd56 message="touching file" file=/work/_CHANGES/file_01/before.txt
+[0m→ [0mRead _CHANGES/file_01/before.txt
+timestamp=2026-07-28T18:12:04.714Z level=INFO run=826edd56 message=evaluated permission=read pattern=work/_CHANGES/file_01/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-07-28T18:12:04.721Z level=INFO run=826edd56 message="touching file" file=/work/_CHANGES/file_01/after.txt
+[0m→ [0mRead _CHANGES/file_01/after.txt
+timestamp=2026-07-28T18:12:05.276Z level=INFO run=826edd56 message=evaluated permission=read pattern=work/_CHANGES/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-07-28T18:12:05.281Z level=INFO run=826edd56 message="touching file" file=/work/_CHANGES/file_01/diff.txt
+[0m→ [0mRead _CHANGES/file_01/diff.txt
+timestamp=2026-07-28T18:12:05.384Z level=INFO run=826edd56 message=loop session.id=ses_0561c1bbfffeUAdx44iNgXYlhL step=3
+timestamp=2026-07-28T18:12:05.394Z level=INFO run=826edd56 message=process session.id=ses_0561c1bbfffeUAdx44iNgXYlhL messageID=msg_fa9ed3e89001FbMKDzUvP5BTK6
+timestamp=2026-07-28T18:12:05.394Z level=INFO run=826edd56 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561c1bbfffeUAdx44iNgXYlhL small=false agent=reviewer mode=primary
+timestamp=2026-07-28T18:12:05.395Z level=INFO run=826edd56 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-07-28T18:12:43.369Z level=INFO run=826edd56 message=loop session.id=ses_0561c1bbfffeUAdx44iNgXYlhL step=4
+timestamp=2026-07-28T18:12:43.371Z level=INFO run=826edd56 message="exiting loop" session.id=ses_0561c1bbfffeUAdx44iNgXYlhL
+timestamp=2026-07-28T18:12:43.375Z level=INFO run=826edd56 message="disposing instance" directory=/work

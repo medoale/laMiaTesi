@@ -1,0 +1,44 @@
+Now let me understand the `ValidateDAGName` function and how path traversal was previously handled in the API.
+Let me also check the existing error definitions and look at the existing path traversal test to understand the prior state:
+Let me verify how DagName is used in file operations to confirm the full impact of this path traversal:
+Now I have a complete understanding of the changes. Let me verify one final aspect — how the `locateDAG` function is invoked by the store methods that were reachable via the unvalidated API path parameter:
+Let me look at the Delete implementation to confirm it uses `locateDAG` unsafely:
+## Analysis
+
+This commit fixes a **Path Traversal** vulnerability. Here is the full chain of evidence:
+
+### The Vulnerability
+
+The API endpoints (`GET /api/v1/dags/{fileName}/spec`, `DELETE /api/v1/dags/{fileName}`, `POST /api/v1/dags/{fileName}/start`, and others) extracted the `fileName` parameter from the URL path and passed it directly to the file storage layer **without any validation**.
+
+The critical function is `locateDAG` in `/work/internal/persis/filedag/store.go` (lines 603–625). It concatenates the user-supplied `nameOrPath` directly into `filepath.Join(absDir, nameOrPath)` **without** calling `filepath.Base()`, `filepath.Clean()`, or any traversal check. This is unlike `generateFilePath` (line 590), which *does* use `filepath.Base()` and a prefix check for protection — but `generateFilePath` was only used by `Create` and `Rename` (for the new name).
+
+This means an attacker could send:
+
+| Request | Path traversal behavior |
+|---------|------------------------|
+| `GET /api/v1/dags/..%2F..%2Ftmp%2Fsecret/spec` | Read the file `/tmp/secret.yaml` |
+| `DELETE /api/v1/dags/..%2F..%2Ftmp%2Fsecret` | Delete `/tmp/secret.yaml` |
+| `POST /api/v1/dags/..%2F..%2Ftmp%2Fsecret/start` | Execute `/tmp/secret.yaml` |
+
+Additionally, the SSE event streaming topic parsing (`topic.go`) accepted path traversal identifiers like `dag:../../tmp/secret.yaml` without validation, allowing attackers to subscribe to DAG events for files outside the intended directory.
+
+### What the Fix Does
+
+1. **API middleware validation** (`api.go`): Introduces `validateDAGFileNameMiddleware` — a strict middleware that uses reflection to locate the `FileName` field on every request struct and validates it via `core.ValidateDAGName()`. The regex `^[a-zA-Z0-9_.-]+$` rejects `/`, `\`, and `..` — making path traversal impossible.
+
+2. **SSE topic validation** (`topic.go`): Separates `TopicTypeDAG` and `TopicTypeDAGHistory` from the catch-all case and validates their identifiers with `core.ValidateDAGName()`.
+
+3. **Tests** (`api_test.go`, `topic_test.go`): Add regression tests confirming that both direct path traversal (`../../tmp/secret.yaml`) and URL-encoded traversal (`..%2F..%2Ftmp%2Fsecret`) are rejected with `400 Bad Request`.
+
+### CWE Classification
+
+This is a classic **Path Traversal** vulnerability — the software constructs a filesystem path from an attacker-controlled input without proper sanitization, allowing access to files outside the intended directory.
+
+- **CWE-22**: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+
+No other CWEs apply. The fix is purely about input validation to prevent directory traversal; there is no injection, no overflow, no cryptographic weakness, etc.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

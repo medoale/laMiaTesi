@@ -1,0 +1,52 @@
+I'll start by exploring the workspace structure and reading the changes.
+Now let me analyze this change carefully.
+
+The diff shows a single change in the file `_CHANGES/file_01/`:
+
+**Before (line ~412-419 in before.txt):**
+```php
+        if (isset($eventsParticipationEditForm)) {
+            $formValues = $eventsParticipationEditForm->validate($_POST);
+        }
+```
+
+**After (lines 416-423 in after.txt):**
+```php
+        // if user is no leader of the event then only allow to handle their own participation
+        if (!$participants->isLeader($gCurrentUserId)) {
+            $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+        }
+
+        if (isset($eventsParticipationEditForm)) {
+            $formValues = $eventsParticipationEditForm->validate($_POST);
+        }
+```
+
+**Security Analysis:**
+
+The vulnerability is clear. Looking at the `before` code, in the participation modes (`participate`, `participate_cancel`, `participate_maybe`):
+
+1. **Line 47 in both files**: `$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', ...)` - The `user_uuid` is taken from the GET parameter. For a logged-in user, there's a default value of `$gCurrentUser->getValue('usr_uuid')`, but this default can be **overridden** by providing a `user_uuid` GET parameter.
+
+2. **Line 77**: `$user->readDataByUuid($getUserUuid)` - A user object is loaded based on this UUID.
+
+3. **Lines 424-492 (before)** / **Lines 429-500 (after)**: In the participation handling block, the code operates on `$user` (the user loaded by `$getUserUuid`). This means:
+   - A leader can edit **any user's** participation (which is intended).
+   - But a **non-leader** (regular user) could also pass `?user_uuid=ANOTHER_USER_UUID` to modify another user's participation — changing their comment, guest count, participation status, etc.
+
+**This is an Authorization Bypass (Insecure Direct Object Reference - IDOR) vulnerability.** A regular, non-leader user could manipulate the `user_uuid` GET parameter to act on behalf of other users in the participation system.
+
+The fix in the `after.txt` adds a check at lines 416-419:
+```php
+if (!$participants->isLeader($gCurrentUserId)) {
+    $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+}
+```
+
+This ensures that **only event leaders** can specify a `user_uuid` parameter to act on behalf of other users. Non-leader users are forced to only operate on their own `usr_uuid`.
+
+This is a classic **CWE-862: Missing Authorization** (or more specifically, CWE-639: Authorization Bypass Through User-Controlled Key / Insecure Direct Object Reference). The user-supplied `user_uuid` parameter allows impersonation of other users' participation when authorization checks are missing.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

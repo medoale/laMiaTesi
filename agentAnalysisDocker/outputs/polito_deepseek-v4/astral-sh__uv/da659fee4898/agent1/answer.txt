@@ -1,0 +1,56 @@
+I'll start by exploring the `_CHANGES` directory to see what's in there.
+There are 8 files with changes. Let me read the diff for each one to understand the changes.
+Now let me also read the before and after files where the core validation logic was added to get full context:
+Now I have a complete picture of all 8 files. Let me analyze the changes:
+
+## Summary of Changes
+
+This commit is from the **uv** project (a Python package manager in Rust) and introduces **ZIP archive filename validation** to prevent processing archives with malicious or malformed filenames.
+
+### What changed:
+
+1. **file_01 & file_02**: Updated `async_zip` dependency from revision `285e487` to `f6a41d3` (a newer version that may handle control characters differently).
+
+2. **file_03**: Added `regex` as a workspace dependency (needed for the validation regex).
+
+3. **file_04**: Added two new error variants to the Error enum:
+   - `EmptyFilename` — for empty member names
+   - `UnacceptableFilename { filename }` — for names containing control characters (with sanitized filename for display)
+
+4. **file_05**: Added the core validation functions in the main `unzip` module:
+   - `validate_archive_member_name()` — checks for empty names and control characters using regex `\p{C}` (all Unicode control characters), replacing them with U+FFFD replacement character in the error message
+   - `insecure_no_validate()` — checks for an environment variable `UV_INSECURE_NO_ZIP_VALIDATION` that allows bypassing validation
+   - Tests for both functions
+
+5. **file_06 (async/streaming unzip)**: Added calls to `validate_archive_member_name()` for both local file headers and central directory entries in the streaming unzip path.
+
+6. **file_07 (sync unzip)**: Added calls to `validate_archive_member_name()` in the synchronous unzip path.
+
+7. **file_08**: Added an integration test (`reject_invalid_archive_member_names`) that verifies a malicious wheel (`cbwheeldiff2==0.0.1`) containing a filename with a control character is properly rejected.
+
+### Is this a security vulnerability fix?
+
+**Yes.** This commit fixes a security vulnerability involving **improper input validation** of ZIP archive member names. The specific threat is:
+
+1. **Control characters in filenames**: A maliciously crafted ZIP archive can contain files with control characters (including null bytes `\0`, newlines, carriage returns, etc.) in their filenames. These can be exploited in various ways:
+   - **Null byte injection** (`\0`) — can truncate filenames at the null byte on systems where the underlying C libraries treat null bytes as string terminators, potentially bypassing directory traversal checks or causing files to be written to unexpected locations.
+   - **Newline/carriage return injection** — can corrupt log output, terminal emulators, or be used for log injection/forgery attacks.
+   - Other control characters can cause inconsistent behavior across different ZIP implementations, leading to what is known as a "zip slip" variant or parser differential attacks.
+
+2. **Empty filenames**: An empty filename in a ZIP archive could lead to unexpected behavior or crashes.
+
+The core issue is that before this commit, the code would accept any filename from the ZIP archive and pass it through to the filesystem. This is a classic case of **CWE-20: Improper Input Validation** leading to **CWE-74: Injection** (particularly control character injection).
+
+The most specific and accurate CWE is **CWE-147: Improper Neutralization of Input Terminators and Separators** (specifically for null bytes and control characters that could act as terminators/separators), or more broadly **CWE-20: Improper Input Validation** since the filenames from the archive were not validated before use. However, looking more carefully:
+
+- The comment in the code says the validation is not about directory traversal (which is already handled separately via `enclosed_name()`), but about names that other ZIP implementations "handle incorrectly or inconsistently."
+- The test file `reject_invalid_archive_member_names` specifically catches a wheel with a control character in its filename.
+- The regex `\p{C}` matches all Unicode control characters.
+
+This most accurately maps to **CWE-147: Improper Neutralization of Input Terminators and Separators** (since control characters like null bytes, newlines, carriage returns, and tabs are input terminators/separators that can be exploited) and/or **CWE-20: Improper Input Validation** (the broader category). The null byte aspect could also touch on **CWE-158: Improper Neutralization of Null Byte or NUL Character**.
+
+However, the most precise and specific classification is **CWE-147** because the primary concern is about filenames containing control characters that act as terminators (null byte, newline) or separators (tab, etc.) that different ZIP tools handle inconsistently, leading to what is essentially a parser differential attack vector.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-147
+CWE_NAME: Improper Neutralization of Input Terminators and Separators

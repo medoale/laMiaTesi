@@ -1,0 +1,70 @@
+I'll start by exploring the workspace structure to find the _CHANGES folder.
+Let me read all the files.
+Now let me analyze the changes carefully.
+
+**file_01** is a test file. It adds two new test functions:
+- `TestNestedFailureRetention` - verifies that when a nested archive extraction fails (with `ExitExtraction=false`), the original nested archive file is **retained** in the extraction directory rather than being deleted.
+- `TestNestedFailureRetentionError` - verifies that when `ExitExtraction=true`, the error propagates.
+
+**file_02** is the actual production code change in `extractNestedArchive`. The diff shows:
+
+**Before (buggy code):**
+```go
+err = extract(ctx, archivePath, fullPath)
+if err != nil {
+    if c.ExitExtraction {
+        return fmt.Errorf("failed to extract archive: %w", err)
+    }
+    logger.Debugf("ignoring extraction error for %s: %s", f, err.Error())
+}
+
+extracted.Store(f, true)
+
+if err := os.Remove(fullPath); err != nil {
+    return fmt.Errorf("failed to remove archive file: %w", err)
+}
+```
+
+**After (fixed code):**
+```go
+err = extract(ctx, archivePath, fullPath)
+if err != nil {
+    if c.ExitExtraction {
+        return fmt.Errorf("failed to extract archive: %w", err)
+    }
+    logger.Warnf("extraction failed for %s, retaining archive for scanning: %s", f, err.Error())
+}
+
+extracted.Store(f, true)
+
+// only attempt to remove the archive file if we don't encounter an extraction error
+// any archives which cannot be extracted will be scanned like non-archive files
+if err == nil {
+    if err := os.Remove(fullPath); err != nil {
+        return fmt.Errorf("failed to remove archive file: %w", err)
+    }
+}
+```
+
+**The vulnerability:** In the "before" code, when extraction of a nested archive fails but `ExitExtraction` is `false`, the code would **still delete the original archive file** (`os.Remove(fullPath)`) unconditionally. This means:
+
+1. If a nested archive inside an outer archive fails to extract (e.g., it's a corrupt zip/gzip but still valid enough to be detected as an archive by extension), the original inner archive file would be **deleted**.
+2. The content of that inner archive would then be **invisible to subsequent scanning** — malware embedded in a nested archive that fails extraction would simply be silently deleted, bypassing the security scanner entirely.
+3. An attacker could craft a nested archive that triggers extraction failure (e.g., a gzip that decompresses to invalid content or a slightly corrupt zip) and the scanner would just delete it without scanning it, allowing malicious content hidden inside a problematic nested archive to evade detection.
+
+This is a **security bypass / evasion** vulnerability: an attacker can hide malicious content inside nested archives that are designed to fail extraction, and the "before" code would silently delete those archives instead of retaining them for scanning as regular files. The fix makes the code only delete the archive file if extraction succeeded (`if err == nil`), so failed nested archives are retained and can still be scanned.
+
+This falls under **CWE-223: Omission of Security-relevant Information** (the scanner fails to process and report on content it should scan), or more accurately **CWE-280: Improper Handling of Insufficient Permissions or Privileges** or **CWE-703: Improper Check or Handling of Exceptional Conditions** — the code unconditionally removes the archive even when extraction fails.
+
+The most specific CWE is **CWE-223** (Omission of Security-relevant Information) since the scanner silently omits/ignores content that should be scanned, but the primary issue is really **CWE-703: Improper Check or Handling of Exceptional Conditions** — the error from `extract()` is checked for logging but the conditional removal doesn't account for the error case.
+
+Actually, let me reconsider. The vulnerability is that the scanner deletes potentially malicious nested archive files when their extraction fails, making them invisible to the security analysis. This is a form of **security feature bypass** that prevents detection of malicious content. The most precise CWE is:
+
+- **CWE-703** - Improper Check or Handling of Exceptional Conditions (the error return value from `extract()` is used for the `ExitExtraction` decision but not for the subsequent `os.Remove` call)
+- **CWE-223** - Omission of Security-relevant Information (the file is deleted rather than scanned as a fallback)
+
+I'll go with CWE-703 as the most primary one since the root cause is a missing error check before `os.Remove`.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-703
+CWE_NAME: Improper Check or Handling of Exceptional Conditions

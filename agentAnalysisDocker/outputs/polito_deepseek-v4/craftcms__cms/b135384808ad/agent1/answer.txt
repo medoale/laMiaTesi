@@ -1,0 +1,35 @@
+Let me start by exploring the workspace structure.
+Now let me read the rest of the before.txt and after.txt for file_02 to see the `_saveUserGroups` method changes:
+Now I have a clear picture. Let me analyze the two files:
+
+**File 01** — A changelog (release notes) for Craft CMS. The diff shows a single line being added:
+```
++- Fixed a [moderate-severity] authorization bypass vulnerability. (GHSA-jq2f-59pj-p3m3)
+```
+This is just a changelog entry documenting a security fix — it's not the actual code fix.
+
+**File 02** — A PHP source file (`craft\controllers\UsersController`). The diff shows two changes:
+
+1. **In `actionSavePermissions()`** (line ~1261): Before, there was no authorization check at the beginning. After, it adds:
+   ```php
+   if (!$this->showPermissionsScreen()) {
+       throw new ForbiddenHttpException('User not authorized to perform this action.');
+   }
+   ```
+
+2. **In `_saveUserGroups()`** (line ~2788): Before, there was no check limiting who can assign user groups. After, it adds:
+   ```php
+   if (!$currentUser->canAssignUserGroups()) {
+       return;
+   }
+   ```
+
+These are clearly authorization bypass fixes. The `actionSavePermissions()` method (which saves user group assignments and permissions) was missing a check to verify the current user is actually allowed to see/manage the permissions screen. Without this check, a user who can reach the endpoint (e.g., has `editUsers` permission but not permission to assign groups) could modify permissions/groups they shouldn't.
+
+Similarly, `_saveUserGroups()` was missing the `canAssignUserGroups()` check, meaning it would attempt to save groups even if the current user doesn't have the right to assign user groups, only checking individual group permissions later.
+
+This is a classic **authorization bypass** — the code was missing authorization checks before performing privileged operations.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862
+CWE_NAME: Missing Authorization
