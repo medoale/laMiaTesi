@@ -33,8 +33,62 @@
 #     dated final snapshot AND the working state (both stages') is deleted —
 #     so the next periodic refresh (weeks/months later) starts genuinely
 #     fresh instead of "resuming" a run that actually finished.
+#
+# DETACHED BY DEFAULT: resumability is worthless if the run never survives long
+# enough to finish. The script re-execs itself into its own session (setsid), so
+# closing the terminal that launched it no longer kills it — see the block right
+# after the `cd` below.
 set -euo pipefail
 cd "$(dirname "$0")"
+
+# --- Detach from the terminal -------------------------------------------------
+# This run takes hours. Launched from an interactive shell — a VSCode integrated
+# terminal, an ssh session, a JupyterHub pod terminal — the process is a child of
+# that shell and receives SIGHUP the moment it closes. That is what kept
+# happening in practice: since stage 1 only checkpoints per YEAR, every such
+# death threw away up to 365 days' worth of GitHub queries, and the run never
+# reached the end no matter how many times it was restarted.
+#
+# So unless we already are the detached copy, re-exec ourselves under setsid —
+# a brand-new session with no controlling terminal, hence nothing to hang up on —
+# and give the shell straight back. nohup is belt-and-braces: SIGHUP stays
+# ignored even if something manages to send one anyway.
+#
+# To run in the foreground instead (debugging, or under an external supervisor
+# that already handles this): CRITICALITY_NO_DETACH=1 ./run_pipeline.sh
+RUN_LOG="run.log"
+RUN_PID_FILE="run.pid"
+
+# Refuse to start a second concurrent run. Two copies would write the same state
+# files (candidates.txt.partial, enumerate_chunks_done.txt, scored_in_progress.csv)
+# and destroy each other's resume state. Worth guarding explicitly now that
+# launching returns immediately instead of occupying the terminal, which makes a
+# double launch easy to do by accident.
+if [ -f "$RUN_PID_FILE" ] && kill -0 "$(cat "$RUN_PID_FILE" 2>/dev/null)" 2>/dev/null; then
+    echo "ERROR: a run is already in progress (PID $(cat "$RUN_PID_FILE"))."
+    echo "       Follow it with: tail -f $(pwd)/$RUN_LOG"
+    echo "       Stop it with:   kill \$(cat $(pwd)/$RUN_PID_FILE)"
+    exit 1
+fi
+
+if [ -z "${CRITICALITY_NO_DETACH:-}" ]; then
+    export CRITICALITY_NO_DETACH=1
+    # Appended, not truncated: across the many restarts a multi-hour run takes,
+    # the earlier attempts' output is the only record of what already happened.
+    setsid nohup "$0" "$@" >>"$RUN_LOG" 2>&1 </dev/null &
+    echo "Pipeline detached into its own session — closing this terminal will not stop it."
+    echo "  log:    $(pwd)/$RUN_LOG"
+    echo "  pid:    $(pwd)/$RUN_PID_FILE"
+    echo "  follow: tail -f $(pwd)/$RUN_LOG   (Ctrl+C there closes only the tail)"
+    echo "  stop:   kill \$(cat $(pwd)/$RUN_PID_FILE)"
+    exit 0
+fi
+
+# We are the detached copy. Record OUR pid, not the one $! would have given the
+# parent: setsid forks, so that pid belongs to a process which has already exited.
+echo $$ > "$RUN_PID_FILE"
+trap 'rm -f "$RUN_PID_FILE"' EXIT
+echo "=== run started $(date -u +%Y-%m-%dT%H:%M:%SZ) (PID $$) ==="
 
 # --- Tunable parameters ------------------------------------------------------
 MIN_STARS=20000         # candidate pool: only the most popular repos, so the

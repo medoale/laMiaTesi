@@ -53,11 +53,34 @@ cd criticalityScore
 ./run_pipeline.sh
 ```
 
-Two stages, both logged to the console:
+The command **returns immediately**: the script re-execs itself under `setsid`,
+in its own session with no controlling terminal, and keeps running after you
+close the terminal that launched it. This is not a convenience — a full run
+takes hours, and while it is resumable, stage 1 only checkpoints once per year,
+so a run killed by a closing terminal (VSCode's integrated terminal, an ssh
+session, a JupyterHub pod) threw away up to a year's worth of GitHub queries
+every time and never reached the end.
+
+Output therefore goes to `run.log` (appended across runs, so earlier attempts
+stay on record) rather than to the console:
+
+```bash
+tail -f run.log            # Ctrl+C closes only the tail, not the run
+kill $(cat run.pid)        # stop the run
+CRITICALITY_NO_DETACH=1 ./run_pipeline.sh   # foreground instead, for debugging
+```
+
+Launching while a run is already in progress is refused: two copies would write
+the same state files and destroy each other's resume state.
+
+Two stages:
 
 1. `enumerate_github` — lists every repo with at least `MIN_STARS` stars
    (default **3000**, tunable at the top of the script) into
-   `Data/candidates_<date>.txt`.
+   `Data/candidates_<date>.txt`. Note it queries GitHub **one calendar day at a
+   time**, so the whole 2008-to-now range is ~7,000 GraphQL queries against a
+   5,000/hour budget: expect stage 1 alone to stall waiting for the rate limit
+   to reset.
 2. `criticality_score` — scores each candidate (~2.5s/repo with one worker;
    expect on the order of an hour for a few thousand candidates) using
    `pike_depsdev.yml`, the config that includes the dependent-count signal,
