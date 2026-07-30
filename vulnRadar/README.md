@@ -6,16 +6,18 @@ A daily scanner that selects which GitHub repositories to **keep an eye on** bec
 
 ```bash
 cd /home/medo/laMiaTesi/vulnRadar
-nohup python3 main.py >> radar.log 2>&1 &
+./run.sh          # start detached from the terminal
+tail -f run.log   # watch it live
+./stop.sh         # stop it cleanly
 ```
 
-The pipeline runs immediately and then re-runs once a day. Watch the log with `tail -f radar.log`. Stop the daemon with `pkill -f "python3 main.py"`.
+The pipeline runs immediately and then re-runs once a day. `run.sh` detaches the process (`nohup`, unbuffered) so it survives closing the terminal and mirrors into `run.log` exactly what you would see on screen; `stop.sh` signals it to shut down cleanly.
 
 ---
 
 ## How it works
 
-Three tasks run **in parallel** (one thread each), each producing up to `MAX_REPOS_PER_TASK` repositories (default **30**):
+Four tasks run **in parallel** (one thread each), each producing up to `MAX_REPOS_PER_TASK` repositories (default **30**):
 
 ### Task 1 — Official (NVD-driven, product-aware)
 Queries the **NVD API** for CVEs published in the last 30 days and extracts every distinct `(vendor, product)` pair from CPE strings (a single CVE that lists 5 different versions of the same product still counts once for that pair). Pairs are then ranked by frequency.
@@ -52,11 +54,28 @@ score = W_ISSUES × #recent_issues + W_COMMITS × #recent_commits
 
 Commits are weighted slightly more — coordinated developer activity is a stronger signal of an exposed surface than user chatter. Weights are at the top of `task_talkers.py`.
 
+### Task 4 — OSV (OSV.dev-driven, package-aware)
+The same idea as Task 1, sourced from **OSV.dev** instead of NVD: an independent vulnerability database, so a package that NVD has not indexed yet can still surface here. Every distinct `(ecosystem, package)` pair found in recent OSV entries is ranked by how many vulnerabilities affect it.
+
+The repo name is **never guessed**; a pair resolves in this order:
+
+1. **direct lookup**, when the package name already *is* a GitHub path — the OSV counterpart of Task 1's `/repos/{vendor}/{product}`. This is the norm in the Go ecosystem, where the package name is literally the module import path (`github.com/gin-gonic/gin`), and simply does not apply to ecosystems whose names are not path-shaped.
+2. the `github.com/owner/repo` URLs the vulnerabilities of that package list in their own `references`, accepted only when at least `MIN_REFERENCE_HITS` distinct vulnerabilities agree — the same rule, and the same shared extractor, as Task 1.
+
+A package that resolves to neither is **dropped**, exactly as Task 1 drops Chrome or Windows.
+
+OSV has no date-range query, so instead of a time window the task streams the newest `MAX_ENTRIES_TO_CHECK` entries (default **5000**) from OSV's reverse-chronological feed and re-samples them fresh every run. The size matters: the feed is dominated by Linux distro and container advisories (Debian, Ubuntu, Chainguard, …), whose references point at the distro's own tracker rather than at GitHub, so the window must be wide enough to also reach the GitHub-backed ecosystems (GHSA, Go, PyPI, npm). Detail fetches run concurrently, keeping the whole task to roughly two minutes per run.
+
 ---
 
 ## CVE matching
 
-After the three tasks finish, vulnRadar fetches CVEs from NVD published since the last run and looks for `github.com/owner/repo` URLs in their `references` field. If any URL points to a repo we have **ever** selected, we record a match in `cve_matches` with the number of days between selection and CVE publication.
+After the four tasks finish, vulnRadar fetches vulnerabilities published since the last run and looks for `github.com/owner/repo` URLs in their `references` field. If any URL points to a repo we have **ever** selected, we record a match in `cve_matches` with the number of days between selection and CVE publication.
+
+Two **independent sources** are queried for the same kind of evidence, and a repo is matched if **either** finds it (logical OR), so a vulnerability indexed by only one of the two is not missed:
+
+- **NVD** — date-range API, `last_check` cursor `nvd_last_check`.
+- **OSV.dev** — streamed reverse-chronological feed, capped per run, cursor `osv_last_check`. Its cursor advances only once the whole window has actually been covered, never on a partial fetch. When a vulnerability carries a real CVE ID among its aliases that ID is used, so the same issue found by both sources lands under one `cve_id` and the `UNIQUE(repo, cve_id)` constraint recognises it as a single match.
 
 Two important guarantees:
 
@@ -73,7 +92,7 @@ The URL extraction also filters out reserved GitHub paths (`advisories/`, `orgs/
 |-------|-------------|
 | `tracked_repos` | One row per (repo, date, task) selection. Includes the selection score, a human-readable reason and the exact selection timestamp (`selected_at`, added by automatic migration; NULL on rows that pre-date it). The same repo can appear multiple times across days/tasks. |
 | `cve_matches`   | A repo we previously selected has been mentioned in a new CVE. See fields below. Rows are never deleted (`INSERT OR IGNORE`). |
-| `last_check`    | Bookkeeping: timestamp of the upper bound of the last successful NVD fetch, so we only fetch new CVEs each run. |
+| `last_check`    | Bookkeeping: one cursor per source (`nvd_last_check`, `osv_last_check`) holding the upper bound of the last successful fetch, so each run only looks at what is new. |
 
 **`cve_matches` columns**:
 
@@ -103,16 +122,16 @@ MAX_REPOS_PER_TASK    = 30    # cap per task per run
 NVD_LOOKBACK_DAYS     = 30    # window for the Official task
 HOT_LOOKBACK_DAYS     = 7     # window for the Hot task
 TALKERS_LOOKBACK_DAYS = 7     # window for the Talkers task
+OSV_LOOKBACK_DAYS     = 30    # window for the OSV task
 SECURITY_KEYWORDS     = [...]  # keywords used by the Hot task
 ```
 
-Per-task tuning for Task 1 lives at the top of `task_official.py`
-(`MIN_REFERENCE_HITS`).
-
 Per-task tuning:
 
+- `task_official.py` → `MIN_REFERENCE_HITS`
 - `task_hot.py` → `W_COMMITS`, `W_DOWNLOADS`, `ENRICH_MULTIPLIER`, `SEARCH_PAGES_PER_KEYWORD`
 - `task_talkers.py` → `W_ISSUES`, `W_COMMITS`
+- `task_osv.py` → `MAX_ENTRIES_TO_CHECK`, `MIN_REFERENCE_HITS`
 
 ### Credentials (`.CVEfixes.ini`)
 
@@ -139,13 +158,14 @@ By default the program runs in **daemon mode**: it executes the full pipeline im
 
 To run it just once and exit (e.g. for ad-hoc analysis or external scheduling), set `DAILY_RUN_HOUR_UTC = None` in `config.py`.
 
-Run it as a background process so it survives logout:
+To run it detached so it survives logout, use the helper scripts (see Quick start):
 
 ```bash
-nohup python3 main.py >> radar.log 2>&1 &
+./run.sh     # background, logs to run.log
+./stop.sh    # clean shutdown
 ```
 
-Or as a systemd service for automatic restart on reboot.
+Or install it as a systemd service for automatic restart on reboot.
 
 ---
 
@@ -153,15 +173,17 @@ Or as a systemd service for automatic restart on reboot.
 
 ```
 vulnRadar/
-├── main.py            ← entry point, runs the three tasks in parallel
+├── main.py            ← entry point, runs the four tasks in parallel
 ├── config.py          ← tunable parameters + .CVEfixes.ini reader
 ├── github_client.py   ← thread-safe GitHub HTTP client (rate limit aware)
 ├── nvd_client.py      ← NVD client: 119-day windowing, robust pagination, partial-failure safe
+├── osv_client.py      ← OSV.dev client: reverse-chronological feed, concurrent detail fetches
 ├── database.py        ← SQLite schema, automatic migrations and insert helpers
 ├── task_official.py   ← Task 1 — NVD vendor/product analysis (direct lookup + CVE references)
 ├── task_hot.py        ← Task 2 — security keyword commit search + silent-patch signals
 ├── task_talkers.py    ← Task 3 — most active repos right now
-├── cve_matcher.py     ← cross-reference selections vs new CVEs (no false predictions)
+├── task_osv.py        ← Task 4 — OSV ecosystem/package analysis (direct lookup + references)
+├── cve_matcher.py     ← cross-reference selections vs new CVEs from NVD and OSV (no false predictions)
 ├── vulnRadar_results_analysis.ipynb  ← analysis notebook on the collected matches
 └── Data/vulnRadar.db  ← SQLite database with selections and matches
 ```

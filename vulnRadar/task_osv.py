@@ -41,10 +41,16 @@ import config
 logger = logging.getLogger('vulnRadar')
 
 # How many of the most recent OSV entries in config.OSV_LOOKBACK_DAYS to
-# actually check — the modified_id.csv stream is dominated by Linux distro
-# advisories (~99% in samples), so the window can hold far more entries than
-# are worth an API call each; this caps the cost per run.
-MAX_ENTRIES_TO_CHECK = 500
+# actually check, capping the cost of a run (the whole window is far larger).
+#
+# The modified_id.csv stream is dominated by Linux distro and container
+# advisories (Debian, Ubuntu, Chainguard...), whose references point at the
+# distro's own tracker rather than at github.com, so this must stay wide
+# enough to also reach the GitHub-backed ecosystems (GHSA, Go, PyPI, npm)
+# that can actually resolve to a repo: measured on the live feed, the newest
+# 5000 entries hold ~54 GHSA. Detail fetches run concurrently (osv_client.
+# fetch_vulns), so this costs roughly two minutes per daily run.
+MAX_ENTRIES_TO_CHECK = 5000
 
 # Same threshold and same rationale as official: a repo referenced by a
 # single vulnerability is often a proof-of-concept, not the package itself.
