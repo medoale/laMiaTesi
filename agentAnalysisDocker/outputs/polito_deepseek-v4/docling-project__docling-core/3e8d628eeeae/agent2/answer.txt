@@ -1,0 +1,22 @@
+Let me find the actual file paths to understand the full context.
+## Analysis
+
+The commit changes `yaml.load(f, Loader=yaml.FullLoader)` to `yaml.load(f, Loader=yaml.SafeLoader)` in two files:
+
+1. **`/work/docling_core/types/doc/document.py` line 4357** — the `DoclingDocument.load_from_yaml()` class method, a **public API** that takes a user-supplied filename and deserializes a YAML file into a `DoclingDocument` object.
+
+2. **`/work/test/test_docling_doc.py` line 1976** — in the `test_export_with_precision` test function, which loads expected expected test data from a YAML file.
+
+### Security impact
+
+PyYAML's `yaml.load()` with `Loader=yaml.FullLoader` (or worse, the default `Loader`) supports deserialization of arbitrary Python objects via YAML tags such as `!!python/object:`, `!!python/module:`, `!!python/name:os.system`, etc. An attacker who can control or influence the contents of a YAML file loaded by `load_from_yaml()` can craft a payload that executes arbitrary operating system commands when the YAML is deserialized. This is a classic **arbitrary code execution via unsafe deserialization**.
+
+The fix switches to `yaml.SafeLoader`, which restricts deserialization to only safe, built-in YAML types (dicts, lists, strings, numbers, booleans, None) and completely rejects any Python object deserialization tags. This is the **correct and standard fix** for this vulnerability.
+
+The test file change in `test_export_with_precision` is a secondary, collateral fix — since the test loads a YAML file that is expected to be safe (it's part of the project's own test data), the primary security concern is the public `load_from_yaml` API.
+
+**CWE classification:** This is CWE-502 (Deserialization of Untrusted Data). PyYAML's `FullLoader` allows arbitrary Python object instantiation, which maps directly to this CWE. In the broader YAML/Python deserialization vulnerability space, this is also commonly categorized under CWE-94 (Improper Control of Generation of Code / Code Injection) as a subvariant, but CWE-502 is the most specific and accurate primary classification.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

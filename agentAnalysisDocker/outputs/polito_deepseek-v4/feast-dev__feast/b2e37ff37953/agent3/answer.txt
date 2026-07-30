@@ -1,0 +1,48 @@
+Let me explore the repository systematically for security vulnerabilities. I'll look at the key code areas.
+Let me verify the critical findings by examining the actual code:
+Let me verify more of the SQL injection patterns and check other sources:
+Let me also check a few more areas to be thorough:
+Let me check one more area - how entity_df flows from the public API to the vulnerable SQL sinks:
+Now I have a thorough understanding of the codebase. Let me also look at what's in the Go and Java code to see if there are comparable vulnerabilities.
+Let me check one more important file path - the Couchbase offline store:
+I have thoroughly explored the Feast repository. Here is my complete security assessment:
+
+---
+
+## Findings Summary
+
+The repository is **Feast**, an open-source feature store for machine learning. The most critical codebase is the Python SDK (`/work/sdk/python/feast/`), where I identified **six distinct, confirmed vulnerability classes**:
+
+### 1. CWE-89: SQL Injection (Critical, Widespread)
+The `entity_df` parameter to `get_historical_features()` accepts raw SQL strings that are directly interpolated into SQL queries via f-strings with **zero sanitization or parameterization**. This affects every offline store implementation:
+- **BigQuery** (`bigquery.py:732`): `f"CREATE TABLE ... AS ({entity_df})"`
+- **Redshift** (`redshift.py:561`): `f"CREATE TABLE ... AS ({entity_df})"`
+- **Snowflake** (`snowflake.py:678`): `f"CREATE TEMPORARY TABLE ... AS ({entity_df})"`
+- **Athena** (`athena.py:490`): `f"CREATE TABLE ... AS ({entity_df})"`
+- **PostgreSQL** (`postgres.py:492`): `f"CREATE TABLE ... AS ({entity_df})"`
+- **Trino** (`trino.py:237`): `f"CREATE TABLE ... AS ({self._query})"`
+- Plus Spark, Couchbase, Clickhouse, MSSQL — the same pattern.
+
+### 2. CWE-22: Path Traversal (Critical)
+- **Arbitrary File Read** (`feature_server.py:386-398`): `POST /read-document` opens and returns any file path from user input with no sanitization.
+- **Arbitrary File Write** (`feature_server.py:400-419`, `ui_server.py:85-103`): `POST /save-document` writes to the filesystem with only a weak `str(file_path).startswith(os.getcwd())` check.
+
+### 3. CWE-502: Deserialization of Untrusted Data (Critical)
+- **Unsafe YAML load** (`kubernetes/main.py:69-73`): Uses `yaml.load(f, Loader=yaml.Loader)` instead of `yaml.safe_load()`, enabling arbitrary code execution via `!!python/object` constructs.
+- **Arbitrary class instantiation** (`errors.py:54-69`): `from_error_detail()` deserializes JSON containing `"module"` and `"class"` fields, then uses `importlib.import_module()` and `getattr()` to instantiate arbitrary classes.
+
+### 4. CWE-94: Code Injection (Critical)
+- **Dynamic module import** (`repo_operations.py:114-135`): `parse_repo()` calls `importlib.import_module()` on every Python file in the repo directory, executing all module-level code.
+- **Bootstrap execution** (`repo_operations.py:485-494`): If `bootstrap.py` exists in the repo path, it is loaded via `exec_module()` and its `bootstrap()` function is called.
+
+### 5. CWE-918: Server-Side Request Forgery (High)
+- **OIDC service** (`permissions/oidc_service.py:16-18`): `_fetch_discovery_data()` issues `requests.get(self.discovery_url)` with no URL validation or whitelisting, allowing SSRF to internal/cloud metadata endpoints.
+
+### 6. CWE-942: Permissive Cross-domain Policy (High)
+- **CORS misconfiguration** (`ui_server.py:28-34`): `allow_origins=["*"]` combined with `allow_credentials=True`, allowing any website to make authenticated cross-origin requests.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-89, CWE-22, CWE-502, CWE-94, CWE-918, CWE-942
+CWE_NAME: SQL Injection, Path Traversal, Deserialization of Untrusted Data, Code Injection, Server-Side Request Forgery, Permissive Cross-domain Policy

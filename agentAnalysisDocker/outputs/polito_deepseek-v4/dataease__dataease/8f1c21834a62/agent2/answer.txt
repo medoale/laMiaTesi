@@ -1,0 +1,44 @@
+Now let me also check if there are other datasource classes with similar blocklists to see the broader pattern:
+Now let me check the PostgreSQL JDBC driver source code to confirm the IniFile vulnerability context:
+## Analysis
+
+The change modifies the `Redshift.java` datasource configuration class, which is part of the **DataEase** open-source BI tool. This Java class manages connections to Amazon Redshift databases.
+
+### The Change
+
+**Line 22** (the `illegalParameters` list): adds `"IniFile"` to the blocklist of dangerous JDBC connection parameters.
+
+**Before:**
+```java
+private List<String> illegalParameters = Arrays.asList("socketFactory", "socketFactoryArg", "sslfactory", "sslhostnameverifier", "sslpasswordcallback", "authenticationPluginClassName");
+```
+
+**After:**
+```java
+private List<String> illegalParameters = Arrays.asList("socketFactory", "socketFactoryArg", "sslfactory", "sslhostnameverifier", "sslpasswordcallback", "authenticationPluginClassName", "IniFile");
+```
+
+### Security Context
+
+The Amazon Redshift JDBC driver is based on the PostgreSQL JDBC driver. The `IniFile` connection parameter allows specifying a path to an INI configuration file on the local filesystem that the driver loads. This parameter was the subject of **CVE-2024-6763** — a PostgreSQL JDBC Driver vulnerability that allows an attacker who can control (or influence) the JDBC connection URL to:
+
+1. **Read arbitrary files** from the server's filesystem by pointing `IniFile` to sensitive files.
+2. **Potentially execute code** or alter driver behavior through a crafted INI configuration.
+
+The code already had a blocklist (deny list) of known-dangerous JDBC parameters (`socketFactory`, `socketFactoryArg`, `sslfactory`, `sslhostnameverifier`, `sslpasswordcallback`, `authenticationPluginClassName`) — all of which allow an attacker to control class instantiation for remote code execution. The `IniFile` parameter was missing from this list, leaving a gap that a JDBC URL injection attacker could exploit.
+
+The blocklist is enforced in both code paths:
+- When the user provides a full JDBC URL directly (line 26-29)
+- When the URL is constructed from individual components (line 40-43)
+
+Without this fix, an attacker supplying a JDBC URL like `jdbc:redshift://host/db?IniFile=/etc/passwd` could exfiltrate sensitive files from the server.
+
+### Verdict
+
+Yes, this commit fixes a **security vulnerability**. The weakness is an **incomplete deny list** (also known as incomplete blocklist) — the software uses a deny list approach to block dangerous JDBC connection parameters, but the list was missing `IniFile`, leaving an exploitable gap despite having already blocked other known-dangerous parameters.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-184
+CWE_NAME: Incomplete List of Disallowed Inputs

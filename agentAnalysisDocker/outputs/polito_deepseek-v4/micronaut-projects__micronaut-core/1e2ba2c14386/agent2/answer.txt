@@ -1,0 +1,41 @@
+Let me look at the workspace structure to understand the project and confirm where the modified file lives.
+Based on my full analysis of the changes, here is my assessment:
+
+## Analysis
+
+The commit modifies `DefaultHtmlErrorResponseBodyProvider` in two files:
+
+**File 1 — `DefaultHtmlErrorResponseBodyProvider.java`:**
+
+The `cache` field is changed from an unbounded `ConcurrentHashMap<HtmlErrorPage, String>` to a bounded `ConcurrentLinkedHashMap` with a `maximumWeightedCapacity` of 100 entries.
+
+**Before (vulnerable):**
+```java
+private final Map<HtmlErrorPage, String> cache = new ConcurrentHashMap<>();
+```
+
+**After (fixed):**
+```java
+private static final int MAX_CACHE_SIZE = 100;
+private final Map<HtmlErrorPage, String> cache = new ConcurrentLinkedHashMap.Builder<HtmlErrorPage, String>()
+    .maximumWeightedCapacity(MAX_CACHE_SIZE)
+    .build();
+```
+
+**File 2 — New test** (`DefaultHtmlErrorResponseBodyProviderCacheMaxSizeTest.java`): Verifies that after 110 unique error page requests, the cache remains capped at the max capacity of 100, proving the unbounded growth was a real concern.
+
+### Security Impact
+
+The `cache.computeIfAbsent(key, this::html)` in the `body()` method is invoked for every HTTP request that generates an HTML error response. The `HtmlErrorPage` key contains fields that vary per request — notably `httpStatusReason` (from `response.reason()`, which may contain user-influenced data) and `messages` (a list of error messages from the error context, each sanitized but still potentially unique). An attacker could craft many distinct requests that trigger error responses with unique message payloads (e.g., with unique URI paths or parameters embedded in exception messages as demonstrated in the test where `request.getUri()` is included in the exception message `"foobar " + request.getUri()`), causing the cache to grow without limit.
+
+With `ConcurrentHashMap`, there is no bound on the number of entries. A sustained attack could exhaust server heap memory, leading to an `OutOfMemoryError` and denial of service. The fix caps the cache at 100 entries using an LRU-evicting `ConcurrentLinkedHashMap`, preventing unbounded resource allocation.
+
+### CWE Classification
+
+This is **CWE-770: Allocation of Resources Without Limits or Throttling**. The code allocates memory for cached entries without any cap on the total number, enabling resource exhaustion via a small number of carefully crafted requests. No other CWEs genuinely apply here — it is a textbook resource-limitation fix.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

@@ -1,0 +1,20 @@
+Let me also read the before and after files to confirm the full context.
+## Analysis
+
+The commit changes `DefaultHtmlErrorResponseBodyProvider.java` in the Micronaut framework. The class generates HTML error pages and caches them using `computeIfAbsent` on a `Map<HtmlErrorPage, String>`.
+
+**Before the fix:** The cache was a plain `ConcurrentHashMap` with **no size bound**. Every unique `HtmlErrorPage` key (which includes a `Locale`, HTTP status code, status reason, error messages, etc.) would be cached indefinitely. An attacker can generate unique error pages by sending requests with arbitrary parameters (different `nonce` values, different locales, different error messages), causing the cache to grow without limit and eventually exhaust available heap memory — a classic denial-of-service vector.
+
+**After the fix:** The cache is replaced with a `ConcurrentLinkedHashMap` capped at `MAX_CACHE_SIZE = 100` entries, bounding memory consumption.
+
+**File 2** is a new test class that validates the cache size is properly bounded (verifying at 10 entries and at 110 entries against a max of 100).
+
+This is a security fix for **uncontrolled resource consumption** (memory exhaustion via unbounded cache growth). The most specific CWE is:
+
+- **CWE-770** (Allocation of Resources Without Limits or Throttling) — because a memory-backed cache is allocated without any cap, allowing an attacker to trigger unbounded allocation.
+
+CWE-400 (Uncontrolled Resource Consumption) is the parent category and also applies, but CWE-770 is more specific.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

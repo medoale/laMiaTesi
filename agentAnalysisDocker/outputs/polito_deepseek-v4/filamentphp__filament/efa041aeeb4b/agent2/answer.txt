@@ -1,0 +1,57 @@
+Let me explore the repository to understand the context of these changes, specifically the `formatState` method and how these summarizers handle user data.
+## Analysis
+
+This commit fixes a **Cross-Site Scripting (XSS) vulnerability** in the Filament tables summarizer system.
+
+### What changed
+
+Two files were modified in `/packages/tables/src/Columns/Summarizers/`:
+
+#### 1. `Range.php` — `toEmbeddedHtml()` method
+
+**Before** (unescaped output into HTML):
+```php
+<?= $from ?>
+...
+<?= $to ?>
+```
+
+**After** (properly escaped):
+```php
+<?= e($from) ?>
+...
+<?= e($to) ?>
+```
+
+#### 2. `Values.php` — `toEmbeddedHtml()` method
+
+**Before** (unescaped output into HTML):
+```php
+<?= $this->formatState($stateItem) ?>
+```
+
+**After** (properly escaped):
+```php
+<?= e($this->formatState($stateItem)) ?>
+```
+
+### Why this is a security vulnerability
+
+The `<?= ?>` syntax in PHP is shorthand for `<?php echo ?>`, which outputs raw content into the HTML document. The `formatState()` method (defined in the `CanFormatState` trait) returns user-controlled data from the database — such as user names, product titles, or any stored content — **without HTML escaping** when `isHtml` is `false` (the default).
+
+An attacker who can inject malicious content (e.g., `<script>alert('XSS')</script>`) into data stored in the database would have that content rendered directly into HTML without sanitization. When a user views a table with a `Range` or `Values` summarizer on that column, the script would execute in their browser.
+
+Notably, the base `Summarizer` class at line 210 **already correctly escapes** with `e()`:
+```php
+<?= e($this->formatState($this->getState())) ?>
+```
+
+But the `Range` and `Values` subclasses override `toEmbeddedHtml()` and omitted escaping for their specific output sections, creating the vulnerability.
+
+The `e()` function in Laravel wraps PHP's `htmlspecialchars($value, ENT_QUOTES, 'UTF-8')`, which converts `<`, `>`, `"`, `'`, and `&` into their HTML entity equivalents, preventing XSS.
+
+This is a classic **stored XSS** vulnerability — malicious input is stored in the database and later rendered unsafely in HTML context.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Cross-Site Scripting

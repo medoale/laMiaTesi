@@ -1,0 +1,26 @@
+## Analysis
+
+### File 01 — `Range` class
+
+**Diff:** Two lines changed in `toEmbeddedHtml()`:
+- `<?= $from ?>` → `<?= e($from) ?>`
+- `<?= $to ?>` → `<?= e($to) ?>`
+
+The `e()` helper in Laravel runs `htmlspecialchars()` with `ENT_QUOTES | ENT_SUBSTITUTE`, encoding `&`, `<`, `>`, `"`, `'`. Before the fix, user-controlled `$from`/`$to` values (from `$state`, which originates from database values via `$this->getState()` and `$this->formatState($this->getState())`) were output directly into an HTML context without any escaping. This is a **stored Cross-Site Scripting (XSS)** vulnerability — a malicious user could store HTML/JavaScript in the data and have it execute when any other user views the summary.
+
+### File 02 — `Values` class
+
+**Diff:** One line changed in `toEmbeddedHtml()`:
+- `<?= $this->formatState($stateItem) ?>` → `<?= e($this->formatState($stateItem)) ?>`
+
+Same pattern. The `$stateItem` values come from the database (via `$this->getState()` which calls `summarize()` → `pluck($attribute)`). Before the fix, any HTML or JavaScript in a state item would be rendered unsafely. After the fix, it is properly HTML-escaped. Again, **stored XSS**.
+
+---
+
+Both commits apply the same fix: wrapping untrusted user/DB data with `e()` (HTML entity encoding) before embedding it in a PHP template output. This neutralizes the ability to inject arbitrary HTML/JavaScript into the rendered page.
+
+**Verdict: Yes, this fixes a security vulnerability (Stored Cross-Site Scripting).**
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Cross-Site Scripting

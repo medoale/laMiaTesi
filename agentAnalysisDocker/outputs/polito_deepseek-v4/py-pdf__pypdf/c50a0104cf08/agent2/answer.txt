@@ -1,0 +1,41 @@
+Now let me look at the specific file paths by mapping the changes to the actual source files in the repo:
+Now let me see the `LimitReachedError` class definition:
+## Analysis
+
+This commit introduces security limits to the `PdfWriter.clone_reader_document_root()` method (and related incremental cloning code) in the pypdf library.
+
+**The vulnerability:**
+
+In the **before** code (`/work/pypdf/_writer.py`, line 1144–1148), the `clone_reader_document_root` method directly trusts the `/Size` value from the PDF file's trailer dictionary to allocate a list and iterate:
+
+```python
+self._objects = [None] * (cast(int, reader.trailer["/Size"]) - 1)
+for i in range(len(self._objects)):
+    o = reader.get_object(i + 1)
+    if o is not None:
+        self._objects[i] = o.replicate(self)
+```
+
+An attacker can craft a PDF with an arbitrarily large `/Size` value in the trailer (e.g., `/Size 5000000` as shown in the test). This causes:
+
+1. **Memory exhaustion**: `[None] * (Size - 1)` allocates a Python list proportional to the attacker-controlled `/Size` value — potentially consuming gigabytes of memory (a list of 5 million `None` objects is already ~40 MB, and values in the billions are trivial to inject).
+2. **CPU exhaustion**: The loop runs for `/Size - 1` iterations, each calling `reader.get_object()`.
+
+**The fix:**
+
+The patch introduces two configurable security limits on `PdfWriter`:
+
+- `incremental_clone_object_count_limit` (default 500,000) — caps the *number* of actual objects
+- `incremental_clone_object_id_limit` (default 1,000,000) — caps the *maximum object ID*
+
+A new method `_collect_incremental_clone_object_ids()` collects the *actual* object IDs from the reader's cross-reference (xref) table instead of trusting the trailer's `/Size`. It checks both limits and raises `LimitReachedError` if exceeded. The list allocation is now based on the true maximum object ID found in the xref, not the potentially inflated `/Size`.
+
+The change from `reader.trailer["/Size"]`-based allocation to xref-based validation with configurable defaults prevents a classic **resource exhaustion / denial of service** attack.
+
+This matches **CWE-770: Allocation of Resources Without Limits or Throttling** — the specific weakness where resources (memory, CPU) are allocated based on attacker-controlled input without any bounds checking or throttling.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

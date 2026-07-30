@@ -1,0 +1,36 @@
+Let me now look at some other critical areas - the output handling, and specifically the HTML module for potential XSS vectors:
+Based on my extensive analysis of the jsPDF repository, I have identified a security vulnerability. Let me verify one more aspect:
+After thorough exploration of the jsPDF 4.2.0 codebase, here is my finding:
+
+The repository contains a security vulnerability. The most impactful issue is in the `output()` method's `"pdfobjectnewwindow"` case (found in both the source at `/work/src/jspdf.js` lines 3132–3167 and in all distributed bundles):
+
+**The `options.pdfObjectUrl` property is accepted without any validation or allowlisting and is directly assigned as the `src` of a `<script>` element in a newly opened browser window.**
+
+In the source version:
+```javascript
+var pdfObjectUrl = "https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js";
+var useDefaultPdfObjectUrl = !options.pdfObjectUrl;
+if (!useDefaultPdfObjectUrl) {
+    pdfObjectUrl = options.pdfObjectUrl;
+}
+// ...
+pdfObjectScript.src = pdfObjectUrl;  // arbitrary script loaded
+```
+
+In the distributed version (`/work/dist/jspdf.es.js` line 3434) it's even more direct — the URL is string-concatenated into an HTML blob written via `document.write()`:
+```javascript
+'<script src="' + pdfObjectUrl + '"' + integrity + '>'
+```
+
+An attacker who can influence the options object passed to `doc.output("pdfobjectnewwindow", options)` can:
+- Make the browser fetch an arbitrary external URL (**SSRF** — CWE-918)
+- Load and execute arbitrary JavaScript from an attacker-controlled server in the newly opened window (**Code Injection** — CWE-94)
+- Because this is a `<script>` element (not an iframe), the loaded code runs with full access to the new window's DOM
+
+The same pattern exists with `options.pdfJsUrl` in the `"pdfjsnewwindow"` case (though this is slightly less severe because the URL is loaded in an iframe rather than executed directly as a script).
+
+A secondary issue exists in `/work/src/libs/pdfsecurity.js` at line 43 where `permissionOptions.perm` (literal property name `"perm"`) is used instead of `permissionOptions[perm]` (the variable), rendering the permission name validation permanently inactive; however this is a weaker defense rather than an actively exploitable vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918, CWE-94
+CWE_NAME: Server-Side Request Forgery (SSRF), Code Injection

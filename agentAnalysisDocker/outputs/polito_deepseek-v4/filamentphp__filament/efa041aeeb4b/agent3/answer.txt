@@ -1,0 +1,57 @@
+Let me verify the most critical findings by reading the source files directly.
+Let me now look at how the query builder settings flow works - how they are populated from user input and if there's server-side validation.
+Let me look at how the query builder filter receives its input from the HTTP request:
+Let me also check the date constraint operators for similar SQL injection patterns:
+Now let me verify the unescaped output in the Blade templates:
+Let me look at the `evaluate()` method:
+Let me read the full Constraint base class to understand attribute flow:
+Let me check how the query builder filter hands rules to QueryBuilderScope in the table filter context:
+Let me check the text constraint operators for similar raw SQL patterns:
+Let me check if there's any server-side validation on the aggregate field:
+Let me quickly verify the relationship constraint doesn't have similar issues:
+Now I have thoroughly analyzed the repository. Here is my final determination:
+
+---
+
+## Analysis Summary
+
+I systematically explored the full repository — all packages under `/work/packages/` — examining data flow from user input to database queries, Blade rendering, file operations, and serialization.
+
+### Confirmed Vulnerability: **SQL Injection**
+
+**File:** `/work/packages/query-builder/src/Constraints/NumberConstraint/Operators/Concerns/CanAggregateRelationships.php`  
+**Lines:** 80–81 and 92–93  
+**Method:** `applyAggregateComparison()`
+
+The user-controlled `aggregate` value flows into `selectRaw()` without any server-side validation:
+
+1. **User input path:** The query builder filter receives rules as Livewire form state. In `QueryBuilderScope.php` (line 139) and `QueryBuilder.php` (line 364), `$rule['data']['settings']` is passed directly to `->settings()` on the operator. The `settings` array is user-controlled.
+
+2. **The vulnerable code in `CanAggregateRelationships.php`:**
+   ```php
+   // Line 64
+   $aggregate = $this->getAggregate();  // returns $this->getSettings()['aggregate']
+   // Line 80-81
+   $subQuery = $relatedModel->query()
+       ->selectRaw("cast({$aggregate}({$attributeForQuery}) as {$castType})")
+   ```
+
+   The `getAggregate()` method (line 115-118) returns a value from settings with **no allowlist check**. The frontend Select component limits choices to `['sum', 'avg', 'max', 'min']`, but a Livewire HTTP request can supply arbitrary values.
+
+3. **Exploitation impact:** An attacker can inject arbitrary SQL into the `selectRaw()` call, leading to data exfiltration, modification, or deletion. For example, `aggregate = "1) OR 1=1 --"` breaks out of the function call context.
+
+4. **Affected operators:** `EqualsOperator`, `IsMaxOperator`, `IsMinOperator` — all three use the `CanAggregateRelationships` trait and call `applyAggregateComparison()` when the aggregate is non-blank.
+
+### Other Findings (Not included in the primary verdict)
+
+- **CWE-502 (Insecure Deserialization):** `unserialize()` calls in `/work/packages/actions/src/Imports/Jobs/ImportCsv.php` (line 75), `/work/packages/actions/src/Exports/Jobs/PrepareCsvExport.php` (line 63), and `/work/packages/actions/src/Exports/Jobs/ExportCsv.php` (line 77) operate on queue payload data. While the serialization originates inside the application (`base64_encode(serialize(...))`), `unserialize()` of any attacker-influenced data is a defense-in-depth concern.
+
+- **XSS via `{!! !!}` in Blade templates:** Several components (select, checkbox-list, field-wrapper, modal, wizard step) use unescaped output with `{!! !!}` for labels, validation messages, `wire:submit.prevent` handlers, and `alpineSubmitHandler` when corresponding `allowHtml()` or similar features are enabled. These are feature-by-design patterns that shift security responsibility to the developer, not directly exploitable framework vulnerabilities.
+
+- **`extraAttributes` with `escape: false`** in `HasExtraAttributes.php` — same pattern, developer-controlled.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-89
+CWE_NAME: SQL Injection

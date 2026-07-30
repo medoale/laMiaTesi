@@ -1,0 +1,45 @@
+Now let me also check what `checkPermission` does to fully understand the security impact.
+Now let me check how `checkPermission` behaves when authorization fails — does it throw an exception?
+## Analysis
+
+The diff moves a single line: `$this->checkPermission('predefined_properties');` from **inside** the `if ($request->get('data'))` block to **before** the conditional, at the top of the `propertiesAction` method.
+
+**Before (vulnerable):**
+```php
+public function propertiesAction(Request $request): JsonResponse
+{
+    if ($request->get('data')) {
+        $this->checkPermission('predefined_properties');   // ← only checked for "data" path
+        // ... CRUD operations ...
+    } else {
+        // LIST all predefined properties ← NO PERMISSION CHECK!
+        $list = new Property\Predefined\Listing();
+        // ... returns full list ...
+    }
+}
+```
+
+**After (fixed):**
+```php
+public function propertiesAction(Request $request): JsonResponse
+{
+    $this->checkPermission('predefined_properties');       // ← checked for ALL paths
+    if ($request->get('data')) {
+        // ... CRUD operations ...
+    } else {
+        // LIST all predefined properties ← now permission-protected
+    }
+}
+```
+
+**Security impact:** A user who lacks the `predefined_properties` permission can call the `/admin/settings/properties` endpoint **without** providing a `data` parameter, bypassing the authorization check entirely. The method falls into the `else` branch, which queries and returns the full list of all predefined property configurations — including their names, data types, configuration values, and other sensitive metadata. This is an authorization bypass allowing unauthorized information disclosure.
+
+The root cause is **Missing Authorization** — one code path (the listing path) was not protected by the permission check.
+
+**CWE classification:** CWE-862 (Missing Authorization) is the most specific and accurate identifier. It captures the essence: the application failed to verify the user's permission on a specific code path before granting access to functionality.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862
+CWE_NAME: Missing Authorization

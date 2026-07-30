@@ -1,0 +1,47 @@
+Let me investigate the findings in detail.
+Let me look at more critical areas.
+Let me verify the most critical SQL injection findings directly.
+Let me investigate more deeply. Let me check for additional vulnerability surfaces.
+Let me check for additional security-critical paths.
+Let me look at some critical files.
+Let me check the upload handlers and look for more vulnerabilities.
+Let me check the password reset flow and look for additional attack surfaces.
+Let me check file download functionality for path traversal.
+Let me check for CSRF vulnerabilities and other unauthenticated attack surfaces.
+Let me do one more deep check for path traversal and LFI issues.
+Let me check for any additional unauthenticated SSRF or fetch endpoints.
+Now I have a thorough understanding of this codebase. Let me present my analysis.
+
+---
+
+**Security Audit Summary for Admidio 5.1.0 Beta 1**
+
+After extensive analysis of the entire codebase, here are the confirmed vulnerabilities:
+
+### 1. Server-Side Request Forgery (SSRF) — CWE-918
+
+**File:** `/work/modules/sso/fetch_metadata.php`
+
+The script accepts a `url` GET parameter, validates it with `FILTER_VALIDATE_URL` and a regex (allowing `http://`, `https://`, `ftp://` schemes), then fetches content using `file_get_contents()`. The response is directly echoed back to the client. While the endpoint checks for admin privileges (`$gCurrentUser->isAdministrator()`), an admin can be tricked via CSRF, or a compromised admin session can use this to probe internal services (e.g., `http://169.254.169.254/` cloud metadata, internal hosts, `ftp://` internal servers). The fetched content is returned to the attacker, making this a classical SSRF with data exfiltration.
+
+### 2. Open Redirect — CWE-601
+
+**Files:** `/work/system/bootstrap/constants.php` (lines 52–58, 71) and `/work/system/login_valid.php` (lines 20–30)
+
+Two interdependent mechanisms create an open redirect:
+
+**(a) Host Header Injection via `HTTP_X_FORWARDED_HOST`** (constants.php, lines 52–58): The attacker-controlled `X-Forwarded-Host` header is used without sanitization to construct `HOST`, `DOMAIN`, `CURRENT_URL`, and `FILE_URL` constants. `CURRENT_URL` incorporates this untrusted value and is stored in `$_SESSION['login_forward_url']` for unauthenticated users redirected to the login page.
+
+**(b) Unvalidated redirect target via `HTTP_X_AJAX_PREVIOUS_URL`** (login_valid.php, lines 25–27): For AJAX requests, the `X-Ajax-Previous-Url` header is accepted and stored in `$_SESSION['login_forward_url']` after only `FILTER_VALIDATE_URL` validation. After login, this URL is used as the redirect destination. The `str_starts_with($url, ADMIDIO_URL)` check in `admRedirect()` can be bypassed by crafting a URL where an attacker-controlled subdomain/domain matches `ADMIDIO_URL` as a prefix.
+
+---
+
+**The following suspicious code patterns were found but are NOT currently exploitable:**
+- SQL value interpolation in `ModuleEvents.php` line 421 (`calendarNames`) — setter is never called
+- SQL value interpolation in `ListConfiguration.php` lines 953–955 (`showRelationTypes`) — caller path HTML-encodes single quotes (`'` → `&#039;`), preventing injection
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918, CWE-601
+CWE_NAME: Server-Side Request Forgery (SSRF), URL Redirection to Untrusted Site ('Open Redirect')

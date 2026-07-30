@@ -1,0 +1,51 @@
+Now let me explore the repository to understand the context of this protobuf decoding code.
+Let me also check the corresponding .cpp file to see the exact version currently in the workspace (which should be the "before" version):
+Now I have a complete understanding of the change. Let me verify one more thing — how the API receives network data so I can confirm remote exploitability:
+Let me check how `read_message` is called from the network layer:
+Now I have all the evidence I need. Here is my full analysis:
+
+---
+
+## Analysis
+
+**File changed:** `esphome/components/api/proto.cpp`
+
+The commit modifies four bounds checks in the protobuf decoding logic — two each in `count_repeated_field()` and `decode()`:
+
+### The Bug: Integer Overflow in Pointer Arithmetic
+
+The original code used **addition-based** bounds checks:
+
+```cpp
+// BEFORE (vulnerable):
+if (ptr + field_length > end)   // WIRE_TYPE_LENGTH_DELIMITED
+if (ptr + 4 > end)              // WIRE_TYPE_FIXED32
+```
+
+On a 32-bit microcontroller (ESP32, ESP8266, RP2040 — all ESPHome targets), pointer arithmetic is 32-bit. When an attacker supplies a `field_length` close to `UINT32_MAX`, the computation `ptr + field_length` **wraps around** the 32-bit address space. The wrapped result can be *less than* `end`, bypassing the bounds check entirely. After the check passes, `ptr += field_length` also wraps, and all subsequent reads from `ptr` access memory outside the original buffer.
+
+### Remote Exploitability
+
+The call chain is:
+1. **Network I/O** (`api_connection.cpp:210`) receives a packet over the native API
+2. **Dispatch** (`api_pb2_service.cpp:20`) calls `msg.decode(msg_data, msg_size)` on the message type
+3. **Decode** (`api_pb2.cpp:1059, 1102`) calls `ProtoDecodableMessage::decode(buffer, length)` and `count_repeated_field()`
+4. **Vulnerable check** (`proto.cpp:51, 113`) uses overflow-prone pointer arithmetic
+
+An unauthenticated or partially-authenticated network attacker can send a crafted protobuf message with a large length-delimited field length to trigger the overflow, bypass the bounds check, and read out-of-bounds memory.
+
+### The Fix
+
+```cpp
+// AFTER (fixed):
+if (field_length > static_cast<size_t>(end - ptr))   // compares length against remaining space — no overflow
+if (end - ptr < 4)                                    // same pattern for fixed-size field
+```
+
+Subtraction (`end - ptr`) cannot overflow because `end >= ptr` always holds, and the result is bounded by the original buffer allocation.
+
+---
+
+**VULNERABILITY_FOUND:** yes
+**CWE_ID:** CWE-190, CWE-125
+**CWE_NAME:** Integer Overflow or Wraparound, Out-of-bounds Read

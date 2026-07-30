@@ -1,0 +1,48 @@
+Now let me look at the actual source file and the SSRF utility to understand the full context:
+Now let me also check the test file currently in the workspace to verify the exact state before this commit:
+Good. The workspace is in the "before" state. I now have a complete understanding of the commit.
+
+---
+
+## Analysis
+
+This commit fixes a **Server-Side Request Forgery (SSRF)** vulnerability in the `RecursiveUrlLoader` class within `libs/langchain-community/src/document_loaders/web/recursive_url.ts`.
+
+### The Vulnerability (Before the fix)
+
+The `fetchWithTimeout` method made a raw `fetch` call without intercepting or validating redirects:
+
+```typescript
+return this.caller.call(() =>
+  fetch(resource, { ...rest, signal: AbortSignal.timeout(timeout) })
+);
+```
+
+The native `fetch` API, by default, **automatically follows HTTP redirects** (301, 302, 303, 307, 308). While `validateSafeUrl` was called on the **initial** URL before fetching (in `getUrlAsDoc` and `getChildUrlsRecursive`), the redirect chain targets were **never validated**. An attacker could serve a redirect response pointing to:
+
+- `http://127.0.0.1/admin` (localhost)
+- `http://169.254.169.254/latest/meta-data/` (cloud metadata)
+- `http://192.168.1.1/internal` (private network)
+
+...and the loader would silently follow the redirect to internal/private resources, enabling SSRF attacks against the host running the loader.
+
+### The Fix
+
+1. **Manual redirect handling**: The `fetch` call now uses `redirect: "manual"` to prevent automatic redirect following.
+2. **Per-hop URL validation**: Every URL in the redirect chain is validated individually via `validateSafeUrl(currentUrl, { allowHttp: true })` which blocks private IPs, cloud metadata endpoints, localhost, etc.
+3. **Redirect limit**: A `MAX_REDIRECTS = 10` cap prevents infinite redirect loops.
+4. **Dead code removal**: The now-redundant `validateSafeUrl` calls in `getUrlAsDoc` and `getChildUrlsRecursive` are removed since validation happens inside `fetchWithTimeout` for each hop.
+
+The changelog entry (file_01) confirms: *"Validate redirects in RecursiveUrlLoader to prevent SSRF bypasses."*
+
+The test file (file_02) adds comprehensive redirect SSRF test coverage: blocking localhost, cloud metadata IPs, private network ranges, allowing safe redirects, and handling excessive redirects.
+
+### CWE Classification
+
+The most specific and accurate CWE is **CWE-918: Server-Side Request Forgery (SSRF)**. This is the primary and sole vulnerability being fixed — the loader was being used to fetch URLs that could redirect to internal/private resources without validation, exactly matching the SSRF weakness description.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

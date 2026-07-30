@@ -1,0 +1,59 @@
+Let me look at the `pdfEscape` and `getEncryptor` functions to understand the escaping mechanism, and confirm the file paths.
+Now I have a complete understanding of the changes. Let me also verify the current working tree version:
+## Analysis
+
+### Repository
+This is the [jsPDF](https://github.com/parallax/jsPDF) library — a client-side JavaScript PDF generation library.
+
+### The Commit — Change Summary
+
+**Two files changed:**
+
+1. **`src/modules/annotations.js`** (file_01) — The annotations plugin
+2. **`test/specs/annotations.spec.js`** (file_02) — The test suite
+
+### The Vulnerability
+
+In the `freetext` annotation handler in `src/modules/annotations.js`, the user-supplied `color` parameter was being directly interpolated into the `/DS` (default style) PDF string without any escaping:
+
+```javascript
+// BEFORE (vulnerable):
+var color = anno.color || "#000000";
+line += " /DS(font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" + color + ")";
+```
+
+The `color` value was **not** passed through either `pdfEscape()` (which escapes `\`, `(`, and `)`) or `encryptor()` (which encrypts PDF strings). Other fields like `anno.contents` *were* properly escaped via `escape(encryptor(...))`.
+
+An attacker can provide a `color` like:
+```
+000000) /AA <</E <</S /JavaScript /JS (malicious_code_here)>>>> (
+```
+
+The `)` closes the `/DS` string prematurely, and the attacker injects an `/AA` (Additional Action) dictionary entry containing `/S /JavaScript /JS (...)`. When a PDF viewer (e.g., Adobe Reader, Chrome, etc.) opens the generated PDF, it interprets this as an action dictionary and executes the injected JavaScript in the PDF reader's context — a classic **PDF Injection** attack.
+
+### The Fix
+
+The `color` value is now first placed into a `defaultStyle` string, which is then wrapped with `escape(encryptor(...))` before being embedded:
+
+```javascript
+// AFTER (fixed):
+var color = anno.color || "#000000";
+var defaultStyle = "font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" + color;
+line += " /DS(" + escape(encryptor(defaultStyle)) + ")";
+```
+
+`pdfEscape()` escapes `\` → `\\`, `(` → `\(`, `)` → `\)`, preventing any breakout from the PDF string literal.
+
+### Test Verification
+
+The new test in `annotations.spec.js` (file_02) explicitly validates this fix by injecting a malicious color and verifying the output is properly escaped — confirming the security nature of this commit.
+
+### CWE Classification
+
+This is **PDF Code Injection**. The most specific CWE is **CWE-94** (Improper Control of Generation of Code / "Code Injection") because untrusted input is directly embedded into PDF syntax, allowing injection of arbitrary PDF operators (specifically `/AA` actions) that result in JavaScript execution. The root cause — missing output encoding — is covered by the more general CWE-116, but CWE-94 is the most precise match for the injection vector and impact.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-94
+CWE_NAME: Improper Control of Generation of Code ('Code Injection')

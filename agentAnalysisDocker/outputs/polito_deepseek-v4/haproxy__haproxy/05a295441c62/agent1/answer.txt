@@ -1,0 +1,17 @@
+Now let me read the section of the file around line 1754 to understand the context better.
+**Analysis:**
+
+This commit is in the HAProxy HTTP/3 implementation (`h3_rcv_buf` function). The change adds a Content-Length validation check when a **FIN (end-of-stream) is received with no data** on a bidirectional stream.
+
+**Before the fix (the vulnerability):**
+When a stream received FIN with no data (`!b_data(b) && fin`), the code immediately called `qcs_http_handle_standalone_fin(qcs)` to process it as a complete request with a 0-length body — **without checking** whether a `Content-Length` header had previously declared a non-zero body length. A client could send a request with `Content-Length: 100` and then immediately FIN with zero body bytes. The server would accept the request as if the body were empty, violating RFC 9114 §4.1.2 (Content-Length must equal the sum of DATA frame lengths).
+
+**After the fix:**
+The added check calls `h3_check_body_size(qcs, 1)` when `H3_SF_HAVE_CLEN` is set. If the actual data length (`data_len = 0`) does not match the declared `Content-Length` (`body_len > 0`), the stream is aborted and reset with `H3_ERR_MESSAGE_ERROR`, preventing processing of mismatched content.
+
+**Security classification:**
+This fixes an **HTTP Request Smuggling** vulnerability (CWE-444). The inconsistency between the declared Content-Length and the actual body length allows an attacker to craft requests that are interpreted differently by different intermediaries. A front-end proxy might see a request with `Content-Length: 100` and expect more data, while the backend (without the fix) would process it as complete — enabling request smuggling and HTTP desynchronization attacks.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-444
+CWE_NAME: Inconsistent Interpretation of HTTP Responses ('HTTP Response Smuggling')

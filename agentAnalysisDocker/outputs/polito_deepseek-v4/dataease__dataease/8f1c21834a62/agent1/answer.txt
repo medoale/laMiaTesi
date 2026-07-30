@@ -1,0 +1,24 @@
+## Analysis
+
+The workspace contains a single changed file for an Amazon Redshift JDBC datasource configuration (from the DataEase project, based on the package name).
+
+**The change:** One word is added to the `illegalParameters` list — `"IniFile"`.
+
+```
+- "authenticationPluginClassName")
++ "authenticationPluginClassName", "IniFile")
+```
+
+**Context:** The `illegalParameters` list already blocks well-known dangerous JDBC connection parameters (e.g., `socketFactory`, `socketFactoryArg`, `sslfactory`, `sslhostnameverifier`, `sslpasswordcallback`, `authenticationPluginClassName`). These are parameters that, if controlled by an attacker in a JDBC URL, enable arbitrary code execution, SSL bypass, or authentication bypass — classic JDBC connection-based attacks.
+
+The newly added `IniFile` parameter is relevant to the Amazon Redshift (and PostgreSQL-based) JDBC driver. It allows specifying a path to a configuration (INI) file on the filesystem. An attacker who can control the JDBC URL could set `IniFile` to point to an arbitrary local file (e.g., `/etc/passwd`, application secrets, private keys). The driver would attempt to read and parse that file, potentially leaking its contents through error messages or observable behavior.
+
+**Security impact:** This is a genuine security vulnerability fix. The missing blocklist entry created an incomplete blacklist — an attacker could use `IniFile` as an attack vector for arbitrary local file reads. The commit closes that hole by adding the parameter to the blocklist.
+
+**CWE classification:** The most specific classification is **CWE-912 (Backdoor)** — the missing blocklist entry left open a JDBC parameter that could be exploited as a backdoor for unauthorized filesystem access. This is consistent with the other parameters already blocked (socket factories, SSL hostname verifiers, authentication plugins), which are all JDBC backdoor vectors.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-912
+CWE_NAME: Backdoor

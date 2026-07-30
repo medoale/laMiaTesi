@@ -1,0 +1,51 @@
+## Analysis
+
+This commit modifies a jsPDF annotations plugin. The change is in how the `/DS` (default style) entry for a FreeText annotation is constructed.
+
+### The Vulnerability
+
+In the **before** code (line ~202-205 of `file_01/before.txt`), the `color` value (user-controlled input from `anno.color`), defaulting to `"#000000"`, is directly concatenated into the PDF content stream without any escaping:
+
+```javascript
+line +=
+  " /DS(font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" +
+  color +
+  ")";
+```
+
+The `anno.color` value comes from user-provided options to `createAnnotation`. It is placed directly into a PDF string literal delimited by parentheses `(...)` **without** being passed through `escape(encryptor(...))`.
+
+In PDF syntax, parentheses must be escaped with backslash inside string literals. An attacker can inject a `color` value like:
+```
+000000) /AA <</E <</S /JavaScript /JS (alert("x"))>>>>
+```
+This would:
+1. Close the PDF string with `)`
+2. Inject an `/AA` (Additional Action) dictionary that executes arbitrary JavaScript (`/S /JavaScript /JS (alert("x"))`) when the annotation is activated
+3. Continue the PDF object syntax
+
+The **after** code wraps the entire `defaultStyle` string through `escape(encryptor(...))`:
+
+```javascript
+var defaultStyle =
+  "font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" + color;
+line += " /DS(" + escape(encryptor(defaultStyle)) + ")";
+```
+
+This properly escapes PDF special characters (like `(`, `)`, `\`) in the color value, preventing injection.
+
+### The Test (file_02)
+
+The test added in file_02 confirms this is a security fix. It uses a `color` payload designed to inject JavaScript into the PDF:
+```
+color: '000000) /AA <</E <</S /JavaScript /JS (alert("x"))>>>> ('
+```
+And then asserts that the output PDF properly escapes this payload (expects escaped parentheses `\\(` and `\\)` in the result).
+
+### Classification
+
+This is a classic **injection vulnerability** (CWE-74) — untrusted user input is embedded into a structured output format (PDF) without proper encoding of special characters. The fix applies output encoding (escaping) which neutralizes the injection.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-74
+CWE_NAME: Injection

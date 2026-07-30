@@ -1,0 +1,31 @@
+Let me read the relevant section of file_01 to see which method contains the change.
+## Analysis
+
+The commit contains a single, focused security fix across two files:
+
+### File 1 — `DoclingDocument.load_from_yaml()` (classmethod)
+
+**Before:** `yaml.load(f, Loader=yaml.FullLoader)`  
+**After:** `yaml.load(f, Loader=yaml.SafeLoader)`
+
+This is the production method that deserializes YAML documents from files. `yaml.FullLoader` allows PyYAML to deserialize arbitrary Python objects via YAML tags like `!!python/object:`, `!!python/object/apply:`, `!!python/module:`, etc. An attacker who can craft or control a YAML input file (e.g., a document uploaded by a user) can achieve **arbitrary code execution** during deserialization.
+
+### File 2 — `test_export_with_precision()` (test)
+
+**Before:** `yaml.load(f, Loader=yaml.FullLoader)`  
+**After:** `yaml.load(f, Loader=yaml.SafeLoader)`
+
+The same pattern in a test function, reading a golden-data YAML file from disk. This is an internal consistency fix to match the production code's new, safer loader.
+
+### Classification
+
+The core vulnerability is **deserialization of untrusted data**: `FullLoader` makes no restriction on which Python objects can be constructed during YAML parsing, enabling full code injection. `SafeLoader` restricts parsing to basic YAML types, eliminating this attack vector.
+
+- **CWE-502 (Deserialization of Untrusted Data)** — the primary, most specific CWE. The fix addresses unsafe deserialization of YAML content that could contain malicious payloads.
+- **CWE-94 (Code Injection)** — also genuinely applies, since successful exploitation of the unsafe deserialization directly leads to arbitrary code execution on the server.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502, CWE-94
+CWE_NAME: Deserialization of Untrusted Data, Code Injection

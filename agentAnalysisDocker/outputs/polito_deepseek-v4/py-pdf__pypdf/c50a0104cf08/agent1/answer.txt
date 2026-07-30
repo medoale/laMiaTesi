@@ -1,0 +1,33 @@
+## Analysis
+
+### What changed
+
+This commit addresses a denial-of-service vulnerability in the `pypdf` library's `PdfWriter.clone_reader_document_root()` method when operating in incremental mode.
+
+**The vulnerability (before):**
+The `clone_reader_document_root` method blindly trusted the `/Size` field from the PDF trailer to allocate a list:
+
+```python
+self._objects = [None] * (cast(int, reader.trailer["/Size"]) - 1)
+for i in range(len(self._objects)):
+    o = reader.get_object(i + 1)
+```
+
+An attacker could craft a PDF with a huge `/Size` value (e.g., 5,000,000 as shown in the test) causing:
+1. Massive memory allocation — `[None] * 4,999,999`
+2. Excessive CPU time iterating through millions of non-existent objects
+3. Both together = **resource exhaustion / denial of service**
+
+**The fix (after):**
+The new `_collect_incremental_clone_object_ids()` method:
+1. Collects only the **actual** object IDs from the xref table (not the fake `/Size`)
+2. Checks that the count does not exceed `incremental_clone_object_count_limit` (default: 500,000)
+3. Checks that the max object ID does not exceed `incremental_clone_object_id_limit` (default: 1,000,000)
+4. Raises `LimitReachedError` if either limit is exceeded
+5. Only allocates and iterates over real objects
+
+This is a textbook **uncontrolled resource consumption** vulnerability fix — the input (`/Size` in the PDF trailer) is attacker-controlled and was previously used without any bounds checking to allocate memory.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-400
+CWE_NAME: Uncontrolled Resource Consumption

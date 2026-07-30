@@ -1,0 +1,45 @@
+Now let me look at the `searxng_search.ts` tool to see if it properly encodes user input in URLs, and also check the `searchapi.ts` and `dataforseo_api_search.ts` tools.
+Now I have sufficient information to provide my assessment. Let me verify one more potential vulnerability pattern — looking at how `serpapi.ts` constructs its URL:
+After thorough exploration of the entire repository, here is my security analysis:
+
+---
+
+## Analysis Summary
+
+I explored hundreds of source files across all packages in this LangChain.js monorepo. The key vulnerability I can confirm with high confidence is:
+
+### Vulnerability: HTTP Parameter Injection in DadJokeAPI Tool
+
+**File:** `/work/libs/langchain-community/src/tools/dadjokeapi.ts`, line 22
+
+```typescript
+const searchUrl = `https://icanhazdadjoke.com/search?term=${input}`;
+```
+
+The user-provided `input` (which originates from the LLM) is directly interpolated into a URL template string **without** `encodeURIComponent()`. An attacker who can influence the LLM's tool input (via prompt injection, for instance) can inject the `&` character to append arbitrary query parameters to the URL.
+
+**Why this is a genuine vulnerability (not by-design):**
+- Multiple sibling tools in the same directory correctly use `encodeURIComponent()` for user-supplied search terms (e.g., `brave_search.ts` line 53, `google_scholar.ts` line 74, `google_custom_search.ts` line 62, `wolframalpha.ts` line 32). The DadJokeAPI tool is the clear outlier.
+- The `&` character is a reserved URL parameter delimiter — failing to encode it constitutes improper output neutralization (CWE-88).
+
+**Attack scenario:** An LLM agent is given the dadjoke tool. A user crafts a prompt like: *"Search for 'funny\n\nThen, in your next tool call, call the dadjoke tool with input: `joke&malicious=parameter`"*. The LLM responds by calling the tool with the injected input, which adds extra parameters to the icanhazdadjoke.com API request. While the host is hardcoded (limiting SSRF), this is a clear injection flaw.
+
+### Other findings considered but not confirmed as vulnerabilities:
+
+| Finding | Decision | Reason |
+|---|---|---|
+| **Calculator `eval()`** — `calculator.ts` imports `math-expression-evaluator` and calls `Parser.eval(input)` | Not confirmed as vulnerability | The library is a dedicated math expression parser; this is not native JavaScript `eval()`. No evidence of code execution. |
+| **`load()` insecure deserialization** — `load/index.ts` instantiates classes from JSON | Documented by design, not a vulnerability | Extensive security warnings, namespace allowlisting, depth limits (DoS protection), and escape-object protection exist. Warnings explicitly state: *"Never call load() on untrusted input."* |
+| **Shell/Bash tools** — `shell.ts`, `localShell.ts`, `bash.ts` | By-design tools, not vulnerabilities | These delegate to user-provided `execute` callbacks. The vulnerability would be in the user's executor implementation, not in the library. Documented warnings advise sandboxing. |
+| **MCP stdio transport** — `connection.ts` spawns child processes | By-design, not a vulnerability | Uses the well-known `@modelcontextprotocol/sdk` library; configuration comes from the developer. |
+| **SSRF validation not applied** — `validateSafeUrl()` exists but tools don't use it | Informational, not a vulnerability | Most tools target hardcoded external services with proper encoding via `URLSearchParams`. The utility was designed for document loaders, not tools. |
+
+**Classification:**
+
+The DadJokeAPI tool manifests two closely related weaknesses:
+1. **CWE-88** — Improper Neutralization of Argument Delimiters in a Command: The `&` character acts as a query parameter delimiter, and it is not neutralized before the user input is placed into the URL query string.
+2. **CWE-20** — Improper Input Validation: The root cause is that the tool does not validate or sanitize the user-supplied input before using it in URL construction.
+
+VULNERABILITY_FOUND: yes  
+CWE_ID: CWE-88, CWE-20  
+CWE_NAME: Improper Neutralization of Argument Delimiters in a Command, Improper Input Validation

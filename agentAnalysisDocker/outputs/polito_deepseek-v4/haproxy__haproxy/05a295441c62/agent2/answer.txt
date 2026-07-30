@@ -1,0 +1,19 @@
+Let me look at the function `h3_rcv_buf` to understand the context of the change.
+Now I have a clear picture. Let me read the exact before/after at the change location to confirm.
+The analysis is complete. Here is the reasoning:
+
+**What the change does:**  
+In the `h3_rcv_buf` function, when the proxy receives an HTTP/3 FIN on a bidirectional stream with no data (`!b_data(b) && fin && quic_stream_is_bidi`), the patched version adds a check: if a `Content-Length` header was previously parsed (`H3_SF_HAVE_CLEN`), it calls `h3_check_body_size(qcs, 1)` to verify that the body length is consistent with Content-Length. If they mismatch, the stream is aborted/reset.
+
+**Why it is a security vulnerability:**  
+Before the fix, a peer could send a request (or response) with a `Content-Length: N` header (where N > 0) but then immediately send a FIN with **zero DATA frames**. The proxy would accept this as valid — it would call `qcs_http_handle_standalone_fin` and consider the HTTP message complete, ignoring the fact that the actual body size (0 bytes) contradicts the declared Content-Length. This violates RFC 9114 Section 4.1.2 (Malformed Requests and Responses), which requires that the sum of DATA frames equals the Content-Length value.
+
+**Attack scenario:**  
+An attacker can craft an HTTP/3 stream where the header declares `Content-Length: 100` but the stream is closed with no DATA frames. Before the fix, the proxy processes this as a complete, valid HTTP message. If the proxy forwards this to a backend (or interprets it differently than the backend), the discrepancy can be exploited for HTTP request/response smuggling — the classic smuggling primitive where a proxy and backend disagree on message boundaries, allowing an attacker to poison caches, bypass security controls, or steal user data.
+
+**CWE classification:**  
+This is **CWE-444 (HTTP Request/Response Smuggling)** because the root cause is inconsistent interpretation of Content-Length vs. actual body data, enabling message boundary desynchronization between proxy and backend.
+
+<VULNERABILITY_FOUND: yes
+CWE_ID: CWE-444
+CWE_NAME: HTTP Request/Response Smuggling

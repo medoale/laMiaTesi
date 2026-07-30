@@ -1,0 +1,15 @@
+## Analysis
+
+The diff reveals a single change in the `propertiesAction` method of Pimcore's `SettingsController` class.
+
+**Before (vulnerable):** The permission check `$this->checkPermission('predefined_properties')` was placed **inside** the `if ($request->get('data'))` block. This means:
+- When a request **included** `data` (destroy/update/create operations), the permission check ran — correct.
+- When a request did **not** include `data` (the `else` branch, which returns a **list of all predefined properties**), the permission check was **never executed**. Anyone with access to this admin endpoint could enumerate all predefined properties regardless of their permissions.
+
+**After (fixed):** The permission check was moved **before** the if-else statement, so it runs unconditionally for all code paths — both the data operations (destroy/update/create) and the listing operation.
+
+This is a classic **Missing Authorization** vulnerability — one execution path bypasses the permission guard, allowing unauthorized access to sensitive data (the listing of all predefined properties).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-862
+CWE_NAME: Missing Authorization
