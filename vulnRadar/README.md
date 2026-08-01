@@ -1,6 +1,6 @@
 # vulnRadar
 
-A daily scanner that selects which GitHub repositories to **keep an eye on** because they're more likely to be the subject of a future CVE. Three independent selection tasks run in parallel, and after each run the system cross-references its historical selections against newly published CVEs to see whether it "predicted" any of them.
+A daily scanner that selects which GitHub repositories to **keep an eye on** because they're more likely to be the subject of a future CVE. Four independent selection tasks run in parallel, and after each run the system cross-references its historical selections against newly published CVEs to see whether it "predicted" any of them.
 
 ## Quick start — run as a daemon in the background
 
@@ -44,15 +44,10 @@ score = keyword_score + commit_factor + download_factor
 
 So a repo with very few security-keyword commits but a sudden burst of activity (silent fix) and a wide user base (high release downloads) still ranks high. Weights `W_COMMITS` and `W_DOWNLOADS` are tunable at the top of `task_hot.py`.
 
-### Task 3 — Talkers (most active repos right now)
-Counts **issues created + commits authored in the last 7 days** across GitHub via the search API (paginated up to 1000 results each). Repos are ranked by:
+### Task 3 — Criticality (the projects everything depends on)
+Tracks the **top `MAX_REPOS` repositories by OpenSSF criticality score**: the projects the wider ecosystem actually depends on (the deps.dev dependent count carries the highest weight in the scoring config), so a vulnerability in any of them has the widest blast radius.
 
-```
-score = W_ISSUES × #recent_issues + W_COMMITS × #recent_commits
-                  (default 1.0)             (default 1.5)
-```
-
-Commits are weighted slightly more — coordinated developer activity is a stronger signal of an exposed surface than user chatter. Weights are at the top of `task_talkers.py`.
+Unlike the other tasks this one is **static and makes no API calls**. It reads the ranked snapshot produced offline by `criticalityScore/run_pipeline.sh` and returns its top entries. That snapshot is expensive to build (it enumerates and scores thousands of repositories) and changes very slowly — the most depended-upon projects are the same from one week to the next — so recomputing it daily would burn a lot of GitHub quota to obtain the same list. The task always picks up the newest `scored_*.csv` automatically, so refreshing the ranking is just a matter of re-running that pipeline; if no snapshot exists yet it logs a warning and selects nothing.
 
 ### Task 4 — OSV (OSV.dev-driven, package-aware)
 The same idea as Task 1, sourced from **OSV.dev** instead of NVD: an independent vulnerability database, so a package that NVD has not indexed yet can still surface here. Every distinct `(ecosystem, package)` pair found in recent OSV entries is ranked by how many vulnerabilities affect it.
@@ -121,7 +116,6 @@ All tunable parameters live at the top of `config.py`:
 MAX_REPOS_PER_TASK    = 30    # cap per task per run
 NVD_LOOKBACK_DAYS     = 30    # window for the Official task
 HOT_LOOKBACK_DAYS     = 7     # window for the Hot task
-TALKERS_LOOKBACK_DAYS = 7     # window for the Talkers task
 OSV_LOOKBACK_DAYS     = 30    # window for the OSV task
 SECURITY_KEYWORDS     = [...]  # keywords used by the Hot task
 ```
@@ -130,7 +124,7 @@ Per-task tuning:
 
 - `task_official.py` → `MIN_REFERENCE_HITS`
 - `task_hot.py` → `W_COMMITS`, `W_DOWNLOADS`, `ENRICH_MULTIPLIER`, `SEARCH_PAGES_PER_KEYWORD`
-- `task_talkers.py` → `W_ISSUES`, `W_COMMITS`
+- `task_criticality.py` → `MAX_REPOS`
 - `task_osv.py` → `MAX_ENTRIES_TO_CHECK`, `MIN_REFERENCE_HITS`
 
 ### Credentials (`.CVEfixes.ini`)
@@ -181,7 +175,7 @@ vulnRadar/
 ├── database.py        ← SQLite schema, automatic migrations and insert helpers
 ├── task_official.py   ← Task 1 — NVD vendor/product analysis (direct lookup + CVE references)
 ├── task_hot.py        ← Task 2 — security keyword commit search + silent-patch signals
-├── task_talkers.py    ← Task 3 — most active repos right now
+├── task_criticality.py ← Task 3 — top repos by OpenSSF criticality score (static)
 ├── task_osv.py        ← Task 4 — OSV ecosystem/package analysis (direct lookup + references)
 ├── cve_matcher.py     ← cross-reference selections vs new CVEs from NVD and OSV (no false predictions)
 ├── vulnRadar_results_analysis.ipynb  ← analysis notebook on the collected matches

@@ -60,6 +60,29 @@ GITHUB_RESERVED_PATHS = {
     'mobile', 'customer-stories', 'team', 'blog',
 }
 
+# Repositories that are vulnerability CATALOGUES, not vulnerable products.
+# They are referenced by a huge share of advisories precisely because they are
+# the archive everyone links to, so they would otherwise dominate both the
+# selections and the matches with entries that can never represent a real
+# prediction (cvelistV5 alone accounted for 39% of all matches).
+# Matched case-insensitively on the full `owner/repo`.
+REPO_DENYLIST = {
+    'cveproject/cvelistv5',          # the official CVE List archive
+    'cveproject/cvelist',            # its predecessor
+    'github/advisory-database',      # GitHub Security Advisories archive
+    'ossf/osv-schema',               # OSV schema/spec
+    'google/osv.dev',                # OSV service itself
+    'anchore/nvd-data-overrides',    # NVD data corrections feed
+    'aquasecurity/vuln-list',        # aggregated vulnerability list
+}
+
+
+def is_denylisted(full_name: str) -> bool:
+    """True if `owner/repo` is a vulnerability catalogue rather than a product
+    (see REPO_DENYLIST). Used both when extracting repos from references and
+    before persisting a selection, so no task can slip one through."""
+    return full_name.lower() in REPO_DENYLIST
+
 
 def extract_github_repos(item: dict) -> set[str]:
     """Find every github.com/owner/repo URL in an item's references.
@@ -81,7 +104,10 @@ def extract_github_repos(item: dict) -> set[str]:
             repo = re.sub(r'\.git$|/$', '', repo)
             if not repo:
                 continue
-            repos.add(f'{owner}/{repo}')
+            full_name = f'{owner}/{repo}'
+            if is_denylisted(full_name):
+                continue
+            repos.add(full_name)
     return repos
 
 

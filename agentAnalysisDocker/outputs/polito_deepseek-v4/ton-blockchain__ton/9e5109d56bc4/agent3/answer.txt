@@ -1,0 +1,95 @@
+Let me verify the most significant findings by examining the actual source code.
+Let me verify the top finding about `basic_check()` never being called.
+Based on my thorough analysis of the codebase, I need to finalize my findings. Let me check one more potential issue area I haven't fully explored yet.
+## Goal
+- Security code review of TON Blockchain repository (zero-day hunting) to identify and classify vulnerabilities.
+
+## Constraints & Preferences
+- Must find vulnerabilities without any commit/diff/hint; explore repository freely.
+- End with exact VULNERABILITY_FOUND / CWE_ID / CWE_NAME block.
+
+## Progress
+### Done
+- Explored the ~65-directory repository structure (TON Blockchain C++17 reference implementation).
+- Inspected core files: http/http.cpp, http/http.h, crypto/vm/boc.cpp, crypto/common/linalloc.hpp, crypto/common/bitstring.cpp, storage/Torrent.cpp, storage/TorrentHeader.cpp, crypto/block/block-db.cpp, crypto/block/check-proof.cpp, tdutils/td/utils/port/stacktrace.cpp, rldp-http-proxy/rldp-http-proxy.cpp, blockchain-explorer/blockchain-explorer-*.cpp, keys/encryptor.cpp, keys/keys.cpp.
+- Grepped for dangerous functions: system(), popen(), gets(), strcpy(), sprintf(), vsprintf(), realloc().
+- Confirmed that `/work/http/http.cpp` defines `HttpHeader::basic_check()` (line 861–873) to reject CR, LF, space, tab, colon in header names and CR/LF in header values.
+- Verified that `basic_check()` is called in `rldp-http-proxy.cpp` (lines 277, 518, 1213) but **never** from the core HTTP parsing entry points `get_header()` (line 67–73), `HttpRequest::parse()` (line 88–118), `HttpResponse::parse()` (line 702–735), or `add_header()` methods.
+- Verified `store_http()` (line 77–82) writes headers verbatim: `output.append(name)`, `output.append(": ")`, `output.append(value)`, `output.append("\r\n")` — no sanitization.
+- Checked HTTP connection files (http-connection.cpp, http-inbound-connection.cpp, http-outbound-connection.cpp) — none call `basic_check()` before writing headers over the wire.
+- Checked blockchain-explorer HTTP responses — user-controlled data flows through HTTP header construction without CRLF validation.
+
+### In Progress
+- (none)
+
+### Blocked
+- (none)
+
+## Key Decisions
+- Confirmed `basic_check()` exists but is dead code in the core HTTP library path. Only the RLDP-HTTP proxy calls it, leaving the direct HTTP server/client code vulnerable to CRLF injection. This is the strongest, most confident finding.
+
+## Next Steps
+- (none — review complete)
+
+## Critical Context
+- The `get_header()` function in `http/http.cpp:67-73` parses raw HTTP header lines by splitting on `:` and returning `HttpHeader{line.substr(0,p), td::trim(line.substr(p+1))}` — no validation of CR/LF characters.
+- `HttpRequest::parse()` (line 88) and `HttpResponse::parse()` (line 702) feed results of `get_header()` directly into `add_header()` with no CRLF check.
+- `store_http()` (line 77) writes name and value unsanitized into the output buffer followed by `\r\n`.
+- The `blockchain-explorer` and `http-connection` layers both write responses via `store_http()`.
+- An attacker sending a crafted HTTP request with CRLF in a header value can inject arbitrary headers into the response (response splitting / header injection).
+- The `sprintf` in `http.cpp:498` for chunked encoding uses a 64-byte buffer with `%lx` on a `size_t` value — max output is 19 bytes on 64-bit, so it does not overflow, but is still a bad practice.
+
+## Relevant Files
+- `/work/http/http.cpp` lines 67–73 (`get_header()`): parses raw HTTP headers without calling `basic_check()`.
+- `/work/http/http.cpp` lines 77–82 (`store_http()`): writes headers verbatim without sanitization.
+- `/work/http/http.cpp` lines 861–873 (`basic_check()`): validation function defined but never called from core HTTP parsing.
+- `/work/http/http.h` line 42–56 (`HttpHeader` struct with `basic_check()` declaration).
+- `/work/rldp-http-proxy/` (proxy bypasses the vulnerability by calling `basic_check()` locally).
+- `/work/blockchain-explorer/` (exposes HTTP endpoints that construct responses using the vulnerable code path).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-113
+CWE_NAME: Improper Neutralization of CRLF Sequences in HTTP Headers
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Now I can see the types clearly. Let me verify the `get_header()` function paths more carefully, and check how the HTTP response is constructed:
+Let me check the HTTP proxy and the blockchain explorer response construction paths:
+Now I have all the evidence I need. Let me also verify one more time that `basic_check` is truly never called in the core HTTP path:
+---
+
+## Final Security Review Findings
+
+### Vulnerability Found: CRLF Injection in HTTP Header Handling (CWE-113)
+
+**Location:** `/work/http/http.cpp`
+
+**Affected functions:**
+- `get_header()` (line 67–73): Parses raw HTTP header lines by splitting on `:` and trimming the value portion. **No CR/LF validation is performed.**
+- `HttpRequest::add_header()` (line 183–223): Stores a parsed header into a request object. **No CR/LF validation is performed.**
+- `HttpResponse::add_header()` (line 793–828): Stores a parsed header into a response object. **No CR/LF validation is performed.**
+- `HttpHeader::store_http()` (line 77–82): Serializes the header by appending `name`, `: `, `value`, `\r\n` **verbatim** with no sanitization.
+
+**Existing but unused validation:**
+- `HttpHeader::basic_check()` (line 861–873): Correctly rejects CR, LF, space, tab, and colon in header names; rejects CR and LF in header values. **However, this function is never called from any code path in the `http/` directory.** It is only called from `rldp-http-proxy/rldp-http-proxy.cpp` (3 call sites at lines 277, 518, 1213).
+
+**Attack chain:**
+1. An attacker sends an HTTP request (or a backend server returns an HTTP response) with a header value containing CRLF characters — e.g., `Foo: bar\r\nInjected-Header: malicious\r\n`
+2. `get_header()` splits on the first `:` and stores `"Foo"` / `"bar\r\nInjected-Header: malicious"` without any CRLF check
+3. `add_header()` stores this into the request/response object without any CRLF check
+4. When `store_http()` serializes the response back to the client, it writes the unsanitized value verbatim — the embedded CRLF sequences split the HTTP response, allowing the attacker to inject arbitrary HTTP headers and body content
+5. This enables HTTP response splitting, which can lead to cache poisoning, cross-site scripting, and request smuggling
+
+**Impacted components:** The in-tree HTTP server (`HttpServer` → `HttpInboundConnection` → `send_answer()` → `response->store_http()`) and the HTTP proxy (`http-proxy.cpp`) both forward unsanitized headers. Only the RLDP-HTTP proxy is protected via its own local `basic_check()` calls.
+
+**Exploitability:** The HTTP proxy listens on a configurable port and accepts connections from arbitrary clients. An attacker who controls (or man-in-the-middles) the upstream backend server can return crafted response headers with CRLF injection, poisoning the client connection through the proxy.
+
+**Impact:** HTTP response splitting → cache poisoning, XSS, and HTTP request smuggling against backend servers.
+
+**Fix:** Call `HttpHeader::basic_check()` inside `get_header()` (line 72 of `http.cpp`) after constructing the `HttpHeader` but before returning it, or inside both `add_header()` implementations.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-113
+CWE_NAME: Improper Neutralization of CRLF Sequences in HTTP Headers

@@ -1,0 +1,59 @@
+## Analysis
+
+This commit fixes a **path traversal vulnerability** in the local block storage adapter of **lakeFS** (`/work/pkg/block/local/adapter.go`). The changes span two functions and their corresponding tests.
+
+### Vulnerability in `verifyRelPath` (line 105)
+
+**Before:**
+```go
+func (l *Adapter) verifyRelPath(p string) error {
+    if !strings.HasPrefix(filepath.Clean(p), l.path) {
+        return fmt.Errorf("%s: %w", p, ErrBadPath)
+    }
+    return nil
+}
+```
+
+This uses a plain `strings.HasPrefix` check against `l.path`. An attacker can bypass it by crafting a path that shares a prefix with the adapter's base directory. For example, if `l.path = "/tmp/lakefs"`, a path like `/tmp/lakefs_evil/secrets.txt` passes the check because its string representation starts with `/tmp/lakefs`, even though it is **not** a subdirectory of `/tmp/lakefs/`.
+
+**After:**
+```go
+if !strings.HasPrefix(filepath.Clean(p), l.path+string(filepath.Separator)) {
+```
+The `+string(filepath.Separator)` ensures the check is directory-aware — the path must be explicitly under `l.path/`, not just share a textual prefix.
+
+### Vulnerability in `extractParamsFromObj` (lines 112-137)
+
+**Before:**
+```go
+p := path.Join(l.path, ptr.StorageNamespace[len(DefaultNamespacePrefix):], ptr.Identifier)
+if err := l.verifyRelPath(p); err != nil {
+    return "", err
+}
+return p, nil
+```
+
+This only verified that the final path was under the adapter's base path (e.g., `/tmp/lakefs`). It did **not** verify that the path stayed within its **own namespace subdirectory**. An attacker with access to namespace `local://repo1/namespace` could use an identifier like `subdir/../../other/secret.txt` to traverse into a **sibling namespace** (e.g., `repo1/other/secret.txt`) while still staying under the adapter's top-level directory — thus bypassing the check.
+
+**After:**
+The fix introduces a two-level validation:
+1. First verifies the namespace directory itself is under the adapter's base path.
+2. Then verifies the resolved path (namespace + identifier) is under the namespace directory (or equal to it), preventing namespace escape via `..` in the identifier.
+
+### Test File
+
+The corresponding test file (`/work/pkg/block/local/adapter_test.go`) adds two comprehensive tests:
+- `TestPathTraversalPrevention` — tests multiple traversal vectors including the prefix-bypass attempt (`../lakefs_evil`)
+- `TestPathTraversalDataAccess` — creates actual files in sibling namespaces and verifies that reading them via path traversal is blocked
+
+### CWE Classification
+
+Both changes address the same class of vulnerability: **Path Traversal**. The defect allowed an attacker to read or write files outside their intended namespace directory, and in some configurations, outside the adapter's base directory entirely.
+
+- **CWE-22** — Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') is the most specific and accurate classification for both code changes.
+
+No other CWE applies here — this is a straightforward filesystem path traversal, not an injection, not an information disclosure via error messages, etc.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Path Traversal

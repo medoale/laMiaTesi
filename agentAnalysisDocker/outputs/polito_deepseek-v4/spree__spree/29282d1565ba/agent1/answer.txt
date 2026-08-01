@@ -1,0 +1,42 @@
+Let me read all the content files to understand what changed.
+Now let me read the remaining portion of file_03's after.txt that was truncated, focusing on the relevant test sections for the address changes:
+## Analysis
+
+The three files in `/work/_CHANGES` represent a single commit across Spree (an e-commerce Ruby/Rails framework):
+
+### File 02 — The core fix (`Spree::Order::AddressBook` module)
+
+Before the commit, `bill_address_id=` and `ship_address_id=` contained this authorization check:
+
+```ruby
+if address && address.user_id == user_id
+```
+
+When `user_id` is `nil` (i.e., a **guest checkout**), this became `address.user_id == nil`. This means a guest user could set their order's billing or shipping address ID to **any address in the database** that also had `user_id: nil` — i.e., addresses belonging to **other guest users/orders**. The user controls the address ID parameter directly (an Insecure Direct Object Reference).
+
+The fix adds a `user_id.present?` guard:
+
+```ruby
+if address && user_id.present? && address.user_id == user_id
+```
+
+Now, when `user_id` is `nil` (guest), the condition short-circuits to `false`, and the address assignment is rejected (set to `nil`). This prevents a guest attacker from iterating over address IDs and claiming addresses that belong to other anonymous users.
+
+### File 01 — New integration test for the CheckoutController
+Verifies guest users cannot steal other users' addresses via the API endpoint.
+
+### File 03 — Updated model spec
+Adds tests for the `bill_address_id=` and `ship_address_id=` setters, specifically testing:
+- Address belonging to another user → sets to `nil`
+- Guest user with same/identical address → no-op
+- Guest user with a different guest's address → sets to `nil`
+
+### CWE Classification
+
+This is an **Insecure Direct Object Reference (IDOR)** — the most specific and accurate CWE is **CWE-639 (Authorization Bypass Through User-Controlled Key)**. The user supplies a numeric address ID, and the code previously failed to verify ownership when the current user was a guest (`user_id` is `nil` matched `user_id` of `nil` on another guest's address).
+
+No other CWEs apply with the same specificity.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

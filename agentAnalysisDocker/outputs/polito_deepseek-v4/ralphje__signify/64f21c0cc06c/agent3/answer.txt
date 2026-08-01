@@ -1,0 +1,82 @@
+Now let me look at the `.github` directory and check for any CI configuration that might reveal more about the project.
+Let me also look at the test files for potential security-relevant tests.
+After a thorough analysis of the codebase, I have identified a significant vulnerability. Let me verify one final aspect of the code to confirm my findings:
+Now I have a complete picture of the codebase. Here is my analysis:
+
+---
+
+## Security Analysis of `signify` (Authenticode Signature Verification Library)
+
+After a thorough examination of the entire repository, I have identified a **genuine security vulnerability** related to the default cryptographic verification posture. The core issue lies in how the library verifies cryptographic signatures by default.
+
+### Vulnerability Details
+
+**1. CWE-347: Improper Verification of Cryptographic Signature — "Raw" RSA Fallback**
+
+In `/work/signify/x509/certificates.py` (lines 182–234), the `verify_signature` method accepts an `allow_legacy` parameter. When `allow_legacy=True`, if the standard RSA PKCS#1 v1.5 signature verification fails (which requires a proper DigestInfo ASN.1 structure wrapping the hash), the library falls back to verifying the signature against just the **raw hash value** (the "raw" mode at line 228–229):
+
+```python
+hasher = algorithm()
+hasher.update(data)
+asymmetric.rsa_pkcs1v15_verify(
+    public_key, signature, hasher.digest(), "raw"
+)
+```
+
+Standard PKCS#1 v1.5 requires the data to be signed to be a `DigestInfo` structure (`SEQUENCE { AlgorithmIdentifier, OCTET STRING (hash) }`), which cryptographically binds the hash algorithm OID to the hash value. The "raw" mode discards this binding, accepting signatures over the bare hash without any algorithm identification. This is documented as a known dangerous edge case (referencing the OpenSSL mailing list thread at `mta.openssl.org`).
+
+This `allow_legacy` parameter defaults to **`True`** in `VerificationContext.__init__` (`/work/signify/x509/context.py`, line 271):
+
+```python
+def __init__(
+    self,
+    *stores: CertificateStore,
+    ...
+    allow_legacy: bool = True,  # <--- Defaults to True
+    ...
+)
+```
+
+And it is passed from the context into `verify_signature` in `SignerInfo._verify_issuer_signature` (`/work/signify/pkcs7/signer_info.py`, lines 292–298):
+
+```python
+issuer.verify_signature(
+    self.encrypted_digest,
+    self._encoded_authenticated_attributes,
+    self.digest_algorithm,
+    allow_legacy=context.allow_legacy,  # <--- True by default
+)
+```
+
+**Impact**: An attacker who obtains a signature that verifies under "raw" mode but not under standard PKCS#1 v1.5 could have their signature accepted as valid. The DigestInfo structure provides algorithm-binding protection; bypassing it weakens the integrity guarantees of the signature.
+
+**2. CWE-327: Use of a Broken or Risky Cryptographic Algorithm**
+
+Two manifestations of the same root cause (`allow_legacy=True`):
+
+- **`weak_hash_algos` bypass** (`/work/signify/x509/context.py`, line 427):  
+  ```python
+  weak_hash_algos=set() if self.allow_legacy else None,
+  ```
+  When `allow_legacy=True`, the set is empty, meaning **no** hash algorithm is flagged as weak. This allows certificate chains using MD2, MD4, or MD5 — all of which are collision-broken — to be accepted for chain validation by the `certvalidator` library.
+
+- **MD5 in `ACCEPTED_DIGEST_ALGORITHMS`** (`/work/signify/asn1/hashing.py`, line 13):  
+  ```python
+  ACCEPTED_DIGEST_ALGORITHMS = ("md5", "sha1", "sha256", "sha384", "sha512")
+  ```
+  MD5 is a known-broken hash algorithm with practical collision attacks. It is accepted by the parser and verifier throughout the library (used in `_get_digest_algorithm` and inherited by `SpcIndirectDataContent`, `SignerInfo`, and `SignedData` digest algorithm extraction).
+
+### Summary
+
+The library is a security tool for verifying code signatures, yet its **default configuration** (`allow_legacy=True`) enables significantly weaker cryptographic verification:
+- It accepts RSA signatures without proper DigestInfo ASN.1 encoding (CWE-347)
+- It accepts certificate chains using broken hash algorithms like MD2, MD4, and MD5 (CWE-327)
+- It accepts MD5 as a content digest algorithm system-wide (CWE-327)
+
+Users who are unaware that they must explicitly pass `allow_legacy=False` (or `verification_context_kwargs={"allow_legacy": False}`) will receive weaker security guarantees than expected from a signature verification library.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-347, CWE-327
+CWE_NAME: Improper Verification of Cryptographic Signature, Use of a Broken or Risky Cryptographic Algorithm

@@ -1,0 +1,38 @@
+Now let me examine both files and the diff closely.
+
+## Analysis
+
+### File 01 — The core fix (main code)
+
+Two changes are visible in the diff:
+
+**1. `verifyRelPath` fix (line 6 of the diff):**
+```
+- if !strings.HasPrefix(filepath.Clean(p), l.path)
++ if !strings.HasPrefix(filepath.Clean(p), l.path+string(filepath.Separator))
+```
+The old code checked whether a path **starts with** `l.path` as a string prefix. This is a classic **prefix bypass** — if `l.path` is `/tmp/lakefs`, a path like `/tmp/lakefs_evil` would pass the check because it starts with that exact string. Appending the separator (`/`) forces the match to be a proper directory boundary.
+
+**2. `extractParamsFromObj` — added namespace-scoped isolation (lines 17–26 of the diff):**
+The old code joined the adapter path, namespace, and identifier, then only verified the result was somewhere under `l.path`. This meant that with:
+- `Identifier = "../../other/secret.txt"` and `StorageNamespace = "local://repo1/namespace"`
+- The resolved path `/tmp/lakefs/repo1/namespace/../../other/secret.txt` cleaned to `/tmp/lakefs/repo1/other/secret.txt`
+- This passes `verifyRelPath` (it's under `/tmp/lakefs`), but **escapes the namespace** directory into a sibling directory (`repo1/other/`).
+
+The new code first resolves and validates the namespace path itself, then resolves the final path and checks that it is **under the namespace path** (or equal to it), not just under the adapter root. This prevents escaping one namespace to read (or write) files in another namespace.
+
+### File 02 — The test code
+
+Two new test functions are added:
+
+- **`TestPathTraversalPrevention`** — Tests that the adapter correctly blocks `../` traversal in both the namespace and the identifier, including prefix-bypass attempts like `local://../lakefs_evil`.
+
+- **`TestPathTraversalDataAccess`** — Sets up a concrete exploit scenario: creates a "secret" file in `repo1/other/secret.txt`, then attempts to read it from namespace `local://repo1/namespace` using identifier `subdir/../../other/secret.txt`. It explicitly logs `"PATH TRAVERSAL VULNERABILITY"` if the old code allows the read.
+
+### Conclusion
+
+This commit **fixes a path traversal vulnerability** in the local block adapter of lakeFS. The old code only checked whether a path was under the adapter's base directory, but did not enforce that paths stay within their own **namespace subdirectory**, allowing attackers to use `../` in identifiers to traverse into sibling namespaces. The prefix check in `verifyRelPath` also suffered from a string-prefix bypass that could match unintended directories sharing a common prefix.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Path Traversal

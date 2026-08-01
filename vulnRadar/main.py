@@ -9,7 +9,7 @@ from github_client import GitHubClient
 from database import init_db, insert_tracked_repos
 import task_official
 import task_hot
-import task_talkers
+import task_criticality
 import task_osv
 import cve_matcher
 
@@ -22,15 +22,17 @@ def run_pipeline(client: GitHubClient) -> None:
         init_db(conn)
 
         with ThreadPoolExecutor(max_workers=4, thread_name_prefix='task') as pool:
-            f_official = pool.submit(task_official.run, client)
-            f_hot      = pool.submit(task_hot.run, client)
-            f_talkers  = pool.submit(task_talkers.run, client)
-            f_osv      = pool.submit(task_osv.run, client)
+            f_official    = pool.submit(task_official.run, client)
+            f_hot         = pool.submit(task_hot.run, client)
+            f_criticality = pool.submit(task_criticality.run, client)
+            f_osv         = pool.submit(task_osv.run, client)
             results = {
-                'official': f_official.result(),
-                'hot':      f_hot.result(),
-                'talkers':  f_talkers.result(),
-                'osv':      f_osv.result(),
+                'official':    f_official.result(),
+                'hot':         f_hot.result(),
+                # Own label, kept distinct from the 'talkers' rows this task
+                # replaced, so the two selection strategies stay comparable.
+                'criticality': f_criticality.result(),
+                'osv':         f_osv.result(),
             }
 
         for task, repos in results.items():

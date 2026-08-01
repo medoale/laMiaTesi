@@ -1,0 +1,41 @@
+Let me also check the specifics of how these files relate to the repository structure.
+Now let me look at how the `SignedPEFile.verify()` method propagates `strict_validation` to understand the complete flow.
+Now I have a complete understanding of the changes and their security implications. Let me verify the test for the sample with invalid keyUsage by looking at the test file path.
+Here is my analysis.
+
+The commit modifies four files across two core modules (`signed_data.py` and `context.py`), a test file, and adds binary test data. The changes are:
+
+### What changed (code):
+**`signify/authenticode/signed_data.py`** (file_01):
+- Added a `strict_validation: bool = True` parameter to `AuthenticodeSignature.verify()`.
+- When `strict_validation=True` (the default), the method sets:
+  - `key_usages=["digital_signature"]` — requires the signing certificate to have the `digitalSignature` key usage bit set.
+  - `optional_eku=False` — requires the `code_signing` Extended Key Usage to be present on the certificate.
+
+**`signify/x509/context.py`** (file_02):
+- Added `optional_ku: Literal["critical"] | bool = True` to `VerificationContext.__init__()`.
+- Changed `optional_eku` from `bool` to `Literal["critical"] | bool`.
+- Changed `VerificationContext.verify()` so that `key_usage` is only enforced when the certificate actually has a `key_usage_value` (if `optional_ku=True`), or when the extension is marked critical (if `"critical"` mode). Before, `key_usages` were always enforced if set.
+- Similarly improved `extended_key_usage` enforcement for the `"critical"` mode.
+
+**Test file** (file_03):
+- Added the sample `17ad1735a13898c978cc6bbe6b2056cb8471329b` to `test_invalid_signature` — this sample has an invalid key usage, so it must fail with default `strict_validation=True`.
+- Added `test_17ad_valid_without_strict()` — confirms that when `strict_validation=False`, the same sample passes (matching Windows behavior, which does not strictly enforce key usage).
+
+**Binary test data** (file_04): A new test sample with an incorrect key usage.
+
+### Is it a security vulnerability fix?
+
+**Yes.** Before the commit, the code accepted Authenticode signatures from certificates that lacked the `digitalSignature` key usage or the `code_signing` Extended Key Usage. These are fundamental certificate constraints defined by the X.509 standard and the Authenticode specification:
+
+1. **Key Usage (`digitalSignature`)** was never checked. A certificate intended for other purposes (e.g., key encipherment, certificate signing, email protection) could be used to sign Authenticode code as long as it was otherwise trusted.
+2. **Extended Key Usage (`code_signing`)** was passed to the validator but with `optional_eku=True`, meaning a certificate without *any* EKU would still pass. Certificates lacking the `code_signing` EKU are not authorized for code signing.
+
+A certificate that is trusted but not authorized for code signing should not produce a valid Authenticode signature. By adding proper enforcement of these constraints by default, the commit fixes a security vulnerability.
+
+### Applicable CWE:
+The most specific and accurate CWE is **CWE-295: Improper Certificate Validation**. The software failed to validate critical parts of X.509 certificates (key usage and extended key usage extensions) during Authenticode signature verification, allowing certificates that were not authorized for code signing to be accepted as valid.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-295
+CWE_NAME: Improper Certificate Validation

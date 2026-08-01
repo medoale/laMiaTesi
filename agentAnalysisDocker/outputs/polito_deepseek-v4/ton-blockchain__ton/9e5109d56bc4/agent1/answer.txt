@@ -1,0 +1,10 @@
+Let me read all the files for this change.
+The diff shows a single, focused change in the `exec_get_in_msg_param` function. Before the fix, the code calls `get_param(st, inmsgparams_idx).as_tuple()` and then immediately passes the result to `tuple_index(t, idx)` without checking if the tuple is null. If the TON VM's C7 register contains a non-tuple value at index 17 (`inmsgparams_idx`), the `as_tuple()` call would return a null `Ref<Tuple>`, and `tuple_index(t, idx)` would dereference that null reference — causing undefined behavior (likely a crash or memory corruption).
+
+The rest of the file is identical (the `before.txt` and `after.txt` files are essentially identical except for this 3-line addition). The entire codebase follows a consistent pattern of null-checking after `as_tuple()` / `as_tuple_range()` calls (e.g., lines 122-126, 132-139, 264-270), and this function was simply missing that check.
+
+This is exploitable: an attacker who can craft a transaction/smart contract that calls any of the INMSG_* opcodes (INMSG_BOUNCE, INMSG_SRC, etc.) with a malformed C7 register (where index 17 is not a tuple) can trigger a null-pointer dereference, causing a VM crash or potentially more severe memory corruption in a blockchain context. This is a security vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-476
+CWE_NAME: NULL Pointer Dereference

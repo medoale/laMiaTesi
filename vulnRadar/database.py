@@ -79,6 +79,13 @@ def init_db(conn: sqlite3.Connection) -> None:
 
 
 def insert_tracked_repos(conn: sqlite3.Connection, repos: list[dict], task: str) -> int:
+    # Second barrier for vulnerability catalogues (see cve_matcher.REPO_DENYLIST):
+    # extract_github_repos already drops them for the reference-based tasks, but
+    # hot picks repos straight from GitHub search, so the check has to be here
+    # too — this is the single point every task's selection passes through.
+    from cve_matcher import is_denylisted
+    repos = [r for r in repos if not is_denylisted(r['full_name'])]
+
     now = datetime.now(timezone.utc)
     today = now.date().isoformat()
     rows = [
