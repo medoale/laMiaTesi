@@ -1,0 +1,11 @@
+The commit modifies the way the `ioreg` command is called on Darwin (macOS) in the `go.opentelemetry.io/otel/sdk/resource` package.
+
+In `file_02`, the code is changed from calling `ioreg` (relying on the system `PATH` environment variable) to calling `/usr/sbin/ioreg` (using the absolute path).
+
+Using absolute paths for system binaries is a security best practice because it prevents "PATH interception" or "binary planting" attacks. If an attacker can modify the `PATH` environment variable, they could potentially point the application to a malicious executable named `ioreg` located in a directory they control, which would then be executed by the application with the application's privileges. By specifying the absolute path `/usr/sbin/ioreg`, the application ensures it is executing the intended system binary regardless of the `PATH` configuration.
+
+This fix addresses a vulnerability related to improper search paths for executables.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-426
+CWE_NAME: Untrusted Search Path

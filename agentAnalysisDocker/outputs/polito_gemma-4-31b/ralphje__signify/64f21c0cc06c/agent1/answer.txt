@@ -1,0 +1,13 @@
+The commit introduces a `strict_validation` parameter to the `AuthenticodeSignature.verify` method, which by default is set to `True`. 
+
+When `strict_validation` is enabled, the verification process now explicitly requires the `digital_signature` key usage and the `code_signing` extended key usage (EKU) to be present and valid. Previously, the implementation aligned with Windows' behavior, which often ignores the absence or incorrect settings of these extensions, even when marked as critical.
+
+The changes in `VerificationContext` further refine how key usage (`KU`) and extended key usage (`EKU`) are validated, allowing for finer control (e.g., the `"critical"` option) over whether these extensions must be present.
+
+By defaulting `strict_validation` to `True`, the code now prevents the acceptance of certificates that lack the appropriate usage restrictions required for secure code signing, thereby mitigating the risk of using certificates intended for other purposes (e.g., email encryption) to sign code. This is a fix for improper validation of certificate extensions, which can lead to security bypasses if an attacker can use a validly signed certificate that was not intended for code signing.
+
+This falls under CWE-295 (Improper Certificate Validation), specifically relating to the failure to verify the intended usage of the certificate.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-295
+CWE_NAME: Improper Certificate Validation

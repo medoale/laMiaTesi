@@ -1,0 +1,11 @@
+The changes in this commit focus on preventing the automatic generation of thumbnails for remote documents. 
+
+In `file_02` (`DocumentUploadView`), the code was modified to only call `resource_manager.set_thumbnail` if `self.object.is_local` is true. This ensures that when a user uploads a document by providing a remote URL (instead of uploading a file), the system does not attempt to fetch that remote resource to generate a thumbnail.
+
+This is a classic security fix for **Server-Side Request Forgery (SSRF)**. By blindly fetching a URL provided by a user to generate a thumbnail, the server could be tricked into making requests to internal network resources, metadata services (like AWS IMDS), or other prohibited endpoints.
+
+The changes in `file_01` are corresponding test updates to verify that thumbnails are no longer generated for remote documents, confirming the fix. `file_03` appears to be a related but less critical adjustment.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

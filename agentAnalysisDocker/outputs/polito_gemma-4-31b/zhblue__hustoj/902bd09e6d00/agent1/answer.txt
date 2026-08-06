@@ -1,0 +1,19 @@
+The provided commit introduces a security fix to prevent a **Zip Slip** vulnerability (a form of Path Traversal).
+
+In the `before.txt` version, the code extracts files from a uploaded ZIP archive and writes them to the filesystem using paths derived directly from the ZIP entries:
+```php
+$file_name = $path.zip_entry_name($dir_resource);
+// ...
+file_put_contents($tempdir."/".$file_name,$file_content);
+```
+If a malicious ZIP file contains entries with names like `../../etc/passwd` or `../../var/www/html/shell.php`, the `file_put_contents` call could write files outside of the intended `$tempdir` directory, potentially allowing an attacker to overwrite critical system files or upload a web shell for Remote Code Execution (RCE).
+
+The `after.txt` version attempts to mitigate this by adding:
+```php
+$file_name=str_replace('../', '', $file_name);
+```
+This removes `../` sequences from the filename, which is a common (though sometimes incomplete) way to prevent directory traversal. By stripping these sequences, the code aims to ensure that the extracted files remain within the target directory.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

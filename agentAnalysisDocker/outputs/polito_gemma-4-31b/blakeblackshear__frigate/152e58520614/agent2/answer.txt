@@ -1,0 +1,27 @@
+The commit implements several security enhancements and fixes, focusing on authentication, session management, and password security.
+
+### Analysis of Changes:
+
+1.  **Broken Authentication / Session Management (JWT):**
+    *   The commit introduces a `password_changed_at` timestamp in the `User` model and stores the issued-at time (`iat`) in the JWT.
+    *   In the `auth` function, it now checks if the JWT was issued *before* the last password change. If so, the token is rejected during refresh. This ensures that changing a password invalidates all existing active sessions, which is a critical security requirement to stop attackers who may have stolen a session token.
+
+2.  **Improper Authentication (Password Change):**
+    *   The `update_password` endpoint was previously allowing anyone authenticated (via `allow_any_authenticated`) to change any user's password as long as they had the appropriate role. Crucially, it did not require the **current password** to change the password.
+    *   The fix now requires `old_password` for non-admins or when users change their own password, preventing an attacker with temporary access to a session from permanently locking out the user or escalating privileges.
+
+3.  **Insufficient Password Policy:**
+    *   The commit adds `validate_password_strength`, enforcing minimum length (8 characters), uppercase letters, digits, and special characters. This mitigates brute-force and dictionary attacks.
+
+4.  **Insecure Temporary File/Secret Creation:**
+    *   In `get_jwt_secret`, the creation of the `.jwt_secret` file was changed from a simple `open(..., "w")` to `os.open(..., os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)`. This prevents race conditions (via `O_EXCL`) and ensures the secret file is created with restrictive permissions (`0o600`), preventing other users on the system from reading it.
+
+5.  **Session Duration:**
+    *   The `refresh_time` was reduced from 12 hours to 30 minutes, reducing the window of opportunity for an attacker to use a stolen token to keep a session alive.
+
+### Conclusion:
+The most significant security vulnerability addressed is the lack of current password verification during password updates and the inability to invalidate existing sessions upon password change, which falls under **CWE-287 (Improper Authentication)**. The password strength requirements address **CWE-521 (Weak Password Requirements)**.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-287, CWE-521
+CWE_NAME: Improper Authentication, Weak Password Requirements

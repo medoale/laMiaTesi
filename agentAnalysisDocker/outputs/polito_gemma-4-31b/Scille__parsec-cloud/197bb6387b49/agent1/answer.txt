@@ -1,0 +1,13 @@
+The commit implements a check to ensure that the resulting shared secret from a Diffie-Hellman (X25519) key exchange is "contributory". 
+
+In `file_06/diff.txt`, the code now calls `.was_contributory()` on the shared secret and returns a `CryptoError::SharedSecretKey` if it is not. This specifically prevents the case where a malicious or malformed public key (e.g., an all-zero key) results in a predictable shared secret (often all zeros), regardless of the other party's private key. 
+
+This is a known issue in Curve25519 implementations. If a public key is not validated or the result of the scalar multiplication is not checked for contributivity, an attacker can force the shared secret to a known value, breaking the confidentiality of the encrypted communication.
+
+The added test in `file_08/diff.txt` explicitly verifies this by attempting to generate a shared secret with an all-zero public key and asserting that it returns an error.
+
+This is a fix for a vulnerability related to improper validation of public keys in a Diffie-Hellman exchange, which can lead to the use of a weak or known shared secret.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-327
+CWE_NAME: Use of a Broken or Risky Cryptographic Algorithm

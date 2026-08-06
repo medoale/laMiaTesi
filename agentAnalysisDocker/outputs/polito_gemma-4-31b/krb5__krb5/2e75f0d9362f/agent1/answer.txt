@@ -1,0 +1,11 @@
+The commit introduces two important security checks to prevent potential out-of-bounds memory accesses (buffer overflows or over-reads) during the parsing of NegoEx messages.
+
+1.  **Check for `vector_base` return value**: In `parse_nego_message`, the code now checks if `p` (the result of `vector_base`) is `NULL` before entering a loop that reads from `p`. `vector_base` returns `NULL` if the specified offset and count exceed the message boundaries. Without this check, a malformed message could lead to a null-pointer dereference or an out-of-bounds read.
+
+2.  **Header length validation**: In `parse_message`, the condition for validating `header_len` is strengthened. It now ensures that `header_len` is not smaller than the number of bytes already consumed from the message base (`in->ptr - msg_base`). This prevents an underflow or an incorrect calculation of `in->len` in the subsequent line: `in->len = header_len - (in->ptr - msg_base);`. If `header_len` were smaller than the consumed bytes, `in->len` (which is `size_t`, an unsigned type) would wrap around to a very large value, potentially leading to massive out-of-bounds reads in subsequent parsing functions.
+
+These changes specifically target flaws in how message lengths and offsets are validated when parsing untrusted network input, which is a classic source of memory corruption vulnerabilities.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-125, CWE-119
+CWE_NAME: Out-of-bounds Read, Improper Restriction of Operations within the Bounds of a Memory Buffer

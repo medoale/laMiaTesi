@@ -1,0 +1,13 @@
+The provided diff shows the addition of `$file_name=str_replace('../', '', $file_name);` in two locations where files are being extracted from a ZIP archive and written to the filesystem.
+
+In the original code (`before.txt`), `zip_entry_name($dir_resource)` is used to get the filename from the ZIP archive. This filename is then concatenated with `$path` (though `$path` is not explicitly defined in the provided snippet, it is used as `$file_name = $path.zip_entry_name($dir_resource);`). Later, this `$file_name` is used in `mkdir($tempdir."/".dirname($file_name));` and `file_put_contents($tempdir."/".$file_name,$file_content);`.
+
+If a ZIP archive contains entries with filenames like `../../etc/passwd`, the `file_put_contents` call could potentially write files outside of the intended `$tempdir` directory. This is a classic "Zip Slip" vulnerability, which is a form of Path Traversal.
+
+The fix attempts to mitigate this by removing `../` sequences from the filename. While `str_replace('../', '', $file_name)` is a naive approach (as it can be bypassed by sequences like `....//`), it is clearly intended to prevent directory traversal.
+
+Therefore, the commit is fixing a security vulnerability related to path traversal during ZIP extraction.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

@@ -1,0 +1,28 @@
+I have analyzed the repository and found a security vulnerability in the `LatexManager` class.
+
+The `LatexManager` class allows the specification of a `system` (the command to run) and a `preamble` which are then used to start a process. 
+
+In `LatexManager.java`:
+```java
+25: 	public LatexManager(String system, String preamble) {
+26: 		String command = (system != null && !system.isEmpty()) ? system : "xelatex";
+27: 		if (!command.endsWith("latex")) {
+28: 			throw new IllegalArgumentException("command " + command + " is unsupported");
+29: 		}
+30: 		try {
+31: 			File tempDir = Files.createTempDirectory("plantuml-latex-").toFile();
+32: 			tempDir.deleteOnExit();
+33: 			this.process = new ProcessBuilder(command, "-halt-on-error")
+34: 							.directory(tempDir)
+35: 							.start();
+```
+
+The validation on line 27 only checks if the `command` ends with `"latex"`. An attacker could provide a command like `sh -c "calc; echo latex"`, which ends with `latex` but executes arbitrary commands.
+
+These values are populated from `TikzFontDistortion` (lines 92-103), which in turn gets them from `Pragma` (lines 101-102). `Pragma` values are defined via `define(String keyName, String value)` (lines 59-65).
+
+In many PlantUML environments, pragma values can be influenced by the input diagram description (e.g., using `!pragma` or similar mechanisms if the preprocessor allows it). If an attacker can set the `TEX_SYSTEM` pragma, they can achieve Command Injection.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

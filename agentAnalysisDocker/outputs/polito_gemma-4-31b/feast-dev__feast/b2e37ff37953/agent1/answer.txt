@@ -1,0 +1,11 @@
+The commit in `file_01` replaces `yaml.load(f, Loader=yaml.Loader)` with `yaml.safe_load(f)`.
+
+In PyYAML, `yaml.Loader` (and the default `yaml.load` without a safe loader) is capable of constructing any Python object, which can lead to arbitrary code execution if the input YAML file is attacker-controlled. Using `yaml.safe_load` restricts the loader to simple Python objects (like dictionaries, lists, and strings), effectively mitigating this vulnerability.
+
+The change in `file_02` is a trivial docstring modification and has no security impact.
+
+Therefore, the commit fixes a security vulnerability related to unsafe deserialization of YAML data.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

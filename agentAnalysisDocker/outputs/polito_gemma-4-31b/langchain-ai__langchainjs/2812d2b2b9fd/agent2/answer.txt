@@ -1,0 +1,15 @@
+The provided changes implement a fix for a Server-Side Request Forgery (SSRF) vulnerability in the `RecursiveUrlLoader` class of the `@langchain/community` package.
+
+Previously, the `RecursiveUrlLoader` used the default `fetch` behavior for redirects. While the initial URL was validated using `validateSafeUrl`, the subsequent redirects were handled automatically by the `fetch` API. This allowed an attacker to bypass the initial safety checks by providing a safe-looking URL that redirected the server to a restricted internal resource (e.g., `localhost`, cloud metadata services like `169.254.169.254`, or private network IP ranges).
+
+The fix involves:
+1. Setting `redirect: "manual"` in the `fetch` options to take control of the redirect process.
+2. Implementing a manual redirect loop (up to `MAX_REDIRECTS`).
+3. Calling `validateSafeUrl(currentUrl, { allowHttp: true })` for every URL in the redirect chain, including the redirected-to locations.
+4. Adding a test suite in `file_02` that specifically verifies that redirects to private IPs and metadata services are now blocked.
+
+This is a classic SSRF bypass via redirects.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

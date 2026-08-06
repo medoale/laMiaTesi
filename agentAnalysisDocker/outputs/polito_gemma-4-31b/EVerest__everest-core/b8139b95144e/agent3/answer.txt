@@ -1,0 +1,19 @@
+I have analyzed the repository and identified a critical security vulnerability.
+
+The vulnerability is located in `/work/modules/Misc/System/signed_firmware_downloader.sh`. This script is used to download and verify signed firmware updates. It accepts several arguments, including the firmware location, the signature, and the signing certificate.
+
+The vulnerability is a **Command Injection** (or more accurately, an **Argument Injection/Command Injection**) in the way the script handles its inputs. Specifically, on line 3, it sources a file provided as the first argument: `. "${1}"`. If an attacker can control the first argument passed to this script, they can achieve arbitrary code execution with the privileges of the process running the script.
+
+Furthermore, in `systemImpl.cpp`, the `run_application` function is used to execute these shell scripts. The `run_application` implementation uses `boost::process::child`, passing arguments as a vector. While `boost::process` generally avoids shell injection by passing arguments directly to `execvp`, the script itself *sources* its first argument.
+
+Even if the first argument is meant to be a constants file (as seen in `systemImpl.cpp`: `const auto constants = this->scripts_path / CONSTANTS;`), if there is any way to influence that path or if the script is called by other means, it is dangerous.
+
+More importantly, the script uses `echo -e "${4}" > ...` and `echo -e "${5}" > ...` (lines 15 and 16). If an attacker can control the signature or certificate strings passed from the `FirmwareUpdateRequest`, and the script is executed in a shell that interprets these (which it is, as a bash script), they may be able to inject content into the temporary files.
+
+However, the most direct and severe vulnerability is the sourcing of the first argument: `. "${1}"`. This is a classic "source injection" that leads to arbitrary command execution. In the context of `systemImpl.cpp`, the first argument is `constants.string()`, which points to `constants.env`. If an attacker can modify `constants.env` or influence the `scripts_path`, they gain full control.
+
+Moreover, the use of `echo -e` with untrusted input can be problematic, but the `. "${1}"` is a definitive vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-73
+CWE_NAME: External Control of File Name or Path

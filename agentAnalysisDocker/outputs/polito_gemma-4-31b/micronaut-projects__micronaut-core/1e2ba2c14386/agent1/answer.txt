@@ -1,0 +1,11 @@
+The commit replaces a `ConcurrentHashMap` with a `ConcurrentLinkedHashMap` with a maximum capacity of 100 in the `DefaultHtmlErrorResponseBodyProvider` class.
+
+In the original code, the `cache` was an unbounded `ConcurrentHashMap`. The `body` method uses `cache.computeIfAbsent(key, this::html)`, where the `key` is an `HtmlErrorPage` record. Looking at the `error` method, an `HtmlErrorPage` is created using several parameters, including `httpStatusReason` and a list of `messages` derived from `errorContext.getErrors()`.
+
+If an attacker can control the content of the error messages or the response reason (which are part of the `HtmlErrorPage` key), they can force the creation of a large number of unique `HtmlErrorPage` objects. Since the original `ConcurrentHashMap` was unbounded, this allows an attacker to consume an arbitrary amount of memory by triggering different error responses, leading to a Denial of Service (DoS) through memory exhaustion.
+
+By introducing a `maximumWeightedCapacity` (a bounded cache), the developer has mitigated this resource exhaustion vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

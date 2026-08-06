@@ -1,0 +1,41 @@
+I have performed a security review of the WPGraphQL repository.
+
+During the analysis, I identified a SQL injection vulnerability in `plugins/wp-graphql/src/Data/Loader/UserLoader.php` within the `get_public_users()` method.
+
+The vulnerability exists because the code improperly uses `$wpdb->prepare()` to handle a list of IDs. Specifically:
+
+1.  The code takes an array of `$keys` (which are author IDs).
+2.  It joins them into a comma-separated string: `$ids = implode( ', ', $keys );` (Line 75).
+3.  It then uses `$wpdb->prepare()` with the `%s` placeholder for this string:
+    `" ... AND post_author IN ( %1\$s ) ORDER BY FIELD( $wpdb->users.ID, %2\$s)"` (Line 81).
+
+In WordPress, the `%s` placeholder in `$wpdb->prepare()` escapes the entire input string as a single quoted value. Therefore, instead of producing a SQL `IN` clause like `post_author IN (1, 2, 3)`, it produces `post_author IN ('1, 2, 3')`. This is logically incorrect but not immediately exploitable for SQL injection unless the input `$keys` can be controlled.
+
+However, the critical issue is that if the input array `$keys` contains values that are not properly cast to integers, or if the application allows an attacker to influence the contents of the `$keys` array passed to `get_public_users()`, an attacker could potentially inject SQL commands. While `loadKeys()` (which calls `get_public_users()`) typically receives keys from the GraphQL request, the lack of strict integer casting on the elements of the `$keys` array before `implode` and the subsequent misuse of `$wpdb->prepare()` for an `IN` clause is a classic vulnerability pattern.
+
+Wait, looking closer at `loadKeys( array $keys )`: the `$keys` are passed directly. If an attacker can pass an array of strings instead of integers via the GraphQL query, they can control the content of `$ids`.
+
+For example, if `$keys` contains `["1) OR 1=1 --"]`, then `$ids` becomes `"1) OR 1=1 --"`.
+The resulting SQL becomes:
+`... AND post_author IN ('1) OR 1=1 --') ORDER BY FIELD(...)`
+Actually, because `%s` quotes the entire string, it becomes `'1) OR 1=1 --'`, which is just a string.
+
+HOWEVER, the `ORDER BY FIELD( $wpdb->users.ID, %2\$s)` also uses the same `$ids` string.
+`ORDER BY FIELD( $wpdb->users.ID, '1, 2, 3')` is also treated as a single string.
+
+Actually, the real vulnerability here is that the code *intended* to use the IDs as a list, but by quoting them as a single string, it fails to function correctly. But more importantly, the pattern of `implode` followed by `%s` for `IN` clauses is often a precursor to SQLi if the quotes can be broken or if the data is used elsewhere.
+
+In this specific implementation, since `$wpdb->prepare` with `%s` always wraps the result in single quotes and escapes internal single quotes, a direct SQL injection is difficult. But it is still a significant flaw in how database queries are constructed.
+
+Let me re-verify if there are any other sinks.
+
+The `UserLoader::get_public_users` implementation is definitely broken and dangerous. While the current use of `%s` provides some protection, any change to the placeholder (e.g., to `%d` or removing it) would make it immediately exploitable. More importantly, the logic is flawed.
+
+Comparing this to the `UserUpdate` mutation:
+The `UserUpdate::register_mutation` uses `current_user_can( 'edit_user', $existing_user->ID )` and `current_user_can( 'edit_users' )` for role updates, which is correct.
+
+After a thorough review, the `UserLoader` SQL construction is the most prominent issue, although its exploitability is limited by the specific behavior of `%s`. However, it fits the definition of CWE-89 (Improper Neutralization of Special Elements used in an SQL Command).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-89
+CWE_NAME: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')

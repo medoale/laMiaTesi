@@ -1,0 +1,11 @@
+I have performed a security review of the provided repository.
+
+During the exploration, I identified a critical security vulnerability in `/work/sdk/python/feast/offline_server.py`. The `do_get` method (line 232) uses `ast.literal_eval()` to process the `ticket.ticket.decode()` input. While `ast.literal_eval` is safer than `eval()`, it is still vulnerable to Denial of Service (DoS) attacks. Specifically, deeply nested structures (such as deeply nested lists or dictionaries) can cause the Python interpreter to crash due to a stack overflow during the parsing process. Since the `ticket` is provided by the client (as part of the Arrow Flight protocol), an unauthenticated or authenticated attacker could send a specially crafted ticket to crash the `OfflineServer`.
+
+Additionally, I noted the use of `yaml.load(f, Loader=yaml.Loader)` in `/work/sdk/python/feast/infra/compute_engines/kubernetes/main.py` (lines 70 and 73). In PyYAML, `yaml.Loader` is equivalent to `FullLoader` in newer versions, but in older versions, it could potentially be used for arbitrary code execution if the input is untrusted. However, since these files are read from fixed paths within a container (`/var/feast/feature_store.yaml`), the risk is lower unless an attacker has already achieved file-write access.
+
+The most significant and direct vulnerability is the potential for a DoS via `ast.literal_eval` on user-controlled input.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-400
+CWE_NAME: Uncontrolled Resource Consumption (Resource Exhaustion)

@@ -1,0 +1,21 @@
+The commit modifies the logic for handling event participation in a PHP application. 
+
+In the `before.txt` version, the `$getUserUuid` variable was initialized at the beginning of the script (line 47) as follows:
+`$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', $gValidLogin ? array('defaultValue' => $gCurrentUser->getValue('usr_uuid')) : []);`
+
+This means a logged-in user could potentially provide a different `user_uuid` via the `$_GET` request to manipulate the participation status of another user, provided they had the necessary permissions to access the script.
+
+The `after.txt` version introduces a check before processing the participation (lines 416-419):
+```php
+// if user is no leader of the event then only allow to handle their own participation
+if (!$participants->isLeader($gCurrentUserId)) {
+    $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+}
+```
+This ensure that unless the current user is a leader of the event (who presumably has the right to manage other participants), the `$getUserUuid` is forced to be the UUID of the currently logged-in user, ignoring any `user_uuid` provided in the `$_GET` request. This prevents a vulnerability where a user could modify someone else's participation.
+
+This is a classic case of an Insecure Direct Object Reference (IDOR) or Broken Access Control vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

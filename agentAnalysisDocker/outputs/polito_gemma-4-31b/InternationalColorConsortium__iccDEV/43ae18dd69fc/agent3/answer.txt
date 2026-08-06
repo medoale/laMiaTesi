@@ -1,0 +1,35 @@
+I have performed a security review of the provided repository. During the exploration of the codebase, I specifically examined the IO handling and memory management in `IccProfLib/IccIO.cpp` and `IccProfLib/IccProfile.cpp`.
+
+In `IccProfLib/IccIO.cpp`, I observed the implementation of `CIccIO::ReadLine`. This function reads bytes from an input source until a newline character (`\n`) is encountered or the provided buffer size `nNum` is reached. However, after the loop, it unconditionally writes a null terminator to the buffer:
+
+```cpp
+95: size_t CIccIO::ReadLine(void *pBuf8, size_t nNum/*=256*/)
+96: {
+97:   if (!pBuf8)
+98:     return 0;
+99: 
+100:   size_t n=0;
+101:   icInt8Number c, *ptr=(icInt8Number*)pBuf8;
+102: 
+103:   while(n<nNum) {
+104:     if (!Read8(&c)) {
+105:       break;
+106:     }
+107:     if (c=='\n') {
+108:       break;
+109:     }
+110:     else if (c!='\r') {
+111:       *ptr++ = c;
+112:       n++;
+113:     }
+114:   }
+115:   *ptr = '\0';
+116:   return n;
+117: }
+```
+
+If the loop executes exactly `nNum` times (i.e., `n == nNum`), the pointer `ptr` will have been incremented `nNum` times. The subsequent assignment `*ptr = '\0'` at line 115 then writes one byte beyond the end of the buffer `pBuf8` (assuming `pBuf8` was allocated with size `nNum`). This is a classic off-by-one error leading to a heap or stack-based buffer overflow, depending on where the buffer is allocated.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-193
+CWE_NAME: Off-by-one Error

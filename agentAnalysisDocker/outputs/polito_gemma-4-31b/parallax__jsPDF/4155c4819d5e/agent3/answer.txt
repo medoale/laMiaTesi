@@ -1,0 +1,25 @@
+The `src/libs/rc4.js` file implements the RC4 stream cipher. A critical security vulnerability exists in the `rc4` function: it attempts to cache the cipher's internal state (`state`) and key (`lastKey`) using local variables defined inside the function scope.
+
+```javascript
+function rc4(key, data) {
+  var lastKey, lastState;
+  if (key !== lastKey) {
+    // ... initialization of state ...
+    lastKey = key;
+    lastState = state;
+  } else {
+    state = lastState;
+  }
+  // ... encryption loop that modifies state ...
+}
+```
+
+Because `lastKey` and `lastState` are declared as `var` inside the `rc4` function, they are re-initialized to `undefined` on every single call to `rc4`. Consequently, the `else` block (`state = lastState`) is never executed, and the state is re-initialized for every call. While this specific bug actually prevents the state-reuse optimization (making it slower but not necessarily breaking the cipher for a single call), the RC4 algorithm itself is cryptographically broken and deprecated (CWE-327).
+
+More importantly, in `src/libs/Blob.js`, there is a use of `new Function(...)` to dynamically create a class, which is a pattern that can lead to code injection if any part of the input string is controllable by an attacker (CWE-94).
+
+However, the most evident architectural vulnerability is the use of RC4 and MD5 for security purposes in `src/libs/pdfsecurity.js`, which are both cryptographically broken.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-327
+CWE_NAME: Use of a Broken or Risky Cryptographic Algorithm

@@ -1,0 +1,9 @@
+The commit replaces the loose comparison operator `==` with the strict comparison operator `===` in two locations where a password hash (generated via `md5()`) is compared against a stored password hash from the database.
+
+In PHP, loose comparison (`==`) can lead to a security vulnerability known as "type juggling." If one of the operands is a string that looks like a scientific notation number (e.g., `"0e1234..."`) and the other operand also looks like a scientific notation number, PHP will treat both as floats. Since any number multiplied by $10^n$ where $n$ is the exponent is treated as equal if the significands are the same (in this case, $0$), any two hashes starting with `0e` followed only by digits will be considered equal, regardless of the rest of the hash. This allows an attacker to bypass authentication if they can find or produce a password whose MD5 hash begins with `0e` and consists only of digits thereafter.
+
+By changing `==` to `===`, the commit ensures that both the type (string) and the value are compared strictly, effectively neutralizing the type juggling vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-287
+CWE_NAME: Improper Authentication

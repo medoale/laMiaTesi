@@ -1,0 +1,30 @@
+The commit modifies the `exec_get_in_msg_param` function in a virtual machine (TVM) implementation. 
+
+In the original code:
+```cpp
+int exec_get_in_msg_param(VmState* st, unsigned idx, const char* name) {
+  if (name) {
+    VM_LOG(st) << "execute " << name;
+  }
+  Ref<Tuple> t = get_param(st, inmsgparams_idx).as_tuple();
+  st->get_stack().push(tuple_index(t, idx));
+  return 0;
+}
+```
+The code retrieves a `Ref<Tuple>` using `get_param(st, inmsgparams_idx).as_tuple()`. If the retrieved value is not a tuple or is null, `as_tuple()` (presumably) returns a null reference. The code then immediately calls `tuple_index(t, idx)` on this potentially null reference `t`. This is a null pointer dereference (or a null reference access), which can lead to a crash of the VM.
+
+The fix introduces a null check:
+```cpp
+  Ref<Tuple> t = get_param(st, inmsgparams_idx).as_tuple();
++  if (t.is_null()) {
++    throw VmError{Excno::type_chk, "intermediate value is not a tuple"};
++  }
+  st->get_stack().push(tuple_index(t, idx));
+```
+By throwing a `VmError` when `t` is null, the VM handles the error gracefully (likely by terminating the current execution context with a type check exception) instead of crashing.
+
+This is a classic "Null Pointer Dereference" vulnerability, which in the context of a VM can be used to cause a Denial of Service (DoS) by crashing the node executing the contract.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-476
+CWE_NAME: NULL Pointer Dereference

@@ -1,0 +1,14 @@
+The commit introduces a significant security feature to the `GUP` (General Update Program) utility. It implements a code signing verification mechanism using the `SecurityGuard` class (introduced in `verifySignedfile.cpp` and `verifySignedfile.h`).
+
+Before this commit, the updater likely downloaded and executed binary updates without verifying their authenticity or integrity via digital signatures. This would allow an attacker who could perform a Man-in-the-Middle (MitM) attack or compromise the update server to deliver malicious binaries that would be executed by the updater.
+
+The changes introduce:
+1.  **Digital Signature Verification**: The `SecurityGuard::verifySignedBinary` method uses Windows APIs (`WinVerifyTrust`, `CryptQueryObject`, `CertFindCertificateInStore`, etc.) to verify that a downloaded binary is signed by a trusted authority.
+2.  **Granular Verification Options**: The updater now supports several command-line arguments (`-chkCertSig`, `-chkCertTrustChain`, `-chkCertRevoc`, `-chkCertName`, `-chkCertSubject`, `-chkCertKeyId`, `-chkCertAuthorityKeyId`) that allow the caller to specify exactly what aspects of the certificate should be verified (e.g., trust chain, revocation status, specific signer identity).
+3.  **Integration in Execution Flow**: In `winmain.cpp`, the updater now checks if `doCheckSignature` is enabled. If so, it calls `securityGuard.verifySignedBinary(dlDest)` before running the downloaded executable. If verification fails, the updater returns -1 and does not execute the binary.
+
+By implementing these checks, the commit addresses a vulnerability where the application was executing untrusted binaries, which is a classic example of missing integrity checks for downloaded software. This is typically categorized under CWE-494 (Download of Code Without Integrity Check).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-494
+CWE_NAME: Download of Code Without Integrity Check

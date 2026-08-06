@@ -1,0 +1,14 @@
+The commit introduces several security enhancements and fixes related to password management and session handling:
+
+1.  **Prevention of Password Change without Authentication (CWE-287 / CWE-640)**: In `file_02`, the `update_password` function now requires the `old_password` for non-admin users or users changing their own password. Previously, it seems any authenticated user (or potentially others depending on the router) could change a password just by providing the new one.
+2.  **Password Strength Enforcement (CWE-521)**: A `validate_password_strength` function is added, enforcing a minimum length of 8 characters, uppercase letters, digits, and special characters.
+3.  **Session Invalidation after Password Change (CWE-613)**: The commit introduces a `password_changed_at` timestamp in the `User` model. When refreshing a JWT token, the system now checks if the token was issued before the last password change (`token_iat < password_changed_timestamp`). If so, the refresh is rejected, effectively invalidating all existing sessions upon password change.
+4.  **Secure File Creation (CWE-377 / CWE-378)**: When creating the JWT secret file, the code now uses `os.open` with `os.O_EXCL` and mode `0o600`, preventing symlink attacks and ensuring the secret is only readable by the owner.
+5.  **JWT Security**: The `iat` (Issued At) claim is added to JWTs to facilitate the password change check mentioned above.
+6.  **Session Duration**: The `refresh_time` is significantly reduced from 12 hours to 30 minutes, reducing the window of opportunity for an attacker using a stolen token.
+
+The most significant security fix is the implementation of session invalidation after password change and the requirement of the current password to set a new one, addressing authentication and session management weaknesses.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-613, CWE-287, CWE-521
+CWE_NAME: Insufficient Session Expiration, Improper Authentication, Weak Password Requirements

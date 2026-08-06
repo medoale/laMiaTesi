@@ -1,0 +1,16 @@
+The provided changes fix a potential integer overflow in `ProtoDecodableMessage::count_repeated_field` and `ProtoDecodableMessage::decode`.
+
+In the original code, the bounds checks were performed using addition:
+`if (ptr + field_length > end)` and `if (ptr + 4 > end)`.
+
+Since `ptr` and `end` are pointers, and `field_length` is a `uint32_t`, `ptr + field_length` can overflow if `field_length` is very large. If the addition overflows, the resulting address may be smaller than `end`, causing the bounds check to pass erroneously. This could lead to an out-of-bounds read when the code subsequently accesses the buffer.
+
+The fix replaces these additions with subtractions or comparisons that avoid overflow:
+- `if (field_length > static_cast<size_t>(end - ptr))`
+- `if (end - ptr < 4)`
+
+This is a classic integer overflow leading to a buffer overflow (specifically, an out-of-bounds read).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-190, CWE-125
+CWE_NAME: Integer Overflow, Out-of-bounds Read

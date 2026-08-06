@@ -1,0 +1,18 @@
+You are a security code reviewer. The workspace is a software repository. You are given no commit, no diff, and no hint of where to look — find it yourself, as if hunting for an unreported (zero-day) vulnerability.
+
+Explore the repository and decide whether it contains a security vulnerability.
+- If yes, classify it with the most accurate CWE (Common Weakness Enumeration) identifier(s) — one, or several if more than one genuinely applies.
+- If you explore and find nothing you are confident about, say so rather than guessing.
+
+You may reason above, but you MUST end your entire answer with exactly this
+block, using these exact field names, each on its own line, with nothing
+after it:
+
+VULNERABILITY_FOUND: yes or no
+CWE_ID: the CWE identifier(s), e.g. CWE-79 — or several comma-separated, like
+"CWE-190, CWE-681"; or "none" if VULNERABILITY_FOUND is no
+CWE_NAME: the matching short CWE name(s), comma-separated in the same order
+(e.g. "Cross-Site Scripting"), or "none"
+
+List every CWE that genuinely applies, most specific first. A single one is
+fine when only one applies; do not pad the list.

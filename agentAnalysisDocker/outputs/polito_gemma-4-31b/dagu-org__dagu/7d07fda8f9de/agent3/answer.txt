@@ -1,0 +1,24 @@
+The `dagu ai install` command allows users to install a "skill" (a set of markdown files) into various AI coding tool directories (e.g., Claude Code, Codex, OpenCode, Gemini CLI, Copilot CLI). 
+
+In the `installSkill` function (lines 348-377 of `internal/cmd/ai.go`), the tool iterates over the embedded `skillFS` and writes files to a destination path. The destination path is constructed by joining a `targetDir` (derived from the detected AI tool's skill directory) and a `relPath` (the relative path of the file in the embedded filesystem).
+
+The `targetDir` is determined by the `detect` functions of the `aiTool` definitions (lines 76-141). For example, the "Claude Code" detector returns `filepath.Join(homeDir, ".claude", "skills")`. If a user provides a custom skills directory via the `--skills-dir` flag, it is processed by `validateSkillRootDir` (lines 548-572).
+
+The vulnerability exists because the `installSkill` function does not sufficiently validate the `relPath` obtained from `skillFS.WalkDir`. While `skillFS` is an embedded filesystem, a malicious or compromised embedded asset could contain paths with `..` components. More critically, if the `skillEmbedPrefix` or the embedded files themselves were to be manipulated, `filepath.Join(targetDir, relPath)` could result in a path outside the intended `targetDir`.
+
+However, the more immediate and severe issue is that `installSkill` uses `os.WriteFile` (line 371) to write files to the filesystem based on paths derived from the `targetDir`. If a user can influence the `targetDir` (which they can via the `--skills-dir` flag), they can specify any directory on their system. While this is a CLI tool usually run by the user themselves, the lack of restriction on where files are written allows for arbitrary file creation/overwrite within the user's permissions.
+
+More specifically, looking at `installSkill`:
+```go
+relPath := strings.TrimPrefix(path, skillEmbedPrefix+"/")
+destPath := filepath.Join(targetDir, relPath)
+// ...
+if wErr := os.WriteFile(destPath, data, 0o600); wErr != nil {
+```
+If `relPath` contains `..`, `filepath.Join` will resolve it, potentially allowing files to be written outside `targetDir`. Since `relPath` comes from `skillFS` (embedded), this depends on the contents of the embedded FS. If the embedded FS is trusted, this is less of a risk.
+
+But there is a clear path traversal in the `--skills-dir` flag handling. The `validateSkillRootDir` function (lines 548-572) only checks if the path is a directory and not a specific file. It does not prevent the user from providing a path that, when combined with `skillDirName` ("dagu") and "SKILL.md", points to a sensitive location. Although the user is the one providing the path, this pattern is a classic "Arbitrary File Write" via path traversal if the input is not strictly validated.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ("Path Traversal")

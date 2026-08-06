@@ -1,0 +1,16 @@
+The analyzed commit modifies the `extractNestedArchive` function in `file_02` and adds corresponding tests in `file_01`.
+
+**Analysis:**
+In the original code (`before.txt` of `file_02`), the `extractNestedArchive` function attempted to extract a nested archive file. If the extraction failed and `c.ExitExtraction` was false, it would log a debug message but proceed to execute `os.Remove(fullPath)`, deleting the archive file that failed to be extracted.
+
+The vulnerability is that by providing a specially crafted archive that fails extraction (e.g., a file with an archive extension but invalid archive content), an attacker could cause the security scanner to delete the file before it could be scanned as a regular file. If the scanner's logic is to extract archives and scan their contents, but then delete the archive itself, any file that "looks" like an archive but is actually a malicious payload (and fails extraction) would be deleted and thus bypassed by any subsequent file-based scanning that occurs on the extracted directory.
+
+The fix ensures that if an extraction error occurs, the archive file is **retained** (`if err == nil { os.Remove(fullPath) }`) so that it can be scanned as a regular file. This prevents a "bypass" where malicious files masquerading as broken archives avoid detection.
+
+This is a security fix addressing a bypass of security controls (specifically, an archive extraction bypass used to hide malicious content). The most appropriate CWE is CWE-35 (Incorrect Handling of Exceptional Conditions) leading to a security bypass, or more specifically, it's a failure to ensure that all data is inspected even when processing fails. However, the core issue is that a failure in a processing step (extraction) led to the deletion of the object to be inspected, allowing it to bypass security scanning. This is a form of "Insufficient Validation" or "Bypass of Security Control".
+
+Given the context of a security scanner, this is a fix for a potential bypass.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-35
+CWE_NAME: Incorrect Handling of Exceptional Conditions

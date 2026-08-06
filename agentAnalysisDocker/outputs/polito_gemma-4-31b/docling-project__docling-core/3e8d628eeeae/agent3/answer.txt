@@ -1,0 +1,9 @@
+The `docling_core` library provides a data model and serialization tools for document analysis. During the security review, a potential vulnerability was identified in the `DoclingDocument.load_from_yaml` method located in `docling_core/types/doc/document.py`.
+
+The `load_from_yaml` method uses `yaml.load(f, Loader=yaml.FullLoader)` to deserialize YAML files into Python objects. While `FullLoader` is more secure than the unsafe `yaml.load` (which uses `Loader=yaml.Loader` by default in some versions and can lead to arbitrary code execution), it is still potentially vulnerable to certain types of Denial of Service (DoS) attacks, such as YAML bombs (entity expansion), and in some configurations or older versions of PyYAML, may still be susceptible to the instantiation of arbitrary Python objects if not carefully restricted.
+
+The industry standard for secure YAML loading is `yaml.safe_load`, which restricts the loader to basic YAML types and prevents the execution of arbitrary code or the instantiation of complex Python objects.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

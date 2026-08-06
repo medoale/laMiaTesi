@@ -1,0 +1,25 @@
+The analyzed commit addresses a security vulnerability related to authorization bypass in the `UsersController`.
+
+1.  **Authorization Bypass in `actionSavePermissions`**: 
+    In the `before` version, `actionSavePermissions` only called `$this->requireCpRequest()`. While it verified the request came from the Control Panel, it failed to check if the current user had the necessary permissions to access the permissions screen before proceeding to save changes. The `after` version adds a check:
+    ```php
+    if (!$this->showPermissionsScreen()) {
+        throw new ForbiddenHttpException('User not authorized to perform this action.');
+    }
+    ```
+    This ensures that any user attempting to save permissions must be authorized to view the permissions screen, preventing an unauthorized user from potentially modifying permissions via a direct POST request.
+
+2.  **Missing Permission Check in `_saveUserGroups`**:
+    In the `before` version, the `_saveUserGroups` method (called by `actionSavePermissions`) did not verify if the current user had the general permission to assign user groups before processing the group IDs from the request. The `after` version adds:
+    ```php
+    if (!$currentUser->canAssignUserGroups()) {
+        return;
+    }
+    ```
+    This prevents the modification of user groups if the current user lacks the required capability, closing another authorization gap.
+
+These changes directly mitigate an authorization bypass where users could potentially modify administrative settings (user groups and permissions) without sufficient privileges. This is a classic example of **CWE-285: Improper Authorization**.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-285
+CWE_NAME: Improper Authorization

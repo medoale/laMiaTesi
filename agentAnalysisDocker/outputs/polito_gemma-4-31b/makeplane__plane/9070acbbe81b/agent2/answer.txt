@@ -1,0 +1,19 @@
+The analyzed commit fixes a security vulnerability related to **Insecure Direct Object Reference (IDOR)**.
+
+In `ProjectAssetEndpoint.patch` (`/work/apps/api/plane/app/views/asset/v2.py`), the original code retrieved a `FileAsset` using only the primary key (`pk`) provided in the URL:
+```python
+asset = FileAsset.objects.get(id=pk)
+```
+This allowed any authenticated user with the appropriate role (ADMIN, MEMBER, or GUEST) to update any asset in the system by guessing or providing its ID, regardless of whether the asset belonged to the workspace or project specified in the URL parameters. The fix restricts the query to only those assets that match the provided `workspace__slug` and `project_id`.
+
+Similarly, in `IssueAttachmentEndpoint.delete` (`/work/apps/api/plane/app/views/issue/attachment.py`), the original code deleted a `FileAsset` using only the primary key:
+```python
+issue_attachment = FileAsset.objects.get(pk=pk)
+```
+This allowed a user to delete any asset in the system by specifying its ID, bypassing the intended scope of the workspace, project, and issue. The fix ensures that the asset must belong to the specified workspace, project, and issue.
+
+Both changes prevent unauthorized modification or deletion of resources by ensuring that the object being operated upon is actually associated with the context (workspace, project, issue) provided in the request.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

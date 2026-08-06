@@ -1,0 +1,36 @@
+The code change introduces a null check for a `Tuple` object `t` in the `exec_get_in_msg_param` function.
+
+In the original code:
+```cpp
+int exec_get_in_msg_param(VmState* st, unsigned idx, const char* name) {
+  if (name) {
+    VM_LOG(st) << "execute " << name;
+  }
+  Ref<Tuple> t = get_param(st, inmsgparams_idx).as_tuple();
+  st->get_stack().push(tuple_index(t, idx));
+  return 0;
+}
+```
+The function calls `get_param(st, inmsgparams_idx).as_tuple()`. If the result of `as_tuple()` is null (meaning the parameter at `inmsgparams_idx` is not a tuple), the code immediately proceeds to call `tuple_index(t, idx)` with a null reference `t`. This would lead to a null pointer dereference, causing the virtual machine (TVM) to crash.
+
+In the updated code:
+```cpp
+int exec_get_in_msg_param(VmState* st, unsigned idx, const char* name) {
+  if (name) {
+    VM_LOG(st) << "execute " << name;
+  }
+  Ref<Tuple> t = get_param(st, inmsgparams_idx).as_tuple();
+  if (t.is_null()) {
+    throw VmError{Excno::type_chk, "intermediate value is not a tuple"};
+  }
+  st->get_stack().push(tuple_index(t, idx));
+  return 0;
+}
+```
+The check `if (t.is_null())` ensures that the program throws a `VmError` (a controlled exception within the VM) instead of crashing.
+
+This is a fix for a potential Denial of Service (DoS) vulnerability, where a specially crafted input (e.g., a message that results in `inmsgparams_idx` not being a tuple) could crash the node executing the smart contract. This falls under CWE-476: NULL Pointer Dereference.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-476
+CWE_NAME: NULL Pointer Dereference

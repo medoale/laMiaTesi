@@ -1,0 +1,20 @@
+The commit introduces several security-related fixes across different parts of the application.
+
+1.  **Path Traversal / Blob Name Validation**: In `NuGet.Services.Storage/Storage.cs` (though the diff shows changes to `GetName` and `ResolveUri` which appear in a base `Storage` class), the commit adds `AssertSimpleBlobName` and strict validation to `ResolveUri`. It now rejects relative URIs containing fragments, query strings, empty path segments, leading/trailing dots, or forward/backslashes in segments. This prevents potential path traversal or unauthorized access to Azure Blob storage by ensuring that the requested blob name is "simple" and doesn't use directory traversal techniques (e.g., `../`).
+
+2.  **Package ID Normalization / Unicode Attacks**: In `PackageMetadataValidationService`, the commit introduces `CheckPackageIdForBannedCharacters`. This method prevents various Unicode-based attacks on package IDs, including:
+    -   **Normalization attacks**: Rejecting IDs that change when normalized to Form C.
+    -   **Surrogate pair attacks**: Rejecting surrogate characters.
+    -   **Case folding attacks**: Rejecting characters that expand (change length) or fold to invalid characters when converted to upper/lower case.
+    -   **Homograph attacks**: Rejecting non-ASCII characters that fold to ASCII characters.
+    This prevents "package squatting" or "spoofing" where a malicious actor uses visually similar or logically equivalent Unicode characters to trick users into installing a malicious package.
+
+3.  **DoS / Resource Exhaustion**: The commit adds `CheckNuspecCount` to ensure a package contains exactly one `.nuspec` file, preventing potential denial-of-service or unexpected behavior caused by multiple metadata files.
+
+4.  **Input Validation**: In `OrganizationsController.Add`, it adds `if (!ModelState.IsValid) return View(model);`, which is a standard fix for missing input validation on a POST action.
+
+The most critical vulnerabilities addressed are Path Traversal and Unicode-based Package ID spoofing.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22, CWE-179
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory, Improper Neutralization of Special Elements used in an Expression Language Element

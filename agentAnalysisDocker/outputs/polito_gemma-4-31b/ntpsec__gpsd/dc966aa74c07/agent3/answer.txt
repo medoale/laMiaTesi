@@ -1,0 +1,25 @@
+The security review of the repository revealed a critical vulnerability in the Android-specific wrapper for the `gpsd` daemon.
+
+In the file `/work/android/gpsd_wrapper.c`, the `main` function retrieves a value from the Android system property `service.gpsd.parameters` using `property_get`. It then performs a very limited sanitization (replacing commas with spaces) before using `sprintf` to construct a shell command string and executing it via `system()`.
+
+```c
+11: 	property_get("service.gpsd.parameters", gpsd_params, "-Nn,-D2,/dev/ttyACM0,/dev/ttyACM1");
+12: 	while (gpsd_params[i] != 0){
+13: 		if (gpsd_params[i] == ',') gpsd_params[i] = ' ';
+14: 		i++;
+15: 	}
+16: 
+17: 	sprintf(cmd, "/vendor/bin/logwrapper /vendor/bin/gpsd %s", gpsd_params);
+18: 
+19: 	__android_log_print(ANDROID_LOG_DEBUG, "gpsd_wrapper", "Starting gpsd: %s", cmd);
+20: 
+21: 	system(cmd);
+```
+
+Since Android system properties can potentially be modified by an attacker with sufficient privileges (or through other vulnerabilities that allow property modification), an attacker could inject shell metacharacters (e.g., `;`, `&&`, `|`, `` ` ``) into `service.gpsd.parameters` to execute arbitrary commands with the privileges of the `gpsd_wrapper` process.
+
+For example, setting `service.gpsd.parameters` to `; /data/data/com.attacker/evil_script.sh ;` would result in the execution of the attacker's script.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

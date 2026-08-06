@@ -1,0 +1,16 @@
+The changes in `file_01` and `file_02` address a security vulnerability related to how uploaded files are named and stored.
+
+In the "before" version, the code used `$file->getClientOriginalName()` to construct the filename:
+`$filename = time() . '_' . $file->getClientOriginalName();`
+
+The `getClientOriginalName()` method returns the filename as provided by the client (the user's browser). This is dangerous because a malicious user could provide a filename containing path traversal characters (e.g., `../../etc/passwd` or `../index.php`), potentially allowing them to overwrite critical files on the server or upload files to unauthorized directories. Although `time()` is prepended, depending on the underlying filesystem and how `move()` is implemented, this could still be exploited.
+
+In the "after" version, the code switches to generating a random filename:
+`$extension = $file->getClientOriginalExtension();`
+`$filename = time() . '_' . uniqid() . '.' . $extension;`
+
+By using `uniqid()` and only appending the extension retrieved via `getClientOriginalExtension()` (which is still client-provided but used here only as a suffix to a generated name), the application ensures that the final filename is controlled by the server and does not contain potentially malicious path sequences from the original filename. This prevents path traversal attacks during file upload.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

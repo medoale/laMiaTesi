@@ -1,0 +1,11 @@
+The changes in `file_01` and `file_02` address a common security vulnerability where an object is retrieved from the database using only its primary key (`pk` or `id`), without verifying that the object belongs to the project, workspace, or issue associated with the request.
+
+In `file_01`, the `patch` method was previously retrieving a `FileAsset` using only `pk`. An attacker could potentially modify any `FileAsset` in the system by guessing or providing a different `pk`, regardless of whether they had access to the workspace or project it belonged to. The fix adds `workspace__slug=slug` and `project_id=project_id` to the query, ensuring the asset belongs to the expected context.
+
+Similarly, in `file_02`, the `delete` method was retrieving a `FileAsset` using only `pk`. An attacker could potentially delete any `FileAsset` by providing its `pk`. The fix ensures the asset is filtered by `workspace__slug`, `project_id`, and `issue_id`.
+
+These are classic examples of Broken Object Level Authorization (BOLA), which is classified under CWE-285 (Improper Authorization) and more specifically CWE-639 (Authorization Bypass Through User-Controlled Key).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

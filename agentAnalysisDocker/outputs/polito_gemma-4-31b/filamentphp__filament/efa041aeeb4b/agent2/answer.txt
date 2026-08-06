@@ -1,0 +1,7 @@
+The provided changes show that `<?= $from ?>` and `<?= $to ?>` in `Range` class (file_01) and `<?= $this->formatState($stateItem) ?>` in `Values` class (file_02) were replaced with `<?= e($from) ?>`, `<?= e($to) ?>`, and `<?= e($this->formatState($stateItem)) ?>`.
+
+In Laravel/Blade-like environments, the `e()` function is used to HTML-escape content to prevent Cross-Site Scripting (XSS) attacks. By outputting variables directly without escaping, the application was vulnerable to XSS if those variables contained user-controlled input.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-Site Scripting')

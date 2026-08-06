@@ -1,0 +1,11 @@
+The provided changes fix a security vulnerability (CVE-2026-34203) in the Nautobot REST API. 
+
+Specifically, the `UserSerializer` failed to enforce Django's configured password validation rules (`AUTH_PASSWORD_VALIDATORS`) when creating or updating users via the API. This allowed the creation or modification of users with weak passwords, even if the system was configured to require strong ones.
+
+The fix involves importing `validate_password` from `django.contrib.auth.password_validation` and calling it within the `UserSerializer.validate()` method when a password is provided in the request data.
+
+This is a failure to properly enforce password complexity/strength requirements, which falls under CWE-521 (Weak Password Requirements).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-521
+CWE_NAME: Weak Password Requirements

@@ -1,0 +1,11 @@
+The commit fixes a security vulnerability related to **Insecure Direct Object Reference (IDOR)** in the `Spree::Order` model's address assignment logic.
+
+In the original code (located in `spree/order/address_book.rb`), the methods `bill_address_id=` and `ship_address_id=` checked if the assigned address belonged to the user with `if address && address.user_id == user_id`. 
+
+However, when an order is associated with a **guest user**, `user_id` is `nil`. If a malicious user provides an `address_id` of an address that also has a `nil` `user_id` (another guest address), the condition `address.user_id == user_id` (i.e., `nil == nil`) evaluates to `true`. This allowed a guest user to assign any other guest's address to their order simply by knowing or guessing the address ID.
+
+The fix introduces a check `user_id.present?`, ensuring that address assignment via ID is only permitted for authenticated users whose IDs match the address's `user_id`. Guest users are now prevented from assigning existing addresses by ID, mitigating the IDOR vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-285, CWE-639
+CWE_NAME: Improper Authorization, Authorization Bypass Through User-Controlled Key

@@ -1,0 +1,28 @@
+I have performed a security review of the provided repository.
+
+The most significant finding is in the `DigitalOceanMetadataResolver` and `ComputeInstanceMetadataResolverUtils` classes within the `discovery-core` module. 
+
+In `DigitalOceanMetadataResolver.java`, the code retrieves a URL from the `DigitalOceanMetadataConfiguration` object:
+```java
+String metadataUrl = configuration.getUrl();
+JsonNode metadataJson = readMetadataUrl(new URL(metadataUrl), ...);
+```
+The `DigitalOceanMetadataConfiguration` class allows this URL to be configured via application properties (prefixed by `micronaut.digitalocean.metadata`). If an attacker can influence the application's configuration (e.g., through environment variables or a configuration file in certain deployment scenarios), they can specify an arbitrary URL.
+
+This URL is then passed to `ComputeInstanceMetadataResolverUtils.openMetadataUrl`, which performs the following:
+```java
+URLConnection urlConnection = url.openConnection();
+if (url.getProtocol().equalsIgnoreCase("file")) {
+    urlConnection.connect();
+    return urlConnection.getInputStream();
+} else {
+    var uc = (HttpURLConnection) urlConnection;
+    // ...
+    return uc.getInputStream();
+}
+```
+Because the code explicitly allows the `file` protocol, an attacker who can control the `micronaut.digitalocean.metadata.url` property can induce the application to read arbitrary files from the local filesystem (e.g., `file:///etc/passwd`) and return the contents as part of the metadata resolution process. This is a classic Server-Side Request Forgery (SSRF) vulnerability that leads to Local File Read.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

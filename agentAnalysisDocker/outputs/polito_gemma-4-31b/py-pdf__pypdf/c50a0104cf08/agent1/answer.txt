@@ -1,0 +1,23 @@
+The commit introduces security limits to the `PdfWriter` class in `pypdf` when performing incremental cloning of a PDF document.
+
+Specifically, in `file_02/diff.txt`, the code previously relied on the `/Size` key from the PDF trailer to allocate the `self._objects` list:
+```python
+self._objects = [None] * (cast(int, reader.trailer["/Size"]) - 1)
+```
+This is a classic vulnerability where an attacker can provide a maliciously crafted PDF with a very large `/Size` value in the trailer, leading to an excessive memory allocation (Denial of Service).
+
+The fix introduces two new limits:
+1. `incremental_clone_object_count_limit`: Limits the total number of objects to be read.
+2. `incremental_clone_object_id_limit`: Limits the maximum object ID.
+
+The `_collect_incremental_clone_object_ids` method now validates the actual objects present in the reader's xref table against these limits before allocating the `self._objects` list based on the actual maximum object ID found:
+```python
+object_ids = self._collect_incremental_clone_object_ids(reader)
+self._objects = [None] * (object_ids[-1] if object_ids else 0)
+```
+
+This prevents an attacker from triggering a massive memory allocation via a spoofed `/Size` value or an extremely high object ID. This is a fix for an uncontrolled resource consumption vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

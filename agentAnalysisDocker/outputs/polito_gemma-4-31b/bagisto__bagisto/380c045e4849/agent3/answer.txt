@@ -1,0 +1,15 @@
+In the file `/work/packages/Webkul/Shop/src/Http/Controllers/Customer/GDPRController.php`, the `store()` method contains a significant security vulnerability on line 59:
+
+```php
+'message' => request()->get(request()->message),
+```
+
+In Laravel, `request()->message` (or `request('message')`) retrieves the value of the `message` parameter from the HTTP request. The code then uses this user-supplied value as the key for another `request()->get()` call. This allows an attacker to control which request parameter is retrieved and assigned to the `'message'` field in the `$params` array.
+
+This is a classic "Parameter Injection" or "Arbitrary Parameter Retrieval" vulnerability. An attacker can provide a `message` parameter containing the name of any other request parameter (including those they might not be intended to modify or those that could leak sensitive information if they were handled differently) to bypass intended logic or potentially manipulate data stored in the database via the `GDPRDataRequestRepository::create($params)` call. 
+
+While the impact depends on what other parameters are available in the request, this pattern is fundamentally insecure as it allows user input to determine the source of data used in a database operation.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-915
+CWE_NAME: Improperly Controlled Modification of Dynamically Determined Object Attributes

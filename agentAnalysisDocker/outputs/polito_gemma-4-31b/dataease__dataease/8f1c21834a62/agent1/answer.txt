@@ -1,0 +1,11 @@
+The commit adds `"IniFile"` to the `illegalParameters` list in the `Redshift` datasource configuration. 
+
+Looking at the `getJdbc()` method, the code iterates through `illegalParameters` and throws an exception if any of these strings are found within the decoded JDBC URL. This is a mechanism to prevent **JDBC Connection String Injection**.
+
+In many JDBC drivers (including those based on MySQL or similar patterns which Redshift often mimics or shares characteristics with), certain parameters can be used to manipulate the connection process. Specifically, the `allowLoadLocalInfile` or `IniFile` (and similar options) can be exploited by an attacker to read files from the server's filesystem (Local File Inclusion/Read) or execute arbitrary code if the driver allows loading external configuration files.
+
+By adding `IniFile` to the blocklist, the developer is preventing a potential vulnerability where a user could inject a parameter to load a malicious configuration file or leak sensitive information from the server. This falls under the category of Improper Input Validation leading to an injection attack.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-20, CWE-917
+CWE_NAME: Improper Input Validation, Improper Neutralization of Special Elements used in a JDBC Connection String

@@ -1,0 +1,35 @@
+The commit introduces a check to ensure that if the current user is not the leader of an event, the `$getUserUuid` variable is explicitly set to the current user's UUID.
+
+In the original code:
+```php
+47:     $getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', $gValidLogin ? array('defaultValue' => $gCurrentUser->getValue('usr_uuid')) : []);
+```
+The `$getUserUuid` is initialized from the `user_uuid` GET parameter. If it's not provided and the user is logged in, it defaults to the current user's UUID. However, this allows any logged-in user to specify *any* `user_uuid` in the request.
+
+Later, in the participation logic:
+```php
+420:         $member = new Membership($gDb);
+421:         $participants = new Participants($gDb, (int)$event->getValue('dat_rol_id'));
+422: 
+423:         // if current user is allowed to participate or user could edit this event then update user inputs
+424:         if ($event->possibleToParticipate() || $participants->isLeader($gCurrentUserId)) {
+425:             $member->readDataByColumns(array('mem_rol_id' => (int)$event->getValue('dat_rol_id'), 'mem_usr_id' => $user->getValue('usr_id')));
+```
+The `$user` object (created on line 76) is based on `$getUserUuid`:
+```php
+76:     $user = new User($gDb, $gProfileFields);
+77:     $user->readDataByUuid($getUserUuid);
+```
+Because `$getUserUuid` could be manipulated by the user via the GET parameter, a logged-in user who is not a leader could potentially modify the participation of *any* other user by supplying their `user_uuid` in the request. The check `if ($event->possibleToParticipate() || $participants->isLeader($gCurrentUserId))` only checks if the *current* user has rights to participate or is a leader, but then it proceeds to use the (potentially manipulated) `$user->getValue('usr_id')` to find the membership record.
+
+The fix:
+```php
+417:         if (!$participants->isLeader($gCurrentUserId)) {
+418:             $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+419:         }
+```
+This overrides the potentially malicious `$getUserUuid` from the GET parameter with the current user's own UUID if the user is not a leader. This prevents Insecure Direct Object Reference (IDOR) where a user could manipulate the `user_uuid` to affect other users' participations.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Insecure Direct Object Reference

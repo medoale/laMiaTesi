@@ -1,0 +1,9 @@
+The commit changes the YAML loader from `yaml.FullLoader` to `yaml.SafeLoader` in two locations: one in the main code (`file_01`) where a file is loaded and validated as a `DoclingDocument`, and one in a test file (`file_02`).
+
+Using `yaml.FullLoader` (or `yaml.Loader`) can be dangerous when loading untrusted input because it can be exploited to execute arbitrary Python code through the instantiation of arbitrary Python objects. `yaml.SafeLoader` only loads basic YAML types and is the recommended way to avoid this vulnerability.
+
+The change in `file_01` directly addresses a potential Remote Code Execution (RCE) vulnerability by ensuring that the YAML input is parsed safely. The change in `file_02` is a corresponding update in the test suite.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

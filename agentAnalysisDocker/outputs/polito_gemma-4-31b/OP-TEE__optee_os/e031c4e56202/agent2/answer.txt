@@ -1,0 +1,24 @@
+The commit modifies the `entry_get_attribute_value` function in `file_01`.
+
+In the original code, the `template` (which contains requested attributes and is updated with their values) is copied to the output buffer `out->memref.buffer` using:
+`TEE_MemMove(out->memref.buffer, template, out->memref.size);`
+Crucially, `out->memref.size` is the size of the output buffer provided by the caller. Since `template` is a heap-allocated structure whose size is `sizeof(*template) + template->attrs_size`, and the code does not verify that `out->memref.size` is large enough to hold this data, it can lead to a heap-based buffer overflow if the caller provides a buffer smaller than the template.
+
+The fix adds a check to ensure that the output buffer is large enough:
+```c
+if (out->memref.size < sizeof(*template) + template->attrs_size) {
+    rc = PKCS11_CKR_ARGUMENTS_BAD;
+    goto out;
+}
+```
+And then it correctly updates `out->memref.size` to the actual size of the data copied:
+```c
+out->memref.size = sizeof(*template) + template->attrs_size;
+TEE_MemMove(out->memref.buffer, template, out->memref.size);
+```
+
+This is a classic buffer overflow vulnerability where data is copied into a destination buffer without verifying its capacity.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-122
+CWE_NAME: Heap-based Buffer Overflow

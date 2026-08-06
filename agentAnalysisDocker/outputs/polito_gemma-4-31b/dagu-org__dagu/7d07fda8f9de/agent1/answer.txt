@@ -1,0 +1,13 @@
+The provided changes introduce validation for DAG file names in multiple parts of the application.
+
+In `file_01`, a new middleware `validateDAGFileNameMiddleware` is added to the API routes. This middleware uses `core.ValidateDAGName` to validate the `FileName` field of request objects, returning a `400 Bad Request` if the validation fails.
+
+In `file_02`, new tests are added specifically to verify that encoded path traversal attempts (e.g., `..%2F..%2Ftmp%2Fsecret`) are rejected with a `400 Bad Request` status.
+
+In `file_03` and `file_04`, similar validation is added to the topic parsing logic, ensuring that identifiers for DAGs and DAG history are validated using `core.ValidateDAGName`, preventing path traversal via topic identifiers.
+
+These changes are clearly designed to prevent Path Traversal vulnerabilities, where an attacker could use `../` or encoded equivalents to access files outside of the intended directory.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

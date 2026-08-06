@@ -1,0 +1,14 @@
+I have analyzed the repository and found a security vulnerability in the `getMockFromWsdl` method of `PHPUnit\Framework\TestCase` and the `generateClassFromWsdl` method of `PHPUnit\Framework\MockObject\Generator`.
+
+The `getMockFromWsdl` method in `TestCase.php` (lines 1883-1916) takes a `$wsdlFile` and optional `$options` as arguments. It then calls `generateClassFromWsdl`, the result of which is passed directly to `eval()`.
+
+Inside `generateClassFromWsdl` (in `Generator.php`, lines 455-544), the `$options` array is iterated over, and its keys and values are concatenated directly into a string (`$optionsBuffer`) without any sanitization or escaping (lines 518-520). This `$optionsBuffer` is then embedded into the `wsdl_class.tpl` template (line 7), which is eventually `eval()`'d.
+
+An attacker who can control the `$options` argument passed to `getMockFromWsdl` (which is a protected method, but could be reachable via a custom test case or if the framework is used in a way that allows user-supplied configuration) can inject arbitrary PHP code. For example, providing an option like `['a' => '1]; system("id"); //']` would result in the following code being evaluated:
+`parent::__construct('{wsdl}', [a => 1]; system("id"); //]);`
+
+This is a classic Code Injection vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-94
+CWE_NAME: Improper Control of Generation of Code ('Code Injection')

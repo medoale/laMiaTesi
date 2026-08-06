@@ -1,0 +1,16 @@
+The commit modifies the `AlertQueueExpand` function to prevent an integer overflow when calculating the new capacity of the alert queue.
+
+In the original code:
+```c
+uint16_t new_cap = det_ctx->alert_queue_capacity * 2;
+void *tmp_queue = SCRealloc(det_ctx->alert_queue, (size_t)(sizeof(PacketAlert) * new_cap));
+```
+The `det_ctx->alert_queue_capacity` is a `uint16_t`. If `alert_queue_capacity` is greater than `UINT16_MAX / 2` (e.g., 32769), the expression `det_ctx->alert_queue_capacity * 2` will overflow the `uint16_t` range, resulting in a value smaller than the current capacity. This would lead to `SCRealloc` allocating a smaller buffer than intended, but the code would then set `det_ctx->alert_queue_capacity = new_cap`, which is incorrect and leads to a heap-based buffer overflow when the queue is subsequently accessed via indices up to the (incorrectly) updated capacity or if the original capacity was assumed to be maintained.
+
+The fix introduces checks to ensure that `new_cap` does not exceed `UINT16_MAX` and handles the case where the capacity is already at the maximum. Specifically, it checks if `det_ctx->alert_queue_capacity == UINT16_MAX` and ensures `new_cap` is capped at `UINT16_MAX`.
+
+This is a classic integer overflow leading to a heap buffer overflow.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-190, CWE-122
+CWE_NAME: Integer Overflow, Heap-based Buffer Overflow

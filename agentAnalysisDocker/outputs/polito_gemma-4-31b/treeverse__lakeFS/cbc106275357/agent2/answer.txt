@@ -1,0 +1,17 @@
+The commit fixes a path traversal vulnerability in the `local` adapter of the blockstore.
+
+### Analysis:
+
+1.  **Insufficient Prefix Check**: In `verifyRelPath`, the code previously used `strings.HasPrefix(filepath.Clean(p), l.path)`. This is a classic vulnerability where if `l.path` is `/tmp/lakefs`, a path like `/tmp/lakefs_evil/file.txt` would satisfy the prefix check, allowing access to directories outside the intended base path that start with the same prefix. The fix adds a trailing separator: `l.path + string(filepath.Separator)`, ensuring that only paths actually *inside* the directory (or the directory itself) are allowed.
+
+2.  **Namespace Escape**: In `extractParamsFromObj`, the code previously joined the base path, the namespace, and the identifier, then checked if the result was under the base path. However, it did not verify that the final resolved path remained within the specific namespace directory. An attacker could use `..` sequences in the `identifier` to escape the namespace and access other files within the adapter's base path (as demonstrated in the newly added test `TestPathTraversalDataAccess`).
+
+The fix introduces a two-step verification:
+- First, it verifies that the `namespacePath` is under the adapter's base path.
+- Second, it verifies that the final path `p` (after joining the identifier) is either equal to the `namespacePath` or is a child of it (using the separator prefix check).
+
+These changes prevent both "prefix-based" bypasses and "dot-dot" traversal escapes from the namespace.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory

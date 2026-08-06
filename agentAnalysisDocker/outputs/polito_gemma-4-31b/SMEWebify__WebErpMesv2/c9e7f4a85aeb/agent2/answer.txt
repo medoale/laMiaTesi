@@ -1,0 +1,24 @@
+The commit modifies `OrderLinesController` and `QuoteLinesController`, specifically the `StoreImage` (or equivalent) method used for uploading images.
+
+In the `before` version of the code:
+```php
+$filename = time() . '_' . $file->getClientOriginalName();
+$request->picture->move(public_path('images/order-lines'), $filename);
+```
+The application uses `getClientOriginalName()` to determine the filename of the uploaded file. The `getClientOriginalName()` method returns the filename as provided by the client (the user's browser), which is user-controllable input. 
+
+Using a user-provided filename when saving a file to the server's filesystem is a security vulnerability. An attacker could provide a filename containing path traversal sequences (e.g., `../../etc/passwd` or `../../public/shell.php`), potentially allowing them to overwrite critical system files or upload a web shell to a reachable directory (though `public_path()` provides some base directory restriction, the filename itself can still be manipulated). Even if the `time() . '_'` prefix is added, it does not prevent path traversal if the operating system or PHP's `move` function processes the resulting string in a way that allows traversal.
+
+In the `after` version:
+```php
+$extension = $file->getClientOriginalExtension();
+$filename = time() . '_' . uniqid() . '.' . $extension;
+$file->move(public_path('images/order-lines'), $filename);
+```
+The application now generates a random filename using `uniqid()` and only appends the file extension. This eliminates the use of the user-provided original filename, thereby preventing path traversal attacks via the filename.
+
+This is a classic example of CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal').
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

@@ -1,0 +1,18 @@
+The provided commit introduces several security enhancements to prevent Server-Side Request Forgery (SSRF). 
+
+### Analysis:
+
+1.  **Improved IP Validation**: In `validate_import_url`, the code now explicitly handles various encoded IP formats (DWORD/Decimal, Hex, and Octal) before performing the check against private/reserved IP ranges. Previously, `socket.gethostbyname()` was used, which might not consistently resolve all obfuscated IP formats across all platforms, potentially allowing a bypass of the IP blacklisting.
+2.  **URL Normalization**: The commit adds URL normalization using `quote` for paths and queries and checks for control characters. This prevents certain types of bypasses where malicious characters are used to trick the validator while being interpreted differently by the request library.
+3.  **Safe Request Wrapper**: The most significant change is the introduction of `safe_request`. Previously, the application used `requests.get()` or `requests.post()` directly. These functions follow redirects by default. In an SSRF context, this is dangerous because a validator may check the initial URL, but the server then follows a redirect to an internal resource (e.g., `http://169.254.169.254` or `http://localhost`).
+4.  **Redirect Validation**: `safe_request` disables automatic redirects (`allow_redirects=False`) and manually handles them by re-validating every single URL in the redirect chain using `validate_import_url` before proceeding.
+
+These changes directly address common SSRF bypass techniques:
+- **Obfuscated IP addresses** (CWE-918)
+- **Open Redirects leading to internal resources** (CWE-918)
+
+The commit is clearly intended to fix an SSRF vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

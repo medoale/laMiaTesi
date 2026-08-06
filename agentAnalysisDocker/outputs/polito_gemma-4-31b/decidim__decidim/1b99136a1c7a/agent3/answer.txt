@@ -1,0 +1,20 @@
+I have explored the provided repository and identified several instances of an **Open Redirect** vulnerability.
+
+In `decidim-verifications`, multiple controllers use the `redirect_to` method with a URL provided directly from the `params[:redirect_url]` parameter without any validation or sanitization to ensure the destination is a local or trusted path.
+
+Specifically:
+1.  **`Decidim::Verifications::AuthorizationsController#create`**:
+    ```ruby
+    redirect_to params[:redirect_url] || authorizations_path
+    ```
+2.  **`Decidim::Verifications::Sms::AuthorizationsController#update`**:
+    ```ruby
+    if params[:redirect_url]
+      redirect_to params[:redirect_url]
+    ```
+
+An attacker could craft a malicious link containing a `redirect_url` pointing to an external domain (e.g., `https://malicious-site.com`). When a victim clicks this link and completes the authorization process, they will be redirected to the attacker's site, which could be used for phishing or distributing malware.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-601
+CWE_NAME: URL Redirection to Untrusted Site

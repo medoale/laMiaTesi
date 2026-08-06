@@ -1,0 +1,14 @@
+The reviewed commit introduces fine-grained settings for the "Amendments" feature in the Proposals component. Previously, the permission to create, reject, promote, or accept amendments was globally enabled for all users once the amendments feature was enabled (or if the user was the author of the amendment).
+
+The changes implement the following:
+1.  **Fine-grained settings**: Added new settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) that allow administrators to enable/disable specific parts of the amendment workflow.
+2.  **Permission Enforcement**: Updated `Decidim::Permissions#amend_action?` to check these new settings. If a specific feature (like promotion) is disabled in the settings, the permission is no longer granted unconditionally.
+3.  **Controller Updates**: Updated `AmendmentsController` to pass the `current_component` to the `enforce_permission_to` method, ensuring that the permission check has access to the component's settings.
+4.  **UI/UX Improvements**: Added logic to hide/show corresponding UI elements (buttons, forms) based on these settings and added help texts in the admin panel.
+5.  **Linked Resources**: Added the ability to link a promoted emendation to the resulting proposal.
+
+These changes are feature enhancements and a refactoring of how permissions are handled for the amendments feature. They are not fixing a security vulnerability. The commit focuses on providing administrators with more control over the feature's functionality rather than addressing a bug that could be exploited for unauthorized access or data leakage.
+
+VULNERABILITY_FOUND: no
+CWE_ID: none
+CWE_NAME: none

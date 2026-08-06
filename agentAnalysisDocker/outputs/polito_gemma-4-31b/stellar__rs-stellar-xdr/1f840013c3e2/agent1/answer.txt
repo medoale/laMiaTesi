@@ -1,0 +1,27 @@
+The commit modifies the `FromStr` implementation for `StringM<MAX>`, a type that appears to represent a string with a maximum length constraint (`MAX`).
+
+In the `before.txt` version of `file_01` and `file_04`, the `from_str` function was:
+```rust
+fn from_str(s: &str) -> core::result::Result<Self, Self::Err> {
+    let b = escape_bytes::unescape(s.as_bytes()).map_err(|_| Error::Invalid)?;
+    Ok(Self(b))
+}
+```
+This implementation ignores the `MAX` constraint entirely, allowing any string (after unescaping) to be wrapped in `StringM<MAX>` regardless of its length.
+
+The `after.txt` version changes this to:
+```rust
+fn from_str(s: &str) -> core::result::Result<Self, Self::Err> {
+    let b = escape_bytes::unescape(s.as_bytes()).map_err(|_| Error::Invalid)?;
+    b.try_into()
+}
+```
+By using `try_into()`, the code now invokes the `TryFrom` implementation for `StringM<MAX>`, which validates that the length of the byte slice `b` does not exceed `MAX`. If the length exceeds the limit, it returns an error (as evidenced by the new tests in `file_03` which expect `Error::LengthExceedsMax`).
+
+Failure to enforce length constraints on types designed to have them can lead to various security issues, most notably memory corruption or Denial of Service (DoS) if the constraint is used to prevent excessive resource consumption or to ensure the data fits into a fixed-size buffer elsewhere in the system. In the context of XDR (External Data Representation) used by Stellar, these limits are often critical for network protocol security and avoiding resource exhaustion.
+
+This is a classic example of an "Improper Check for Unusual or Exceptional Conditions" or specifically a failure to enforce a length limit.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-20
+CWE_NAME: Improper Input Validation

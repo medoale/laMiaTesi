@@ -1,0 +1,16 @@
+The changes introduce a new validation middleware `validateDAGFileNameMiddleware` and update the topic identifier canonicalization to use `core.ValidateDAGName` for DAG and DAG history identifiers.
+
+Specifically, `core.ValidateDAGName` (defined in `internal/core/validator.go`) ensures that DAG names:
+1. Are not `.` or `..`
+2. Do not exceed `DAGNameMaxLen` (40 characters).
+3. Match the regex `^[a-zA-Z0-9_.-]+$`.
+
+By applying this validation to API requests that specify a DAG file name (via `validateDAGFileNameFromRequest` which uses reflection to find the `FileName` field in request structs) and to the parsing of topics (used in SSE or similar communication), the commit prevents attackers from providing specially crafted file names containing path traversal sequences (like `../`).
+
+The test case `TestDAGFileNameRejectsEncodedTraversal` in `file_02` explicitly verifies that encoded path traversal attempts (e.g., `..%2F..%2Ftmp%2Fsecret`) are now rejected with a `400 Bad Request` status.
+
+This is a fix for a Path Traversal vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory

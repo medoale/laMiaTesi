@@ -1,0 +1,18 @@
+The commit introduces a check in `h3_rcv_buf` to ensure that if a bidirectional stream is terminated (FIN received) without any data, its body length is consistent with any previously received `Content-Length` header.
+
+Specifically, the added code is:
+```c
+/* FIN received, ensure body length is conform to any content-length header. */
+if ((h3s->flags & H3_SF_HAVE_CLEN) && h3_check_body_size(qcs, 1)) {
+    qcc_abort_stream_read(qcs);
+    qcc_reset_stream(qcs, h3s->err);
+    goto done;
+}
+```
+The function `h3_check_body_size` (lines 447-479 in `before.txt`) checks if `h3s->data_len` is equal to `h3s->body_len` when `fin` is set. If they do not match, it returns a non-zero value and sets `h3s->err = H3_ERR_MESSAGE_ERROR`.
+
+This fix addresses a scenario where a request or response declares a `Content-Length` but terminates the stream (via FIN) without sending the expected amount of data (or any data at all), which is a violation of the HTTP/3 specification (RFC 9114, Section 4.1.2). Failing to validate the body length against the `Content-Length` header can lead to "HTTP Request Smuggling" or "Response Smuggling" vulnerabilities, as downstream components might disagree on where one message ends and the next begins.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-444
+CWE_NAME: Inconsistent Interpretation of HTTP Messages

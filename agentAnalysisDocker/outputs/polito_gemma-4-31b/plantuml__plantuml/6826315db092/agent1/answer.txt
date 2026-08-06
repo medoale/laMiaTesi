@@ -1,0 +1,26 @@
+The provided commit removes a `filter()` method and its helper methods (`sanitizeDotAttribute`, `sanitizeAttributeValue`) which were used to sanitize the `data` passed to Graphviz in the `PSystemDot` class. 
+
+Specifically, the removed `filter()` method attempted to prevent Cross-Site Scripting (XSS) when generating diagrams (likely for SVG output) by:
+1. Replacing `javascript:` with `js:`.
+2. Removing `<script>` tags.
+3. Sanitizing certain Dot attributes (`fontname`, `label`, `xlabel`, `URL`, `href`, `tooltip`) by removing `<` and `>` characters, quotes, and `on[event]=` handlers.
+
+The commit also adds a check: if the `fileFormat` is `SVG`, it now returns `ImageDataSimple.ok()` immediately (line 77-78), effectively bypassing the Graphviz processing for SVG in this specific `PSystemDot` implementation. For other formats, it now passes the raw `data` instead of the filtered data (line 80).
+
+The removal of sanitization logic for data that might end up in an SVG (which is an XML-based format susceptible to XSS) is a security regression. However, the commit explicitly disables SVG output via this path (`if (fileFormat.getFileFormat() == FileFormat.SVG) return ImageDataSimple.ok();`).
+
+Wait, if it returns `ImageDataSimple.ok()` for SVG, does that mean it's "fixing" a vulnerability by just not doing it? Or is it introducing one?
+
+Looking closer at the original code:
+`final Graphviz graphviz = GraphvizRuntimeEnvironment.getInstance().createForSystemDot(null, filter(data), ...)`
+The `filter(data)` was trying to prevent XSS in the output of Graphviz. If Graphviz produces an SVG, and that SVG is rendered in a browser, an attacker could inject scripts into the Dot source.
+
+The "fix" here is to completely stop supporting SVG output in this class (by returning `ok()` without actually producing the diagram via Graphviz) and to stop attempting (and likely failing, given the regex-based approach) to sanitize the input for other formats.
+
+Actually, the most likely scenario is that the original `filter()` was an insufficient "blacklist" approach to prevent XSS, and the developer decided that since they cannot safely sanitize the input for Graphviz, they should just disable SVG output in this specific system to prevent XSS.
+
+By disabling SVG output (`if (fileFormat.getFileFormat() == FileFormat.SVG) return ImageDataSimple.ok();`), they are removing the attack vector (SVG XSS) that the previous `filter()` method was trying to mitigate.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

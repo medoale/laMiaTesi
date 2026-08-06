@@ -1,0 +1,15 @@
+The provided commit introduces a security mechanism to verify the digital signature of downloaded binaries before they are executed.
+
+Specifically, the commit adds a `SecurityGuard` class (implemented in `verifySignedfile.cpp` and `verifySignedfile.h`) that uses Windows APIs (`WinVerifyTrust`, `CryptQueryObject`, `CertFindCertificateInStore`, etc.) to perform a comprehensive check of an Authenticode-signed binary. The verification includes:
+1.  **Signature Verification**: Checking the overall integrity of the binary's signature via `WinVerifyTrust`.
+2.  **Trust Chain Verification**: Optionally verifying that the certificate chain is valid.
+3.  **Revocation Checking**: Optionally checking if the certificate has been revoked.
+4.  **Identity Verification**: Optionally comparing the signer's display name, subject, key identifier, and authority key identifier against expected values.
+
+In `winmain.cpp` (file_07), these checks are integrated into the update process. If the command-line argument `-chkCertSig=yes` is passed, the updater now calls `securityGuard.verifySignedBinary(dlDest)` on the downloaded executable. If the verification fails, the program returns `-1` and refuses to run the binary.
+
+This is a security fix (or a security hardening feature) that mitigates the risk of executing malicious binaries that may have been substituted during the download process (e.g., via a Man-in-the-Middle attack or a compromised update server), which is a classic example of mitigating an "Improper Verification of Cryptographic Signature" vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-347
+CWE_NAME: Improper Verification of Cryptographic Signature

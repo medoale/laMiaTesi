@@ -1,0 +1,39 @@
+The provided commit modifies `RequestInputFilter.java` to move a check for "Ferret expressions" within an XML request.
+
+In the `before.txt` version:
+```java
+366: 	try {
+367: 		requestXML = JDOMUtils.decode(requestXML, "UTF-8");
+368: 					    String expression = lasRequest.getProperty("ferret", "expression");
+369:                         if (!expression.isEmpty()) {
+370:                             LASAction.logerror(request, "Ferret expressions are no longer allowed.", "");
+371:                             response.sendError(404, "Ferret expressions are no longer allowed.");
+372:                             return;
+373:                         }
+374: 	} catch (UnsupportedEncodingException e) {
+```
+In the `before.txt` version, the check is performed using a variable `lasRequest` (line 368) *before* `lasRequest` is actually instantiated and populated. The `lasRequest` object is only created on line 381: `LASUIRequest lasRequest = new LASUIRequest();`. This means the code in the `before` version would throw a `NullPointerException` (or a compilation error, although in some contexts it might be a field not yet initialized) and fail to actually perform the security check. Even if it didn't crash, it was checking the property before the XML was parsed into the `lasRequest` object.
+
+In the `after.txt` version:
+```java
+376: 	try {
+377: 		JDOMUtils.XML2JDOM(requestXML, lasRequest);
+378: 		// Set the lasRequest object in the HttpServletRequest so the product server does not have to rebuild it.
+379: 		request.setAttribute("las_request", lasRequest);
+380: 					String expression = lasRequest.getProperty("ferret", "expression");
+381:                     if (!expression.isEmpty()) {
+382:                         LASAction.logerror(request, "Ferret expressions are no longer allowed.", "");
+383:                         response.sendError(404, "Ferret expressions are no longer allowed.");
+384:                         return;
+385:                     }
+386: 	} catch (Exception e) {
+```
+The check is moved to after `JDOMUtils.XML2JDOM(requestXML, lasRequest);`, which populates the `lasRequest` object from the decoded XML. This ensures that the "ferret expression" check actually operates on the data provided in the request.
+
+The "Ferret expressions" likely refer to a feature that allowed executing expressions (potentially leading to Remote Code Execution or other injection attacks), which the developers decided to disable. The commit fixes a bug where this security restriction was bypassed because the check was performed on an uninitialized object.
+
+This is a fix for a vulnerability where a security control was improperly implemented/bypassed. Since it relates to allowing potentially dangerous expressions, it falls under CWE-94 (Improper Control of Generation of Code) or more generally CWE-20 (Improper Input Validation). However, the most accurate description for a bypassed security check that allows an expression language to be used is often associated with Improper Input Validation or Expression Language Injection.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-20
+CWE_NAME: Improper Input Validation

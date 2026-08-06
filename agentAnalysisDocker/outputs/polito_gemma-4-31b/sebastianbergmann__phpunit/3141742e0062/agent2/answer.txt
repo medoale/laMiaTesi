@@ -1,0 +1,21 @@
+The commit introduces a check to ensure that a coverage file does not already exist before running a PHPT test.
+
+According to the changelog in `file_01/diff.txt`:
+> "To prevent Poisoned Pipeline Execution (PPE) attacks using prepared `.coverage` files in pull requests, a PHPT test will no longer be run if the temporary file for writing code coverage information already exists before the test runs"
+
+Looking at the code in `file_02`:
+- `getCoverageFiles()` determines the names of the coverage and job files based on the test filename.
+- `renderForCoverage()` writes the test code to a job file and sets up a template that will write coverage information to the `coverageFile`.
+- `cleanupForCoverage()` (which was already present) reads the `coverage` file using `unserialize($buffer, ['allowed_classes' => false])` and then deletes the files.
+
+The vulnerability being fixed is a "Poisoned Pipeline Execution" (PPE). In a CI/CD environment, if an attacker can pre-create the `.coverage` file in the workspace (e.g., by committing it in a pull request), and the testing tool reads and processes this file, it could potentially lead to arbitrary code execution or manipulation of the test results. While `unserialize` is used with `allowed_classes => false`, the core issue described is PPE, where the presence of an unexpected file influences the execution flow of the pipeline.
+
+Specifically, if a PHPT test is expected to generate a coverage file, but one already exists, the system should not proceed if that file could have been placed there maliciously. By throwing an exception when the coverage file exists before the test starts, PHPUnit prevents the test from running and potentially interacting with a malicious file.
+
+This is a security fix targeting a vulnerability in the CI/CD pipeline integration, specifically preventing the use of pre-existing files to manipulate the execution (PPE). In the context of CWE, this relates to improper validation of the environment or inputs (the filesystem state). However, the most direct CWE for "Poisoned Pipeline Execution" often involves CWE-15 (External Control of System or Configuration Option) or more generally, issues where an attacker can influence the execution environment.
+
+More precisely, the issue is that the application trusts the state of the filesystem (the absence of a file) which can be controlled by an attacker in a shared or CI environment. This is a form of improper input validation where the "input" is the existence of a file.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-15
+CWE_NAME: External Control of System or Configuration Option

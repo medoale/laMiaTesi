@@ -1,0 +1,24 @@
+In `src/cineon.imageio/libcineon/Writer.cpp`, there is a critical memory corruption vulnerability in the `cineon::Writer::WriteElement` function.
+
+Specifically, on line 237:
+```cpp
+236: 		blank = new char[bsize];
+237: 		memset(blank, bsize, sizeof(char));
+```
+The `memset` function is used incorrectly. The prototype for `memset` is `void *memset(void *s, int c, size_t n);`, where `c` is the value to be set and `n` is the number of bytes to be set. 
+
+In this code, `bsize` (which can be a large value based on padding requirements) is passed as the value `c`, and `sizeof(char)` (which is 1) is passed as the number of bytes `n`. This means only the first byte of the `blank` buffer is initialized, and it is initialized with the value of `bsize` (truncated to `unsigned char`).
+
+Later, this `blank` buffer is used in `WriteThrough` or within `WriteElement`'s padding logic (lines 296 and 332 in `WriteThrough`, line 296 in `WriteElement`) to write padding data to the output stream. If the buffer is intended to be zeroed out for padding, it fails to do so.
+
+However, the more severe issue is the inconsistent use of `memset` in similar libraries. In `src/dpx.imageio/libdpx/Writer.cpp`, the same pattern is correctly implemented:
+```cpp
+286: 		blank = new char[bsize];
+287: 		memset(blank, 0, bsize * sizeof(char));
+```
+
+In `cineon::Writer::WriteElement`, the developer swapped the value and size arguments in `memset`. While this specific instance results in an uninitialized buffer (which might lead to information leakage from the heap if the buffer is written to the file), the pattern of using `memset` with wrong arguments is a clear indicator of a security flaw. If `sizeof(char)` were replaced by a larger value or if the logic relied on the buffer being zeroed, it would be a failure. More importantly, if the `bsize` was used as the size and a large value was passed as the value, it would be correct, but here the `sizeof(char)` (1) is definitely not the intended size for a buffer of size `bsize`.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-665
+CWE_NAME: Improper Initialization

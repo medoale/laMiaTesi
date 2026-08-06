@@ -1,0 +1,11 @@
+The commit addresses several security vulnerabilities related to integer overflows and lack of input validation when processing DDS (DirectDraw Surface) files.
+
+1.  **Integer Overflow**: In `internal_readimg` and `read_native_scanline`, the code previously used `int` for dimensions (`w`, `h`, `d`) and for calculating offsets and buffer sizes. For very large image dimensions (which can be specified in the DDS header), these calculations (e.g., `z * h * w + y * w`) could overflow a 32-bit signed `int`, leading to small buffer allocations followed by out-of-bounds memory writes (Heap Buffer Overflow). The commit changes these types to `size_t` and uses explicit `size_t` casting for offset calculations, ensuring that 64-bit arithmetic is used on 64-bit platforms.
+
+2.  **Lack of Input Validation**: The commit introduces strict bounds checking on the image resolutions in `seek_subimage`. Previously, the code trusted the dimensions provided in the DDS header. By adding `check_open` calls with maximum allowed dimensions (e.g., 32768 for 2D textures, 4096 for volume textures, and 16384 for cube map faces), it prevents attackers from providing maliciously large dimensions that would trigger the aforementioned integer overflows or cause excessive memory allocation (DoS).
+
+These changes collectively prevent potential heap-based buffer overflows and denial-of-service attacks triggered by malformed DDS files.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-190, CWE-119
+CWE_NAME: Integer Overflow, Improper Restriction of Operations within the Bounds of a Memory Buffer

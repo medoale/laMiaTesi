@@ -1,0 +1,11 @@
+The commit replaces a standard equality comparison (`==`) with `hmac.compare_digest()` when verifying the authentication signature in the `sync_course_runs_from_request` view. 
+
+In the original code, `authorization_header == get_signature(message, secret)` is susceptible to a **timing attack**. Standard string comparison returns `False` as soon as it finds the first differing character, meaning the time taken to perform the comparison depends on how many leading characters of the provided signature match the correct one. An attacker can use this timing difference to brute-force the signature character by character.
+
+`hmac.compare_digest()` is designed specifically to mitigate this by performing a constant-time comparison, ensuring that the time taken does not reveal information about the content of the strings.
+
+This is a classic fix for a timing side-channel vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-208
+CWE_NAME: Observable Timing Discrepancy

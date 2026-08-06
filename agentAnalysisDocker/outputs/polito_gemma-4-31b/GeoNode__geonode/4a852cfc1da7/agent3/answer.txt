@@ -1,0 +1,23 @@
+The codebase contains a potential security vulnerability in the `geonode.proxy.views.proxy` function.
+
+The `proxy` view acts as an HTTP proxy that takes a `url` parameter from the user's GET request and forwards the request to that destination. To prevent Server-Side Request Forgery (SSRF), it implements a host validation check:
+
+```python
+proxy_allowed_hosts = list(proxy_urls_registry.get_proxy_allowed_hosts())
+if sec_chk_hosts:
+    if any(needle.lower() in url.query.lower() for needle in PROXY_ALLOWED_PARAMS_NEEDLES) or any(
+        needle.lower() in url.path.lower() for needle in PROXY_ALLOWED_PATH_NEEDLES
+    ):
+        proxy_allowed_hosts.append(url.hostname)
+
+    if not validate_host(extract_ip_or_domain(raw_url), proxy_allowed_hosts):
+        # ... returns 403 Forbidden
+```
+
+The vulnerability lies in the logic that automatically adds the requested hostname to the `proxy_allowed_hosts` list if certain "needles" (substrings) are present in the URL's query or path. If `PROXY_ALLOWED_PARAMS_NEEDLES` or `PROXY_ALLOWED_PATH_NEEDLES` contains any common strings, or if they are configured loosely, an attacker can bypass the host whitelist entirely by simply including one of those needles in their request. 
+
+For example, if `PROXY_ALLOWED_PARAMS_NEEDLES` contains `"request=GetCapabilities"` (as seen in the test files), an attacker can request `http://internal-service.local/?request=GetCapabilities`, and the proxy will automatically add `internal-service.local` to the allowed hosts for that request, effectively bypassing the SSRF protection and allowing access to internal infrastructure.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

@@ -1,0 +1,9 @@
+The commit modifies the `hostIDReaderDarwin.read()` method in the `resource` package. Specifically, it changes the execution of the `ioreg` command from using a relative command name (`"ioreg"`) to using its absolute path (`"/usr/sbin/ioreg"`).
+
+Executing a command by its relative name relies on the `PATH` environment variable to locate the executable. If an attacker can modify the `PATH` environment variable (e.g., by adding a malicious directory to the beginning of the path), they could potentially place a malicious executable named `ioreg` in that directory. When the application calls `ioreg`, it would execute the attacker's malicious version instead of the legitimate system utility. This is a known security vulnerability called "PATH injection" or "Insecure Search Path".
+
+By specifying the absolute path `/usr/sbin/ioreg`, the application bypasses the `PATH` lookup and ensures that only the intended system binary is executed, thereby mitigating the risk of command hijacking via `PATH` manipulation.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-426
+CWE_NAME: Untrusted Search Path

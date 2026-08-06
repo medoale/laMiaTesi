@@ -1,0 +1,17 @@
+I have analyzed the provided code in `/work/src/winmain.cpp`, which appears to be part of a software updater called "GUP".
+
+During the review, I identified a critical security vulnerability in the `decompress` function (lines 384-502). The function extracts files from a ZIP archive and writes them to the filesystem. It uses `PathAppend` to construct the destination path for each entry in the archive:
+
+```cpp
+411: 		wstring file2extrait = s2ws(entry->GetFullName());
+412: 		wstring extraitFullFilePath = unzipDestTo;
+413: 		PathAppend(extraitFullFilePath, file2extrait);
+```
+
+The `file2extrait` variable comes directly from the ZIP entry's filename. If a maliciously crafted ZIP file contains entries with filenames containing path traversal sequences (e.g., `../../../../windows/system32/calc.exe`), the `PathAppend` function (or the resulting path) will allow the updater to write files outside of the intended `unzipDestTo` directory.
+
+This is a classic **ZipSlip** vulnerability, leading to Arbitrary File Write. Since this application likely runs with elevated privileges to perform software updates, an attacker could overwrite critical system files or place a malicious executable in a startup folder to achieve Remote Code Execution (RCE).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

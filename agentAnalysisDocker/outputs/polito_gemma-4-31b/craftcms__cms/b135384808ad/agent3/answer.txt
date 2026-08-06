@@ -1,0 +1,17 @@
+I have explored the repository and focused on the Twig sandbox security implementation.
+
+The `craft\web\twig\SecurityPolicy` class implements the `Twig\Sandbox\SecurityPolicyInterface` and uses a custom attribute `#[AllowedInSandbox]` to whitelist classes, methods, and properties for access within the Twig sandbox.
+
+While the sandbox policy is generally restrictive, it allows any class marked with the `#[AllowedInSandbox]` attribute to be accessed entirely (via `isClassAllowed` in `SecurityPolicy.php` lines 292-306, which calls `checkForAllowedAttributeInClass` in lines 308-332).
+
+In `src/elements/User.php`, the `User` class is marked with `#[AllowedInSandbox]` (implied by the search result and used in several properties/methods). However, looking at `User.php` and the `SecurityPolicy` implementation, if a class is marked `#[AllowedInSandbox]`, the sandbox permits access to all its public methods and properties.
+
+A critical vulnerability exists because the `User` class (or other classes marked `#[AllowedInSandbox]`) may expose sensitive information or methods that should not be available in a sandboxed template. In the case of `User.php`, while the `password` property (line 708) is NOT marked with `#[AllowedInSandbox]`, the `isClassAllowed` check in `SecurityPolicy::checkPropertyAllowed` (line 239) returns `true` if the class itself is allowed, bypassing the property-level check. 
+
+Since `User` is an `Element` and `Element` is marked `#[AllowedInSandbox]` (as seen in the `rg` results: `/work/src/base/ElementTrait.php`, and `User` extends `Element`), anyone with the ability to edit a sandboxed template can access any public property or method of any `User` object, including potentially sensitive data.
+
+Specifically, `SecurityPolicy::isClassAllowed` (line 292) returns `true` if the class has the `#[AllowedInSandbox]` attribute. Then `SecurityPolicy::checkPropertyAllowed` (line 237) returns immediately if `isClassAllowed($obj)` is true. This means the property-level `#[AllowedInSandbox]` attributes are only checked if the class itself is NOT allowed. If the class IS allowed, all its properties are accessible.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-285
+CWE_NAME: Improper Authorization

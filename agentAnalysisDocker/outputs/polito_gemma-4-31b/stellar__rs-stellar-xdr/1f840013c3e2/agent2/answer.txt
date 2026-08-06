@@ -1,0 +1,41 @@
+The commit modifies the `from_str` implementation for `StringM<MAX>`, a type that represents a string with a maximum length constraint.
+
+**Analysis:**
+In the `before` version of `StringM<MAX>::from_str`:
+```rust
+fn from_str(s: &str) -> core::result::Result<Self, Self::Err> {
+    let b = escape_bytes::unescape(s.as_bytes()).map_err(|_| Error::Invalid)?;
+    Ok(Self(b))
+}
+```
+The code unescapes the input string into a `Vec<u8>` (`b`) and then immediately wraps it in `Self(b)`. However, `StringM` is designed to enforce a maximum length (`MAX`). The `Self(b)` construction bypasses any length checks, allowing a string of arbitrary length to be stored in a `StringM` instance, regardless of the `MAX` constant.
+
+In the `after` version:
+```rust
+fn from_str(s: &str) -> core::result::Result<Self, Self::Err> {
+    let b = escape_bytes::unescape(s.as_bytes()).map_err(|_| Error::Invalid)?;
+    b.try_into()
+}
+```
+The code now calls `b.try_into()`. Looking at the implementation of `TryFrom<Vec<u8>>` for `StringM<MAX>` (or similar `TryFrom` for `Vec<T>`):
+```rust
+impl<T, const MAX: u32> TryFrom<Vec<T>> for VecM<T, MAX> {
+    type Error = Error;
+    fn try_from(v: Vec<T>) -> Result<Self, Error> {
+        let len: u32 = v.len().try_into().map_err(|_| Error::LengthExceedsMax)?;
+        if len <= MAX {
+            Ok(VecM(v))
+        } else {
+            Err(Error::LengthExceedsMax)
+        }
+    }
+}
+```
+(Note: `StringM` likely uses a similar implementation or inherits from `VecM`). By using `try_into()`, the code now correctly enforces the `MAX` length limit, returning `Error::LengthExceedsMax` if the unescaped string is too long.
+
+**Security Impact:**
+Bypassing length constraints on input can lead to various vulnerabilities, most notably Denial of Service (DoS) via memory exhaustion if an attacker can provide extremely large strings that the application expects to be bounded.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-1284
+CWE_NAME: Improper Limitation of Quantity of Send or Receive Operations

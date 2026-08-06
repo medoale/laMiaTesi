@@ -1,0 +1,11 @@
+The changes in `file_01` show a replacement of `yaml.load(f, Loader=yaml.Loader)` with `yaml.safe_load(f)`. 
+
+In PyYAML, `yaml.Loader` (and the default `yaml.load()` in older versions) is capable of executing arbitrary Python code if the input YAML contains specially crafted tags (e.g., `!!python/object/apply:os.system`). This is a well-known vulnerability that allows for Remote Code Execution (RCE) when loading untrusted YAML data. `yaml.safe_load()` restricts the loader to simple Python objects, preventing the execution of arbitrary code.
+
+The changes in `file_02` are purely cosmetic (fixing a docstring) and do not affect security.
+
+The modification in `file_01` is a security fix for an unsafe deserialization vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

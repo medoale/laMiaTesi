@@ -1,0 +1,27 @@
+The provided change moves the call to `$this->checkPermission('predefined_properties');` from inside an `if ($request->get('data'))` block to the very beginning of the `propertiesAction` method.
+
+In the `before.txt` version:
+```php
+public function propertiesAction(Request $request): JsonResponse
+{
+    if ($request->get('data')) {
+        $this->checkPermission('predefined_properties');
+        // ... (processing logic)
+    } else {
+        // get list of types
+        $list = new Property\Predefined\Listing();
+        // ... (listing logic)
+        return $this->adminJson(['data' => $properties, 'success' => true, 'total' => $list->getTotalCount()]);
+    }
+    return $this->adminJson(['success' => false]);
+}
+```
+When `data` is not provided in the request, the code enters the `else` block, which retrieves and returns a list of predefined properties without ever calling `checkPermission('predefined_properties')`. This allows any authenticated admin user (or potentially any user who can reach this controller) to list predefined properties, even if they lack the specific `predefined_properties` permission.
+
+By moving `checkPermission('predefined_properties')` to the start of the method, the developer ensures that both the modification/destruction of properties and the listing of properties are protected by the same permission check.
+
+This is a fix for a Broken Access Control vulnerability, specifically missing functional-level access control.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-285
+CWE_NAME: Improper Authorization

@@ -1,0 +1,22 @@
+The code changes address a path traversal vulnerability in a local storage adapter.
+
+In `file_01`, the `verifyRelPath` method was updated to append a directory separator to the base path before performing a prefix check:
+```go
+-	if !strings.HasPrefix(filepath.Clean(p), l.path) {
++	if !strings.HasPrefix(filepath.Clean(p), l.path+string(filepath.Separator)) {
+```
+This prevents a "prefix bypass" attack where a path starting with the same characters as the base path (but not actually within it, e.g., `/tmp/lakefs_evil` vs `/tmp/lakefs`) could be mistakenly validated.
+
+Furthermore, `extractParamsFromObj` was modified to implement a two-stage verification process. Previously, it only verified that the final resolved path was under the adapter's root path. The update now ensures that:
+1. The `namespacePath` itself is within the adapter's root path.
+2. The final resolved path `p` is within the specific `namespacePath`.
+
+This prevents an attacker from using `..` sequences in the `Identifier` to escape their assigned namespace and access other namespaces or files within the adapter's root directory, even if they remain within the root.
+
+`file_02` adds comprehensive tests (`TestPathTraversalPrevention` and `TestPathTraversalDataAccess`) specifically designed to detect these path traversal and prefix bypass scenarios.
+
+These changes directly mitigate a path traversal vulnerability, which is classified under CWE-22.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory

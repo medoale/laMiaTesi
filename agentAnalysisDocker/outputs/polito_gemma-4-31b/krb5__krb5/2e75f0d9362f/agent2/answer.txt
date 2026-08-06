@@ -1,0 +1,16 @@
+The commit introduces two security checks to prevent potential out-of-bounds reads (buffer overflows) when parsing NegoEx messages.
+
+1.  **In `parse_nego_message`**: The code now checks if the pointer `p` returned by `vector_base` is `NULL` before entering a loop that reads from `p`. `vector_base` performs bounds checking, so a `NULL` return indicates that the requested vector (extensions) lies outside the message boundaries. Without this check, the loop `extension_type = load_32_le(p + i * EXTENSION_LENGTH);` would attempt to dereference a `NULL` pointer or an invalid address, leading to a crash (denial of service) or potentially an out-of-bounds read.
+
+2.  **In `parse_message`**: The check `if (in->status || msg_len > token_remaining || header_len > msg_len)` was expanded to include `header_len < (size_t)(in->ptr - msg_base)`. 
+    - `msg_base` is the start of the message.
+    - `in->ptr` is the current position in the input buffer.
+    - `in->ptr - msg_base` represents the number of bytes already read from the message to reach the current position (the header length so far).
+    - If `header_len` (provided in the message) is less than the bytes already read, it indicates an inconsistent or malicious header length.
+    - This check prevents a potential integer underflow in the subsequent line: `in->len = header_len - (in->ptr - msg_base);`. If `header_len < (in->ptr - msg_base)`, `in->len` (a `size_t`) would wrap around to a very large value, leading to subsequent out-of-bounds reads when `in` is used for further parsing.
+
+Both changes are specifically aimed at preventing out-of-bounds reads caused by untrusted input in the network protocol parsing logic.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-125
+CWE_NAME: Out-of-bounds Read

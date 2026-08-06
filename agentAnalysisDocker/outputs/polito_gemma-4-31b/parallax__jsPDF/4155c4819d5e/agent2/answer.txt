@@ -1,0 +1,23 @@
+The provided changes fix a security vulnerability in the `jsPDF` annotations plugin.
+
+In `file_01`, the code for creating `freetext` annotations was concatenating a user-provided `color` value directly into a PDF string (the `/DS` entry), without any escaping or encoding:
+
+```javascript
+line += " /DS(font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" + color + ")";
+```
+
+This allowed an attacker to provide a specially crafted `color` string that could "break out" of the parentheses and inject arbitrary PDF objects or actions into the generated PDF document. As demonstrated in the new test case in `file_02`, an attacker could inject a JavaScript action (`/AA <</E <</S /JavaScript /JS (alert("x"))>>>>`) into the PDF. This is a form of PDF injection that can lead to Cross-Site Scripting (XSS) or other malicious actions when the PDF is opened in a vulnerable PDF viewer.
+
+The fix involves creating a `defaultStyle` string and passing it through the `escape` and `encryptor` functions before adding it to the PDF line:
+
+```javascript
+var defaultStyle = "font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" + color;
+// ...
+line += " /DS(" + escape(encryptor(defaultStyle)) + ")";
+```
+
+This ensures that any special characters in the `color` value are properly escaped, preventing the injection of arbitrary PDF commands.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-74
+CWE_NAME: Improper Neutralization of Special Elements in Output used by a Downstream Component (Cross-site Scripting)

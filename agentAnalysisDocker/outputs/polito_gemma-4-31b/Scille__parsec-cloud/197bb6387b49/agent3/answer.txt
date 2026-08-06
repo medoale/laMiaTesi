@@ -1,0 +1,29 @@
+The security review of the repository revealed a critical SQL injection vulnerability in the `server/parsec/components/postgresql/utils.py` file.
+
+The `q_organization` and `_table_q_factory` helper functions are used to construct SQL subqueries. These functions use Python f-strings to embed parameters directly into the SQL string without any sanitization or use of parameterized queries.
+
+Specifically, in `q_organization`:
+```python
+179:     if _id is not None:
+180:         condition = f"organization._id = {_id}"
+181:     else:
+182:         condition = f"organization.organization_id = {organization_id}"
+183:     return f"(SELECT organization.{select} FROM organization WHERE {condition})"
+```
+
+And in `_table_q_factory`'s `_q` function:
+```python
+242:             condition = f"{select_table}._id = {_id}"
+...
+254:             filter1 = f"{select_table}.{public_id_column} = {public_id}"
+255:             filter2 = f"{select_table}.organization = {organization}"
+256:             condition = f"{filter1} AND {filter2}"
+...
+260:         return f"(SELECT {select_table}.{select} FROM {from_table} WHERE {condition}{suffix})"
+```
+
+Since these helpers are used throughout the `postgresql` component (e.g., in `invite.py`, `pki.py`, `user.py`) to build queries that are eventually executed, an attacker who can control any of the input arguments (like `organization_id`, `_id`, or `public_id`) can inject arbitrary SQL commands. This is a classic SQL injection vulnerability caused by improper neutralization of special elements used in an SQL command.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-89
+CWE_NAME: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')

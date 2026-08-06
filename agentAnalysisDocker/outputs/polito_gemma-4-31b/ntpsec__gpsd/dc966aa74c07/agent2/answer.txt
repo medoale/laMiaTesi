@@ -1,0 +1,13 @@
+The reviewed commit addresses a security vulnerability in the `hnd_129540` function, which handles NMEA2000 PGN 129540 ("GNSS Satellites in View").
+
+In the original code, the number of satellites visible (`session->gpsdata.satellites_visible`) was taken directly from the input buffer (`bu[2]`) and used as the upper bound for a `for` loop that writes into the `session->gpsdata.skyview` array. This allowed an attacker to provide a maliciously large value for the number of satellites, leading to a heap-based buffer overflow as the loop wrote beyond the allocated bounds of the `skyview` array.
+
+The fix introduces two critical checks:
+1. It checks if `session->gpsdata.satellites_visible` exceeds `MAXCHANNELS` and caps it to `MAXCHANNELS` if it does.
+2. It verifies that the actual length of the received buffer (`len`) matches the expected length calculated from the number of satellites (`3 + (12 * satellites_visible)`).
+
+These changes prevent the buffer overflow by ensuring the loop index never exceeds the array capacity and that the input buffer contains enough data for the claimed number of satellites.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-120
+CWE_NAME: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')

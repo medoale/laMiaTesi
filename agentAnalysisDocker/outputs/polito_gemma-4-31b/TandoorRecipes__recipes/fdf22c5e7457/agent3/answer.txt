@@ -1,0 +1,15 @@
+I have analyzed the codebase and found a security vulnerability in the `ImportOpenData` class within `/work/cookbook/views/api.py`.
+
+In the `post` method of the `ImportOpenData` class, the application takes a `selected_version` value from the user request via the `ImportOpenDataSerializer`. This value is then used directly in an f-string to construct a URL for a `requests.get()` call:
+
+```python
+# /work/cookbook/views/api.py
+2992:             response = requests.get(
+2993:                 f'https://raw.githubusercontent.com/TandoorRecipes/open-tandoor-data/main/build/{serializer.validated_data["selected_version"]}.json')
+```
+
+The `ImportOpenDataSerializer` defines `selected_version` as a simple `CharField`, which does not perform any validation or sanitization on the input. An attacker can provide a specially crafted string (e.g., using path traversal sequences like `../../`) to manipulate the final URL. While the URL is prefixed with a GitHub domain, this allows the attacker to request arbitrary files from the `raw.githubusercontent.com` domain or potentially other paths if the domain structure allows, which is a form of Server-Side Request Forgery (SSRF).
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

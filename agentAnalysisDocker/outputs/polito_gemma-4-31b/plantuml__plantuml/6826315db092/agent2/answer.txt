@@ -1,0 +1,16 @@
+The change in `PSystemDot.java` removes a custom `filter` method that was attempting to sanitize DOT data before passing it to Graphviz. The `filter` method specifically targeted several attributes (`fontname`, `label`, `xlabel`, `URL`, `href`, `tooltip`) to remove `<` and `>` characters, quotes, and `on...=` event handlers, and also replaced `javascript:` with `js:`.
+
+These sanitization efforts were clearly intended to prevent Cross-Site Scripting (XSS) when the output of Graphviz (specifically in SVG format) is rendered in a browser. SVG files can contain embedded scripts and event handlers.
+
+In the updated code, the `filter(data)` call is removed, and instead, a check is added:
+```java
+if (fileFormat.getFileFormat() == FileFormat.SVG)
+    return ImageDataSimple.ok();
+```
+This change effectively disables the generation of diagrams using `PSystemDot` when the requested format is SVG. By refusing to generate SVG output via this path, the code eliminates the XSS vulnerability that the previous (and likely insufficient) `filter` method was trying to mitigate.
+
+The vulnerability being addressed is XSS, where malicious DOT input could lead to the injection of scripts into the resulting SVG file.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

@@ -1,0 +1,9 @@
+The provided changes show the replacement of the loose comparison operator (`==`) with the strict comparison operator (`===`) when comparing a password hash (generated via `md5()`) with a stored password hash from the database.
+
+In PHP, loose comparisons (`==`) can lead to security vulnerabilities known as "type juggling." If a password hash starts with `0e` followed only by numbers, PHP treats it as a float in scientific notation. Specifically, any two strings that both look like `0e[digits]` are considered equal (`0 == 0`), even if the strings are actually different. This allows an attacker to bypass authentication by providing a password that results in a "magic hash" (a hash starting with `0e` and containing only digits).
+
+Using the strict comparison operator (`===`) prevents this behavior by ensuring that both the value and the type (string) are identical, thus mitigating the authentication bypass vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-287
+CWE_NAME: Improper Authentication

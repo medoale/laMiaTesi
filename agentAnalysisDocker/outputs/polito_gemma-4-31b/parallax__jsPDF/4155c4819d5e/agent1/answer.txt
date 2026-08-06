@@ -1,0 +1,28 @@
+The commit fixes a security vulnerability in the `freetext` annotation handling of `jsPDF`. 
+
+In the original code, the `color` property from the `anno` object was concatenated directly into the `/DS` (Default Style) string of a PDF FreeText annotation without any escaping or validation. Specifically, lines 203-205 of `before.txt` show:
+```javascript
+line +=
+  " /DS(font: Helvetica,sans-serif 12.0pt; text-align:left; color:#" +
+  color +
+  ")";
+```
+Because the `color` value was inserted directly into a parenthesized string in the PDF structure, an attacker who could control the `color` property could break out of the `/DS` string by providing a closing parenthesis `)` and then inject arbitrary PDF objects or actions (such as JavaScript via `/AA` and `/JS` entries).
+
+The fix introduces the use of `escape(encryptor(defaultStyle))` in `after.txt` (line 205):
+```javascript
+line += " /DS(" + escape(encryptor(defaultStyle)) + ")";
+```
+This ensures that any special characters in the `color` variable (and the rest of the style string) are properly escaped, preventing PDF injection.
+
+The provided test case in `file_02/diff.txt` explicitly demonstrates this vulnerability by attempting to inject a JavaScript `alert("x")` via the `color` property:
+```javascript
+color: '000000) /AA <</E <</S /JavaScript /JS (alert("x"))>>>> ('
+```
+The test verifies that this payload is now correctly escaped in the output.
+
+This is a classic case of improper neutralization of special elements used in a PDF context, which allows for the injection of malicious content/actions.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-74
+CWE_NAME: Improper Neutralization of Special Elements in Output used by a Downstream Component (Cross-site Scripting)

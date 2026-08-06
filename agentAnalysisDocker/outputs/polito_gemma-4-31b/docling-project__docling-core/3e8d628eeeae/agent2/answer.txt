@@ -1,0 +1,9 @@
+The provided changes show that `yaml.load(f, Loader=yaml.FullLoader)` was replaced with `yaml.load(f, Loader=yaml.SafeLoader)` in two locations.
+
+In PyYAML, `yaml.FullLoader` is designed to avoid the arbitrary code execution vulnerabilities associated with `yaml.load` (which defaults to `UnsafeLoader` in older versions), but it still allows the loading of some Python objects. `yaml.SafeLoader` is the recommended loader for loading untrusted input as it only loads basic YAML types and prevents the instantiation of arbitrary Python objects, thereby eliminating the risk of remote code execution (RCE) through YAML deserialization.
+
+Replacing `FullLoader` with `SafeLoader` is a standard security hardening measure to prevent deserialization vulnerabilities.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

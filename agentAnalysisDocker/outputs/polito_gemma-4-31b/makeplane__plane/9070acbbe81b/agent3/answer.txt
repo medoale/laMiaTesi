@@ -1,0 +1,18 @@
+I have performed a security review of the provided repository.
+
+I examined several areas where HTML is processed, specifically looking for Cross-Site Scripting (XSS) vulnerabilities.
+
+In `/work/apps/web/core/hooks/use-parse-editor-content.ts`, the function `replaceCustomComponentsFromHTMLContent` processes HTML content using `DOMParser`. While it performs various replacements, I found a potential XSS vector at line 80:
+`div.innerHTML = codeElement.innerHTML.replace(/\n/g, "<br>") || "";`
+
+This line takes the `innerHTML` of a `code` element found within a `pre` block and assigns it to the `innerHTML` of a newly created `div`. If the original `code` element contains malicious HTML (which could be inserted into the document if the editor's input sanitization is bypassed or if the content is loaded from an untrusted source), this operation would execute that HTML when the `div` is eventually rendered or serialized.
+
+However, based on the broader context of the codebase, this appears to be part of a PDF export or content serialization process. While it is a dangerous pattern, the impact depends on where the resulting `serializedDoc` is used. If it is only used for PDF generation on the server or in a controlled environment, the risk is lower. But if this HTML is ever rendered back in the browser, it constitutes a stored XSS vulnerability.
+
+Additionally, in `/work/packages/utils/src/editor/common.ts`, the `getTextContent` function uses `div.innerHTML = jsx.toString();`. Depending on how `jsx.toString()` is implemented for various React node types, this could also be a risk if the input is not sanitized.
+
+Given the explicit use of `.innerHTML` to assign content derived from user-controllable editor content without explicit sanitization in the parsing logic, this is a vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Cross-Site Scripting

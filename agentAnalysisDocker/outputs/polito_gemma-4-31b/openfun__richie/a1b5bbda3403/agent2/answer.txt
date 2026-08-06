@@ -1,0 +1,9 @@
+The commit replaces a standard string comparison (`==`) with `hmac.compare_digest()` when verifying an authentication signature in the `sync_course_runs_from_request` function.
+
+Standard string comparison in Python (and most languages) is not constant-time; it returns `False` as soon as it finds a mismatched character. This allows an attacker to determine the correct signature character-by-character by measuring the time it takes for the server to respond (a timing attack). 
+
+`hmac.compare_digest()` is specifically designed to perform a constant-time comparison, preventing this side-channel leak. This is a security fix for a timing attack vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-208
+CWE_NAME: Observable Timing Discrepancy

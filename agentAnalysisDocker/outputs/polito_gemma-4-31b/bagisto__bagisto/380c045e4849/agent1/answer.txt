@@ -1,0 +1,16 @@
+The commit includes changes across multiple files, but the most security-relevant change is in `file_01`.
+
+In `file_01`, the `sanitizeSVG` method in the `Sanitizer` trait is updated to include a call to `$sanitizer->removeRemoteReferences(true);` before sanitizing an uploaded SVG file. 
+
+SVG files can contain references to external resources (e.g., via `<image xlink:href="...">` or `<style>@import ...</style>`). If these remote references are not removed or properly restricted, they can be used for several security attacks:
+1. **Server-Side Request Forgery (SSRF):** If the server processes the SVG (e.g., for rendering or resizing) and fetches the remote resources, an attacker can probe internal network services.
+2. **Information Disclosure/Tracking:** If the SVG is rendered in a user's browser, the browser will make requests to the remote URLs, leaking the user's IP address, User-Agent, and potentially session cookies if the reference is to the same domain.
+3. **Cross-Site Scripting (XSS):** While `enshrined/svg-sanitize` generally handles script tags, remote references can sometimes be leveraged in complex XSS vectors depending on the rendering context.
+
+By explicitly enabling `removeRemoteReferences(true)`, the application ensures that any external links within the SVG are stripped out, mitigating these risks.
+
+Other changes in the commit (files 02-26) relate to the installer logic (skipping admin creation, updated PHP version requirements, and adding translation strings for "already installed" middleware), which are feature updates or bug fixes and not security vulnerability fixes.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-918
+CWE_NAME: Server-Side Request Forgery (SSRF)

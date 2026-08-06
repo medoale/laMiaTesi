@@ -1,0 +1,22 @@
+The provided changes implement resource limits on the number and ID of objects read during an incremental clone operation in `PdfWriter`. 
+
+In the `before.txt` version of `PdfWriter.clone_reader_document_root`, the code relied on the `/Size` key from the PDF trailer:
+```python
+self._objects = [None] * (cast(int, reader.trailer["/Size"]) - 1)
+for i in range(len(self._objects)):
+    o = reader.get_object(i + 1)
+    if o is not None:
+        self._objects[i] = o.replicate(self)
+```
+The `/Size` field in a PDF trailer is user-supplied and can be arbitrarily large. If a malicious PDF specifies a very large `/Size`, the application would attempt to allocate a massive list (`[None] * ...`), leading to excessive memory consumption and a potential Denial of Service (DoS) via memory exhaustion.
+
+The fix replaces this logic with `_collect_incremental_clone_object_ids`, which:
+1. Calculates the actual number of objects and the maximum object ID present in the PDF's xref table.
+2. Checks these against configurable limits (`incremental_clone_object_count_limit` and `incremental_clone_object_id_limit`), raising a `LimitReachedError` if the limits are exceeded.
+3. Uses the actual set of object IDs to populate `self._objects` rather than trusting the `/Size` trailer value.
+
+This prevents an attacker from triggering a large memory allocation simply by manipulating the PDF trailer. This is a classic example of an uncontrolled resource consumption vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-770
+CWE_NAME: Allocation of Resources Without Limits or Throttling

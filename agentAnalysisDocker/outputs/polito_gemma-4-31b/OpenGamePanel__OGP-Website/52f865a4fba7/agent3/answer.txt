@@ -1,0 +1,19 @@
+The review of the provided software repository, specifically the Open Game Panel (OGP) modules, revealed a critical security vulnerability in the module management functionality.
+
+In `modules/modulemanager/add_module.php` and `modules/modulemanager/delete_module.php`, the application takes the `module` parameter directly from the `$_REQUEST` array and passes it to the `install_module()` and `uninstall_module()` functions defined in `modules/modulemanager/module_handling.php`.
+
+Inside `install_module()`, `uninstall_module()`, and `update_module()`, the code performs a check using `is_file()` to ensure a `module.php` file exists in the directory specified by the `module` parameter. However, it then uses the `include()` statement to include that file:
+
+```php
+include("modules/".$module."/module.php");
+```
+
+Because the `module` parameter is not properly sanitized or validated against a whitelist of allowed module names, an attacker can use path traversal sequences (e.g., `../../`) to manipulate the path. While the inclusion is appended with `/module.php`, an attacker can bypass this on many systems or in certain configurations using null bytes (in older PHP versions) or by targeting other directories that happen to contain a file named `module.php`. More importantly, if an attacker can upload a file named `module.php` anywhere on the filesystem, they can leverage this vulnerability to achieve Remote Code Execution (RCE) by inducing the application to include their malicious file.
+
+Additionally, the `add_module.php` and `delete_module.php` files directly print the `$_REQUEST['module']` value back to the user in the HTML output without escaping, which leads to a Reflected Cross-Site Scripting (XSS) vulnerability.
+
+The most severe issue is the Local File Inclusion (LFI) which can lead to RCE.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-94, CWE-79
+CWE_NAME: Improper Control of Generation of Code ('Code Injection'), Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

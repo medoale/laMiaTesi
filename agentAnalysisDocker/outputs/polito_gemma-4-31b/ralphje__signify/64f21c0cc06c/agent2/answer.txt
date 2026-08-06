@@ -1,0 +1,15 @@
+The commit introduces a `strict_validation` parameter to the `AuthenticodeSignature.verify` method, which defaults to `True`. When `strict_validation` is enabled, it enforces checks on the certificate's `keyUsage` and `extendedKeyUsage` (EKU) extensions.
+
+Specifically, in `file_01` (`AuthenticodeSignature.verify`), if `strict_validation` is `True`, the code now ensures that:
+1. `key_usages` includes `digital_signature` and is not optional (via `optional_ku=True` in the `VerificationContext`, but the `verify` method logic in `file_02` now handles `optional_ku` more carefully).
+2. `extended_key_usage` (EKU) must be present and set (by setting `optional_eku=False`).
+
+Looking at `file_02` (`VerificationContext.verify`), the logic for `validate_usage` was modified to properly handle cases where `keyUsage` or `extendedKeyUsage` are missing or marked as critical. Previously, if `key_usages` were provided, they were passed to the validator regardless of whether the certificate actually contained the `keyUsage` extension. The update adds logic to only pass `key_usages` to the validator if the extension is present (or if it's not marked as critical and `optional_ku` allows it).
+
+The motivation stated in the comments in `file_01` is that Windows often ignores these checks (a bug in Windows), but the library now provides a way to be "strict" about them. The fact that `strict_validation` defaults to `True` suggests that the previous behavior (which aligned with Windows) was considered too permissive and potentially a security weakness, as it allowed certificates without the required `code_signing` EKU or proper `keyUsage` to be accepted.
+
+By enforcing `digital_signature` key usage and the `code_signing` EKU, the commit prevents the use of certificates issued for other purposes (e.g., email encryption) to sign code, which is a critical security check in PKI. Failing to validate the intended purpose of a certificate (CWE-295) can lead to privilege escalation or trust boundary violations.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-295
+CWE_NAME: Improper Certificate Validation

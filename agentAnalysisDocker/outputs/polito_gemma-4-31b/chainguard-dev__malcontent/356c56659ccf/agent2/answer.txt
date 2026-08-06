@@ -1,0 +1,13 @@
+The changes in this commit address a logic issue in the `extractNestedArchive` function within `pkg/archive/archive.go`.
+
+In the original code, when a nested archive failed to be extracted, the program would log a debug message and then proceed to delete the archive file using `os.Remove(fullPath)` (lines 202-204 of the provided `archive.go` snippet).
+
+This behavior is problematic for a security scanning tool like `malcontent`. If an archive is malformed or cannot be extracted, deleting it prevents the tool from scanning the archive file itself as a regular file. A malicious actor could potentially hide threats within a "broken" archive that fails extraction but still contains malicious patterns that a static scanner could detect if the file were preserved.
+
+The fix ensures that the archive file is only removed if the extraction was successful (`if err == nil`). If extraction fails, the file is retained in the temporary directory, allowing it to be scanned as a regular file.
+
+This is a fix for a potential "bypass" or "evasion" vulnerability where a security tool fails to inspect content because it prematurely deletes the source when a specific processing step (extraction) fails. This falls under the category of improper handling of failed operations leading to a security bypass.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-691
+CWE_NAME: Insufficient Complexity

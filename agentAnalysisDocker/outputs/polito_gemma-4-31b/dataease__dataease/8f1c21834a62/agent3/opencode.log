@@ -1,0 +1,839 @@
+timestamp=2026-08-05T09:27:30.201Z level=INFO run=7cc21a35 message="creating instance" directory=/work
+timestamp=2026-08-05T09:27:30.202Z level=INFO run=7cc21a35 message=fromDirectory directory=/work
+timestamp=2026-08-05T09:27:30.208Z level=INFO run=7cc21a35 message=bootstrapping directory=/work
+timestamp=2026-08-05T09:27:30.215Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-05T09:27:30.217Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-05T09:27:30.217Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-05T09:27:30.217Z level=ERROR run=7cc21a35 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-05T09:27:30.218Z level=INFO run=7cc21a35 message=loading path=/opencode.json
+timestamp=2026-08-05T09:27:30.223Z level=INFO run=7cc21a35 message=loading path=/opencode.json
+timestamp=2026-08-05T09:27:30.341Z level=INFO run=7cc21a35 message="all LSPs are disabled"
+timestamp=2026-08-05T09:27:30.342Z level=INFO run=7cc21a35 message="all formatters are disabled"
+timestamp=2026-08-05T09:27:30.342Z level=INFO run=7cc21a35 message=init
+timestamp=2026-08-05T09:27:30.462Z level=INFO run=7cc21a35 message=created id=ses_02ec02661ffe5nkGgR31zqQqX1 slug=glowing-meadow version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-05T09:27:30.462Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785922050462 time.updated=1785922050462
+timestamp=2026-08-05T09:27:30.487Z level=INFO run=7cc21a35 message="event connected"
+timestamp=2026-08-05T09:27:30.651Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=0
+timestamp=2026-08-05T09:27:30.661Z level=INFO run=7cc21a35 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-05T09:27:30.667Z level=INFO run=7cc21a35 message=init count=1
+timestamp=2026-08-05T09:27:30.669Z level=INFO run=7cc21a35 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-05T09:27:30.678Z level=WARN run=7cc21a35 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+[0m
+> reviewer · gemma-4-31b
+[0m
+timestamp=2026-08-05T09:27:30.687Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=true agent=title mode=primary
+timestamp=2026-08-05T09:27:30.730Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:30.756Z level=INFO run=7cc21a35 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-05T09:27:31.128Z level=INFO run=7cc21a35 message="project copy refresh started" projectID=global
+timestamp=2026-08-05T09:27:31.129Z level=INFO run=7cc21a35 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-05T09:27:31.441Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd13fda5e001Jd3YNFYWNZW6fX
+timestamp=2026-08-05T09:27:31.442Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:31.545Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:34.294Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:27:36.309Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:36.312Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:38.341Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:27:42.355Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:42.359Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:43.157Z level=INFO run=7cc21a35 message=evaluated permission=glob pattern="\"**/*\"" action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-05T09:27:43.184Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=1
+[0m✱ [0mGlob ""**/*""[90m 0 matches[0m
+timestamp=2026-08-05T09:27:43.204Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1400b51001oZedAG1fCXNg4c
+timestamp=2026-08-05T09:27:43.205Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:43.205Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:44.045Z level=INFO run=7cc21a35 message=evaluated permission=bash pattern="ls -R /" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-05T09:27:44.393Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=2
+[0m
+[0m$ [0mls -R /
+...output truncated...
+
+Full output saved to: /output/opencode-data/opencode/tool-output/tool_fd1400ec6001KvJJ04wD0Mw9eX
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/user/bo:
+PlatformUser.java
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/user/dto:
+AdminBindRequest.java
+EnableSwitchRequest.java
+LangSwitchRequest.java
+ModifyPwdRequest.java
+PlatformUserCreator.java
+UserBindRequest.java
+UserCreator.java
+UserEditor.java
+UserGridRequest.java
+UserReciRequest.java
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/user/vo:
+CurIpVO.java
+CurUserVO.java
+UserFormVO.java
+UserGridRoleItem.java
+UserGridVO.java
+UserImportVO.java
+UserItem.java
+UserItemVO.java
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/variable:
+api
+dto
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/variable/api:
+SysVariablesApi.java
+
+/work/sdk/api/api-permissions/src/main/java/io/dataease/api/permissions/variable/dto:
+SysVariableDto.java
+SysVariableValueDto.java
+SysVariableValueItem.java
+
+/work/sdk/api/api-sync:
+pom.xml
+src
+
+/work/sdk/api/api-sync/src:
+main
+
+/work/sdk/api/api-sync/src/main:
+java
+
+/work/sdk/api/api-sync/src/main/java:
+io
+
+/work/sdk/api/api-sync/src/main/java/io:
+dataease
+
+/work/sdk/api/api-sync/src/main/java/io/dataease:
+api
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api:
+sync
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync:
+datasource
+summary
+task
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/datasource:
+api
+dto
+vo
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/datasource/api:
+SyncDatasourceApi.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/datasource/dto:
+DBTableDTO.java
+DatasourceGridRequest.java
+GetDatasourceRequest.java
+SyncDatasourceDTO.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/datasource/vo:
+SyncDatasourceVO.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/summary:
+api
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/summary/api:
+SummaryApi.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/task:
+api
+dto
+vo
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/task/api:
+TaskApi.java
+TaskLogApi.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/task/dto:
+Source.java
+TableField.java
+Target.java
+TaskGridRequest.java
+TaskInfoDTO.java
+TaskLogGridRequest.java
+
+/work/sdk/api/api-sync/src/main/java/io/dataease/api/sync/task/vo:
+LogResultVO.java
+TaskInfoVO.java
+TaskLogVO.java
+
+/work/sdk/common:
+pom.xml
+src
+
+/work/sdk/common/src:
+main
+
+/work/sdk/common/src/main:
+java
+
+/work/sdk/common/src/main/java:
+io
+
+/work/sdk/common/src/main/java/io:
+dataease
+
+/work/sdk/common/src/main/java/io/dataease:
+auth
+cache
+constant
+doc
+exception
+feign
+filter
+i18n
+jackson
+listener
+log
+model
+mybatisplus
+result
+rsa
+traffic
+utils
+websocket
+
+/work/sdk/common/src/main/java/io/dataease/auth:
+DeApiPath.java
+DeLinkPermit.java
+DePermit.java
+bo
+config
+filter
+interceptor
+vo
+
+/work/sdk/common/src/main/java/io/dataease/auth/bo:
+LinkTokenUserBO.java
+TokenUserBO.java
+
+/work/sdk/common/src/main/java/io/dataease/auth/config:
+SubstituleLoginConfig.java
+
+/work/sdk/common/src/main/java/io/dataease/auth/filter:
+CommunityTokenFilter.java
+FilterConfig.java
+TokenFilter.java
+
+/work/sdk/common/src/main/java/io/dataease/auth/interceptor:
+CorsConfig.java
+
+/work/sdk/common/src/main/java/io/dataease/auth/vo:
+InvalidPwdVO.java
+MfaItem.java
+TokenVO.java
+
+/work/sdk/common/src/main/java/io/dataease/cache:
+DECacheService.java
+annotation
+impl
+
+/work/sdk/common/src/main/java/io/dataease/cache/annotation:
+CacheClear.java
+
+/work/sdk/common/src/main/java/io/dataease/cache/impl:
+DefaultCacheImpl.java
+RedisCacheImpl.java
+
+/work/sdk/common/src/main/java/io/dataease/constant:
+AuthConstant.java
+AuthEnum.java
+AuthResourceEnum.java
+BusiResourceEnum.java
+CacheConstant.java
+ColumnPermissionConstants.java
+CommonConstants.java
+DataFillingFinishTaskEnum.java
+DeTypeConstants.java
+LogOT.java
+LogST.java
+MessageEnum.java
+ReportLastStatusEnum.java
+ReportTaskEnum.java
+SQLConstants.java
+SortConstants.java
+StaticResourceConstants.java
+XpackSettingConstants.java
+
+/work/sdk/common/src/main/java/io/dataease/doc:
+SwaggerConfig.java
+
+/work/sdk/common/src/main/java/io/dataease/exception:
+DEException.java
+GlobalExceptionHandler.java
+
+/work/sdk/common/src/main/java/io/dataease/feign:
+DeFeign.java
+
+/work/sdk/common/src/main/java/io/dataease/filter:
+HtmlResourceFilter.java
+
+/work/sdk/common/src/main/java/io/dataease/i18n:
+DeI18nMessageConfig.java
+DeI18nStarter.java
+DeReloadableResourceBundleMessageSource.java
+DynamicI18nUtils.java
+I18n.java
+Lang.java
+Translator.java
+
+/work/sdk/common/src/main/java/io/dataease/jackson:
+JacksonConfig.java
+
+/work/sdk/common/src/main/java/io/dataease/listener:
+MyCacheListener.java
+RedisCacheListener.java
+
+/work/sdk/common/src/main/java/io/dataease/log:
+DeLog.java
+
+/work/sdk/common/src/main/java/io/dataease/model:
+BusiNodeRequest.java
+BusiNodeVO.java
+DeModel.java
+ExportTaskDTO.java
+ITreeBase.java
+KeywordRequest.java
+LogItemModel.java
+RSAModel.java
+TreeBaseModel.java
+TreeModel.java
+TreeResultModel.java
+excel
+
+/work/sdk/common/src/main/java/io/dataease/model/excel:
+AutoAdaptWidthStyleStrategy.java
+ErrWriteHandler.java
+
+/work/sdk/common/src/main/java/io/dataease/mybatisplus:
+MyBatisPlusPaginationInnerConfig.java
+
+/work/sdk/common/src/main/java/io/dataease/result:
+ResultCode.java
+ResultMessage.java
+ResultResponseBodyAdvice.java
+
+/work/sdk/common/src/main/java/io/dataease/rsa:
+dao
+manage
+starter
+
+/work/sdk/common/src/main/java/io/dataease/rsa/dao:
+entity
+mapper
+
+/work/sdk/common/src/main/java/io/dataease/rsa/dao/entity:
+CoreRsa.java
+
+/work/sdk/common/src/main/java/io/dataease/rsa/dao/mapper:
+CoreRsaMapper.java
+
+/work/sdk/common/src/main/java/io/dataease/rsa/manage:
+RsaManage.java
+
+/work/sdk/common/src/main/java/io/dataease/rsa/starter:
+RsaStarter.java
+
+/work/sdk/common/src/main/java/io/dataease/traffic:
+DeTraffic.java
+DeTrafficAop.java
+dao
+starter
+
+/work/sdk/common/src/main/java/io/dataease/traffic/dao:
+entity
+mapper
+
+/work/sdk/common/src/main/java/io/dataease/traffic/dao/entity:
+CoreApiTraffic.java
+
+/work/sdk/common/src/main/java/io/dataease/traffic/dao/mapper:
+CoreApiTrafficMapper.java
+
+/work/sdk/common/src/main/java/io/dataease/traffic/starter:
+DeTrafficStarter.java
+
+/work/sdk/common/src/main/java/io/dataease/utils:
+AesUtils.java
+AuthUtils.java
+BeanUtils.java
+CacheUtils.java
+CalendarUtils.java
+CommonBeanFactory.java
+CommonExcelUtils.java
+CommonThreadPool.java
+CommunityUtils.java
+ConfigUtils.java
+DateUtils.java
+DeClassUtils.java
+DeCollectionUtils.java
+DeReflectUtil.java
+DelayQueueUtils.java
+FileUtils.java
+HttpClientConfig.java
+HttpClientUtil.java
+IDUtils.java
+IPUtils.java
+JsonUtil.java
+LogUtil.java
+LongArray2StringSerialize.java
+MappingUtils.java
+Md5Utils.java
+ModelUtils.java
+Pager.java
+RsaUtils.java
+ServletUtils.java
+SnowFlake.java
+StaticResourceUtils.java
+SystemSettingUtils.java
+TokenUtils.java
+TreeUtils.java
+UserUtils.java
+VersionUtil.java
+WhitelistUtils.java
+
+/work/sdk/common/src/main/java/io/dataease/websocket:
+WsMessage.java
+WsService.java
+
+/work/sdk/distributed:
+pom.xml
+src
+
+/work/sdk/distributed/src:
+main
+
+/work/sdk/distributed/src/main:
+java
+resources
+
+/work/sdk/distributed/src/main/java:
+io
+
+/work/sdk/distributed/src/main/java/io:
+dataease
+
+/work/sdk/distributed/src/main/java/io/dataease:
+DeFeignConfiguration.java
+dds
+flyway
+rpc
+
+/work/sdk/distributed/src/main/java/io/dataease/dds:
+DynamicContextHolder.java
+DynamicDataSource.java
+config
+constant
+interceptor
+provider
+
+/work/sdk/distributed/src/main/java/io/dataease/dds/config:
+DynamicDataSourceProperties.java
+DynamicDsConfig.java
+
+/work/sdk/distributed/src/main/java/io/dataease/dds/constant:
+DataSourceConstant.java
+
+/work/sdk/distributed/src/main/java/io/dataease/dds/interceptor:
+DSInterceptor.java
+
+/work/sdk/distributed/src/main/java/io/dataease/dds/provider:
+TenantDatasourceProvider.java
+
+/work/sdk/distributed/src/main/java/io/dataease/flyway:
+TenantFlywayUtil.java
+
+/work/sdk/distributed/src/main/java/io/dataease/rpc:
+DeFeignRegister.java
+
+/work/sdk/distributed/src/main/resources:
+db
+
+/work/sdk/distributed/src/main/resources/db:
+distributed
+
+/work/sdk/distributed/src/main/resources/db/distributed:
+manage
+
+/work/sdk/distributed/src/main/resources/db/distributed/manage:
+V1.1__manage_ddl.sql
+
+/work/sdk/extensions:
+extensions-datafilling
+extensions-datasource
+extensions-view
+pom.xml
+
+/work/sdk/extensions/extensions-datafilling:
+pom.xml
+src
+
+/work/sdk/extensions/extensions-datafilling/src:
+main
+
+/work/sdk/extensions/extensions-datafilling/src/main:
+java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java:
+io
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io:
+dataease
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease:
+extensions
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions:
+datafilling
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling:
+api
+dto
+factory
+plugin
+provider
+utils
+vo
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/api:
+DfPluginManageApi.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/dto:
+ExtFormSettings.java
+ExtIndexField.java
+ExtTableField.java
+ExtraColumnItem.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/factory:
+ExtDDLProviderFactory.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/plugin:
+DataFillingPlugin.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/provider:
+ExtDDLProvider.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/utils:
+BeanUtils.java
+
+/work/sdk/extensions/extensions-datafilling/src/main/java/io/dataease/extensions/datafilling/vo:
+XpackPluginsDfVO.java
+
+/work/sdk/extensions/extensions-datasource:
+pom.xml
+src
+
+/work/sdk/extensions/extensions-datasource/src:
+main
+
+/work/sdk/extensions/extensions-datasource/src/main:
+java
+
+/work/sdk/extensions/extensions-datasource/src/main/java:
+io
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io:
+dataease
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease:
+extensions
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions:
+datasource
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource:
+api
+constant
+dto
+factory
+model
+plugin
+provider
+utils
+vo
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/api:
+PluginManageApi.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/constant:
+SqlPlaceholderConstants.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/dto:
+ApiDefinition.java
+ApiDefinitionRequest.java
+CalParam.java
+ConnectionObj.java
+DatasetTableDTO.java
+DatasetTableFieldDTO.java
+DatasourceDTO.java
+DatasourceRequest.java
+DatasourceSchemaDTO.java
+DsTypeDTO.java
+ExecuteResult.java
+FieldGroupDTO.java
+SimpleDatasourceDTO.java
+TableField.java
+TableFieldWithValue.java
+TaskDTO.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/factory:
+ProviderFactory.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/model:
+SQLMeta.java
+SQLObj.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin:
+DataEaseDatasourcePlugin.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider:
+DriverShim.java
+ExtendedJdbcClassLoader.java
+Provider.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/utils:
+SpringContextUtil.java
+
+/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo:
+Configuration.java
+DatasourceConfiguration.java
+XpackPluginsDatasourceVO.java
+
+/work/sdk/extensions/extensions-view:
+pom.xml
+src
+
+/work/sdk/extensions/extensions-view/src:
+main
+
+/work/sdk/extensions/extensions-view/src/main:
+java
+
+/work/sdk/extensions/extensions-view/src/main/java:
+io
+
+/work/sdk/extensions/extensions-view/src/main/java/io:
+dataease
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease:
+extensions
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions:
+view
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view:
+dto
+factory
+filter
+plugin
+util
+vo
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/dto:
+AxisChartDataAntVDTO.java
+AxisChartDataDTO.java
+AxisFormatResult.java
+ChartAxis.java
+ChartCalcDataResult.java
+ChartCustomFilterItemDTO.java
+ChartDimensionDTO.java
+ChartDrillRequest.java
+ChartExtFilterDTO.java
+ChartExtRequest.java
+ChartFieldCompareCustomDTO.java
+ChartFieldCompareDTO.java
+ChartFieldCustomFilterDTO.java
+ChartQuotaDTO.java
+ChartSeniorAssistCfgDTO.java
+ChartSeniorAssistDTO.java
+ChartSeniorFunctionCfgDTO.java
+ChartSeniorThresholdCfgDTO.java
+ChartSeniorThresholdDTO.java
+ChartViewBaseDTO.java
+ChartViewDTO.java
+ChartViewFieldBaseDTO.java
+ChartViewFieldDTO.java
+ChartViewFieldFilterDTO.java
+ColumnPermissionItem.java
+ColumnPermissions.java
+CustomFilterResult.java
+DatasetRowPermissionsTreeItem.java
+DatasetRowPermissionsTreeObj.java
+DynamicValueDTO.java
+FieldSource.java
+FormatterCfgDTO.java
+SortAxis.java
+SqlVariableDetails.java
+TableCalcTotal.java
+TableCalcTotalCfg.java
+TableHeader.java
+TableThresholdDTO.java
+TableTotal.java
+TableTotalCfg.java
+ThresholdDynamicFieldDTO.java
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/factory:
+PluginsChartFactory.java
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/filter:
+DynamicTimeSetting.java
+FilterTreeItem.java
+FilterTreeObj.java
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/plugin:
+AbstractChartPlugin.java
+DataEaseChartPlugin.java
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/util:
+ChartDataUtil.java
+FieldUtil.java
+Utils.java
+
+/work/sdk/extensions/extensions-view/src/main/java/io/dataease/extensions/view/vo:
+XpackPluginsViewVO.java
+
+/work/staticResource:
+subject-light.png
+subject_dark.png
+[0m
+timestamp=2026-08-05T09:27:44.405Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140100a0013R1wjpKWHM8E0u
+timestamp=2026-08-05T09:27:44.406Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:44.406Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:48.108Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="Runtime\\.getRuntime\\(\\).exec|ProcessBuilder|FileOutputStream|FileInputStream|FileWriter|FileReader|BufferedReader|InputStreamReader" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:27:48.215Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=3
+[0m✱ [0mGrep "Runtime\.getRuntime\(\).exec|ProcessBuilder|FileOutputStream|FileInputStream|FileWriter|FileReader|BufferedReader|InputStreamReader"[90m in sdk · 15 matches[0m
+timestamp=2026-08-05T09:27:48.228Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1401ef8001ZkLKcleIPyUfs1
+timestamp=2026-08-05T09:27:48.229Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:48.229Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:50.845Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getClassLoader\\(\\).loadClass|ClassLoader\\.getSystemClassLoader\\(\\)|URLClassLoader" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:27:50.870Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=4
+[0m✱ [0mGrep "getClassLoader\(\).loadClass|ClassLoader\.getSystemClassLoader\(\)|URLClassLoader"[90m in sdk · 2 matches[0m
+timestamp=2026-08-05T09:27:50.884Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1402957001kSZNNDufa7znw9
+timestamp=2026-08-05T09:27:50.885Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:50.886Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:53.992Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:27:56.008Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:56.011Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:27:57.612Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider/ExtendedJdbcClassLoader.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:27:57.630Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=5
+timestamp=2026-08-05T09:27:57.635Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider/ExtendedJdbcClassLoader.java
+[0m→ [0mRead sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider/ExtendedJdbcClassLoader.java
+timestamp=2026-08-05T09:27:57.648Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14043c0001B3jnTNZ2EWeT3H
+timestamp=2026-08-05T09:27:57.649Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:27:57.650Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:00.798Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=ExtendedJdbcClassLoader action.permission=grep action.action=allow action.pattern=*
+[0m✱ [0mGrep "ExtendedJdbcClassLoader"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider · 2 matches[0m
+timestamp=2026-08-05T09:28:00.822Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=6
+timestamp=2026-08-05T09:28:00.836Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1405037001LDsyJ176U9Dz4Z
+timestamp=2026-08-05T09:28:00.836Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:00.837Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:02.494Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="new ExtendedJdbcClassLoader" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:02.510Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=7
+[0m✱ [0mGrep "new ExtendedJdbcClassLoader"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider · 0 matches[0m
+timestamp=2026-08-05T09:28:02.524Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14056d0001qI5CKcTF7GFXg6
+timestamp=2026-08-05T09:28:02.525Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:02.525Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:04.995Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:28:07.009Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:07.011Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:08.646Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="new ExtendedJdbcClassLoader" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:08.663Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=8
+[0m✱ [0mGrep "new ExtendedJdbcClassLoader"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource · 0 matches[0m
+timestamp=2026-08-05T09:28:08.677Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1406ed8001Ppz7GCFew8H23Z
+timestamp=2026-08-05T09:28:08.678Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:08.678Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:10.158Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=ExtendedJdbcClassLoader action.permission=grep action.action=allow action.pattern=*
+[0m✱ [0mGrep "ExtendedJdbcClassLoader"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource · 2 matches[0m
+timestamp=2026-08-05T09:28:10.196Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=9
+timestamp=2026-08-05T09:28:10.209Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14074d5001WSMJXIDjLvcObP
+timestamp=2026-08-05T09:28:10.209Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:10.210Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:12.866Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=FileOutputStream action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:12.915Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=10
+[0m✱ [0mGrep "FileOutputStream"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java · 2 matches[0m
+timestamp=2026-08-05T09:28:12.929Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1407f75001mxtzQiW3W268iq
+timestamp=2026-08-05T09:28:12.929Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:12.930Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:14.533Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:14.538Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
+[0m→ [0mRead sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
+timestamp=2026-08-05T09:28:14.605Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=11
+timestamp=2026-08-05T09:28:14.612Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140860f0012H7BWrEKYU4qE7
+timestamp=2026-08-05T09:28:14.612Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:14.613Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:17.549Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo/XpackPluginsDatasourceVO.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:17.558Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=12
+timestamp=2026-08-05T09:28:17.561Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo/XpackPluginsDatasourceVO.java
+[0m→ [0mRead sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo/XpackPluginsDatasourceVO.java
+timestamp=2026-08-05T09:28:17.565Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1409197001LoucJqb9HvDuZl
+timestamp=2026-08-05T09:28:17.566Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:17.573Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:20.315Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:28:22.319Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:22.321Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:24.001Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:24.010Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=13
+timestamp=2026-08-05T09:28:24.013Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java
+[0m→ [0mRead sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java
+timestamp=2026-08-05T09:28:24.024Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140aacb001BsMIFSa6LTAPt9
+timestamp=2026-08-05T09:28:24.024Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:24.025Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:25.992Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=FileOutputStream|FileInputStream action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:26.019Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=14
+[0m✱ [0mGrep "FileOutputStream|FileInputStream"[90m in sdk/common/src/main/java/io/dataease/utils/FileUtils.java · 10 matches[0m
+timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140b2a5001fRtzwHZJuqW1py
+timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:27.468Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:27.475Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=15
+timestamp=2026-08-05T09:28:27.479Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java
+[0m→ [0mRead sdk/common/src/main/java/io/dataease/utils/FileUtils.java
+timestamp=2026-08-05T09:28:27.483Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140b8550019byzk0yL3UYIJ4
+timestamp=2026-08-05T09:28:27.483Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:27.484Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:31.050Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getConfig\\(\\)" action.permission=grep action.action=allow action.pattern=*
+[0m✱ [0mGrep "getConfig\(\)"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java · 4 matches[0m
+timestamp=2026-08-05T09:28:31.079Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=16
+timestamp=2026-08-05T09:28:31.087Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140c669001UU0NJMmaUNRYyi
+timestamp=2026-08-05T09:28:31.087Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:31.095Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:33.177Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getPluginInfo\\(\\)" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:33.193Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=17
+[0m✱ [0mGrep "getPluginInfo\(\)"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java · 1 match[0m
+timestamp=2026-08-05T09:28:33.207Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140ceab001fYMXBkQbNxPoWR
+timestamp=2026-08-05T09:28:33.208Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:33.208Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:36.424Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:28:38.428Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:38.431Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:40.426Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="extends DataEasePlugin" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:40.440Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=18
+[0m✱ [0mGrep "extends DataEasePlugin"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java · 0 matches[0m
+timestamp=2026-08-05T09:28:40.456Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140eafa001uX1P4JC0eOIn2c
+timestamp=2026-08-05T09:28:40.456Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:40.457Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:43.583Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=DataEasePlugin action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:43.609Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=19
+[0m✱ [0mGrep "DataEasePlugin"[90m in sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java · 4 matches[0m
+timestamp=2026-08-05T09:28:43.622Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140f75a001Yj2RWZMBLZ7Wjw
+timestamp=2026-08-05T09:28:43.623Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:43.623Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:46.469Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-05T09:28:48.472Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:48.475Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:50.288Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=DataEasePlugin action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:50.312Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=20
+[0m✱ [0mGrep "DataEasePlugin"[90m in sdk · 18 matches[0m
+timestamp=2026-08-05T09:28:50.327Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd141118a001gq3vErrhUgWCqP
+timestamp=2026-08-05T09:28:50.327Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:50.328Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:28:52.257Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-05T09:28:52.266Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=21
+timestamp=2026-08-05T09:28:52.269Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
+[0m→ [0mRead sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
+timestamp=2026-08-05T09:28:52.274Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd141192c001XYjdDLV2ZNmZYa
+timestamp=2026-08-05T09:28:52.274Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
+timestamp=2026-08-05T09:28:52.281Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-05T09:29:08.158Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=22
+timestamp=2026-08-05T09:29:08.159Z level=INFO run=7cc21a35 message="exiting loop" session.id=ses_02ec02661ffe5nkGgR31zqQqX1
+timestamp=2026-08-05T09:29:08.164Z level=INFO run=7cc21a35 message="disposing instance" directory=/work

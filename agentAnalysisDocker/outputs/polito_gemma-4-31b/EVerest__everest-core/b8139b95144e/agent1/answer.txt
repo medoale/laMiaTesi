@@ -1,0 +1,26 @@
+The commit modifies the `is_message_crc_correct` function to add a check for the size of the input vector `vec` before accessing its elements.
+
+In the `before.txt` version, the code was:
+```cpp
+inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
+    auto crc_check = static_cast<std::uint16_t>((vec[vec.size() - 1] << 8) | vec[vec.size() - 2]);
+    // ...
+```
+If `vec` has fewer than 2 elements, `vec.size() - 1` and `vec.size() - 2` would result in underflow (since `size()` returns an unsigned type), leading to out-of-bounds access. This is a classic buffer over-read/out-of-bounds access vulnerability.
+
+The `after.txt` version introduces a guard:
+```cpp
+inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
+    if (vec.size() < 2) {
+        return false;
+    }
+    auto crc_check = static_cast<std::uint16_t>((vec.at(vec.size() - 1) << 8) | vec.at(vec.size() - 2));
+    // ...
+```
+This check prevents the out-of-bounds access when the vector is too small. Additionally, it switches from `operator[]` to `.at()`, which provides bounds checking (throwing an exception if out of bounds), although the explicit size check already handles the risk.
+
+This is a security fix for an out-of-bounds read.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-125
+CWE_NAME: Out-of-bounds Read

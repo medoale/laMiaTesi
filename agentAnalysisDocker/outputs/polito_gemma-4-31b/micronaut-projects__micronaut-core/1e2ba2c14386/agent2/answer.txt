@@ -1,0 +1,9 @@
+The changes in `file_01` show that `DefaultHtmlErrorResponseBodyProvider` had a cache implemented as a `ConcurrentHashMap`, which is an unbounded map. The commit replaces it with a `ConcurrentLinkedHashMap` with a fixed `MAX_CACHE_SIZE` of 100. 
+
+In the context of a web server, an unbounded cache that grows based on request-related data (such as the error pages generated for different requests, as evidenced by the tests in `file_02` which use a `nonce` query parameter to trigger different entries) is a classic vulnerability to Denial of Service (DoS). An attacker could send a large number of unique requests that trigger different error responses, filling the server's memory and eventually causing an `OutOfMemoryError` (OOM).
+
+The addition of a maximum size limit to the cache directly mitigates this resource exhaustion vulnerability.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-400
+CWE_NAME: Uncontrolled Resource Consumption

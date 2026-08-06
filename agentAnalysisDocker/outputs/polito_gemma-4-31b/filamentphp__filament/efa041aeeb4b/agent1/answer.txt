@@ -1,0 +1,10 @@
+The commit involves adding the `e()` function (which is a common shorthand for `htmlspecialchars()` in frameworks like Laravel) to several output expressions in PHP templates.
+
+In `file_01`, the variables `$from` and `$to` are now escaped before being echoed.
+In `file_02`, the result of `$this->formatState($stateItem)` is now escaped before being echoed.
+
+These changes prevent Cross-Site Scripting (XSS) vulnerabilities by ensuring that user-supplied or dynamic data is properly encoded before being rendered in the HTML output. This prevents an attacker from injecting malicious scripts into the page.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Cross-Site Scripting

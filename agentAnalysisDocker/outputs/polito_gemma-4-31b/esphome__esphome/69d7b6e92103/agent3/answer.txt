@@ -1,0 +1,13 @@
+During the security review of the ESPHome repository, I focused on network-facing components and potential memory safety issues in the C++ codebase.
+
+I identified a critical memory safety vulnerability in `esphome/components/daikin_arc/daikin_arc.cpp`. In the `parse_state_frame_` method, a fixed-size buffer `buf` of size `DAIKIN_STATE_FRAME_SIZE * 3 + 1` is used to build a hexadecimal representation of the frame. The code uses `sprintf(buf, "%s%02x ", buf, frame[i]);` inside a loop. This pattern is extremely dangerous as it reads from the same buffer it is writing to, leading to undefined behavior. More importantly, as the string grows, it eventually overflows the fixed-size buffer because each iteration adds 3 characters (`%02x `) to the existing string, but the buffer's size is only barely sufficient for the final result, and `sprintf` does not perform bounds checking.
+
+Similar patterns were found in `on_receive`, where `sprintf(buf.get(), "%s%02x ", buf.get(), byte);` is used with a dynamically allocated buffer. While the allocation size `bytes_count * 3 + 1` seems calculated, the use of `sprintf` with the buffer as both source and destination for `%s` is a classic vulnerability.
+
+Furthermore, in the same file, a fixed-size buffer `sbuf[16 * 10 + 1]` is used in a loop: `sprintf(sbuf, "%s%-5d[%c] ", sbuf, ...);`. Since the loop runs for `data.size()` iterations and `sbuf` is only 161 bytes, any `data` larger than approximately 16 elements will cause a stack-based buffer overflow.
+
+These issues are classic buffer overflows caused by the use of unsafe string functions (`sprintf`) without bounds checking on buffers that are filled iteratively.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-120, CWE-121
+CWE_NAME: Buffer Copy without Checking Size of Input, Stack-based Buffer Overflow

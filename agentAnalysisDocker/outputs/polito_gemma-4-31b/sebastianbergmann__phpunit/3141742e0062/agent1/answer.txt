@@ -1,0 +1,13 @@
+The provided changes implement a security fix to prevent "Poisoned Pipeline Execution (PPE)" attacks. Specifically, the changes in `file_02` add a check (`ensureCoverageFileDoesNotExist`) that throws an exception if a code coverage file already exists before a PHPT test is executed. 
+
+According to the changelog in `file_01`, this is designed to prevent attackers from pre-creating a `.coverage` file in a pull request to influence or manipulate the execution of the test pipeline. This type of vulnerability generally falls under "Improper Verification of Integrity" or "Insufficient Verification of Data Authenticity/Integrity" when an attacker can provide a malicious file that the system trusts or uses in a way that leads to execution or logic bypass. In the context of CI/CD pipelines, this is a classic PPE attack where the build process is tricked into using attacker-controlled artifacts.
+
+The most applicable CWE for this specific scenario, where a pre-existing file is used to poison the execution flow of a process, is CWE-434 (Unrestricted Upload of File with Dangerous Type) in a broad sense, but more specifically it relates to trusting a file in a shared or predictable location without verifying its origin or ensuring the environment is clean. However, the core issue is the failure to ensure the integrity of the execution environment (allowing a pre-existing file to influence the process). CWE-345 (Insufficient Verification of Data Authenticity) or more broadly CWE-20 (Improper Input Validation) could apply, but PPE specifically targets the integrity of the pipeline's artifacts.
+
+Looking at the specific mechanism: the system was implicitly trusting that the `.coverage` file it encountered was created by the current run. By allowing a pre-existing file to exist, the system was vulnerable to a "file injection" of sorts into the build process. This is a form of CWE-434 if the file was uploaded, or CWE-73 (External Control of File Name or Path) if the attacker could place the file. But fundamentally, it's about the lack of integrity checks on the temporary files used by the tool.
+
+The most accurate CWE for "Poisoned Pipeline Execution" where a file is pre-placed to manipulate the build/test process is often associated with CWE-829 (Inclusion of Functionality from Untrusted Control Sphere) or CWE-345. However, given the specific fix (ensuring the file does not exist before starting), it is preventing the use of an untrusted file to manipulate the process.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-345
+CWE_NAME: Insufficient Verification of Data Authenticity
