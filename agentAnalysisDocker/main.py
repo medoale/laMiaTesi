@@ -16,6 +16,7 @@ key is ever put in front of an agent.
 Resumable: one JSON line per agent run is appended to log.jsonl; on restart,
 (repo, commit, agent) triples already marked 'ok' are skipped.
 """
+import argparse
 import csv
 import json
 import os
@@ -182,6 +183,23 @@ def kill_agent_containers():
 
 
 def main():
+    # --agents lets a run cover only part of the set, e.g. to retry one agent
+    # after a fix without touching the others' results:
+    #     python3 main.py --agents agent2
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--agents', default=','.join(AGENTS),
+                        help=f'comma-separated subset to run (default: {",".join(AGENTS)})')
+    # By default a run resumes: triples already answered are skipped. --force
+    # re-runs them, which is what you want after changing something that
+    # affects the answers (a prompt, a permission, the agent config).
+    parser.add_argument('--force', action='store_true',
+                        help='re-run even the (repo, commit, agent) already marked ok')
+    args = parser.parse_args()
+    agents = [a.strip() for a in args.agents.split(',') if a.strip()]
+    unknown = [a for a in agents if a not in AGENTS]
+    if unknown:
+        sys.exit(f'ERROR: unknown agent(s) {unknown}; valid: {AGENTS}')
+
     api_key = config.read_api_key()
     if not api_key:
         sys.exit(f'ERROR: no [{config.INI_SECTION}] api_key in {config.CVEFIXES_INI_CANDIDATES}')
@@ -192,12 +210,12 @@ def main():
     signal.signal(signal.SIGTERM, _on_terminate)
 
     rows = load_ground_truth()
-    done = load_done()
+    done = set() if args.force else load_done()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     PID_FILE.write_text(str(os.getpid()))
-    total = len(rows) * len(AGENTS)
-    print(f'{len(rows)} commits x {len(AGENTS)} agents = {total} runs '
-          f'({len(done)} already done)')
+    total = len(rows) * len(agents)
+    print(f'{len(rows)} commits x {len(agents)} agents ({",".join(agents)}) '
+          f'= {total} runs ({len(done)} already done)')
 
     net_args = []
     n = 0
@@ -226,9 +244,11 @@ def main():
 
             for repo in rows:
                 commit = repo['commit']
-                todo = [a for a in AGENTS if (repo['repo_url'], commit, a) not in done]
+                todo = [a for a in agents if (repo['repo_url'], commit, a) not in done]
+                # Count the ones already done too, so [n/total] stays truthful
+                # on a resumed run (they are skipped, not re-executed).
+                n += len(agents) - len(todo)
                 if not todo:
-                    n += len(AGENTS)
                     continue
 
                 repo_slug = repo['repo_name'].replace('/', '__')

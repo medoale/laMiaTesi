@@ -66,7 +66,7 @@ _PROVIDERS = {
     },
     'polito': {
         # Models on the proxy: deepseek-v4, gpt-oss-120b, qwen3-235b, gemma-4-31b
-        'model': 'polito/gemma-4-31b',
+        'model': 'polito/deepseek-v4',
         'ini_section': 'Polito',
         'key_env': 'POLITO_API_KEY',       # referenced by opencode.json
         'allowed_host': 'llm.polito.it',

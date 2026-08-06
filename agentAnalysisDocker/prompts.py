@@ -5,10 +5,12 @@ instead of having it pasted into the prompt, so each prompt tells the agent
 WHERE to look. All three end with the shared VERDICT_FORMAT block.
 
 Layout the prompts assume inside the container:
-  /work          the workspace OpenCode is opened on
-  /work/_CHANGES the commit's code changes (agent 1 and 2), one folder per file,
-                 each with before.txt / after.txt / diff.txt
-For agent 3 the workspace is the repository itself, with no _CHANGES folder.
+  agent 1:  /work/_CHANGES   the commit's changes (the workspace holds nothing else)
+  agent 2:  /work            the repository, plus /changes with the same material
+                             (kept outside /work: Docker cannot create a mountpoint
+                             inside a read-only bind mount)
+  agent 3:  /work            the repository only, no changes anywhere
+Each file of the commit gets its own folder with before.txt / after.txt / diff.txt.
 """
 from verdict import VERDICT_FORMAT
 
@@ -32,8 +34,8 @@ code before and after, plus its diff, are provided separately in the \
 /changes folder (one subfolder per file, each with before.txt, after.txt and \
 diff.txt).
 
-Explore the repository as much as you find useful, and use the _CHANGES to \
-decide whether that commit fixes a security vulnerability.
+Explore the repository as much as you find useful, and use the files in \
+/changes to decide whether that commit fixes a security vulnerability.
 - If yes, classify it with the most accurate CWE (Common Weakness \
 Enumeration) identifier(s) — one, or several if more than one genuinely applies.
 - If no (e.g. a feature, a refactor, or a non-security bug fix), say so.""" \
