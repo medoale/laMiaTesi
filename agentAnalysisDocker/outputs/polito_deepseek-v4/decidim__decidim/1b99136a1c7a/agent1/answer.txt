@@ -1,19 +1,21 @@
-Let me read the remaining files myself to verify all 24.
-he diff files to understand the changes.
-Let me also read the before and after files for the most security-relevant changes to get full context.
-Now let me also read the remaining diff files I haven't examined yet to be thorough.
-Now I have all the data I need. Let me provide my analysis.
+Let me read all the diff files to understand the nature of each change.
+Now let me carefully examine the key files that appear to have security relevance — files 09, 10, 11, 13, and 22 in more detail.
+Now let me also verify the form's `component` method (file_10) which supplies the component context used by the authorization checks:
+Now I have all the information needed to provide a complete analysis.
 
 ---
 
 ## Analysis
 
-This commit fixes **authorization/access control vulnerabilities** in the Decidim participation platform's amendment system. Across 24 changed files (Ruby, JavaScript, CSS, YAML, and specs), the core security fix introduces granular amendment settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) and wires them into the permission system.
+This commit spans 24 files and adds granular amendment feature settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) to the Proposals component's step-level configuration in what is clearly the **Decidim** participatory democracy framework.
 
-**The vulnerability — Missing Authorization (CWE-862):**
+### The security vulnerability
 
-The old code in the `Permissions` class (`file_13`) had this pattern:
+The core security fix is concentrated in **file_09** and **file_13**:
 
+**File 13 — `Permissions` class (`amend_action?` method)**
+
+**Before** (lines 83-92):
 ```ruby
 def amend_action?
   return unless permission_action.subject == :amendment
@@ -21,23 +23,64 @@ def amend_action?
   return allow! if permission_action.action == :reject
   return allow! if permission_action.action == :promote
   return allow! if permission_action.action == :accept
-  ...
+  amendment = context.fetch(:amendment, nil)
+  toggle_allow(amendment&.amender == user)
 end
 ```
 
-All amendment actions (`:create`, `:reject`, `:promote`, `:accept`) were **unconditionally allowed** — no check whether the component had amendments enabled, no check whether the specific feature was enabled at the step level. Similarly, the `AmendmentsHelper` (`file_11`) had:
+The permission system **unconditionally allowed** all four amendment operations (`create`, `reject`, `promote`, `accept`) regardless of whether the component's settings had those features enabled. No check on `amendments_enabled` (a global setting that already existed), and no check on any step-level sub-settings.
 
-- `can_react_to_emendation?` — returned `true` unconditionally (line 79: `true`), allowing anyone to see accept/reject buttons
-- `allowed_to_promote?` — returned `true` unconditionally (line 94: `true`), allowing any author of a rejected emendation to promote it
+**After** (lines 83-98):
+```ruby
+def amend_action?
+  return unless permission_action.subject == :amendment
+  return disallow! unless component.settings.amendments_enabled
 
-Additionally, the `AmendmentsController` (`file_09`) called `enforce_permission_to` without passing `current_component`, so the permission system lacked the component context needed for scoped checks.
+  case permission_action.action
+  when :create
+    return allow! if component.current_settings.amendment_creation_enabled
+  when :accept,
+      :reject
+    return allow! if component.current_settings.amendment_reaction_enabled
+  when :promote
+    return allow! if component.current_settings.amendment_promotion_enabled
+  end
 
-**The fix** adds proper authorization at three layers:
-1. **Permissions class** (`file_13`): now checks `component.settings.amendments_enabled` and per-action step-level settings
-2. **Controller** (`file_09`): passes `current_component: @form.component` to all four `enforce_permission_to` calls
-3. **Helper** (`file_11`): adds checks for `amendment_creation_enabled`, `amendment_reaction_enabled`, and `amendment_promotion_enabled` before allowing actions
+  amendment = context.fetch(:amendment, nil)
+  toggle_allow(amendment&.amender == user)
+end
+```
 
-A secondary hardening in `file_01` removes an HTML-injection pattern (`<p class="help-text">${$text}</p>` where `$text` came from a `data-text` attribute), though the source was a translation string (low practical exploitability).
+Now the permission system:
+1. Refuses all amendment operations if the global `amendments_enabled` setting is false.
+2. Checks `amendment_creation_enabled` before allowing creation.
+3. Checks `amendment_reaction_enabled` before allowing accept/reject.
+4. Checks `amendment_promotion_enabled` before allowing promotion.
+
+**File 09 — `AmendmentsController`**
+
+**Before**: `enforce_permission_to` calls did not pass `current_component`, so the permission system had no access to the component context to check its settings.
+
+**After**: All four endpoints now pass `current_component: @form.component`, supplying the necessary component context for the permission checks in file_13.
+
+**File 10** adds the `component` method to the form object so that `@form.component` is available.
+
+### Why this is a security fix
+
+The component already had settings intended to control whether amendments could be created, accepted/rejected, or promoted. However, these settings were **not enforced server-side**. Only the UI layer (buttons, links) might have hidden these operations, but a malicious user who knew the API endpoints could craft direct HTTP requests to:
+
+- Create amendments even when `amendment_creation_enabled` was off
+- Accept/reject amendments even when `amendment_reaction_enabled` was off
+- Promote amendments even when `amendment_promotion_enabled` was off
+- Perform any amendment operation even when `amendments_enabled` was off globally
+
+This is a textbook **Missing Authorization** vulnerability: the intended authorization policy (based on component settings) was simply never checked.
+
+### Classification
+
+**CWE-862: Missing Authorization** — The software does not perform an authorization check when an actor attempts to perform an action. Here, the amendment feature settings existed but were never consulted by the authorization logic, allowing bypass of the intended restrictions.
+
+No other CWE applies more specifically. This is not CWE-863 (Incorrect Authorization) because the check wasn't flawed — it was entirely absent for this dimension of the policy.
 
 ---
 

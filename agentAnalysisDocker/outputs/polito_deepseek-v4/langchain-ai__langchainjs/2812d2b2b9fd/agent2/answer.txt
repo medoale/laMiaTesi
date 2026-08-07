@@ -1,47 +1,51 @@
-Now let me look at the actual source file and the SSRF utility to understand the full context:
-Now let me also check the test file currently in the workspace to verify the exact state before this commit:
-Good. The workspace is in the "before" state. I now have a complete understanding of the commit.
+Now let me look at the actual source files in the repository to confirm the context.
+Now let me verify the test file to see the full picture of the existing tests before the change:
+## Analysis Complete
 
----
+I have examined all three files in `/changes/`:
 
-## Analysis
+1. **file_03**: `libs/langchain-community/src/document_loaders/web/recursive_url.ts` — the main source file
+2. **file_02**: `libs/langchain-community/src/document_loaders/tests/recursive_url.test.ts` — the test file
+3. **file_01**: A changeset entry describing the change
 
-This commit fixes a **Server-Side Request Forgery (SSRF)** vulnerability in the `RecursiveUrlLoader` class within `libs/langchain-community/src/document_loaders/web/recursive_url.ts`.
+I also confirmed the repository state (pre-commit version) at `/work/libs/langchain-community/src/document_loaders/web/recursive_url.ts` and the SSRF validation utility at `/work/libs/langchain-core/src/utils/ssrf.ts`.
 
-### The Vulnerability (Before the fix)
+### Vulnerability Summary
 
-The `fetchWithTimeout` method made a raw `fetch` call without intercepting or validating redirects:
+The commit fixes a **Server-Side Request Forgery (SSRF)** vulnerability in the `RecursiveUrlLoader` class.
+
+**How the vulnerability worked (before the fix):**
+
+The `fetchWithTimeout` method used the default `redirect: "follow"` behavior of the Fetch API:
 
 ```typescript
-return this.caller.call(() =>
-  fetch(resource, { ...rest, signal: AbortSignal.timeout(timeout) })
-);
+// BEFORE: fetch follows redirects automatically
+private async fetchWithTimeout(resource, options) {
+    return this.caller.call(() =>
+        fetch(resource, { ...rest, signal: AbortSignal.timeout(timeout) })
+        // ^^^ redirect: "follow" (default) — no validation of redirect targets
+    );
+}
 ```
 
-The native `fetch` API, by default, **automatically follows HTTP redirects** (301, 302, 303, 307, 308). While `validateSafeUrl` was called on the **initial** URL before fetching (in `getUrlAsDoc` and `getChildUrlsRecursive`), the redirect chain targets were **never validated**. An attacker could serve a redirect response pointing to:
+The `validateSafeUrl()` function (from `@langchain/core/utils/ssrf`) was called on the *initial* URL in both `getUrlAsDoc()` and `getChildUrlsRecursive()`, but once `fetch()` followed an HTTP redirect (301, 302, 303, 307, or 308), the **redirect target was never validated**. An attacker controlling a target website could:
 
-- `http://127.0.0.1/admin` (localhost)
-- `http://169.254.169.254/latest/meta-data/` (cloud metadata)
-- `http://192.168.1.1/internal` (private network)
+- Serve a redirect to `http://127.0.0.1/admin` — access local services on the server
+- Serve a redirect to `http://169.254.169.254/latest/meta-data/` — exfiltrate cloud metadata (AWS/GCP metadata endpoint)
+- Serve a redirect to `http://192.168.1.1/internal` — probe internal network resources
 
-...and the loader would silently follow the redirect to internal/private resources, enabling SSRF attacks against the host running the loader.
+Additionally, there was no limit on redirect chains, enabling infinite redirect loops.
 
-### The Fix
+**How the fix works (after):**
 
-1. **Manual redirect handling**: The `fetch` call now uses `redirect: "manual"` to prevent automatic redirect following.
-2. **Per-hop URL validation**: Every URL in the redirect chain is validated individually via `validateSafeUrl(currentUrl, { allowHttp: true })` which blocks private IPs, cloud metadata endpoints, localhost, etc.
-3. **Redirect limit**: A `MAX_REDIRECTS = 10` cap prevents infinite redirect loops.
-4. **Dead code removal**: The now-redundant `validateSafeUrl` calls in `getUrlAsDoc` and `getChildUrlsRecursive` are removed since validation happens inside `fetchWithTimeout` for each hop.
-
-The changelog entry (file_01) confirms: *"Validate redirects in RecursiveUrlLoader to prevent SSRF bypasses."*
-
-The test file (file_02) adds comprehensive redirect SSRF test coverage: blocking localhost, cloud metadata IPs, private network ranges, allowing safe redirects, and handling excessive redirects.
+1. Uses `redirect: "manual"` to prevent automatic redirect following
+2. Manually walks redirect chains (up to 10 redirects)
+3. Calls `validateSafeUrl()` on **every** URL, including each resolved redirect target, before fetching it
+4. Removes the now-redundant `validateSafeUrl()` calls from `getUrlAsDoc()` and `getChildUrlsRecursive()` (since validation is now done inside `fetchWithTimeout` for all URLs)
 
 ### CWE Classification
 
-The most specific and accurate CWE is **CWE-918: Server-Side Request Forgery (SSRF)**. This is the primary and sole vulnerability being fixed — the loader was being used to fetch URLs that could redirect to internal/private resources without validation, exactly matching the SSRF weakness description.
-
----
+The primary vulnerability is **SSRF**, where redirect-based bypass allows the document loader to be tricked into accessing internal/private network resources.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-918

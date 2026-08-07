@@ -1,26 +1,31 @@
 ## Analysis
 
-### File 01 — `Range` class
+### File 01 — `Range.php`
 
-**Diff:** Two lines changed in `toEmbeddedHtml()`:
-- `<?= $from ?>` → `<?= e($from) ?>`
-- `<?= $to ?>` → `<?= e($to) ?>`
+**Before the commit:** The `toEmbeddedHtml()` method outputs `$from` and `$to` directly into HTML with raw `<?= $from ?>` and `<?= $to ?>`. These values come from `$this->formatState($this->getState())`, which processes user-supplied or stored data. The `$label` on the line above is correctly escaped with `<?= e($label) ?>`, but the actual range values are not.
 
-The `e()` helper in Laravel runs `htmlspecialchars()` with `ENT_QUOTES | ENT_SUBSTITUTE`, encoding `&`, `<`, `>`, `"`, `'`. Before the fix, user-controlled `$from`/`$to` values (from `$state`, which originates from database values via `$this->getState()` and `$this->formatState($this->getState())`) were output directly into an HTML context without any escaping. This is a **stored Cross-Site Scripting (XSS)** vulnerability — a malicious user could store HTML/JavaScript in the data and have it execute when any other user views the summary.
+**After the commit:** Both outputs are wrapped with `e()`:
+```php
+<?= e($from) ?>
+<?= e($to) ?>
+```
+The `e()` function in PHP (Laravel's helper) is equivalent to `htmlspecialchars()`, which HTML-encodes `<`, `>`, `"`, `'`, and `&`. This prevents an attacker who controls the data being summarized from injecting arbitrary HTML/JavaScript into the page.
 
-### File 02 — `Values` class
+### File 02 — `Values.php`
 
-**Diff:** One line changed in `toEmbeddedHtml()`:
-- `<?= $this->formatState($stateItem) ?>` → `<?= e($this->formatState($stateItem)) ?>`
+**Before the commit:** The `toEmbeddedHtml()` method outputs `$this->formatState($stateItem)` for each item in the state array via raw `<?= $this->formatState($stateItem) ?>`. Again, `$label` was already properly escaped.
 
-Same pattern. The `$stateItem` values come from the database (via `$this->getState()` which calls `summarize()` → `pluck($attribute)`). Before the fix, any HTML or JavaScript in a state item would be rendered unsafely. After the fix, it is properly HTML-escaped. Again, **stored XSS**.
+**After the commit:** The same output is wrapped with `e()`:
+```php
+<?= e($this->formatState($stateItem)) ?>
+```
 
----
+### Verdict
 
-Both commits apply the same fix: wrapping untrusted user/DB data with `e()` (HTML entity encoding) before embedding it in a PHP template output. This neutralizes the ability to inject arbitrary HTML/JavaScript into the rendered page.
+Both files are from the Filament Tables package (a Laravel admin panel framework). The commit adds HTML escaping (`e()` / `htmlspecialchars`) to user-controlled data rendered in HTML context. This is a textbook fix for a **Cross-Site Scripting (XSS)** vulnerability — specifically Stored XSS, since the data originates from database query results (summarized values) and is then rendered in HTML without prior sanitization. The only change across both files is this escaping; there are no feature additions, refactors, or non-security bug fixes.
 
-**Verdict: Yes, this fixes a security vulnerability (Stored Cross-Site Scripting).**
+### Result
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-79
-CWE_NAME: Cross-Site Scripting
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

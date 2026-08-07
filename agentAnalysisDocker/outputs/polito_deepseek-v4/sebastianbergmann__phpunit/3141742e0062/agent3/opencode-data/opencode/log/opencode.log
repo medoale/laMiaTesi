@@ -1,404 +1,243 @@
-timestamp=2026-07-28T15:27:17.776Z level=INFO run=70d45df7 message="creating instance" directory=/work
-timestamp=2026-07-28T15:27:17.777Z level=INFO run=70d45df7 message=fromDirectory directory=/work
-timestamp=2026-07-28T15:27:17.782Z level=INFO run=70d45df7 message=bootstrapping directory=/work
-timestamp=2026-07-28T15:27:17.790Z level=INFO run=70d45df7 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T15:27:17.791Z level=INFO run=70d45df7 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T15:27:17.791Z level=INFO run=70d45df7 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T15:27:17.791Z level=ERROR run=70d45df7 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T15:27:17.792Z level=INFO run=70d45df7 message=loading path=/opencode.json
-timestamp=2026-07-28T15:27:17.796Z level=INFO run=70d45df7 message=loading path=/opencode.json
-timestamp=2026-07-28T15:27:17.916Z level=INFO run=70d45df7 message="all LSPs are disabled"
-timestamp=2026-07-28T15:27:17.917Z level=INFO run=70d45df7 message="all formatters are disabled"
-timestamp=2026-07-28T15:27:17.917Z level=INFO run=70d45df7 message=init
-timestamp=2026-07-28T15:27:18.041Z level=INFO run=70d45df7 message=created id=ses_056a99fe7ffey2QEjxHKqvd1kr slug=shiny-eagle version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T15:27:18.040Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785252438040 time.updated=1785252438040
-timestamp=2026-07-28T15:27:18.065Z level=INFO run=70d45df7 message="event connected"
-timestamp=2026-07-28T15:27:18.240Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=0
-timestamp=2026-07-28T15:27:18.248Z level=INFO run=70d45df7 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T15:27:18.252Z level=INFO run=70d45df7 message=init count=1
-timestamp=2026-07-28T15:27:18.253Z level=INFO run=70d45df7 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T15:27:18.260Z level=WARN run=70d45df7 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T15:27:18.268Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=true agent=title mode=primary
-timestamp=2026-07-28T15:27:18.309Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:18.333Z level=INFO run=70d45df7 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T15:27:18.457Z level=INFO run=70d45df7 message="project copy refresh started" projectID=global
-timestamp=2026-07-28T15:27:18.458Z level=INFO run=70d45df7 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T15:27:18.811Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95660e2001tu3gLQAqr7im4W
-timestamp=2026-07-28T15:27:18.812Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:19.030Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:22.006Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:22.111Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=1
-timestamp=2026-07-28T15:27:22.119Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9567000001V5u4kuI6SvZW1P
-timestamp=2026-07-28T15:27:22.119Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:22.126Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:23.342Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/composer.json action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:23.350Z level=INFO run=70d45df7 message="touching file" file=/work/composer.json
-timestamp=2026-07-28T15:27:23.772Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:24.217Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/tests action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:24.330Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=2
-timestamp=2026-07-28T15:27:24.337Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95678ab0012jKzBIfqBKfAmw
-timestamp=2026-07-28T15:27:24.337Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:24.338Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:26.768Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:27.232Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:27.688Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:28.154Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:28.276Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=3
-timestamp=2026-07-28T15:27:28.289Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95688150018ydZ39Y56OSfGq
-timestamp=2026-07-28T15:27:28.290Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:28.290Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:30.480Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Configuration.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:30.488Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Configuration.php
-timestamp=2026-07-28T15:27:30.962Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:31.454Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Log action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:31.564Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=4
-timestamp=2026-07-28T15:27:31.573Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95694ed001RwlfEbxPLaFt57
-timestamp=2026-07-28T15:27:31.573Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:31.574Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:36.920Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Xml.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:36.930Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Xml.php
-timestamp=2026-07-28T15:27:37.489Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP/AbstractPhpProcess.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:37.495Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/PHP/AbstractPhpProcess.php
-timestamp=2026-07-28T15:27:37.604Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=5
-timestamp=2026-07-28T15:27:37.612Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa956ac86001uJULe0ULh3F3ws
-timestamp=2026-07-28T15:27:37.613Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:37.613Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:41.519Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:42.002Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Annotation action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:42.516Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/GlobalState.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:42.523Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/GlobalState.php
-timestamp=2026-07-28T15:27:42.650Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=6
-timestamp=2026-07-28T15:27:42.659Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa956c03c001TWT7Cy1NC6oB4F
-timestamp=2026-07-28T15:27:42.660Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:42.661Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:45.062Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/FileLoader.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:45.067Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/FileLoader.php
-timestamp=2026-07-28T15:27:45.618Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP/DefaultPhpProcess.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:45.623Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/PHP/DefaultPhpProcess.php
-timestamp=2026-07-28T15:27:45.738Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=7
-timestamp=2026-07-28T15:27:45.746Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa956cc4c0010ParefNfmjV3q4
-timestamp=2026-07-28T15:27:45.746Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:45.747Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:48.437Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:48.445Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/Command.php
-timestamp=2026-07-28T15:27:48.972Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/TestRunner.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:48.979Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/TestRunner.php
-timestamp=2026-07-28T15:27:49.090Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=8
-timestamp=2026-07-28T15:27:49.098Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa956d963001j2MRKxqMKycBYL
-timestamp=2026-07-28T15:27:49.098Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:49.099Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:27:59.563Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/TestRunner.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:27:59.570Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/TestRunner.php
-timestamp=2026-07-28T15:27:59.676Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=9
-timestamp=2026-07-28T15:27:59.684Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95702bd001yqFkYKMDkW9MgJ
-timestamp=2026-07-28T15:27:59.684Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:27:59.685Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:02.685Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/SECURITY.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:02.690Z level=INFO run=70d45df7 message="touching file" file=/work/SECURITY.md
-timestamp=2026-07-28T15:28:03.352Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=unserialize action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:03.468Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=10
-timestamp=2026-07-28T15:28:03.477Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957118d001c9TPY0TaF2URYQ
-timestamp=2026-07-28T15:28:03.478Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:03.478Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:06.966Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:06.974Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:28:07.552Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP/Template/TestCaseMethod.tpl action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:07.556Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/PHP/Template/TestCaseMethod.tpl
-timestamp=2026-07-28T15:28:07.683Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=11
-timestamp=2026-07-28T15:28:07.692Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9572206001epR8RiZ1OneFgQ
-timestamp=2026-07-28T15:28:07.693Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:07.693Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:10.479Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="\\beval\\b" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:11.242Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="assert\\(class_exists" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:11.365Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=12
-timestamp=2026-07-28T15:28:11.376Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9573067001LHCeol4AiK0bFr
-timestamp=2026-07-28T15:28:11.377Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:11.378Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:14.286Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:14.294Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/TestCase.php
-timestamp=2026-07-28T15:28:14.391Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=13
-timestamp=2026-07-28T15:28:14.424Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9573c39001zS63qKGu0ba0ZW
-timestamp=2026-07-28T15:28:14.424Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:14.425Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:16.778Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:16.785Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:28:16.894Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=14
-timestamp=2026-07-28T15:28:16.903Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9574600001QpSc8TAtbOM3ht
-timestamp=2026-07-28T15:28:16.903Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:16.904Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:19.978Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=generateClassFromWsdl|generateFromWsdl action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:20.099Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=15
-timestamp=2026-07-28T15:28:20.109Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9575285001x3Fvh6MWgj7WHu
-timestamp=2026-07-28T15:28:20.110Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:20.111Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:22.098Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:22.104Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:28:22.211Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=16
-timestamp=2026-07-28T15:28:22.220Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9575ac5001yz401td1z4jefr
-timestamp=2026-07-28T15:28:22.220Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:22.221Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:28.370Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="shell_exec|exec\\(|system\\(|passthru\\(|`[^`]*`" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:29.079Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=popen|proc_open action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:29.227Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=17
-timestamp=2026-07-28T15:28:29.238Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957762e001N2HVL1lpU3kh5u
-timestamp=2026-07-28T15:28:29.239Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:29.239Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:33.319Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:33.325Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:28:33.440Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=18
-timestamp=2026-07-28T15:28:33.450Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95786a2001iv0FIC6Vi4z05z
-timestamp=2026-07-28T15:28:33.450Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:33.451Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:38.149Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:38.153Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:28:38.276Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=19
-timestamp=2026-07-28T15:28:38.293Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95799870013L6uofK6ahK65Y
-timestamp=2026-07-28T15:28:38.293Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:38.294Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:43.990Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=libxml_disable_entity_loader|LIBXML_NOENT|LIBXML_DTDLOAD|LIBXML_DTDATTR action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:44.128Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=20
-timestamp=2026-07-28T15:28:44.137Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957b062001Yoj24NS8j6kePL
-timestamp=2026-07-28T15:28:44.137Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:44.138Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:47.176Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Xml.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:47.182Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Xml.php
-timestamp=2026-07-28T15:28:47.294Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=21
-timestamp=2026-07-28T15:28:47.308Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957bcc2001gHWNiUF0x2ql0k
-timestamp=2026-07-28T15:28:47.308Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:47.309Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:28:57.104Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="section|SECTION|INI|ENV|FILE|ARGS|\\$\\{|\\$[A-Z_]+\\}" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:28:57.265Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=22
-timestamp=2026-07-28T15:28:57.281Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957e3b3001ScLOxsBY5ungRW
-timestamp=2026-07-28T15:28:57.282Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:28:57.282Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:00.980Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:00.986Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:29:01.951Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:01.958Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:29:02.074Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=23
-timestamp=2026-07-28T15:29:02.086Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa957f67d001ArEAVK80JlVek3
-timestamp=2026-07-28T15:29:02.086Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:02.087Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:05.325Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:05.331Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:29:05.428Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=24
-timestamp=2026-07-28T15:29:05.437Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9580397001FZE27PRU90TKay
-timestamp=2026-07-28T15:29:05.438Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:05.439Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:08.545Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="private function settings" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:08.669Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=25
-timestamp=2026-07-28T15:29:08.678Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958103f001Q0t8ixeFcPHxXO
-timestamp=2026-07-28T15:29:08.678Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:08.679Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:11.844Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:11.849Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:29:11.955Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=26
-timestamp=2026-07-28T15:29:11.964Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9581d15001vXO2UQoH7jran5
-timestamp=2026-07-28T15:29:11.964Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:11.965Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:18.246Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/PhptTestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:18.253Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/PhptTestCase.php
-timestamp=2026-07-28T15:29:18.379Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=27
-timestamp=2026-07-28T15:29:18.391Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958362e001Jch0IyKZ6zYfqU
-timestamp=2026-07-28T15:29:18.391Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:18.392Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:33.761Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/Filter action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:33.945Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=28
-timestamp=2026-07-28T15:29:33.962Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95872fc001CMVVALuUhI1JmF
-timestamp=2026-07-28T15:29:33.962Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:33.963Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:36.661Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/tests/end-to-end action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:36.778Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=29
-timestamp=2026-07-28T15:29:36.788Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9587e0c001Q0DbLKS0j46Chw
-timestamp=2026-07-28T15:29:36.788Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:36.789Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:39.617Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="eval\\(|create_function|assert\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:39.735Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=30
-timestamp=2026-07-28T15:29:39.746Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958899a001ROw6C9LatFqRpY
-timestamp=2026-07-28T15:29:39.747Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:39.748Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:43.002Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:43.014Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/TestCase.php
-timestamp=2026-07-28T15:29:43.123Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=31
-timestamp=2026-07-28T15:29:43.222Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95896d6001jtSkmjFbmAQ6Dp
-timestamp=2026-07-28T15:29:43.222Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:43.223Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:52.964Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/phpunit action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:52.970Z level=INFO run=70d45df7 message="touching file" file=/work/phpunit
-timestamp=2026-07-28T15:29:53.128Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=32
-timestamp=2026-07-28T15:29:53.138Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958bdea001qPqLJhEUP465kw
-timestamp=2026-07-28T15:29:53.139Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:53.140Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:29:57.995Z level=INFO run=70d45df7 message=evaluated permission=glob pattern=**/wsdl_class.tpl* action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:58.715Z level=INFO run=70d45df7 message=evaluated permission=glob pattern=**/wsdl_method.tpl* action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T15:29:58.863Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=33
-timestamp=2026-07-28T15:29:58.875Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958d452001AgPtL3FkaLfbG7
-timestamp=2026-07-28T15:29:58.876Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:29:58.877Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:00.865Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator/wsdl_class.tpl action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:00.871Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator/wsdl_class.tpl
-timestamp=2026-07-28T15:30:01.477Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator/wsdl_method.tpl action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:01.481Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator/wsdl_method.tpl
-timestamp=2026-07-28T15:30:01.596Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=34
-timestamp=2026-07-28T15:30:01.608Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958deff001274atRT0N3o2s4
-timestamp=2026-07-28T15:30:01.608Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:30:01.609Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:09.382Z level=INFO run=70d45df7 message="resolved path" arg=/work resolved=/work
-timestamp=2026-07-28T15:30:09.382Z level=INFO run=70d45df7 message=evaluated permission=bash pattern="grep -r 'eval\\|exec\\|system\\|popen\\|shell_exec' --include=\"*.php\" src/" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:09.382Z level=INFO run=70d45df7 message=evaluated permission=bash pattern="grep -v assert" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:09.382Z level=INFO run=70d45df7 message=evaluated permission=bash pattern="grep -v '//'" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:09.383Z level=INFO run=70d45df7 message=evaluated permission=bash pattern="head -30" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:09.527Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=35
-timestamp=2026-07-28T15:30:09.546Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa958fdfb001ITOz7i2szRmS2w
-timestamp=2026-07-28T15:30:09.547Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:30:09.548Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:20.410Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=runTestJob action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:20.585Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=36
-timestamp=2026-07-28T15:30:20.598Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa959292c001IJZjtyYq1iQ9Zh
-timestamp=2026-07-28T15:30:20.598Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:30:20.599Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:29.658Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=file_put_contents action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:29.818Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=37
-timestamp=2026-07-28T15:30:29.829Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa9594d3d001SjdWDQpdUNwvuv
-timestamp=2026-07-28T15:30:29.830Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:30:29.831Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:44.336Z level=INFO run=70d45df7 message=evaluated permission=task pattern=explore action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:44.338Z level=INFO run=70d45df7 message=created id=ses_056a67a0dffeuP0ZYqg03rJmKr slug=stellar-pixel version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=ses_056a99fe7ffey2QEjxHKqvd1kr title="Search web attack surface (@explore subagent)" agent=explore model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"todowrite\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"task\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785252644338 time.updated=1785252644338
-timestamp=2026-07-28T15:30:44.353Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=0
-timestamp=2026-07-28T15:30:44.360Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95986020010qQq6TFGdJyk5F
-timestamp=2026-07-28T15:30:44.361Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:30:44.362Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:47.287Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:47.705Z level=INFO run=70d45df7 message=evaluated permission=glob pattern=/work/src/**/*.php action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:47.847Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=1
-timestamp=2026-07-28T15:30:47.855Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95993a80013apx4VGcGlgLb9
-timestamp=2026-07-28T15:30:47.856Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:30:47.856Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:49.424Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:49.864Z level=INFO run=70d45df7 message=evaluated permission=glob pattern=/work/src/**/* action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:50.286Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:50.401Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=2
-timestamp=2026-07-28T15:30:50.408Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa9599da1001S7d3R7CHc7GN6i
-timestamp=2026-07-28T15:30:50.408Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:30:50.409Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:52.342Z level=INFO run=70d45df7 message=evaluated permission=glob pattern=**/*.php action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:52.999Z level=INFO run=70d45df7 message=evaluated permission=bash pattern="find /work/src -type f -name '*.php' 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:52.999Z level=INFO run=70d45df7 message=evaluated permission=bash pattern=sort action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:53.118Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=3
-timestamp=2026-07-28T15:30:53.124Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa959a83f001xpYiK4VEDhUJO7
-timestamp=2026-07-28T15:30:53.124Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:30:53.125Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:30:55.255Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/TestRunner.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:55.263Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/TestRunner.php
-timestamp=2026-07-28T15:30:55.766Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:55.773Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/Command.php
-timestamp=2026-07-28T15:30:56.261Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Configuration.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:56.267Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Configuration.php
-timestamp=2026-07-28T15:30:56.760Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Xml.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:30:56.765Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Xml.php
-timestamp=2026-07-28T15:30:56.873Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=4
-timestamp=2026-07-28T15:30:56.880Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa959b6ea001wkar8X1hiI3ZLI
-timestamp=2026-07-28T15:30:56.880Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:30:56.881Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:10.273Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/TestRunner.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:10.286Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/TestRunner.php
-timestamp=2026-07-28T15:31:10.806Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/BaseTestRunner.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:10.845Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/BaseTestRunner.php
-timestamp=2026-07-28T15:31:12.178Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="\\beval\\b|exec\\b|\\bsystem\\b|passthru\\b|shell_exec\\b|popen\\b|proc_open\\b|assert\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:13.116Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="unserialize\\b" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:13.236Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=5
-timestamp=2026-07-28T15:31:13.359Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa959f6d6001Zx9FmK0jdCEc4N
-timestamp=2026-07-28T15:31:13.360Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:13.361Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:17.158Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="(require|include)(_once)?\\s*\\$" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:18.129Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="file_put_contents\\s*\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:19.152Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=is_callable|call_user_func|call_user_func_array action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:19.283Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=6
-timestamp=2026-07-28T15:31:19.296Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a0e75001pvctei2VEWzSju
-timestamp=2026-07-28T15:31:19.296Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:19.297Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:21.774Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/FileLoader.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:21.780Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/FileLoader.php
-timestamp=2026-07-28T15:31:22.323Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/MockClass.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:22.328Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/MockClass.php
-timestamp=2026-07-28T15:31:23.302Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:23.307Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:31:24.246Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:24.258Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/TestCase.php
-timestamp=2026-07-28T15:31:24.372Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=7
-timestamp=2026-07-28T15:31:24.381Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a2256001esiSsnhULD3G2H
-timestamp=2026-07-28T15:31:24.381Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:24.382Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:27.423Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:27.430Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/TestCase.php
-timestamp=2026-07-28T15:31:28.367Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:28.372Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/Command.php
-timestamp=2026-07-28T15:31:29.317Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:29.326Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/Command.php
-timestamp=2026-07-28T15:31:29.889Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP/DefaultPhpProcess.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:29.893Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/PHP/DefaultPhpProcess.php
-timestamp=2026-07-28T15:31:30.012Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=8
-timestamp=2026-07-28T15:31:30.020Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a385e0012ojr4rfIPYlLIF
-timestamp=2026-07-28T15:31:30.021Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:30.021Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:33.613Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/PHP/AbstractPhpProcess.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:33.618Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/PHP/AbstractPhpProcess.php
-timestamp=2026-07-28T15:31:34.620Z level=INFO run=70d45df7 message=evaluated permission=grep pattern=getMockFromWsdl|generateClassFromWsdl action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:35.599Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:35.605Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:31:35.722Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=9
-timestamp=2026-07-28T15:31:35.732Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a4eac001GPoqFMn5VXZUfE
-timestamp=2026-07-28T15:31:35.733Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:35.734Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:39.320Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:39.325Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:31:40.266Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:40.271Z level=INFO run=70d45df7 message="touching file" file=/work/src/TextUI/Command.php
-timestamp=2026-07-28T15:31:41.603Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="\\$_SERVER\\b|_GET\\b|_POST\\b|_REQUEST\\b|_COOKIE\\b|getenv\\(|php://input" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:41.734Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=10
-timestamp=2026-07-28T15:31:41.742Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a66270018O3H4VNtgmYfDm
-timestamp=2026-07-28T15:31:41.743Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:41.744Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:44.439Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/phpunit action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:44.443Z level=INFO run=70d45df7 message="touching file" file=/work/phpunit
-timestamp=2026-07-28T15:31:45.030Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Stub/ReturnCallback.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:45.034Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Stub/ReturnCallback.php
-timestamp=2026-07-28T15:31:45.558Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/Constraint/Callback.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:45.562Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/Constraint/Callback.php
-timestamp=2026-07-28T15:31:46.075Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/GlobalState.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:46.080Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/GlobalState.php
-timestamp=2026-07-28T15:31:46.191Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=11
-timestamp=2026-07-28T15:31:46.200Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a7791001e2OMf5Kk3unSRn
-timestamp=2026-07-28T15:31:46.200Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:46.201Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:50.600Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/Filter/NameFilterIterator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:50.604Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/Filter/NameFilterIterator.php
-timestamp=2026-07-28T15:31:51.115Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Util/Getopt.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:51.122Z level=INFO run=70d45df7 message="touching file" file=/work/src/Util/Getopt.php
-timestamp=2026-07-28T15:31:51.849Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/TestSuite.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:51.853Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/TestSuite.php
-timestamp=2026-07-28T15:31:51.972Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=12
-timestamp=2026-07-28T15:31:51.980Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95a8e26001rbJjtKWUwNnlYQ
-timestamp=2026-07-28T15:31:51.980Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:51.981Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:31:55.656Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Runner/StandardTestSuiteLoader.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:55.661Z level=INFO run=70d45df7 message="touching file" file=/work/src/Runner/StandardTestSuiteLoader.php
-timestamp=2026-07-28T15:31:56.620Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="addTestFile\\b" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:57.807Z level=INFO run=70d45df7 message=evaluated permission=grep pattern="createMockFromWsdl|getMockFromWsdl|class_exists\\(|newInstance" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T15:31:57.940Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=13
-timestamp=2026-07-28T15:31:57.950Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95aa576001qymYepEF9lCAfw
-timestamp=2026-07-28T15:31:57.950Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:31:57.951Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:32:01.754Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:32:01.759Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:32:02.731Z level=INFO run=70d45df7 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T15:32:02.737Z level=INFO run=70d45df7 message="touching file" file=/work/src/Framework/MockObject/Generator.php
-timestamp=2026-07-28T15:32:02.850Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=14
-timestamp=2026-07-28T15:32:02.860Z level=INFO run=70d45df7 message=process session.id=ses_056a67a0dffeuP0ZYqg03rJmKr messageID=msg_fa95ab8a4001PQi2kCvBsXAzzv
-timestamp=2026-07-28T15:32:02.860Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a67a0dffeuP0ZYqg03rJmKr small=false agent=explore mode=subagent
-timestamp=2026-07-28T15:32:02.861Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T15:33:17.354Z level=INFO run=70d45df7 message=loop session.id=ses_056a67a0dffeuP0ZYqg03rJmKr step=15
-timestamp=2026-07-28T15:33:17.357Z level=INFO run=70d45df7 message="exiting loop" session.id=ses_056a67a0dffeuP0ZYqg03rJmKr
-timestamp=2026-07-28T15:33:17.367Z level=INFO run=70d45df7 message=loop session.id=ses_056a99fe7ffey2QEjxHKqvd1kr step=38
-timestamp=2026-07-28T15:33:17.383Z level=INFO run=70d45df7 message=process session.id=ses_056a99fe7ffey2QEjxHKqvd1kr messageID=msg_fa95bdbb9001SqWCNGcd9LWh6L
-timestamp=2026-07-28T15:33:17.383Z level=INFO run=70d45df7 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_056a99fe7ffey2QEjxHKqvd1kr small=false agent=reviewer mode=primary
-timestamp=2026-07-28T15:33:17.384Z level=INFO run=70d45df7 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:23.000Z level=INFO run=42bab855 message="creating instance" directory=/work
+timestamp=2026-08-07T16:38:23.001Z level=INFO run=42bab855 message=fromDirectory directory=/work
+timestamp=2026-08-07T16:38:23.007Z level=INFO run=42bab855 message=bootstrapping directory=/work
+timestamp=2026-08-07T16:38:23.015Z level=INFO run=42bab855 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T16:38:23.016Z level=INFO run=42bab855 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T16:38:23.017Z level=INFO run=42bab855 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T16:38:23.017Z level=ERROR run=42bab855 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T16:38:23.017Z level=INFO run=42bab855 message=loading path=/opencode.json
+timestamp=2026-08-07T16:38:23.022Z level=INFO run=42bab855 message=loading path=/opencode.json
+timestamp=2026-08-07T16:38:23.145Z level=INFO run=42bab855 message="all LSPs are disabled"
+timestamp=2026-08-07T16:38:23.145Z level=INFO run=42bab855 message="all formatters are disabled"
+timestamp=2026-08-07T16:38:23.145Z level=INFO run=42bab855 message=init
+timestamp=2026-08-07T16:38:23.276Z level=INFO run=42bab855 message=created id=ses_022e8f2d3ffeoQjXBTX67CBN66 slug=eager-river version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T16:38:23.276Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786120703276 time.updated=1786120703276
+timestamp=2026-08-07T16:38:23.302Z level=INFO run=42bab855 message="event connected"
+timestamp=2026-08-07T16:38:23.470Z level=WARN run=42bab855 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T16:38:23.478Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=0
+timestamp=2026-08-07T16:38:23.488Z level=INFO run=42bab855 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T16:38:23.493Z level=INFO run=42bab855 message=init count=1
+timestamp=2026-08-07T16:38:23.495Z level=INFO run=42bab855 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T16:38:23.512Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=true agent=title mode=primary
+timestamp=2026-08-07T16:38:23.550Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:23.576Z level=INFO run=42bab855 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T16:38:23.713Z level=INFO run=42bab855 message="project copy refresh started" projectID=global
+timestamp=2026-08-07T16:38:23.714Z level=INFO run=42bab855 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T16:38:24.274Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd170df9001pyrlwp6fi1p5Gb
+timestamp=2026-08-07T16:38:24.281Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:24.285Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:26.869Z level=INFO run=42bab855 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:26.989Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=1
+timestamp=2026-08-07T16:38:27.006Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd171bae001BWHv67I2coB1LY
+timestamp=2026-08-07T16:38:27.006Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:27.007Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:29.715Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:30.224Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/composer.json action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:30.236Z level=INFO run=42bab855 message="touching file" file=/work/composer.json
+timestamp=2026-08-07T16:38:30.735Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:30.746Z level=INFO run=42bab855 message="touching file" file=/work/README.md
+timestamp=2026-08-07T16:38:30.861Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=2
+timestamp=2026-08-07T16:38:30.876Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd172acd0012MvBK6jBbHbVKW
+timestamp=2026-08-07T16:38:30.876Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:30.877Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:34.268Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:34.779Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:35.307Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/TextUI action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:35.438Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=3
+timestamp=2026-08-07T16:38:35.453Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd173caf001BsUlwA7rocUpjZ
+timestamp=2026-08-07T16:38:35.453Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:35.454Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:40.284Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:40.842Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/Xml.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:40.847Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/Xml.php
+timestamp=2026-08-07T16:38:40.992Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=4
+timestamp=2026-08-07T16:38:41.005Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd175261001G677t4N2xsbFvs
+timestamp=2026-08-07T16:38:41.005Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:41.007Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:38:49.996Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/AbstractPhpProcess.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:50.002Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/PHP/AbstractPhpProcess.php
+timestamp=2026-08-07T16:38:50.531Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/Template action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:51.050Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/Configuration.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:38:51.091Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/Configuration.php
+timestamp=2026-08-07T16:38:51.192Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=5
+timestamp=2026-08-07T16:38:51.207Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd177a39001CXiLAPhHQlXu4a
+timestamp=2026-08-07T16:38:51.207Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:38:51.208Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:02.403Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:02.876Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Runner action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:03.581Z level=INFO run=42bab855 message=evaluated permission=glob pattern=**/*.php action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:03.725Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=6
+timestamp=2026-08-07T16:39:03.740Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17ab2f001ak5Rz1kxgkypSp
+timestamp=2026-08-07T16:39:03.741Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:03.742Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:07.120Z level=INFO run=42bab855 message=evaluated permission=grep pattern="eval\\s*\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:08.045Z level=INFO run=42bab855 message=evaluated permission=grep pattern=create_function action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:09.282Z level=INFO run=42bab855 message=evaluated permission=grep pattern="system\\s*\\(|exec\\s*\\(|shell_exec|passthru|popen|proc_open" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:09.420Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=7
+timestamp=2026-08-07T16:39:09.435Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17c16e001E5I9ajIcz6AA6f
+timestamp=2026-08-07T16:39:09.435Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:09.436Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:11.847Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:11.855Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/TestCase.php
+timestamp=2026-08-07T16:39:12.888Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:12.894Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/Generator.php
+timestamp=2026-08-07T16:39:13.471Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/MockClass.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:13.481Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/MockClass.php
+timestamp=2026-08-07T16:39:14.066Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/MockTrait.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:14.106Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/MockTrait.php
+timestamp=2026-08-07T16:39:14.189Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=8
+timestamp=2026-08-07T16:39:14.198Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17d40e001km67tTq0xruy7u
+timestamp=2026-08-07T16:39:14.198Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:14.199Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:17.340Z level=INFO run=42bab855 message=evaluated permission=grep pattern=generateClassFromWsdl action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:17.467Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=9
+timestamp=2026-08-07T16:39:17.483Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17e0dd001mmyXmITlDJqBAh
+timestamp=2026-08-07T16:39:17.483Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:17.484Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:19.499Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:19.505Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/Generator.php
+timestamp=2026-08-07T16:39:19.615Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=10
+timestamp=2026-08-07T16:39:19.629Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17e941001dDSkK8Yh1Ag88F
+timestamp=2026-08-07T16:39:19.629Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:19.630Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:21.557Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:21.674Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=11
+timestamp=2026-08-07T16:39:21.689Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17f14b0011ZmyrBrKKxEN9e
+timestamp=2026-08-07T16:39:21.689Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:21.690Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:23.225Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator/wsdl_method.tpl action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:23.230Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/Generator/wsdl_method.tpl
+timestamp=2026-08-07T16:39:23.867Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator/wsdl_class.tpl action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:23.873Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/Generator/wsdl_class.tpl
+timestamp=2026-08-07T16:39:23.985Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=12
+timestamp=2026-08-07T16:39:24.005Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd17fa54001g3bc2quV6PEhk3
+timestamp=2026-08-07T16:39:24.006Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:24.006Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:31.894Z level=INFO run=42bab855 message=evaluated permission=grep pattern="include\\s*\\(|include_once|require\\s*\\(|require_once" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:32.827Z level=INFO run=42bab855 message=evaluated permission=grep pattern="new \\$" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:32.984Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=13
+timestamp=2026-08-07T16:39:33.001Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd181d7a001r6T9Z1WePAgIPS
+timestamp=2026-08-07T16:39:33.002Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:33.003Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:34.821Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/FileLoader.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:34.826Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/FileLoader.php
+timestamp=2026-08-07T16:39:35.834Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/TextUI/TestRunner.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:35.840Z level=INFO run=42bab855 message="touching file" file=/work/src/TextUI/TestRunner.php
+timestamp=2026-08-07T16:39:35.956Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=14
+timestamp=2026-08-07T16:39:35.970Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1829160011TAfwjhW0wMUzV
+timestamp=2026-08-07T16:39:35.970Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:35.971Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:42.353Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/DefaultPhpProcess.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:42.358Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/PHP/DefaultPhpProcess.php
+timestamp=2026-08-07T16:39:42.492Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=15
+timestamp=2026-08-07T16:39:42.507Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd18429d001FvslPx5Ca8tGKm
+timestamp=2026-08-07T16:39:42.507Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:42.508Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:54.967Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/tests action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:55.433Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/tools action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:55.622Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=16
+timestamp=2026-08-07T16:39:55.640Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1875e9001qKwR7E6ocYLNdY
+timestamp=2026-08-07T16:39:55.640Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:55.641Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:39:57.377Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/Template/TestCaseMethod.tpl action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:57.383Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/PHP/Template/TestCaseMethod.tpl
+timestamp=2026-08-07T16:39:58.000Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/Template/PhptTestCase.tpl action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:58.005Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/PHP/Template/PhptTestCase.tpl
+timestamp=2026-08-07T16:39:58.620Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Util/PHP/Template/TestCaseClass.tpl action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:39:58.624Z level=INFO run=42bab855 message="touching file" file=/work/src/Util/PHP/Template/TestCaseClass.tpl
+timestamp=2026-08-07T16:39:58.741Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=17
+timestamp=2026-08-07T16:39:58.757Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd188217001ukO9y9B1T3gFKJ
+timestamp=2026-08-07T16:39:58.758Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:39:58.758Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:06.118Z level=INFO run=42bab855 message=evaluated permission=grep pattern=processResultFile|codeCoverageFilter|dependencyInput|setVar.*'data' action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:06.265Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=18
+timestamp=2026-08-07T16:40:06.282Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd189f7b001DBEuOxMEhIMaKT
+timestamp=2026-08-07T16:40:06.283Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:06.284Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:08.747Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/TestCase.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:08.755Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/TestCase.php
+timestamp=2026-08-07T16:40:08.868Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=19
+timestamp=2026-08-07T16:40:08.886Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd18a9a60019tkEVBbg5FMhr2
+timestamp=2026-08-07T16:40:08.886Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:08.887Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:20.788Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Runner/Version.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:20.793Z level=INFO run=42bab855 message="touching file" file=/work/src/Runner/Version.php
+timestamp=2026-08-07T16:40:21.915Z level=INFO run=42bab855 message=evaluated permission=grep pattern=__PHPUNIT_PHAR_ROOT__|__PHPUNIT_PHAR__ action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:22.096Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=20
+timestamp=2026-08-07T16:40:22.113Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd18dd52001J1gZKTkJveZwJ8
+timestamp=2026-08-07T16:40:22.114Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:22.115Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:26.244Z level=INFO run=42bab855 message=evaluated permission=glob pattern=**/Template.php action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:27.178Z level=INFO run=42bab855 message=evaluated permission=grep pattern="class Template" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:27.311Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=21
+timestamp=2026-08-07T16:40:27.326Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd18f1b1001J9iq1JBcbrFsuA
+timestamp=2026-08-07T16:40:27.327Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:27.327Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:29.459Z level=INFO run=42bab855 message=evaluated permission=glob pattern=**/Text_Template* action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:30.400Z level=INFO run=42bab855 message=evaluated permission=grep pattern=getTemplate action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:30.555Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=22
+timestamp=2026-08-07T16:40:30.571Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd18fe5e001x7tg5HhHTq31of
+timestamp=2026-08-07T16:40:30.571Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:30.572Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:33.408Z level=INFO run=42bab855 message=evaluated permission=bash pattern="find /work -name \"*.php\" -path \"*text-template*\" 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:33.408Z level=INFO run=42bab855 message=evaluated permission=bash pattern="find /work/vendor -name \"Template.php\" -path \"*text*\" 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:33.408Z level=INFO run=42bab855 message=evaluated permission=bash pattern="find / -name \"Template.php\" 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:33.408Z level=INFO run=42bab855 message=evaluated permission=bash pattern="head -20" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:34.071Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=23
+timestamp=2026-08-07T16:40:34.084Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd190c190013AGbNrXxQjFom1
+timestamp=2026-08-07T16:40:34.084Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:34.085Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:48.535Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/Generator.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:48.542Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/Generator.php
+timestamp=2026-08-07T16:40:49.478Z level=INFO run=42bab855 message=evaluated permission=grep pattern=newInstanceArgs action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:49.665Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=24
+timestamp=2026-08-07T16:40:49.682Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1949030015lAvI854K5SdPi
+timestamp=2026-08-07T16:40:49.683Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:49.684Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:40:59.087Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/Framework/MockObject/MockMethod.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:40:59.093Z level=INFO run=42bab855 message="touching file" file=/work/src/Framework/MockObject/MockMethod.php
+timestamp=2026-08-07T16:40:59.257Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=25
+timestamp=2026-08-07T16:40:59.274Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd196e7b001eSuKycXBCQauG0
+timestamp=2026-08-07T16:40:59.274Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:40:59.275Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:05.881Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/phpunit.xsd action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:05.887Z level=INFO run=42bab855 message="touching file" file=/work/phpunit.xsd
+timestamp=2026-08-07T16:41:06.028Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=26
+timestamp=2026-08-07T16:41:06.045Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1988ef0010XH4QusW1qWJcE
+timestamp=2026-08-07T16:41:06.046Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:06.047Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:10.030Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/SECURITY.md action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:10.034Z level=INFO run=42bab855 message="touching file" file=/work/SECURITY.md
+timestamp=2026-08-07T16:41:10.155Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=27
+timestamp=2026-08-07T16:41:10.173Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd19990e0013i4va5If6dhsKk
+timestamp=2026-08-07T16:41:10.173Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:10.174Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:29.964Z level=INFO run=42bab855 message=evaluated permission=bash pattern="head -100 /work/ChangeLog-8.5.md" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:29.964Z level=INFO run=42bab855 message=evaluated permission=bash pattern="grep -i -A5 \"security\\|cve\\|vulnerability\\|fix\"" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:30.182Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=28
+timestamp=2026-08-07T16:41:30.194Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd19e7480015BCIo6MRs6wJCd
+timestamp=2026-08-07T16:41:30.194Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:30.195Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:33.307Z level=INFO run=42bab855 message=evaluated permission=bash pattern="grep -i \"xmlToVariable\\|getConfigurationArguments\\|getMockFromWsdl\\|optionsBuffer\\|eval\\|serial\\|unserialize\\|object injection\\|CWE\" /work/ChangeLog-8.5.md" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:33.307Z level=INFO run=42bab855 message=evaluated permission=bash pattern="head -30" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:33.429Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=29
+timestamp=2026-08-07T16:41:33.446Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd19f3f70013RPLYEVox01SWh
+timestamp=2026-08-07T16:41:33.446Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:33.447Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:37.547Z level=INFO run=42bab855 message=evaluated permission=bash pattern="find /work -name \"eval-stdin.php\" 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:38.478Z level=INFO run=42bab855 message=evaluated permission=grep pattern=eval-stdin action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:38.604Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=30
+timestamp=2026-08-07T16:41:38.619Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1a082e001sPoQ088Eu8yavB
+timestamp=2026-08-07T16:41:38.620Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:38.620Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:54.792Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/phpunit action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:54.796Z level=INFO run=42bab855 message="touching file" file=/work/phpunit
+timestamp=2026-08-07T16:41:55.015Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=31
+timestamp=2026-08-07T16:41:55.036Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1a484b001kQ6MXzuS1ySFSg
+timestamp=2026-08-07T16:41:55.036Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:55.037Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T16:41:58.222Z level=INFO run=42bab855 message=evaluated permission=read pattern=work/src/TextUI/Command.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T16:41:58.234Z level=INFO run=42bab855 message="touching file" file=/work/src/TextUI/Command.php
+timestamp=2026-08-07T16:41:58.350Z level=INFO run=42bab855 message=loop session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 step=32
+timestamp=2026-08-07T16:41:58.369Z level=INFO run=42bab855 message=process session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 messageID=msg_fdd1a5551001lln6SUigj4I4IN
+timestamp=2026-08-07T16:41:58.369Z level=INFO run=42bab855 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_022e8f2d3ffeoQjXBTX67CBN66 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T16:41:58.370Z level=INFO run=42bab855 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

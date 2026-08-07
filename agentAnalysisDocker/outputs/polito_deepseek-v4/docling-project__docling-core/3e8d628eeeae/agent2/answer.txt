@@ -1,21 +1,27 @@
-Let me find the actual file paths to understand the full context.
+Let me look at the actual current version of the source code to identify the method name and understand the context better.
+Now I have all the information needed to analyze this commit.
+
 ## Analysis
 
-The commit changes `yaml.load(f, Loader=yaml.FullLoader)` to `yaml.load(f, Loader=yaml.SafeLoader)` in two files:
+The commit makes two identical changes, both switching from `yaml.FullLoader` to `yaml.SafeLoader`:
 
-1. **`/work/docling_core/types/doc/document.py` line 4357** — the `DoclingDocument.load_from_yaml()` class method, a **public API** that takes a user-supplied filename and deserializes a YAML file into a `DoclingDocument` object.
+1. **`/work/docling_core/types/doc/document.py:4357`** — In the `DoclingDocument.load_from_yaml()` class method. This is a public API method that loads a YAML file provided by the caller and deserializes it into a `DoclingDocument` object. The YAML content is user-supplied (untrusted data).
 
-2. **`/work/test/test_docling_doc.py` line 1976** — in the `test_export_with_precision` test function, which loads expected expected test data from a YAML file.
+2. **`/work/test/test_docling_doc.py:1976`** — In the `test_export_with_precision()` test function, which reads expected test data from a YAML file. Test data is typically trusted, but the fix applies the same hardening principle.
 
-### Security impact
+### Security Impact
 
-PyYAML's `yaml.load()` with `Loader=yaml.FullLoader` (or worse, the default `Loader`) supports deserialization of arbitrary Python objects via YAML tags such as `!!python/object:`, `!!python/module:`, `!!python/name:os.system`, etc. An attacker who can control or influence the contents of a YAML file loaded by `load_from_yaml()` can craft a payload that executes arbitrary operating system commands when the YAML is deserialized. This is a classic **arbitrary code execution via unsafe deserialization**.
+In PyYAML, `yaml.FullLoader` supports the full YAML specification, including Python-specific tags such as `!!python/object`, `!!python/object/apply`, `!!python/name`, and `!!python/module`. These tags allow the deserialization of arbitrary Python objects during YAML parsing — a classic vector for achieving arbitrary code execution. An attacker who can craft a malicious YAML document can exploit this to execute arbitrary Python code on the server processing the document.
 
-The fix switches to `yaml.SafeLoader`, which restricts deserialization to only safe, built-in YAML types (dicts, lists, strings, numbers, booleans, None) and completely rejects any Python object deserialization tags. This is the **correct and standard fix** for this vulnerability.
+`yaml.SafeLoader`, by contrast, only supports standard, safe YAML types (dicts, lists, strings, numbers, booleans, None) and explicitly blocks all Python-object-constructing tags, thereby preventing this attack vector.
 
-The test file change in `test_export_with_precision` is a secondary, collateral fix — since the test loads a YAML file that is expected to be safe (it's part of the project's own test data), the primary security concern is the public `load_from_yaml` API.
+The fix is correct: `load_from_yaml()` only needs basic Python types because the deserialized dict is immediately passed to Pydantic's `model_validate()`, which handles validation on its own terms. There is no legitimate need for `FullLoader`'s ability to construct arbitrary objects.
 
-**CWE classification:** This is CWE-502 (Deserialization of Untrusted Data). PyYAML's `FullLoader` allows arbitrary Python object instantiation, which maps directly to this CWE. In the broader YAML/Python deserialization vulnerability space, this is also commonly categorized under CWE-94 (Improper Control of Generation of Code / Code Injection) as a subvariant, but CWE-502 is the most specific and accurate primary classification.
+### CWE Classification
+
+The vulnerability is a textbook case of **CWE-502: Deserialization of Untrusted Data** — untrusted data is deserialized using a deserialization mechanism that can construct arbitrary objects, leading to possible code execution. This is the most specific and accurate classification.
+
+---
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-502

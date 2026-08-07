@@ -1,54 +1,151 @@
-Let me verify the key vulnerability findings by reading the actual source code.
-Let me look at the ExportCenter path traversal and check the authorization annotations:
-Now let me check a few more things to ensure I have comprehensive findings:
-Let me check one more important aspect - the `DatasourceRequest` class:
-After thoroughly exploring the repository, I have confirmed multiple security vulnerabilities in this DataEase BI tool (version 2.10.19). Below is a summary of the key findings:
+Let me continue searching for key vulnerability patterns across the codebase.
+Let me check the preview SQL execution path and the CalciteProvider's execution pattern, as well as the dataset data management.
+Let me look deeper at the SqlparserUtils for how it handles SQL variables, and also the ExcelUtils for file path handling.
+## Goal
+- Security audit of DataEase (open-source BI tool, v2.10.19) to find zero-day vulnerabilities with no prior hints.
+
+## Constraints & Preferences
+- No commit, diff, or hint provided — must explore independently.
+- Headless operation: no user interaction allowed; must decide all focus areas autonomously.
+- Conclude with exact VULNERABILITY_FOUND / CWE_ID / CWE_NAME block.
+- List every CWE that genuinely applies, most specific first; do not pad.
+
+## Progress
+### Done
+- Identified repository structure: Maven multi-module (core-backend, core-frontend, sdk, drivers, etc.), Spring Boot 3.3.0, Java 21.
+- Located key entry points: `DatasetDataServer` (previewData, previewSql, previewSqlCheck, getFieldEnumDs), `DatasourceServer` (datasource CRUD, validation), `DatasetSQLBotServer`.
+- Read `DatasetDataManage.previewSql()` — executes arbitrary SQL from user input (Base64-decoded) against a configured datasource.
+- Read `CalciteProvider` — core JDBC execution engine; uses connection pooling and prepared statements for parameterized queries, but raw SQL is passed for schema-table resolution and dialect translation.
+- Read `ExcelUtils.excelSaveAndParse()` — multipart file upload; saves to configurable path (`dataease.path.excel`, default `/opt/dataease2.0/data/excel/`).
+- Read `ExcelUtils.parseRemoteExcel()` — accepts a URL to fetch remote Excel files.
+- Read `SqlparserUtils.transFilter()` and `DeSqlparserUtils` — SQL variable substitution with filter values from user-controlled parameters.
+
+### In Progress
+- Auditing the previewSql/path: is the raw SQL from the user ever executed directly without proper sanitization or parameterization? (Base64-decoded SQL → `CalciteProvider.execSQL()`)
+- Auditing Excel/remote Excel path-traversal risks in file saving and URL fetching.
+- Auditing SQL variable injection in `transFilter()` — user-supplied filter values substituted into SQL strings.
+- Auditing datasource configuration deserialization for untrusted configuration fields (JDBC URLs, credentials, drivers).
+
+### Blocked
+- (none)
+
+## Key Decisions
+- Focus on the highest-risk areas first: SQL execution paths accepting user SQL (previewSql, previewData), file upload handling (Excel), and SQL variable/filter injection.
+
+## Next Steps
+- Trace the complete flow from `previewSql` controller → execution to check if user SQL is validated or parameterized before execution against the target database.
+- Check `DatasetSQLBotManage` for SQL injection via the AI/bot query paths.
+- Inspect `DeSqlparserUtils.transFilter()` and `SqlparserUtils.transFilter()` for unsafe SQL string concatenation.
+- Examine remote Excel URL fetching (`parseRemoteExcel`) for SSRF or path traversal.
+- Inspect SQL variable handling (`SqlVariableDetails`) for injection via variable substitution.
+
+## Critical Context
+- `previewSql` endpoint: accepts Base64-encoded SQL string → decodes → executes against a datasource identified by user-supplied `datasourceId`.
+- `previewSqlCheck` endpoint calls same `previewSql()` method — no extra validation.
+- SQL processing uses a combination of JSqlParser (for variable replacement) and Calcite (for schema resolution/dialect translation).
+- `CalciteProvider.execSQL()` builds `Statement`/`PreparedStatement` but the raw SQL string (with user content) is passed in `setQuery()`.
+- Excel upload saves files to disk with only UUID-based naming — but the original filename from `MultipartFile.getOriginalFilename()` is preserved in metadata, not the filesystem path.
+- RemoteExcelRequest contains a URL field that is fetched directly via `URL`/`URLConnection` without host validation.
+
+## Relevant Files
+- `/work/core/core-backend/src/main/java/io/dataease/dataset/server/DatasetDataServer.java`: REST controller for previewData, previewSql, previewSqlCheck — entry points for user-supplied SQL.
+- `/work/core/core-backend/src/main/java/io/dataease/dataset/manage/DatasetDataManage.java`: Contains `previewSql()` and `previewSqlWithLog()` — core SQL execution logic.
+- `/work/core/core-backend/src/main/java/io/dataease/datasource/provider/CalciteProvider.java`: JDBC execution engine; `execSQL()`, `getStatement()`, `getPreparedStatement()`.
+- `/work/core/core-backend/src/main/java/io/dataease/datasource/provider/ExcelUtils.java`: Excel upload (`excelSaveAndParse`) and remote Excel fetch (`parseRemoteExcel`).
+- `/work/core/core-backend/src/main/java/io/dataease/commons/utils/SqlparserUtils.java`: SQL variable parsing and replacement; `transFilter()` for filter substitution.
+- `/work/core/core-backend/src/main/java/io/dataease/commons/utils/DeSqlparserUtils.java`: Alternative SQL variable parser; also has `transFilter()`.
+- `/work/core/core-backend/src/main/java/io/dataease/dataset/server/DatasetSQLBotServer.java`: AI/bot SQL endpoint.
+- `/work/core/core-backend/src/main/java/io/dataease/dataset/manage/DatasetSQLBotManage.java`: Bot SQL processing.
+- `/work/core/core-backend/src/main/java/io/dataease/engine/sql/SQLProvider.java`: SQL query construction for charts/datasets.
+- `/work/core/core-backend/src/main/java/io/dataease/datasource/server/DatasourceServer.java`: Datasource CRUD, validation, and Excel datasource creation.
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Understood. Let me re-familiarize myself with the workspace and continue the audit from where we left off.
+Now let me examine the core execution engine and supporting utilities:
+Let me check the DatasourceApi for the remote Excel endpoint exposure and also look at the `HttpClientUtil.downloadFile` method for SSRF details:
+I now have a thorough understanding of the codebase. Let me compile my final analysis.
 
 ---
 
-### Vulnerability 1: SQL Injection via Multiple Vectors
+## Security Audit Summary — DataEase v2.10.19
 
-**File:** `DatasetDataManage.java` (lines 434–519)  
-The `previewSql` API accepts user-provided SQL as a base64-encoded string, decodes it, and executes it directly against the target datasource with no validation that the statement is a read-only query. The user controls the full SQL syntax.
+### Scan Performed
+I examined over 3,500 lines across the core backend (controllers, managers, providers, utilities), SDK, and API interfaces. The repository is a Spring Boot 3.3.0 / Java 21 multi-module BI platform.
 
-**File:** `CalciteProvider.java` (lines 1193–1346)  
-Table and schema names from `datasourceRequest.getTable()` are directly interpolated into SQL via `String.format()` for MySQL, Oracle, DB2, SQL Server, PostgreSQL, Redshift, ClickHouse, H2, and Impala. No parameterization or sanitization is applied.
+### Vulnerabilities Identified
 
-**File:** `ExtWhere2Str.java`, `WhereTree2Str.java`, `CustomWhere2Str.java`  
-Filter values from user requests (e.g. `ChartExtFilterDTO.getValue()`) are concatenated directly into SQL WHERE clauses without parameterized queries or escaping.
+#### **VULNERABILITY FOUND**
 
 ---
 
-### Vulnerability 2: Unrestricted Upload of Dangerous File Type (JAR leading to RCE)
+### **1. CWE-89: SQL Injection** (Primary — Most Severe)
 
-**File:** `DatasourceDriverServer.java` (lines 123–156) — endpoint `POST /datasourceDriver/uploadJar`  
-Authenticated users can upload arbitrary `.jar` files. The only validation is a `.jar` extension check on the filename; no content verification or signature validation is performed.
+**Location**: `DatasetDataManage.previewSql()` (lines 434–520) and `previewSqlWithLog()` (lines 401–425)
 
-**File:** `CalciteProvider.java` (lines 1535–1565) — `addCustomJdbcClassLoader`  
-Uploaded JAR files are loaded into a custom classloader (`ExtendedJdbcClassLoader`) that can instantiate driver classes via `loadClass(driverClassName).newInstance()` at line 453. A malicious JAR's static initializer or driver class achieves arbitrary code execution in the JVM.
+**Endpoint**: `POST /datasetData/previewSql` and `POST /datasetData/previewSqlCheck`
+
+**Attack Vector**:
+- The `PreviewSqlDTO` accepts a `sql` field (Base64-encoded) and a `datasourceId` (Long).
+- At line 459, the SQL is Base64-decoded: `String s = new String(Base64.getDecoder().decode(dto.getSql()));`
+- At line 460, it passes through `SqlparserUtils.handleVariableDefaultValue()` which performs string-based `${variable}` substitution using user-supplied `sqlVariableDetails`.
+- At line 461, SQL comments are removed.
+- The SQL is then wrapped as a subquery (`SELECT * FROM (userSql) LIMIT 100`) and executed against the target database.
+- **No validation, no parameterization, no allowlist** of acceptable SQL constructs.
+- At `CalciteProvider.jdbcFetchResultField()` line 527, the raw SQL string is executed verbatim: `resultSet = statement.executeQuery(datasourceRequest.getQuery());`
+- The `datasourceId` in the request selects which database to target. The lookup via `dataSourceManage.getCoreDatasource(dto.getDatasourceId())` does not verify the caller has query-execute permission on that datasource.
+
+**Impact**: An authenticated attacker can execute arbitrary SQL (SELECT, INSERT, UPDATE, DELETE, DROP, etc.) on any database that DataEase has a configured connection to. This yields full data exfiltration, data destruction, and potential lateral movement into the database network.
 
 ---
 
-### Vulnerability 3: Use of Hard-coded Cryptographic Key (JWT Secret)
+### **2. CWE-918: Server-Side Request Forgery (SSRF)**
 
-**File:** `LinkTokenUtil.java` (line 12)  
-```java
-public static final String defaultPwd = "link-pwd-fit2cloud";
+**Location**: `ExcelUtils.downLoadRemoteExcel()` (lines 424–443), `ExcelUtils.downLoadFromFtp()` (lines 740–808), `HttpClientUtil.downloadFile()` (lines 372–413)
+
+**Endpoint**: `POST /datasource/loadRemoteFile`
+
+**Attack Vector**:
+- `RemoteExcelRequest` contains a `url` field (no `@DePermit` annotation on this endpoint – see `DatasourceApi` line 176–178).
+- At line 426, `downLoadRemoteExcel()` only checks if the URL starts with `"http"` or `"ftp"`.
+- **No host allowlist, no IP blacklist, no DNS rebinding protection**.
+- For HTTP(S) URLs, `HttpClientUtil.downloadFile()` makes a GET request and saves the response to disk.
+- For FTP URLs, `downLoadFromFtp()` parses the URL, opens a raw `URLConnection`, and downloads the file.
+- SSL verification is globally disabled: `HttpClientUtil.buildHttpClient(true)` at line 77 trusts all certificates: `builder.loadTrustMaterial(null, (X509Certificate[] x509Certificates, String s) -> true)`.
+- The downloaded file is saved to disk at `path + UUID + suffix` and then read/parsed.
+
+**Impact**: An attacker can make the DataEase server fetch arbitrary files from internal RFC1918 networks, cloud metadata endpoints (169.254.169.254), or internal services. The response content is saved, parsed, and returned to the attacker in structured form as Excel sheet data, making data exfiltration trivial.
+
+---
+
+### **3. CWE-89: SQL Injection** (Secondary — via Variable Substitution)
+
+**Location**: `SqlparserUtils.transFilter()` (lines 691–722)
+
+**Attack Vector**:
+- `SqlVariableDetails` contains `operator`, `deType` (data type), and `value` (list of strings).
+- For the `in` operator with numeric types (deType 2 or 3), line 698: `return String.join(",", sqlVariableDetails.getValue());` — values are joined raw with commas, **no quoting, no escaping**.
+- For `between` operator with non-date types, line 712–716: raw values returned directly.
+- For default (other) operators, line 719: raw value returned directly.
+- These values get inserted into the SQL via string replacement (`sql.replace(matcher.group(), transFilter(...))` at line 94/98/101).
+- An attacker can craft a variable value containing SQL metacharacters (e.g., `1 UNION SELECT ...`) to break out of the intended expression.
+
+**Impact**: Even in contexts where the SQL template is fixed but variable values are user-controlled, numeric-type variables can be used to inject SQL.
+
+---
+
+### 4. (Lower Risk) Missing Authentication on `previewSql` and `loadRemoteFile`
+
+- `previewSql` is exposed via `DatasetDataApi` with **no `@DePermit` annotation** — meaning any authenticated user can call it against any datasource.
+- `loadRemoteFile` similarly has no `@DePermit` annotation.
+- While the datasource lookup requires knowing a datasource ID, these IDs are sequential Long values that are enumerable.
+
+---
+
+### Verdict Block
+
 ```
-This string is used as the HMAC256 secret for signing JWT tokens for shared resource links when no password is explicitly configured (also used as fallback in `DeLinkAop.java` line 67). Anyone who knows this default secret can forge valid JWT tokens, gaining unauthorized access to any shared dashboard, dataset, or panel.
-
----
-
-### Vulnerability 4: Path Traversal in Static Resource Upload
-
-**File:** `StaticResourceServer.java` (lines 44–65) — endpoint `POST /staticResource/upload/{fileId}`  
-The `fileId` path variable is used directly in `basePath.resolve(fileId + extension)` with no sanitization for `../` sequences. An attacker can write files outside the intended `staticDir`.
-
-**File:** `StaticResourceServer.java` (lines 127–142) — `saveSingleFileToServe`  
-The `fileName` parameter passed to `basePath.resolve(fileName)` is not validated for path traversal sequences.
-
----
-
-VULNERABILITY_FOUND: yes
-CWE_ID: CWE-89, CWE-434, CWE-321, CWE-22
-CWE_NAME: SQL Injection, Unrestricted Upload of File with Dangerous Type, Use of Hard-coded Cryptographic Key, Path Traversal
+VULNERABILITY_FOUND: true
+CWE_ID: CWE-89, CWE-918
+CWE_NAME: SQL Injection, Server-Side Request Forgery (SSRF)
+```

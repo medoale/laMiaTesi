@@ -1,37 +1,43 @@
-Now let me analyze the changes across all four files to determine the nature of this commit.
-
+Good, there are 4 files with changes. Let me read all of them.
+Now let me also look at the relationship between the changes in file_01 and file_02 more closely to understand the full chain of the fix.
 ## Analysis
 
-This commit is from the `signify` library, which validates Authenticode (Windows PE code signing) signatures. The changes span four files:
+The commit introduces **stricter certificate validation** for Authenticode (Windows code signing) signatures. Let me trace through the full chain of changes:
 
-### file_01 — AuthenticodeSignature.verify()
-- **Before**: The `verify()` method passed `extended_key_usages=["code_signing"]` to the parent, but did **not** enforce that the EKU was actually present in the certificate chain (the underlying `optional_eku` was defaulting to `True` in the `VerificationContext`). It also did **not** check `keyUsage` at all.
-- **After**: A new `strict_validation=True` parameter is added. When `True` (the default), the code now sets `key_usages=["digital_signature"]` (enforcing keyUsage) and `optional_eku=False` (requiring the code_signing EKU to be present). When `strict_validation=False`, it skips these checks to match Windows behavior.
+### What changed
 
-### file_02 — VerificationContext
-- **Before**: `VerificationContext` had no `optional_ku` parameter (key usage was never checked), and `optional_eku` was a plain `bool` defaulting to `True` (meaning EKU was optional).
-- **After**: 
-  - Added `optional_ku` parameter (`Literal["critical"] | bool = True`).
-  - Changed `optional_eku` to also accept `"critical"`.
-  - The `verify()` method now intelligently skips key usage checks when the certificate lacks the keyUsage extension (respecting `optional_ku`), and similarly handles `optional_eku` with the `"critical"` mode.
-  - The `extended_optional` argument is now `bool(self.optional_eku)` instead of `self.optional_eku` directly.
+**file_01** (`AuthenticodeSignature.verify()`):
+- Added `strict_validation: bool = True` parameter.
+- In strict mode, sets `key_usages=["digital_signature"]` and `optional_eku=False` in the verification context kwargs.
+- This means: the signer's certificate must have the `digitalSignature` key usage bit AND the `codeSigning` extended key usage (EKU) must be present — as required by the Authenticode specification.
 
-### file_03 — Tests
-- Added a sample `17ad1735a13898c978cc6bbe6b2056cb8471329b` (which has an **invalid keyUsage**) to the `test_invalid_signature` parametrized test — meaning it will **fail** with the new strict validation by default.
-- Added `test_17ad_valid_without_strict()` to verify that when `strict_validation=False`, this sample is accepted (matching Windows behavior).
+**file_02** (`VerificationContext.verify()` / `validate_usage()`):
+- Added `optional_ku` parameter (new), and changed `optional_eku` from plain `bool` to `Literal["critical"] | bool`.
+- Reworked how `key_usage` and `extended_key_usage` are passed to the underlying `certvalidator`: they are now only enforced when the corresponding extension is present in the certificate (or when the extension is marked as critical).
+- Before, these checks were essentially absent: `key_usages` was never set by the caller, and `optional_eku=True` made the EKU check optional.
 
-### file_04 — Binary test data
-- Adds the binary test sample with an invalid keyUsage for testing.
+**file_03** (tests):
+- Added sample `17ad1735a13898c978cc6bbe6b2056cb8471329b` to the "invalid signature" list, with comment "This sample has an invalid keyUsage".
+- Added a test `test_17ad_valid_without_strict` proving this sample passes validation when `strict_validation=False`.
 
-### Security Assessment
+**file_04** (binary test data): The test binary itself.
 
-**Before the commit**: The code did not properly validate that certificates used for Authenticode signing had the correct `keyUsage` (digitalSignature) or `extendedKeyUsage` (codeSigning) extensions. This means a certificate whose key usage constraints explicitly disallowed code signing could still be accepted as a valid signing certificate. An attacker could use such a certificate (e.g., one issued only for SSL/TLS or email signing, or one whose keyUsage explicitly forbids digital signatures) to sign malware, and the library would accept it as validly Authenticode-signed.
+### Security impact
 
-**After the commit**: By default (`strict_validation=True`), the certificate is now checked to ensure:
-1. Its keyUsage includes `digitalSignature` (or is absent, with `optional_ku=True`)  
-2. Its extendedKeyUsage includes `code_signing` (or the entire chain has no EKU, with `optional_eku=False` meaning it's required)
+**Before the fix**, a certificate that:
+- Was cryptographically signed by a trusted CA
+- Had a valid chain, not expired, not revoked
+- **BUT** was never authorized for code signing (missing `digitalSignature` key usage, missing `codeSigning` EKU)
 
-This is a classic **CWE-295: Improper Certificate Validation** — the certificate validation was incomplete; it failed to verify that the certificate's key purpose attributes authorized it for the specific use case (code signing). Without this check, certificates not authorized for code signing could be used to sign executables, which is a direct security vulnerability.
+...would be **accepted as a valid code signing signature**. This is a security bypass: an attacker could use a certificate scoped for a different purpose (e.g., SSL/TLS server authentication, email signing) to sign code, and the library would not reject it.
+
+The Authenticode specification explicitly requires the `codeSigning` EKU and the `digitalSignature` key usage. Without these checks, the library is effectively validating only the cryptographic chain (is the certificate trusted?) but not the authorization (is this certificate *allowed* to sign code?). This is the textbook definition of **Improper Certificate Validation**.
+
+### CWE Classification
+
+**CWE-295: Improper Certificate Validation** — The software does not validate, or incorrectly validates, a certificate. The code was accepting certificates with missing or improper key usage and extended key usage extensions, which violates the certificate's intended purpose. No other CWE maps as precisely (CWE-347 is about the cryptographic signature itself, not about certificate authorization; CWE-703 is too generic).
+
+---
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-295

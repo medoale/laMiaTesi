@@ -1,219 +1,52 @@
-I'll systematically explore the repository to find potential security vulnerabilities.
-This is **Richie**, a Django-CMS based learning portal. Let me explore the source code deeply.
-Let me look at the LTI consumer plugin (often a source of security issues), the search functionality (REST API), and some key areas:
-This is interesting - the `get_context` view takes `request.GET.dict()` and passes it directly to `get_content_parameters`. Let me check the URLs and dig deeper into the apps.
-Let me look at the LTI consumer more closely - particularly the `get_content_parameters` which receives `user_infos` directly from `request.GET.dict()`. Also, let me check the search functionality, templates, and HTML rendering areas.
-Let me explore the frontend code for potential client-side vulnerabilities and look at the search viewsets more closely:
-Let me look deeper into the key areas - the LTI consumer API endpoint's `request.GET.dict()` usage, which is very suspicious as it passes all GET params as `user_infos` directly into the OAuth signing process:
-This is a very significant finding. On line 36, `request.GET.dict()` captures ALL query string parameters and passes them as `user_infos` to `get_content_parameters()`. Then on line 141, `**user_infos` is spread into `lti_parameters`, and this dict is used as the `body` in the OAuth signature (`client.sign(self.url, ..., body=lti_parameters, ...)` on line 168) and also **merged back into the final response** at line 178 (`oauth_dict.update(lti_parameters)`).
-
-But more critically, the `user_infos` parameter values like `user_id`, `roles`, `context_id`, `resource_link_id`, `lis_person_name_full`, `lis_person_contact_email_primary`, `lis_outcome_service_url`, etc. are user-controlled via GET query string and injected into the OAuth body. 
-
-Wait - the `lti_parameters` includes `roles` (line 147) but the `**user_infos` spread could **overwrite** roles (if `roles` is in the query string). Let me verify that the spread order matters.
-
-Actually, looking more carefully: `**user_infos` is spread first, then individual keys like `roles` are set after. So `roles` would be overridden correctly. But the user can inject any other LTI parameter like `lis_outcome_service_url`, `lis_result_sourcedid`, etc.
-
-Let me look for other vulnerabilities - let me check for XSS, SSTI, and path traversal issues.
-The admin `link_field` uses `str(linked_obj)` as anchor text - if `linked_obj.__str__()` returns unsanitized user data, this could be stored XSS. But that's standard Django admin behavior.
-
-Let me look more deeply at the frontend for XSS, and the plugin rendering code:
-Found two uses of `dangerouslySetInnerHTML`. Let me look at them:
-Let me see where the product instructions and slide content come from to see if they're user-controlled:
-The `instructions` and `Slide.content` appear to be from a Joanie API (frontend-only). Let me check the frontend more carefully for what data comes from the server.
-The slider widget renders `slide.content` with `dangerouslySetInnerHTML` - this is a stored XSS vector if the content comes from user data. Let me check where the slide data comes from (likely the Django backend).
-The `plugin.content` field is a `TextField` in the model, stored as raw HTML, and rendered via `dangerouslySetInnerHTML` on the frontend. But it's admin-only (CMSPluginBase) so the author can only be a staff user. That's not a vulnerability per se, that's by design.
-
-Let me now look for more critical vulnerabilities. Let me check the `ProductPathInstructions` path and the `Product.instructions` source:
-The `instructions` field is likely from a Joanie API response. Let me look at the `types` in frontend to understand the data model:
-Let me refocus on the most critical finding. The LTI consumer vulnerability is real but let me look for more impactful issues. Let me check for server-side template injection (SSTI), SSTI via Django templates, and other injection patterns:
-Now let me focus on the most critical finding I've identified. The LTI consumer API endpoint. Let me re-examine the `api.py` more carefully and trace the `user_infos` flow.
-
-The vulnerability in `api.py` line 36: `user_infos = request.GET.dict()` - this captures ALL query parameters from the GET request. These are then passed to `get_content_parameters()` at line 68-69, which spreads them into `lti_parameters` at line 141 via `**user_infos`.
-
-But wait, the user params are passed as body to the OAuth client.sign() on line 164-168, which signs the LTI launch request. The user can set arbitrary LTI parameters like:
-- `lis_outcome_service_url` (grade passback URL)
-- `lis_result_sourcedid` 
-- `tool_consumer_info_product_family_code`
-- etc.
-
-However, the real impact is that the response at line 66-72 includes the `content_parameters` which also contains these user-controlled parameters (returned to the frontend). The frontend then uses these to make the actual LTI launch.
-
-Let me look at the frontend LTI consumer to see how this data is used:
-Now let me read the LTI Consumer frontend widget:
-Now I can see the full picture. Let me also look at the tests for the LTI consumer to understand the expected behavior:
-Let me look at the test for the API to understand the vulnerability better:
-Now let me look at the cache key generation - there's an important issue. The cache key includes `user_infos.get('user_id')` - but what if the user passes `roles=Instructor` in the query string? Let me check: on line 140-148 of models.py, the spread `**user_infos` happens before `roles` assignment, so that's ok. But the user can inject arbitrary LTI parameters.
-
-However, the MOST critical issue I see is in `api.py` line 36-42. The cache key is constructed from the user-controlled `user_id`:
-```python
-user_infos = request.GET.dict()
-cache_key = f"lti_consumer_plugin__pk_{pk}_{user_infos.get('user_id')}_{language}"
-```
-
-A malicious user could craft a `user_id` containing special characters that causes a **cache key collision** or **cache poisoning** with another user's response. More importantly, the `user_infos` dict is passed directly to the `get_content_parameters` method, which spreads it into the OAuth-signed body via `**user_infos`.
-
-Let me look at other potential issues. Let me search for any SQL injection, command injection, or file inclusion issues.
-Now, the `sync_course_runs_from_request` endpoint at `/work/src/richie/apps/courses/api.py` is interesting. It accepts a POST request with an Authorization header, checks for a signature, and then calls `sync_course_run`. Let me look at the signature verification:
-The signature verification in `sync_course_runs_from_request` looks secure (proper HMAC). Let me look deeper at the LTI consumer for parameter injection vulnerabilities.
-
-The `get_content_parameters` method (models.py lines 132-179):
-1. Takes `user_infos` from `request.GET.dict()`
-2. Spreads them into `lti_parameters` via `**user_infos` on line 141
-3. Uses `lti_parameters` as the `body` parameter to `client.sign()` on line 164-168 (OAuth1 signing)
-4. Then merges `lti_parameters` back into the response on line 178
-
-The vulnerability: An attacker can inject arbitrary LTI parameters via GET query string. This is **LTI Parameter Injection** (CWE-349 - Acceptance of Extraneous Untrusted Data). The attacker can:
-
-1. **Inject `roles=Instructor`** - No wait, `roles` is overwritten on line 147 after the spread. Let me verify.
-
-Actually, looking at line 141 more carefully:
-```python
-lti_parameters = {
-    **user_infos,
-    "context_id": site.domain,
-    ...
-    "roles": role,
-}
-```
-
-Since `**user_infos` is spread first, and `roles` is set after, the server-set `role` value (STUDENT or INSTRUCTOR) would override any user-supplied `roles` parameter. But the **real issue** is that ANY other LTI parameter can be injected, including:
-
-- `lis_outcome_service_url` - grade passback URL
-- `lis_result_sourcedid` - result identifier
-- `lis_person_name_full` - person's full name
-- `launch_presentation_locale` - this would be overridden
-- `lis_person_sourcedid` - person sourced ID
-- Any custom LTI extension parameter
-
-Wait, let me look more carefully at the LTI specification. The most dangerous one is `lis_outcome_service_url` - this allows the LTI tool provider to send grades back to the tool consumer. If an attacker injects their own `lis_outcome_service_url`, they could potentially receive grade passback from the LTI tool, or more importantly, the attacker can set custom parameters that affect behavior.
-
-But there's a deeper issue here. The `user_infos` is fully controlled by the attacker via query string, and it's used to generate the OAuth signature. This means the attacker can influence **what gets signed** by the OAuth1 client. However, the core LTI parameters (like resource_link_id, roles) are set server-side and would override user-supplied values.
-
-Let me also check if there's any issue with the `get_context` endpoint being accessed without authentication:
-The LTI context endpoint has **no authentication** requirement - it's accessible to anonymous users (just needs `user_id`). This is by design (to support anonymous users), but it means the parameter injection is exploitable by anyone.
-
-Let me now look at the `sync_course_runs_from_request` endpoint more carefully to check for potential SSRF or other issues, and also look at the LMS handler:
-Now let me look at the `LMSHandler.select_lms` method and the `extract_course_code` logic for potential SSRF:
-Let me now focus on the most significant findings. Let me examine the `requests` usage in the edx backend - specifically if URLs from the request data can lead to SSRF or request injection:
-
-Actually, the `edx.py`'s `extract_course_id` uses `re.match(self.configuration["COURSE_REGEX"], url).group("course_id")` but this is extracting from a URL, not making a request to it. The `api_client` is used elsewhere.
-
-Let me look deeper at one more critical area - the search functionality and how it processes user input. This is a common area for injection vulnerabilities:
-Now let me look at the filter definitions more carefully, specifically for `get_query_fragment` to see if user input is injected unsafely:
-The filter definitions look safe - they use Django form validation with choices. Let me now focus on identifying the most concrete vulnerability. Let me look at what happens in `viewsets/categories.py` and check for authentication/permission on public API endpoints:
-Let me now take a broader approach and look for what I've found across the codebase. Let me search for specific patterns that indicate vulnerabilities:
-Let me look at the cache.py exec call - that's suspicious:
-That `exec` comment is just a docstring, not actual `exec` usage.
-
-Let me now look at the core `context_processors.py` to see if session/user data leaks to templates:
-The context processor puts settings data into the frontend context, which is typical for a Django app.
-
-Now let me refocus and think about what the most concrete vulnerability is. Let me look at the LTI consumer one more time - the OAuth client.sign call uses `http_method="POST"` and `body=lti_parameters`. Looking at this more carefully:
-
-The `user_infos` dict is populated from ALL GET query parameters (line 36). It flows through to `get_content_parameters` where it's spread into `lti_parameters` (line 141). The `lti_parameters` dict is used both:
-1. As the `body` parameter to `client.sign()` for OAuth1 signing (line 167)
-2. Merged back into the response dict (line 178)
-
-But also, more critically, the response includes all of these parameters and the frontend submits them as hidden form fields to the LTI tool provider (index.tsx line 82-84). The user-controlled parameters from the query string can override **intended LTI parameters** like `lis_outcome_service_url` which defines where the LTI tool will send grade passback data.
-
-Wait - can the user override `lis_outcome_service_url`? Let me check the spread order again. On line 141:
-```python
-lti_parameters = {
-    **user_infos,
-    "context_id": site.domain,
-    ...
-}
-```
-
-So `**user_infos` comes first, and then server-set parameters override them. But LTI parameters like `lis_outcome_service_url` are NOT set by the server - they'd only come from `user_infos`. So the attacker CAN set this parameter.
-
-This is definitely a vulnerability. The attacker can inject arbitrary LTI parameters via the query string, potentially hijacking the LTI outcome service URL (grade passback).
-
-Let me now also look at one more key area - is there an XSS vulnerability in the `ProductPathInstructions`?
-
-The `dangerouslySetInnerHTML` on `product.instructions` - let me trace where this data comes from:
-The types for Product likely come from Joanie API (a separate service). The `ProductPathInstructions` uses `dangerouslySetInnerHTML` with data from that external API. This could be stored XSS if the Joanie API stores unescaped HTML, but that's a cross-service issue.
-
-Let me now consolidate and determine the most concrete, provable vulnerability in this codebase.
-
-The LTI Consumer Parameter Injection vulnerability is the clearest finding. Let me document it:
-
-1. **No authentication** on the `/api/v1.0/plugins/lti-consumer/{pk}/context/` endpoint (accessible to anonymous users)
-2. `request.GET.dict()` on line 36 of `api.py` captures ALL query string parameters
-3. These user-controlled parameters are passed as `user_infos` to `get_content_parameters()` 
-4. `get_content_parameters()` spreads them via `**user_infos` into `lti_parameters` (line 141)
-5. These parameters are signed with the OAuth consumer credentials and returned to the client
-6. The parameters include LTI-specific values like `lis_outcome_service_url` that control grade passback behavior
-
-An attacker can inject arbitrary LTI parameters to redirect grade passback to their own server.
-
-Let me also verify one more thing about the search endpoint - it uses `request.query_params` which are validated through Django forms, so it's safe.
-
-Let me do one final check - are there any template files that might be vulnerable to XSS?
-Excellent findings. Now I have a comprehensive understanding of the repository. Let me now organize my findings and determine the most significant vulnerabilities.
-
-My primary finding is the **LTI Consumer Parameter Injection** vulnerability. Let me also verify the LargeBanner and Licence models don't have `clean_html`:
-Now I have a clear view. Let me also check the `LicensePlugin` form to see if it uses CKEditor widget (which allows HTML):
-Now I have all the pieces. Let me also look at the `clean_html` function to understand what the `SimpleText` model has:
-Now I can confirm that `SimpleText` calls `clean_html()` while `LargeBanner` and `LicencePluginModel` do not, despite both using `TextEditorWidget` (which allows HTML) and rendering with `|safe`.
-
-Now let me compile the final analysis. I have found multiple concrete vulnerabilities:
-
-**Primary Vulnerability 1: LTI Consumer Parameter Injection (CWE-349: Acceptance of Extraneous Untrusted Data)**
-- The LTI context API endpoint at `/api/v1.0/plugins/lti-consumer/{pk}/context/` takes all GET query parameters via `request.GET.dict()` and injects them into the LTI launch parameters.
-- These parameters are then included in the signed OAuth request sent to the LTI tool provider.
-- An attacker can inject arbitrary LTI parameters such as `lis_outcome_service_url`, redirecting grade passback to their own controlled server.
-
-**Primary Vulnerability 2: Stored XSS in LargeBanner content (CWE-79: Cross-Site Scripting)**
-- The `LargeBanner.content` field uses CKEditor (allowing HTML) but does NOT sanitize HTML via `clean_html()`.
-- It's rendered with `|safe` in 3 templates.
-- Any editor/author with access to the LargeBanner plugin can inject arbitrary JavaScript.
-
-**Primary Vulnerability 3: Stored XSS in Licence content and description (CWE-79)**
-- Both `LicenceTranslation.content` and `LicencePluginModel.description` use CKEditor widgets and are rendered with `|safe`, but neither sanitizes HTML.
-
-Let me verify the final state:
-
-VULNERABILITY_FOUND: yes
-CWE_ID: CWE-349, CWE-79
-CWE_NAME: Acceptance of Extraneous Untrusted Data, Cross-Site Scripting
-Based on a thorough analysis of the Richie codebase, here are the security vulnerabilities found:
+Based on my thorough analysis of the entire codebase, I've identified stored cross-site scripting (XSS) vulnerabilities affecting multiple CMS plugins. Here's the detailed evidence:
 
 ---
 
-## Vulnerability #1: LTI Consumer Parameter Injection (CWE-349)
+## Confirmed Vulnerability: Stored XSS (CWE-79)
 
-**Location:** `/work/src/richie/plugins/lti_consumer/api.py` (line 36) → `/work/src/richie/plugins/lti_consumer/models.py` (line 141, 168, 178)
+### Root Cause
+The `SimpleText` plugin in `simple_text_ckeditor/models.py` correctly sanitizes HTML content via `clean_html()` before saving:
 
-**Root Cause:** In `api.py` line 36, `user_infos = request.GET.dict()` captures **every** GET query string parameter without any whitelist filtering. These raw user-controlled parameters are then passed to `get_content_parameters()` (`models.py` line 132), which blindly spreads them via `**user_infos` into the `lti_parameters` dict (line 141). This dict is used to:
-- Sign the OAuth1 LTI launch request (line 167-168): `client.sign(self.url, http_method="POST", body=lti_parameters, ...)`
-- Return to the client as the LTI launch parameters (line 178): `oauth_dict.update(lti_parameters)`
+```python
+def save(self, *args, **kwargs):
+    self.body = clean_html(self.body, full=False)
+    super().save(*args, **kwargs)
+```
 
-**Impact:** An unauthenticated attacker can inject arbitrary LTI launch parameters. Particularly critical is `lis_outcome_service_url` — the URL where the LTI tool sends grade passback results. By injecting their own URL, an attacker can hijack grade passback, receiving student grades and outcome data. Other injectable parameters include `lis_result_sourcedid`, `tool_consumer_instance_guid`, and any custom LTI extensions.
+However, **four other CMS plugins** accept user-supplied HTML content from administrators, store it **without any server-side sanitization**, and render it **with the `|safe` template filter** (bypassing Django's auto-escaping).
 
-The endpoint has **no authentication** (accessible to anonymous users) — only a `user_id` query parameter is required.
+### Affected Plugins
 
-## Vulnerability #2: Stored XSS in LargeBanner Content (CWE-79)
+1. **LargeBanner.content** (`plugins/large_banner`)
+   - **Model:** `TextField` — no `clean()` or `save()` sanitization
+   - **CKEditor config:** `CKEDITOR_SETTINGS` with `"allowedContent": True` (unrestricted HTML)
+   - **Template:** `{{ instance.content|safe }}` in all three templates (`large_banner.html`, `compacted.html`, `hero-intro.html`)
+   - Exploit: Any CMS editor can inject `<script>alert(document.cookie)</script>` and it will execute for all visitors.
 
-**Location:** `/work/src/richie/plugins/large_banner/models.py` (line 53)
+2. **Section.title** (`plugins/section`)
+   - **Model:** `CharField` — no sanitization
+   - **CKEditor config:** `CKEDITOR_INLINE_BOLD_CONFIGURATION` with `"allowedContent": ["strong"]` (client-side only — trivially bypassed by sending a raw HTTP POST)
+   - **Template:** `{{ instance.title|safe }}` in `section.html` and `section_tiles.html`
+   - Exploit: An attacker can bypass the client-side CKEditor restriction by posting a direct request with arbitrary HTML.
 
-**Root Cause:** The `LargeBanner.content` field is a `TextField` rendered in three templates with `|safe`. The form uses `TextEditorWidget` (CKEditor) which accepts HTML. Unlike `SimpleText` (which calls `clean_html()` on save), `LargeBanner` performs **no HTML sanitization** before storing the content.
+3. **LicencePlugin.description** (`courses`)
+   - **Model:** `TextField` on `LicencePluginModel` — no sanitization
+   - **Template:** `{{ instance.description|safe }}` in `licence_plugin.html`
+   - Exploit: Admin can inject arbitrary JavaScript in the description field.
 
-**Templates affected:**
-- `/work/src/richie/plugins/large_banner/templates/richie/large_banner/large_banner.html` (line 19)
-- `/work/src/richie/plugins/large_banner/templates/richie/large_banner/hero-intro.html` (line 8)
-- `/work/src/richie/plugins/large_banner/templates/richie/large_banner/compacted.html` (line 6)
+4. **Licence.content** (`courses`)
+   - **Model:** Translatable `TextField` on `LicenceTranslation` — no sanitization
+   - **Template:** `{{ instance.licence.content|safe }}` in `licence_plugin.html`
+   - Exploit: Admin can inject arbitrary JavaScript in the licence content field.
 
-**Impact:** Any user with CMS plugin editing permissions can inject arbitrary JavaScript that executes in the browser of every visitor viewing a page containing the LargeBanner plugin.
+### Why This Is a Vulnerability
 
-## Vulnerability #3: Stored XSS in Licence Content & Description (CWE-79)
-
-**Location:** `/work/src/richie/apps/courses/models/course.py` (lines 1257, 1277)
-
-**Root Cause:** `LicenceTranslation.content` and `LicencePluginModel.description` are both rendered with `|safe` in `/work/src/richie/apps/courses/templates/courses/plugins/licence_plugin.html` (lines 22, 26). Both use `TextEditorWidget` (CKEditor) but neither calls `clean_html()` on save. The model comment says "should only be created by administrators" but this is a convention, not enforced in code.
+- **Django auto-escaping is deliberately disabled** by using `|safe`, meaning Django's built-in HTML escaping is bypassed.
+- The `SimpleText` plugin shows the developers knew about the XSS risk and solved it correctly for one model, but did not apply `clean_html()` to the other four models described above.
+- The CKEditor client-side `allowedContent` restriction on the Section plugin is trivially bypassable — it provides no server-side security.
 
 ---
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-349, CWE-79
-CWE_NAME: Acceptance of Extraneous Untrusted Data, Cross-Site Scripting
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)

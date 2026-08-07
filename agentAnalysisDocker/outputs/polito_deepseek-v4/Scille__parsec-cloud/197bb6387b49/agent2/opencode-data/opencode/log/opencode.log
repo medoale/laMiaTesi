@@ -1,327 +1,172 @@
-timestamp=2026-07-28T20:10:50.146Z level=INFO run=e6639c8b message="creating instance" directory=/work
-timestamp=2026-07-28T20:10:50.147Z level=INFO run=e6639c8b message=fromDirectory directory=/work
-timestamp=2026-07-28T20:10:50.153Z level=INFO run=e6639c8b message=bootstrapping directory=/work
-timestamp=2026-07-28T20:10:50.160Z level=INFO run=e6639c8b message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T20:10:50.161Z level=INFO run=e6639c8b message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T20:10:50.161Z level=INFO run=e6639c8b message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T20:10:50.161Z level=ERROR run=e6639c8b message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T20:10:50.162Z level=INFO run=e6639c8b message=loading path=/opencode.json
-timestamp=2026-07-28T20:10:50.167Z level=INFO run=e6639c8b message=loading path=/opencode.json
-timestamp=2026-07-28T20:10:50.287Z level=INFO run=e6639c8b message="all LSPs are disabled"
-timestamp=2026-07-28T20:10:50.288Z level=INFO run=e6639c8b message="all formatters are disabled"
-timestamp=2026-07-28T20:10:50.288Z level=INFO run=e6639c8b message=init
-timestamp=2026-07-28T20:10:50.410Z level=INFO run=e6639c8b message=created id=ses_055a60955ffeEJxAa2tY5MqOeD slug=silent-pixel version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T20:10:50.410Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785269450410 time.updated=1785269450410
-timestamp=2026-07-28T20:10:50.434Z level=INFO run=e6639c8b message="event connected"
-timestamp=2026-07-28T20:10:50.592Z level=WARN run=e6639c8b message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T20:10:50.604Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=0
-timestamp=2026-07-28T20:10:50.615Z level=INFO run=e6639c8b message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T20:10:50.619Z level=INFO run=e6639c8b message=init count=1
-timestamp=2026-07-28T20:10:50.621Z level=INFO run=e6639c8b message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T20:10:50.638Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=true agent=title mode=primary
-timestamp=2026-07-28T20:10:50.680Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:10:50.697Z level=INFO run=e6639c8b message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T20:10:50.830Z level=INFO run=e6639c8b message="project copy refresh started" projectID=global
-timestamp=2026-07-28T20:10:50.831Z level=INFO run=e6639c8b message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T20:10:51.414Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa59f76f001cNvav43v0gFECz
-timestamp=2026-07-28T20:10:51.415Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:10:51.421Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:10:54.523Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:10:54.936Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:10:54.936Z level=INFO run=e6639c8b message=asking id=per_faa5a0858001TYG3Sk1oOpx2k7 permission=external_directory patterns="[\"/changes/*\"]"
-timestamp=2026-07-28T20:10:54.938Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:10:55.104Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=1
-timestamp=2026-07-28T20:10:55.113Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5a09010013uCEEmkcyw9eQ7
-timestamp=2026-07-28T20:10:55.113Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:10:55.114Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:10:58.928Z level=INFO run=e6639c8b message=evaluated permission=task pattern=explore action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T20:10:58.929Z level=INFO run=e6639c8b message=created id=ses_055a5e80effetXgeX1PU3zOORx slug=kind-comet version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=ses_055a60955ffeEJxAa2tY5MqOeD title="Explore repository structure (@explore subagent)" agent=explore model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"todowrite\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"task\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785269458929 time.updated=1785269458929
-timestamp=2026-07-28T20:10:58.943Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=0
-timestamp=2026-07-28T20:10:58.956Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a1800001tIFT4ZUOIARtR7
-timestamp=2026-07-28T20:10:58.957Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:10:58.958Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:01.278Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:01.278Z level=INFO run=e6639c8b message=asking id=per_faa5a211e002JTMlfYP3gsAmEc permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T20:11:01.279Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_01 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:01.783Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:01.783Z level=INFO run=e6639c8b message=asking id=per_faa5a2317001ooxXjH0mmOZnmM permission=external_directory patterns="[\"/changes/file_02/*\"]"
-timestamp=2026-07-28T20:11:01.784Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_02 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:01.826Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:02.286Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:02.286Z level=INFO run=e6639c8b message=asking id=per_faa5a250e001eJupGSkW8IngAu permission=external_directory patterns="[\"/changes/file_03/*\"]"
-timestamp=2026-07-28T20:11:02.287Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_03 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:02.565Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/README.rst action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:02.792Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:02.792Z level=INFO run=e6639c8b message=asking id=per_faa5a2708001kaj0f1CoUuNKtt permission=external_directory patterns="[\"/changes/file_04/*\"]"
-timestamp=2026-07-28T20:11:02.794Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_04 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:03.287Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:03.287Z level=INFO run=e6639c8b message=asking id=per_faa5a28f7001CXqJTGmNT0C0Td permission=external_directory patterns="[\"/changes/file_05/*\"]"
-timestamp=2026-07-28T20:11:03.288Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_05 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:03.328Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/Cargo.toml action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:03.455Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=1
-timestamp=2026-07-28T20:11:03.467Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a29a0001sSzhCITCBQ0h2E
-timestamp=2026-07-28T20:11:03.468Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:03.468Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:05.137Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:05.137Z level=INFO run=e6639c8b message=asking id=per_faa5a3031002KTArWIkygJ0UHV permission=external_directory patterns="[\"/changes/file_06/*\"]"
-timestamp=2026-07-28T20:11:05.138Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_06 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:05.629Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/README.rst action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:05.629Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:05.629Z level=INFO run=e6639c8b message=asking id=per_faa5a321d001gqxHeV2MOR7Rcg permission=external_directory patterns="[\"/changes/file_07/*\"]"
-timestamp=2026-07-28T20:11:05.631Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_07 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:05.639Z level=INFO run=e6639c8b message="touching file" file=/work/README.rst
-timestamp=2026-07-28T20:11:06.116Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:11:06.116Z level=INFO run=e6639c8b message=asking id=per_faa5a3404001yAbzNpAHjrbI5p permission=external_directory patterns="[\"/changes/file_08/*\"]"
-timestamp=2026-07-28T20:11:06.117Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_08 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:06.141Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:06.145Z level=INFO run=e6639c8b message="touching file" file=/work/Cargo.toml
-timestamp=2026-07-28T20:11:06.623Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/SECURITY.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:06.631Z level=INFO run=e6639c8b message="touching file" file=/work/SECURITY.md
-timestamp=2026-07-28T20:11:07.122Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/CONTRIBUTING.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:07.126Z level=INFO run=e6639c8b message="touching file" file=/work/CONTRIBUTING.md
-timestamp=2026-07-28T20:11:07.285Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=2
-timestamp=2026-07-28T20:11:07.300Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a3896001Kwtdekik8N121u
-timestamp=2026-07-28T20:11:07.301Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:07.301Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:10.952Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:11.480Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:11.501Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/Cargo.toml
-timestamp=2026-07-28T20:11:12.057Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:12.062Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/Cargo.toml
-timestamp=2026-07-28T20:11:12.654Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/protocol/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:12.658Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/protocol/Cargo.toml
-timestamp=2026-07-28T20:11:13.218Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:13.222Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/Cargo.toml
-timestamp=2026-07-28T20:11:13.786Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:13.792Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/Cargo.toml
-timestamp=2026-07-28T20:11:14.284Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/server/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:14.287Z level=INFO run=e6639c8b message="touching file" file=/work/server/Cargo.toml
-timestamp=2026-07-28T20:11:14.798Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/cli/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:14.801Z level=INFO run=e6639c8b message="touching file" file=/work/cli/Cargo.toml
-timestamp=2026-07-28T20:11:14.966Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=3
-timestamp=2026-07-28T20:11:14.980Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a5697001amO1RLdPvf22S3
-timestamp=2026-07-28T20:11:14.980Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:14.981Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:18.450Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/crypto/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:19.239Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/protocol/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:20.003Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/types/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:20.765Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/client/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:21.459Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=server/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:22.145Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=cli/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:22.927Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/client_connection/src/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:23.363Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=4
-timestamp=2026-07-28T20:11:23.371Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a7764001QUKBdp4xLVdKub
-timestamp=2026-07-28T20:11:23.371Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:23.372Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:26.418Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/lib.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:26.423Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/lib.rs
-timestamp=2026-07-28T20:11:27.002Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/secret.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:27.009Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/secret.rs
-timestamp=2026-07-28T20:11:27.584Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/password.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:27.589Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/password.rs
-timestamp=2026-07-28T20:11:28.163Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/sas.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:28.167Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/sas.rs
-timestamp=2026-07-28T20:11:28.756Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/sequester.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:28.762Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/sequester.rs
-timestamp=2026-07-28T20:11:29.363Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/key_derivation.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:29.368Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/key_derivation.rs
-timestamp=2026-07-28T20:11:29.506Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=5
-timestamp=2026-07-28T20:11:29.515Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5a8f64001TcghRq6CrKRGZc
-timestamp=2026-07-28T20:11:29.516Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:29.517Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:33.471Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/mod.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:33.476Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/mod.rs
-timestamp=2026-07-28T20:11:34.099Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/private.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:34.105Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/private.rs
-timestamp=2026-07-28T20:11:34.729Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/sign.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:34.736Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/sign.rs
-timestamp=2026-07-28T20:11:35.356Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/secret.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:35.361Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/secret.rs
-timestamp=2026-07-28T20:11:35.548Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=6
-timestamp=2026-07-28T20:11:35.561Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5aa6fd001O3zePr6zXyUubL
-timestamp=2026-07-28T20:11:35.562Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:35.563Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:39.065Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/hash.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:39.083Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/hash.rs
-timestamp=2026-07-28T20:11:39.705Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/key_derivation.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:39.710Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/key_derivation.rs
-timestamp=2026-07-28T20:11:40.341Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/sequester.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:40.347Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/sequester.rs
-timestamp=2026-07-28T20:11:40.959Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/password.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:40.964Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/password.rs
-timestamp=2026-07-28T20:11:41.520Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/mod.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:41.524Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/mod.rs
-timestamp=2026-07-28T20:11:41.690Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=7
-timestamp=2026-07-28T20:11:41.700Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5abefc001XOHCS6BHeNhSCD
-timestamp=2026-07-28T20:11:41.700Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:41.701Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:45.877Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/src/local_device.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:45.884Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/src/local_device.rs
-timestamp=2026-07-28T20:11:46.447Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/src/local_device_file.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:46.452Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/src/local_device_file.rs
-timestamp=2026-07-28T20:11:47.012Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/src/certif.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:47.020Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/src/certif.rs
-timestamp=2026-07-28T20:11:47.221Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=8
-timestamp=2026-07-28T20:11:47.236Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5ad4970011dy4cpp74viCdP
-timestamp=2026-07-28T20:11:47.236Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:47.237Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:11:55.588Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client_connection/src/authenticated_cmds/mod.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:55.593Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client_connection/src/authenticated_cmds/mod.rs
-timestamp=2026-07-28T20:11:56.159Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client_connection/src/lib.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:56.164Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client_connection/src/lib.rs
-timestamp=2026-07-28T20:11:56.636Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/server/src/lib.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:56.682Z level=INFO run=e6639c8b message="touching file" file=/work/server/src/lib.rs
-timestamp=2026-07-28T20:11:57.133Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/server/src/protocol.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:11:57.136Z level=INFO run=e6639c8b message="touching file" file=/work/server/src/protocol.rs
-timestamp=2026-07-28T20:11:57.359Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=9
-timestamp=2026-07-28T20:11:57.367Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5afc31001sxh71FVzVcnQF7
-timestamp=2026-07-28T20:11:57.368Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:11:57.368Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:12:03.396Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/src/manifest.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:03.402Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/src/manifest.rs
-timestamp=2026-07-28T20:12:04.215Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/types/src/invite.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:04.220Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/types/src/invite.rs
-timestamp=2026-07-28T20:12:05.313Z level=INFO run=e6639c8b message=evaluated permission=grep pattern=zeroize|Zeroize|secret_key|SecretKey|private_key|PrivateKey action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:06.047Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/protocol/schema/**/*.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:06.266Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=10
-timestamp=2026-07-28T20:12:06.274Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5b1efc001f0zzXgP6aQVMNM
-timestamp=2026-07-28T20:12:06.275Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:12:06.275Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:12:09.793Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/platform_pki/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:09.801Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/platform_pki/Cargo.toml
-timestamp=2026-07-28T20:12:10.401Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/serialization_format/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:10.406Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/serialization_format/Cargo.toml
-timestamp=2026-07-28T20:12:11.213Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=libparsec/crates/protocol/schema/**/*.json5 action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:11.388Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=11
-timestamp=2026-07-28T20:12:11.405Z level=INFO run=e6639c8b message=process session.id=ses_055a5e80effetXgeX1PU3zOORx messageID=msg_faa5b32ff001KOmb7onIjauvY3
-timestamp=2026-07-28T20:12:11.406Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a5e80effetXgeX1PU3zOORx small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:12:11.407Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:12:54.295Z level=INFO run=e6639c8b message=loop session.id=ses_055a5e80effetXgeX1PU3zOORx step=12
-timestamp=2026-07-28T20:12:54.298Z level=INFO run=e6639c8b message="exiting loop" session.id=ses_055a5e80effetXgeX1PU3zOORx
-timestamp=2026-07-28T20:12:54.308Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=2
-timestamp=2026-07-28T20:12:54.321Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5bdaa50018kl45saHTFrSkE
-timestamp=2026-07-28T20:12:54.321Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:12:54.322Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:12:58.158Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:12:58.158Z level=INFO run=e6639c8b message=asking id=per_faa5be9ae001eAmxRZ041JmDv1 permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T20:12:58.160Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:58.165Z level=INFO run=e6639c8b message="touching file" file=/changes/file_01/diff.txt
-timestamp=2026-07-28T20:12:58.654Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:12:58.654Z level=INFO run=e6639c8b message=asking id=per_faa5beb9e001ivSdnbVAYmHpN4 permission=external_directory patterns="[\"/changes/file_02/*\"]"
-timestamp=2026-07-28T20:12:58.655Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_02/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:58.659Z level=INFO run=e6639c8b message="touching file" file=/changes/file_02/diff.txt
-timestamp=2026-07-28T20:12:59.161Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:12:59.161Z level=INFO run=e6639c8b message=asking id=per_faa5bed99001m0J6TlzDLOulcV permission=external_directory patterns="[\"/changes/file_03/*\"]"
-timestamp=2026-07-28T20:12:59.162Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_03/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:59.168Z level=INFO run=e6639c8b message="touching file" file=/changes/file_03/diff.txt
-timestamp=2026-07-28T20:12:59.663Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:12:59.664Z level=INFO run=e6639c8b message=asking id=per_faa5bef90001FRhBRaNq4GZ7o8 permission=external_directory patterns="[\"/changes/file_04/*\"]"
-timestamp=2026-07-28T20:12:59.665Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_04/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:12:59.668Z level=INFO run=e6639c8b message="touching file" file=/changes/file_04/diff.txt
-timestamp=2026-07-28T20:13:00.159Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:00.159Z level=INFO run=e6639c8b message=asking id=per_faa5bf17f001ZLtZHIdk0c1Dis permission=external_directory patterns="[\"/changes/file_05/*\"]"
-timestamp=2026-07-28T20:13:00.160Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_05/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:00.164Z level=INFO run=e6639c8b message="touching file" file=/changes/file_05/diff.txt
-timestamp=2026-07-28T20:13:00.657Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:00.657Z level=INFO run=e6639c8b message=asking id=per_faa5bf371001oe0rsVWu3Mqp7z permission=external_directory patterns="[\"/changes/file_06/*\"]"
-timestamp=2026-07-28T20:13:00.659Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_06/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:00.662Z level=INFO run=e6639c8b message="touching file" file=/changes/file_06/diff.txt
-timestamp=2026-07-28T20:13:01.157Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:01.157Z level=INFO run=e6639c8b message=asking id=per_faa5bf565001d5Lc3O6YThXXR6 permission=external_directory patterns="[\"/changes/file_07/*\"]"
-timestamp=2026-07-28T20:13:01.159Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_07/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:01.165Z level=INFO run=e6639c8b message="touching file" file=/changes/file_07/diff.txt
-timestamp=2026-07-28T20:13:01.651Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:01.651Z level=INFO run=e6639c8b message=asking id=per_faa5bf753001wc1s4r02faNJeb permission=external_directory patterns="[\"/changes/file_08/*\"]"
-timestamp=2026-07-28T20:13:01.652Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_08/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:01.658Z level=INFO run=e6639c8b message="touching file" file=/changes/file_08/diff.txt
-timestamp=2026-07-28T20:13:01.864Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=3
-timestamp=2026-07-28T20:13:01.878Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5bf829001eIo6Wjqx4aOo62
-timestamp=2026-07-28T20:13:01.879Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:01.879Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:04.869Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:04.869Z level=INFO run=e6639c8b message=asking id=per_faa5c03e5001Q7jOL024UelLOL permission=external_directory patterns="[\"/changes/file_06/*\"]"
-timestamp=2026-07-28T20:13:04.870Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_06/before.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:04.874Z level=INFO run=e6639c8b message="touching file" file=/changes/file_06/before.txt
-timestamp=2026-07-28T20:13:05.369Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:05.369Z level=INFO run=e6639c8b message=asking id=per_faa5c05d9001hj69g0jK59Ok8y permission=external_directory patterns="[\"/changes/file_06/*\"]"
-timestamp=2026-07-28T20:13:05.371Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_06/after.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:05.374Z level=INFO run=e6639c8b message="touching file" file=/changes/file_06/after.txt
-timestamp=2026-07-28T20:13:05.868Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:05.868Z level=INFO run=e6639c8b message=asking id=per_faa5c07cc001RBBD2WkKAd4czS permission=external_directory patterns="[\"/changes/file_07/*\"]"
-timestamp=2026-07-28T20:13:05.869Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_07/before.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:05.873Z level=INFO run=e6639c8b message="touching file" file=/changes/file_07/before.txt
-timestamp=2026-07-28T20:13:06.373Z level=INFO run=e6639c8b message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T20:13:06.373Z level=INFO run=e6639c8b message=asking id=per_faa5c09c5001HWFPL0rEpxqLKV permission=external_directory patterns="[\"/changes/file_07/*\"]"
-timestamp=2026-07-28T20:13:06.373Z level=INFO run=e6639c8b message=evaluated permission=read pattern=changes/file_07/after.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:06.376Z level=INFO run=e6639c8b message="touching file" file=/changes/file_07/after.txt
-timestamp=2026-07-28T20:13:06.588Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=4
-timestamp=2026-07-28T20:13:06.599Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c0a9d001Sxnsl3HWPnrVfm
-timestamp=2026-07-28T20:13:06.600Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:06.600Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:10.928Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/private_key.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:11.698Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/Cargo.toml action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:12.411Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/greeting_in_progress.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:13.119Z level=INFO run=e6639c8b message=evaluated permission=glob pattern=**/claim_in_progress.rs action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:13.343Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=5
-timestamp=2026-07-28T20:13:13.352Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c2500001EiMnJEl83YsYJG
-timestamp=2026-07-28T20:13:13.353Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:13.354Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:15.804Z level=INFO run=e6639c8b message=evaluated permission=grep pattern=generate_shared_secret_key action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:16.517Z level=INFO run=e6639c8b message=evaluated permission=grep pattern="use x25519_dalek" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:17.205Z level=INFO run=e6639c8b message=evaluated permission=grep pattern=CorruptedSharedSecretKey action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:17.431Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=6
-timestamp=2026-07-28T20:13:17.439Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c34f8001G4svfioLBjfgur
-timestamp=2026-07-28T20:13:17.439Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:17.440Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:20.159Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/private.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:20.166Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/private.rs
-timestamp=2026-07-28T20:13:20.762Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/sodium/private.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:20.766Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/sodium/private.rs
-timestamp=2026-07-28T20:13:21.343Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:21.902Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/sodium action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:22.044Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=7
-timestamp=2026-07-28T20:13:22.053Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c46fd001vZX7Yho9j9EYld
-timestamp=2026-07-28T20:13:22.053Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:22.054Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:25.273Z level=INFO run=e6639c8b message=evaluated permission=grep pattern=CryptoError action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:25.867Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/sodium/mod.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:25.873Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/sodium/mod.rs
-timestamp=2026-07-28T20:13:26.479Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/mod.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:26.482Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/mod.rs
-timestamp=2026-07-28T20:13:27.507Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/src/invite/claimer.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:27.518Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/src/invite/claimer.rs
-timestamp=2026-07-28T20:13:28.595Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/src/invite/greeter.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:28.600Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/src/invite/greeter.rs
-timestamp=2026-07-28T20:13:28.685Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=8
-timestamp=2026-07-28T20:13:28.701Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c60ef001SliKOQd2VJ8mWs
-timestamp=2026-07-28T20:13:28.702Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:28.703Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:31.598Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/common/error.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:31.603Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/common/error.rs
-timestamp=2026-07-28T20:13:32.630Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/src/invite/claimer.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:32.645Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/src/invite/claimer.rs
-timestamp=2026-07-28T20:13:33.663Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/src/invite/greeter.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:33.671Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/src/invite/greeter.rs
-timestamp=2026-07-28T20:13:34.274Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/tests/unit/private.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:34.279Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/tests/unit/private.rs
-timestamp=2026-07-28T20:13:34.852Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/Cargo.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:34.857Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/Cargo.toml
-timestamp=2026-07-28T20:13:35.045Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=9
-timestamp=2026-07-28T20:13:35.060Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c79c7001TOJuHHwxYckE0O
-timestamp=2026-07-28T20:13:35.061Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:35.061Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:38.734Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/tests/unit/invite/claimer.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:38.775Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/tests/unit/invite/claimer.rs
-timestamp=2026-07-28T20:13:39.752Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/crypto/src/rustcrypto/private.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:39.759Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/crypto/src/rustcrypto/private.rs
-timestamp=2026-07-28T20:13:39.869Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=10
-timestamp=2026-07-28T20:13:39.879Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5c8c9e001cN7SS8dhGjU7Xu
-timestamp=2026-07-28T20:13:39.879Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:39.880Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:13:54.546Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/server/src/crypto.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:54.557Z level=INFO run=e6639c8b message="touching file" file=/work/server/src/crypto.rs
-timestamp=2026-07-28T20:13:55.579Z level=INFO run=e6639c8b message=evaluated permission=read pattern=work/libparsec/crates/client/src/invite/claimer.rs action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:13:55.586Z level=INFO run=e6639c8b message="touching file" file=/work/libparsec/crates/client/src/invite/claimer.rs
-timestamp=2026-07-28T20:13:55.768Z level=INFO run=e6639c8b message=loop session.id=ses_055a60955ffeEJxAa2tY5MqOeD step=11
-timestamp=2026-07-28T20:13:55.784Z level=INFO run=e6639c8b message=process session.id=ses_055a60955ffeEJxAa2tY5MqOeD messageID=msg_faa5ccaba001ey9zIbstRP4Dvb
-timestamp=2026-07-28T20:13:55.784Z level=INFO run=e6639c8b message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055a60955ffeEJxAa2tY5MqOeD small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:13:55.785Z level=INFO run=e6639c8b message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:25.608Z level=INFO run=7601bb0a message="creating instance" directory=/work
+timestamp=2026-08-07T09:44:25.609Z level=INFO run=7601bb0a message=fromDirectory directory=/work
+timestamp=2026-08-07T09:44:25.620Z level=INFO run=7601bb0a message=bootstrapping directory=/work
+timestamp=2026-08-07T09:44:25.624Z level=INFO run=7601bb0a message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T09:44:25.625Z level=INFO run=7601bb0a message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T09:44:25.625Z level=INFO run=7601bb0a message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T09:44:25.625Z level=INFO run=7601bb0a message=loading path=/opencode.json
+timestamp=2026-08-07T09:44:25.635Z level=ERROR run=7601bb0a message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T09:44:25.635Z level=INFO run=7601bb0a message=loading path=/opencode.json
+timestamp=2026-08-07T09:44:25.772Z level=INFO run=7601bb0a message="all LSPs are disabled"
+timestamp=2026-08-07T09:44:25.773Z level=INFO run=7601bb0a message="all formatters are disabled"
+timestamp=2026-08-07T09:44:25.773Z level=INFO run=7601bb0a message=init
+timestamp=2026-08-07T09:44:25.914Z level=INFO run=7601bb0a message=created id=ses_02463efc5ffe3XDYq74ah3676D slug=curious-mountain version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T09:44:25.914Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786095865914 time.updated=1786095865914
+timestamp=2026-08-07T09:44:25.942Z level=INFO run=7601bb0a message="event connected"
+timestamp=2026-08-07T09:44:26.128Z level=WARN run=7601bb0a message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T09:44:26.137Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=0
+timestamp=2026-08-07T09:44:26.146Z level=INFO run=7601bb0a message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T09:44:26.151Z level=INFO run=7601bb0a message=init count=1
+timestamp=2026-08-07T09:44:26.152Z level=INFO run=7601bb0a message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T09:44:26.171Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=true agent=title mode=primary
+timestamp=2026-08-07T09:44:26.215Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:26.242Z level=INFO run=7601bb0a message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T09:44:26.392Z level=INFO run=7601bb0a message="project copy refresh started" projectID=global
+timestamp=2026-08-07T09:44:26.394Z level=INFO run=7601bb0a message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T09:44:26.797Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c111b001tjyvKKNmBfd7NH
+timestamp=2026-08-07T09:44:26.799Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:44:27.035Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:30.013Z level=INFO run=7601bb0a message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:30.468Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:30.469Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:30.597Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=1
+timestamp=2026-08-07T09:44:30.612Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c2286001E5YYl6SgYLRp8g
+timestamp=2026-08-07T09:44:30.613Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:44:30.614Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:33.373Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:33.401Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_01 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:33.884Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:33.884Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_02 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:34.391Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:34.391Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_03 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:34.909Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:34.909Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_04 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:35.411Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:35.411Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_05 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:35.920Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:35.920Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:36.430Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:36.430Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_07 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:36.929Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:36.930Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_08 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:37.068Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=2
+timestamp=2026-08-07T09:44:37.082Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c3bcd001fbeZ0wI0aW6r9o
+timestamp=2026-08-07T09:44:37.082Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:44:37.083Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:38.674Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:38.674Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:38.681Z level=INFO run=7601bb0a message="touching file" file=/changes/file_01/diff.txt
+timestamp=2026-08-07T09:44:39.204Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:39.204Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_01/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:39.211Z level=INFO run=7601bb0a message="touching file" file=/changes/file_01/before.txt
+timestamp=2026-08-07T09:44:39.722Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:39.722Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_01/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:39.730Z level=INFO run=7601bb0a message="touching file" file=/changes/file_01/after.txt
+timestamp=2026-08-07T09:44:40.240Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:40.240Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_02/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:40.245Z level=INFO run=7601bb0a message="touching file" file=/changes/file_02/diff.txt
+timestamp=2026-08-07T09:44:40.763Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:40.763Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_02/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:40.770Z level=INFO run=7601bb0a message="touching file" file=/changes/file_02/before.txt
+timestamp=2026-08-07T09:44:41.278Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:41.278Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_02/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:41.284Z level=INFO run=7601bb0a message="touching file" file=/changes/file_02/after.txt
+timestamp=2026-08-07T09:44:41.795Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:41.795Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_03/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:41.799Z level=INFO run=7601bb0a message="touching file" file=/changes/file_03/diff.txt
+timestamp=2026-08-07T09:44:42.321Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:42.321Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_03/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:42.326Z level=INFO run=7601bb0a message="touching file" file=/changes/file_03/before.txt
+timestamp=2026-08-07T09:44:42.832Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:42.832Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_03/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:42.836Z level=INFO run=7601bb0a message="touching file" file=/changes/file_03/after.txt
+timestamp=2026-08-07T09:44:43.348Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:43.348Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_04/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:43.352Z level=INFO run=7601bb0a message="touching file" file=/changes/file_04/diff.txt
+timestamp=2026-08-07T09:44:43.863Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:43.863Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_04/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:43.867Z level=INFO run=7601bb0a message="touching file" file=/changes/file_04/before.txt
+timestamp=2026-08-07T09:44:44.380Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_04/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:44.380Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_04/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:44.383Z level=INFO run=7601bb0a message="touching file" file=/changes/file_04/after.txt
+timestamp=2026-08-07T09:44:44.899Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:44.899Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_05/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:44.902Z level=INFO run=7601bb0a message="touching file" file=/changes/file_05/diff.txt
+timestamp=2026-08-07T09:44:45.419Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:45.420Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_05/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:45.425Z level=INFO run=7601bb0a message="touching file" file=/changes/file_05/before.txt
+timestamp=2026-08-07T09:44:45.938Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:45.938Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_05/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:45.942Z level=INFO run=7601bb0a message="touching file" file=/changes/file_05/after.txt
+timestamp=2026-08-07T09:44:46.455Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:46.455Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:46.459Z level=INFO run=7601bb0a message="touching file" file=/changes/file_06/diff.txt
+timestamp=2026-08-07T09:44:46.973Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:46.974Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:46.978Z level=INFO run=7601bb0a message="touching file" file=/changes/file_06/before.txt
+timestamp=2026-08-07T09:44:47.493Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:47.519Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:47.525Z level=INFO run=7601bb0a message="touching file" file=/changes/file_06/after.txt
+timestamp=2026-08-07T09:44:48.010Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:48.010Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_07/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:48.014Z level=INFO run=7601bb0a message="touching file" file=/changes/file_07/diff.txt
+timestamp=2026-08-07T09:44:48.530Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:48.530Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_07/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:48.534Z level=INFO run=7601bb0a message="touching file" file=/changes/file_07/before.txt
+timestamp=2026-08-07T09:44:49.054Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:49.055Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_07/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:49.064Z level=INFO run=7601bb0a message="touching file" file=/changes/file_07/after.txt
+timestamp=2026-08-07T09:44:49.569Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:49.570Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_08/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:49.573Z level=INFO run=7601bb0a message="touching file" file=/changes/file_08/diff.txt
+timestamp=2026-08-07T09:44:50.084Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:50.084Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_08/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:50.088Z level=INFO run=7601bb0a message="touching file" file=/changes/file_08/before.txt
+timestamp=2026-08-07T09:44:50.598Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_08/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:50.598Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_08/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:44:50.602Z level=INFO run=7601bb0a message="touching file" file=/changes/file_08/after.txt
+timestamp=2026-08-07T09:44:52.010Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=3
+timestamp=2026-08-07T09:44:52.027Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c762c001Ph10mVTvxESB5j
+timestamp=2026-08-07T09:44:52.027Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:44:52.028Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:44:52.654Z level=ERROR run=7601bb0a message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T09:44:52.656Z level=ERROR run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c762c001Ph10mVTvxESB5j error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
+timestamp=2026-08-07T09:44:52.661Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=4
+timestamp=2026-08-07T09:44:52.671Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9c78be001wVv0p9dCGqelw1
+timestamp=2026-08-07T09:44:52.671Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=compaction mode=primary
+timestamp=2026-08-07T09:44:52.673Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:45:21.100Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=5
+timestamp=2026-08-07T09:45:21.111Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9ce7ce0012uHwQLrctNxdLo
+timestamp=2026-08-07T09:45:21.112Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:45:21.113Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:45:25.062Z level=INFO run=7601bb0a message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:25.184Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=6
+timestamp=2026-08-07T09:45:25.201Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9cf7c3001Nqq0DXYs7IPR1P
+timestamp=2026-08-07T09:45:25.201Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:45:25.202Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:45:27.041Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:27.041Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:27.163Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=7
+timestamp=2026-08-07T09:45:27.179Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9cff7d001x0l2kLs6rXlbuU
+timestamp=2026-08-07T09:45:27.179Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:45:27.180Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:45:29.173Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:29.173Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_01 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:29.650Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:29.650Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:29.765Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=8
+timestamp=2026-08-07T09:45:29.784Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9d09a8001GapOjCRLOLtHTN
+timestamp=2026-08-07T09:45:29.785Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:45:29.785Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T09:45:31.323Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_06/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:31.323Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_06/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:31.330Z level=INFO run=7601bb0a message="touching file" file=/changes/file_06/diff.txt
+timestamp=2026-08-07T09:45:31.812Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_05/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:31.813Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_05/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:31.817Z level=INFO run=7601bb0a message="touching file" file=/changes/file_05/diff.txt
+timestamp=2026-08-07T09:45:32.337Z level=INFO run=7601bb0a message=evaluated permission=external_directory pattern=/changes/file_07/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:32.337Z level=INFO run=7601bb0a message=evaluated permission=read pattern=changes/file_07/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T09:45:32.340Z level=INFO run=7601bb0a message="touching file" file=/changes/file_07/diff.txt
+timestamp=2026-08-07T09:45:32.458Z level=INFO run=7601bb0a message=loop session.id=ses_02463efc5ffe3XDYq74ah3676D step=9
+timestamp=2026-08-07T09:45:32.475Z level=INFO run=7601bb0a message=process session.id=ses_02463efc5ffe3XDYq74ah3676D messageID=msg_fdb9d142d0011w7u9c6vfsLt0S
+timestamp=2026-08-07T09:45:32.475Z level=INFO run=7601bb0a message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02463efc5ffe3XDYq74ah3676D small=false agent=reviewer mode=primary
+timestamp=2026-08-07T09:45:32.476Z level=INFO run=7601bb0a message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

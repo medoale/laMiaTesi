@@ -1,0 +1,42 @@
+Now let me explore more deeply into the type definitions, serializers, CLI, and experimental modules to find vulnerabilities.
+Let me continue exploring the key files - the base serializer, common serializer, chunker, and doc types.
+Let me look at the document types and important modules more carefully, especially the YAML usage, `importlib.metadata.version` calls, and how documents are loaded from JSON.
+Let me look at the important areas - JSON loading, YAML usage, and search-related code.
+Let me examine the `load_from_json`, YAML functions, and HTML export functions in more detail.
+Let me check the search package and related files for potential injection vulnerabilities.
+Let me examine the OTSL export and the code table handling for more potential vulnerabilities.
+Let me examine a few more areas for clarity - the formula processing and the code item XSS, plus the `json_schema_to_search_mapper.py` `replace_refs` call which uses `jsonref`.
+Let me check how images are handled and look for additional issues in picture serialization.
+Let me also check one more thing in the HTML serializer - the `_process_formula` method with the missing `return` and the hyperlink serializers:
+Let me look for where `unquote` is used and check for any other injection issues.
+Let me do a few final checks to be comprehensive.
+Based on my thorough analysis, I've identified a clear security vulnerability. Let me verify one more aspect of the hyperlink serializer:
+After a thorough manual review of the codebase, I have identified a security vulnerability.
+
+## Analysis Summary
+
+I explored all major modules of the `docling-core` library: types, serializers, utilities, CLI, search, and chunking. The most significant finding is in the HTML serialization code.
+
+### Vulnerability: Improper Neutralization of HTML Output (Stored XSS)
+
+In `/work/docling_core/transforms/serializer/html.py`, lines 153-154, the `HTMLTextSerializer.serialize()` method explicitly skips HTML escaping for `CodeItem` and `FormulaItem` instances:
+
+```python
+if not isinstance(item, (CodeItem, FormulaItem)):
+    text = html.escape(text, quote=False)
+    text = text.replace("\n", "<br>")
+```
+
+All other `TextItem` subtypes (paragraphs, headers, captions, etc.) have their `text` value properly HTML-escaped before being placed into HTML tags. However, `CodeItem` and `FormulaItem` are excluded from this escaping. Their `text` field is user-controlled data that comes directly from the deserialized document JSON.
+
+The unescaped text then flows into HTML elements like:
+- **CodeItem**: `<code>{text}</code>` or `<pre><code>{text}</code></pre>`
+- **FormulaItem**: `<pre>{text}</pre>` or `<code>{text}</code>` (in the fallback paths at lines 305, 313)
+
+**Attack scenario**: An attacker crafts a malicious JSON document containing a `CodeItem` with `text = "<script>alert(document.cookie)</script>"`. When a victim loads this document via `DoclingDocument.load_from_json()` and exports to HTML via `export_to_html()`, the script executes in the browser — a classic stored XSS.
+
+Additionally, I verified that the `serialize_hyperlink` method at line 903 also places `str(hyperlink)` directly into an `href` attribute without HTML-attribute escaping, and the `html_head`/`css_styles` parameters allow arbitrary HTML injection. However, these secondary vectors require attacker control over API parameters, whereas the CodeItem/FormulaItem issue is exploitable through document content alone.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

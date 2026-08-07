@@ -14,7 +14,10 @@ container, and collecting its answer + transcript. Nothing about the CWE answer
 key is ever put in front of an agent.
 
 Resumable: one JSON line per agent run is appended to log.jsonl; on restart,
-(repo, commit, agent) triples already marked 'ok' are skipped.
+(repo, commit, agent) triples already marked 'ok' are skipped. run.sh adds
+--skip-completed-errors, which also keeps the runs that reached the end without
+a parseable verdict, so a relaunch only covers what was never run or was cut
+short.
 """
 import argparse
 import csv
@@ -69,14 +72,30 @@ def load_ground_truth():
     return rows
 
 
-def load_done():
-    """(repo_url, commit, agent) triples already completed with status 'ok'."""
+# Prefix of the one error that means "the run finished, the answer is there":
+# the container exited 0 and the agent produced text, only without a parseable
+# verdict block (see run_one). Every other error carries `container exit N` and
+# means the run was cut short — a timeout, a kill, a failed mount — with nothing
+# worth keeping.
+COMPLETED_ERROR = 'error: no valid verdict'
+
+
+def load_done(skip_completed_errors=False):
+    """(repo_url, commit, agent) triples a resumed run must not do again.
+
+    By default only the ones with status 'ok', so every error is retried.
+    With skip_completed_errors, the runs that ended in COMPLETED_ERROR count as
+    done too: their answer is already in the log and re-running them would burn
+    ~4 minutes to reproduce the same unformatted verdict. Runs cut short are
+    still retried, since those left no answer at all.
+    """
     done = set()
     if LOG.exists():
         with open(LOG) as f:
             for line in f:
                 rec = json.loads(line)
-                if rec['status'] == 'ok':
+                if rec['status'] == 'ok' or (skip_completed_errors
+                                             and rec['status'].startswith(COMPLETED_ERROR)):
                     done.add((rec['repo_url'], rec['commit'], rec['agent']))
     return done
 
@@ -194,6 +213,12 @@ def main():
     # affects the answers (a prompt, a permission, the agent config).
     parser.add_argument('--force', action='store_true',
                         help='re-run even the (repo, commit, agent) already marked ok')
+    # Resuming after an interruption: by default every error is retried. This
+    # keeps the ones that did finish (answer present, verdict block missing) and
+    # retries only what was never run or was cut short.
+    parser.add_argument('--skip-completed-errors', action='store_true',
+                        help='treat a run that finished without a parseable verdict as '
+                             'done; still retry runs cut short (container exit N)')
     args = parser.parse_args()
     agents = [a.strip() for a in args.agents.split(',') if a.strip()]
     unknown = [a for a in agents if a not in AGENTS]
@@ -210,7 +235,7 @@ def main():
     signal.signal(signal.SIGTERM, _on_terminate)
 
     rows = load_ground_truth()
-    done = set() if args.force else load_done()
+    done = set() if args.force else load_done(args.skip_completed_errors)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     PID_FILE.write_text(str(os.getpid()))
     total = len(rows) * len(agents)

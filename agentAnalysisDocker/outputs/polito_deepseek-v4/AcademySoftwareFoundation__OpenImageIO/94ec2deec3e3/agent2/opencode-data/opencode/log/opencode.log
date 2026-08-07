@@ -1,190 +1,89 @@
-timestamp=2026-07-28T18:12:44.214Z level=INFO run=582075c8 message="creating instance" directory=/work
-timestamp=2026-07-28T18:12:44.216Z level=INFO run=582075c8 message=fromDirectory directory=/work
-timestamp=2026-07-28T18:12:44.221Z level=INFO run=582075c8 message=bootstrapping directory=/work
-timestamp=2026-07-28T18:12:44.228Z level=INFO run=582075c8 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T18:12:44.229Z level=INFO run=582075c8 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T18:12:44.229Z level=INFO run=582075c8 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T18:12:44.230Z level=ERROR run=582075c8 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T18:12:44.230Z level=INFO run=582075c8 message=loading path=/opencode.json
-timestamp=2026-07-28T18:12:44.235Z level=INFO run=582075c8 message=loading path=/opencode.json
-timestamp=2026-07-28T18:12:44.352Z level=INFO run=582075c8 message="all LSPs are disabled"
-timestamp=2026-07-28T18:12:44.353Z level=INFO run=582075c8 message="all formatters are disabled"
-timestamp=2026-07-28T18:12:44.353Z level=INFO run=582075c8 message=init
-timestamp=2026-07-28T18:12:44.477Z level=INFO run=582075c8 message=created id=ses_0561228c3ffeonhKLBg4Oee5WR slug=kind-cactus version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T18:12:44.477Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785262364477 time.updated=1785262364477
-timestamp=2026-07-28T18:12:44.502Z level=INFO run=582075c8 message="event connected"
-timestamp=2026-07-28T18:12:44.658Z level=WARN run=582075c8 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T18:12:44.671Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=0
-timestamp=2026-07-28T18:12:44.679Z level=INFO run=582075c8 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T18:12:44.684Z level=INFO run=582075c8 message=init count=1
-timestamp=2026-07-28T18:12:44.685Z level=INFO run=582075c8 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T18:12:44.699Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=true agent=title mode=primary
-timestamp=2026-07-28T18:12:44.741Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:12:44.765Z level=INFO run=582075c8 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T18:12:45.133Z level=INFO run=582075c8 message="project copy refresh started" projectID=global
-timestamp=2026-07-28T18:12:45.134Z level=INFO run=582075c8 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T18:12:45.441Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9edd8010012WdGjrrEwq4CkI
-timestamp=2026-07-28T18:12:45.448Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:12:45.552Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:11.802Z level=INFO run=582075c8 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:12.215Z level=INFO run=582075c8 message=evaluated permission=external_directory pattern=/changes/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T18:13:12.215Z level=INFO run=582075c8 message=asking id=per_fa9ee4397001UA73AjEQw0hZdd permission=external_directory patterns="[\"/changes/*\"]"
-timestamp=2026-07-28T18:13:12.218Z level=INFO run=582075c8 message=evaluated permission=read pattern=changes action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:12.418Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=1
-timestamp=2026-07-28T18:13:12.434Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9ee4463001MRkPRU8zN1Gwsi
-timestamp=2026-07-28T18:13:12.434Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:12.435Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:23.119Z level=INFO run=582075c8 message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T18:13:23.119Z level=INFO run=582075c8 message=asking id=per_fa9ee6e2f001asY6HBfwAJLk7V permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T18:13:23.121Z level=INFO run=582075c8 message=evaluated permission=read pattern=changes/file_01 action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:23.302Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=2
-timestamp=2026-07-28T18:13:23.311Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9ee6ee7001puWdCPmjedrzmK
-timestamp=2026-07-28T18:13:23.311Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:23.312Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:25.127Z level=INFO run=582075c8 message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T18:13:25.127Z level=INFO run=582075c8 message=asking id=per_fa9ee76070010qBy6jbsFOdwIi permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T18:13:25.128Z level=INFO run=582075c8 message=evaluated permission=read pattern=changes/file_01/before.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:25.138Z level=INFO run=582075c8 message="touching file" file=/changes/file_01/before.txt
-timestamp=2026-07-28T18:13:25.623Z level=INFO run=582075c8 message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T18:13:25.623Z level=INFO run=582075c8 message=asking id=per_fa9ee77f70018f5fJ31q3NBbJy permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T18:13:25.624Z level=INFO run=582075c8 message=evaluated permission=read pattern=changes/file_01/after.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:25.631Z level=INFO run=582075c8 message="touching file" file=/changes/file_01/after.txt
-timestamp=2026-07-28T18:13:26.121Z level=INFO run=582075c8 message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-07-28T18:13:26.121Z level=INFO run=582075c8 message=asking id=per_fa9ee79e9001z73opCjJWdWFVY permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-07-28T18:13:26.122Z level=INFO run=582075c8 message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:26.126Z level=INFO run=582075c8 message="touching file" file=/changes/file_01/diff.txt
-timestamp=2026-07-28T18:13:26.236Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=3
-timestamp=2026-07-28T18:13:26.243Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9ee7a5d001u6fbYrE1HIZC6Z
-timestamp=2026-07-28T18:13:26.244Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:26.244Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:49.307Z level=INFO run=582075c8 message=evaluated permission=glob pattern=**/dds_pvt.h action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:49.990Z level=INFO run=582075c8 message=evaluated permission=glob pattern=**/ddsinput.cpp action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:50.156Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=4
-timestamp=2026-07-28T18:13:50.165Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9eed7cd00152cKtUusjx8D4d
-timestamp=2026-07-28T18:13:50.166Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:50.167Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:52.083Z level=INFO run=582075c8 message=evaluated permission=read pattern=work/src/dds.imageio/dds_pvt.h action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:52.088Z level=INFO run=582075c8 message="touching file" file=/work/src/dds.imageio/dds_pvt.h
-timestamp=2026-07-28T18:13:52.257Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=5
-timestamp=2026-07-28T18:13:52.272Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9eee002001YwJevtzR7gVlRK
-timestamp=2026-07-28T18:13:52.272Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:52.273Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:55.743Z level=INFO run=582075c8 message=evaluated permission=grep pattern=check_open action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:56.627Z level=INFO run=582075c8 message=evaluated permission=grep pattern=check_open action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:56.755Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=6
-timestamp=2026-07-28T18:13:56.763Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9eef194001T8ZobY4KBJ7CF1
-timestamp=2026-07-28T18:13:56.763Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:56.764Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:13:59.557Z level=INFO run=582075c8 message=evaluated permission=read pattern=work/src/libOpenImageIO/imageinput.cpp action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T18:13:59.570Z level=INFO run=582075c8 message="touching file" file=/work/src/libOpenImageIO/imageinput.cpp
-timestamp=2026-07-28T18:13:59.751Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=7
-timestamp=2026-07-28T18:13:59.764Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9eefd48001Iw1ben4X4okBnz
-timestamp=2026-07-28T18:13:59.764Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:13:59.765Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T18:14:22.048Z level=INFO run=582075c8 message=evaluated permission=bash pattern="ls /changes/" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T18:14:22.251Z level=INFO run=582075c8 message=loop session.id=ses_0561228c3ffeonhKLBg4Oee5WR step=8
-timestamp=2026-07-28T18:14:22.264Z level=INFO run=582075c8 message=process session.id=ses_0561228c3ffeonhKLBg4Oee5WR messageID=msg_fa9ef552d001A2DuP18Zjl5NAq
-timestamp=2026-07-28T18:14:22.265Z level=INFO run=582075c8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0561228c3ffeonhKLBg4Oee5WR small=false agent=reviewer mode=primary
-timestamp=2026-07-28T18:14:22.265Z level=INFO run=582075c8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:45:42.623Z level=INFO run=5f91e85e message="creating instance" directory=/work
-timestamp=2026-08-06T09:45:42.625Z level=INFO run=5f91e85e message=fromDirectory directory=/work
-timestamp=2026-08-06T09:45:42.635Z level=INFO run=5f91e85e message=bootstrapping directory=/work
-timestamp=2026-08-06T09:45:42.642Z level=INFO run=5f91e85e message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-06T09:45:42.643Z level=INFO run=5f91e85e message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-06T09:45:42.643Z level=INFO run=5f91e85e message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-06T09:45:42.643Z level=INFO run=5f91e85e message=loading path=/opencode.json
-timestamp=2026-08-06T09:45:42.648Z level=INFO run=5f91e85e message=loading path=/opencode.json
-timestamp=2026-08-06T09:45:42.659Z level=ERROR run=5f91e85e message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-06T09:45:42.776Z level=INFO run=5f91e85e message="all LSPs are disabled"
-timestamp=2026-08-06T09:45:42.777Z level=INFO run=5f91e85e message="all formatters are disabled"
-timestamp=2026-08-06T09:45:42.777Z level=INFO run=5f91e85e message=init
-timestamp=2026-08-06T09:45:42.906Z level=INFO run=5f91e85e message=created id=ses_029891f06ffeDVSa0D1Alm4ign slug=brave-nebula version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-06T09:45:42.906Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786009542906 time.updated=1786009542906
-timestamp=2026-08-06T09:45:42.928Z level=INFO run=5f91e85e message="event connected"
-timestamp=2026-08-06T09:45:43.094Z level=WARN run=5f91e85e message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-06T09:45:43.102Z level=INFO run=5f91e85e message=loop session.id=ses_029891f06ffeDVSa0D1Alm4ign step=0
-timestamp=2026-08-06T09:45:43.111Z level=INFO run=5f91e85e message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-06T09:45:43.116Z level=INFO run=5f91e85e message=init count=1
-timestamp=2026-08-06T09:45:43.117Z level=INFO run=5f91e85e message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-06T09:45:43.133Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=true agent=title mode=primary
-timestamp=2026-08-06T09:45:43.182Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:45:43.213Z level=INFO run=5f91e85e message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-06T09:45:43.353Z level=INFO run=5f91e85e message="project copy refresh started" projectID=global
-timestamp=2026-08-06T09:45:43.354Z level=INFO run=5f91e85e message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-06T09:45:43.939Z level=INFO run=5f91e85e message=process session.id=ses_029891f06ffeDVSa0D1Alm4ign messageID=msg_fd676e1c0001VldpNsmzU91s46
-timestamp=2026-08-06T09:45:43.940Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:45:44.063Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:45:46.224Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:45:48.265Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:45:48.268Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:45:50.666Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:45:54.672Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:45:54.675Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:45:56.910Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:45:57.600Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=true agent=title mode=primary error.error="AI_RetryError: Failed after 3 attempts. Last error: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:46:04.914Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:46:04.917Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:46:07.985Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:46:23.989Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:46:23.991Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:46:27.120Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:46:59.133Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:46:59.135Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:47:01.934Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:48:05.938Z level=INFO run=5f91e85e message=stream providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:48:05.940Z level=INFO run=5f91e85e message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:48:08.532Z level=ERROR run=5f91e85e message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_029891f06ffeDVSa0D1Alm4ign small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:52:44.662Z level=INFO run=28f894e8 message="creating instance" directory=/work
-timestamp=2026-08-06T09:52:44.663Z level=INFO run=28f894e8 message=fromDirectory directory=/work
-timestamp=2026-08-06T09:52:44.688Z level=INFO run=28f894e8 message=bootstrapping directory=/work
-timestamp=2026-08-06T09:52:44.693Z level=INFO run=28f894e8 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-06T09:52:44.693Z level=INFO run=28f894e8 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-06T09:52:44.693Z level=ERROR run=28f894e8 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-06T09:52:44.694Z level=INFO run=28f894e8 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-06T09:52:44.697Z level=INFO run=28f894e8 message=loading path=/opencode.json
-timestamp=2026-08-06T09:52:44.701Z level=INFO run=28f894e8 message=loading path=/opencode.json
-timestamp=2026-08-06T09:52:44.821Z level=INFO run=28f894e8 message="all LSPs are disabled"
-timestamp=2026-08-06T09:52:44.822Z level=INFO run=28f894e8 message="all formatters are disabled"
-timestamp=2026-08-06T09:52:44.822Z level=INFO run=28f894e8 message=init
-timestamp=2026-08-06T09:52:44.946Z level=INFO run=28f894e8 message=created id=ses_02982ae6effeHHXCuR5Hmhfdkr slug=neon-rocket version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-06T09:52:44.945Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786009964945 time.updated=1786009964945
-timestamp=2026-08-06T09:52:44.965Z level=INFO run=28f894e8 message="event connected"
-timestamp=2026-08-06T09:52:45.130Z level=WARN run=28f894e8 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-06T09:52:45.132Z level=INFO run=28f894e8 message=loop session.id=ses_02982ae6effeHHXCuR5Hmhfdkr step=0
-timestamp=2026-08-06T09:52:45.141Z level=INFO run=28f894e8 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-06T09:52:45.146Z level=INFO run=28f894e8 message=init count=1
-timestamp=2026-08-06T09:52:45.147Z level=INFO run=28f894e8 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-06T09:52:45.163Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=true agent=title mode=primary
-timestamp=2026-08-06T09:52:45.209Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:52:45.233Z level=INFO run=28f894e8 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-06T09:52:45.365Z level=INFO run=28f894e8 message="project copy refresh started" projectID=global
-timestamp=2026-08-06T09:52:45.366Z level=INFO run=28f894e8 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-06T09:52:45.916Z level=INFO run=28f894e8 message=process session.id=ses_02982ae6effeHHXCuR5Hmhfdkr messageID=msg_fd67d524e001lrXbsQ1c6d1XSe
-timestamp=2026-08-06T09:52:45.918Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:52:46.039Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:52:48.833Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:52:50.850Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:52:50.853Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:52:53.388Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:52:57.403Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:52:57.407Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:52:59.403Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=true agent=title mode=primary error.error="AI_RetryError: Failed after 3 attempts. Last error: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:53:00.283Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:53:08.296Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:53:08.298Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:53:10.467Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:53:26.471Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:53:26.473Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:53:28.762Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:54:00.765Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:54:00.768Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:54:03.329Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:55:07.337Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:55:07.340Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:55:09.874Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T09:57:17.879Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T09:57:17.881Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T09:57:20.835Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T10:01:36.836Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T10:01:36.840Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T10:01:39.496Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-06T10:10:11.492Z level=INFO run=28f894e8 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary
-timestamp=2026-08-06T10:10:11.495Z level=INFO run=28f894e8 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-08-06T10:10:14.230Z level=ERROR run=28f894e8 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_02982ae6effeHHXCuR5Hmhfdkr small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T07:40:51.435Z level=INFO run=c7f750af message="creating instance" directory=/work
+timestamp=2026-08-07T07:40:51.437Z level=INFO run=c7f750af message=fromDirectory directory=/work
+timestamp=2026-08-07T07:40:51.447Z level=INFO run=c7f750af message=bootstrapping directory=/work
+timestamp=2026-08-07T07:40:51.451Z level=INFO run=c7f750af message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T07:40:51.451Z level=INFO run=c7f750af message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T07:40:51.452Z level=INFO run=c7f750af message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T07:40:51.452Z level=INFO run=c7f750af message=loading path=/opencode.json
+timestamp=2026-08-07T07:40:51.462Z level=ERROR run=c7f750af message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T07:40:51.462Z level=INFO run=c7f750af message=loading path=/opencode.json
+timestamp=2026-08-07T07:40:51.592Z level=INFO run=c7f750af message="all LSPs are disabled"
+timestamp=2026-08-07T07:40:51.593Z level=INFO run=c7f750af message="all formatters are disabled"
+timestamp=2026-08-07T07:40:51.593Z level=INFO run=c7f750af message=init
+timestamp=2026-08-07T07:40:51.729Z level=INFO run=c7f750af message=created id=ses_024d5116fffe5wWHp9z6tNrNRq slug=crisp-star version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T07:40:51.729Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786088451729 time.updated=1786088451729
+timestamp=2026-08-07T07:40:51.755Z level=INFO run=c7f750af message="event connected"
+timestamp=2026-08-07T07:40:51.940Z level=WARN run=c7f750af message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T07:40:51.943Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=0
+timestamp=2026-08-07T07:40:51.953Z level=INFO run=c7f750af message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T07:40:51.958Z level=INFO run=c7f750af message=init count=1
+timestamp=2026-08-07T07:40:51.959Z level=INFO run=c7f750af message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T07:40:51.979Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=true agent=title mode=primary
+timestamp=2026-08-07T07:40:52.027Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:40:52.056Z level=INFO run=c7f750af message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T07:40:52.462Z level=INFO run=c7f750af message="project copy refresh started" projectID=global
+timestamp=2026-08-07T07:40:52.463Z level=INFO run=c7f750af message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T07:40:52.792Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2aef69001Sy08un8lsKFRkh
+timestamp=2026-08-07T07:40:52.799Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:40:52.909Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:40:56.819Z level=INFO run=c7f750af message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:40:57.279Z level=INFO run=c7f750af message=evaluated permission=external_directory pattern=/changes/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T07:40:57.279Z level=INFO run=c7f750af message=evaluated permission=read pattern=changes action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:40:57.410Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=1
+timestamp=2026-08-07T07:40:57.431Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2b04c3001E5HqFQmU2enM6m
+timestamp=2026-08-07T07:40:57.432Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:40:57.433Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:41:09.062Z level=INFO run=c7f750af message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:09.062Z level=INFO run=c7f750af message=evaluated permission=read pattern=changes/file_01 action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:09.223Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=2
+timestamp=2026-08-07T07:41:09.238Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2b32e8001NyDigxlsk4313x
+timestamp=2026-08-07T07:41:09.239Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:41:09.240Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:41:11.366Z level=INFO run=c7f750af message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:11.366Z level=INFO run=c7f750af message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:11.373Z level=INFO run=c7f750af message="touching file" file=/changes/file_01/diff.txt
+timestamp=2026-08-07T07:41:11.870Z level=INFO run=c7f750af message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:11.870Z level=INFO run=c7f750af message=evaluated permission=read pattern=changes/file_01/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:11.877Z level=INFO run=c7f750af message="touching file" file=/changes/file_01/before.txt
+timestamp=2026-08-07T07:41:12.390Z level=INFO run=c7f750af message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:12.390Z level=INFO run=c7f750af message=evaluated permission=read pattern=changes/file_01/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:12.396Z level=INFO run=c7f750af message="touching file" file=/changes/file_01/after.txt
+timestamp=2026-08-07T07:41:12.526Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=3
+timestamp=2026-08-07T07:41:12.534Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2b3fcf001XK0vQKb7vay10w
+timestamp=2026-08-07T07:41:12.534Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:41:12.535Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:41:45.921Z level=INFO run=c7f750af message=evaluated permission=glob pattern=src/**/ddsinput.cpp action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:46.401Z level=INFO run=c7f750af message=evaluated permission=glob pattern=src/**/*dds* action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:47.065Z level=INFO run=c7f750af message=evaluated permission=grep pattern=check_open action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:47.345Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=4
+timestamp=2026-08-07T07:41:47.355Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2bc7d3001MxiicCXVjBx2g9
+timestamp=2026-08-07T07:41:47.356Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:41:47.357Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:41:50.001Z level=INFO run=c7f750af message=evaluated permission=read pattern=work/src/include/OpenImageIO/imageio.h action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:50.013Z level=INFO run=c7f750af message="touching file" file=/work/src/include/OpenImageIO/imageio.h
+timestamp=2026-08-07T07:41:50.541Z level=INFO run=c7f750af message=evaluated permission=read pattern=work/src/dds.imageio/dds_pvt.h action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:41:50.545Z level=INFO run=c7f750af message="touching file" file=/work/src/dds.imageio/dds_pvt.h
+timestamp=2026-08-07T07:41:50.717Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=5
+timestamp=2026-08-07T07:41:50.732Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2bd4ff001S3AA6H70tvjpPs
+timestamp=2026-08-07T07:41:50.732Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:41:50.733Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:42:24.797Z level=INFO run=c7f750af message="resolved path" arg=/work resolved=/work
+timestamp=2026-08-07T07:42:24.798Z level=INFO run=c7f750af message=evaluated permission=bash pattern="git log --oneline -5 -- src/dds.imageio/ddsinput.cpp" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T07:42:25.321Z level=INFO run=c7f750af message="resolved path" arg=/work resolved=/work
+timestamp=2026-08-07T07:42:25.322Z level=INFO run=c7f750af message=evaluated permission=bash pattern="git log --oneline -3" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T07:42:25.619Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=6
+timestamp=2026-08-07T07:42:25.635Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2c5d55001oB88K4H9FFPIow
+timestamp=2026-08-07T07:42:25.636Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:42:25.637Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:42:28.777Z level=INFO run=c7f750af message=evaluated permission=grep pattern=dds.*overflow|dds.*crash|dds.*security|dds.*fix|dds.*vulnerab action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T07:42:28.916Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=7
+timestamp=2026-08-07T07:42:28.925Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2c6a36001LrWnBMb4rEDNnl
+timestamp=2026-08-07T07:42:28.925Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:42:28.926Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T07:42:57.282Z level=INFO run=c7f750af message=evaluated permission=read pattern=work/src/dds.imageio/ddsinput.cpp action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:42:57.287Z level=INFO run=c7f750af message="touching file" file=/work/src/dds.imageio/ddsinput.cpp
+timestamp=2026-08-07T07:42:58.306Z level=INFO run=c7f750af message=evaluated permission=read pattern=work/src/dds.imageio/ddsinput.cpp action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T07:42:58.312Z level=INFO run=c7f750af message="touching file" file=/work/src/dds.imageio/ddsinput.cpp
+timestamp=2026-08-07T07:42:58.615Z level=INFO run=c7f750af message=loop session.id=ses_024d5116fffe5wWHp9z6tNrNRq step=8
+timestamp=2026-08-07T07:42:58.624Z level=INFO run=c7f750af message=process session.id=ses_024d5116fffe5wWHp9z6tNrNRq messageID=msg_fdb2cde39001Sjjut1ljkp2e3p
+timestamp=2026-08-07T07:42:58.625Z level=INFO run=c7f750af message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024d5116fffe5wWHp9z6tNrNRq small=false agent=reviewer mode=primary
+timestamp=2026-08-07T07:42:58.626Z level=INFO run=c7f750af message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

@@ -1,0 +1,55 @@
+Now let me explore the repository to better understand the file structure and confirm the context.
+Let me look at how `events.php` (the main page, not the function) handles the `user_uuid` GET parameter and how the links are constructed, to better understand the full attack surface.
+Now I have a complete understanding of the vulnerability. Let me verify the `Participants::isLeader` method to confirm the authorization model.
+Now I have all the information needed for a thorough analysis. Let me finalize my verdict by examining the `Event::possibleToParticipate` method to confirm the full attack scenario.
+## Analysis Complete
+
+### What the commit changes
+
+The file `/work/modules/events/events_function.php` handles event participation actions (participate, cancel participation, maybe attend). The commit adds an authorization check (lines 416–419 in the after-version) before the code that reads and modifies user memberships.
+
+### Vulnerability in the "before" version
+
+**The attack flow:**
+
+1. **Line 47** — `$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', ...)`  
+   The target user UUID is read from the `user_uuid` GET parameter. While it *defaults* to the current user's UUID, an attacker can **explicitly** provide a different UUID via the URL.
+
+2. **Line 77** — `$user->readDataByUuid($getUserUuid);`  
+   The code loads whichever user the attacker specified.
+
+3. **Line 424** (pre-fix condition):  
+   ```php
+   if ($event->possibleToParticipate() || $participants->isLeader($gCurrentUserId)) {
+   ```
+   `possibleToParticipate()` returns `true` for any regular user if the event's deadline hasn't passed and there is capacity (or if they are already a member). This means a non-leader, non-admin user enters this block.
+
+4. **Lines 425–488** — The code manipulates the membership of **`$user`** (the victim loaded from the attacker-controlled UUID): signing them up, cancelling them, setting them as tentative, modifying their comment/guest count.
+
+**Result:** A regular authenticated user can forge a POST request (with a valid CSRF token obtained from their own participation form) and manipulate **any other user's** event participation — enrolling them against their will, cancelling their registration, etc.
+
+### The fix
+
+The after-version inserts:
+```php
+// if user is no leader of the event then only allow to handle their own participation
+if (!$participants->isLeader($gCurrentUserId)) {
+    $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+}
+```
+
+This enforces that non-leaders can only act on their own user record. Leaders (who are already trusted to manage participants) can still use the `user_uuid` parameter to manage other users.
+
+### CWE Classification
+
+This is a classic **Insecure Direct Object Reference (IDOR)** — the application exposes a direct reference to an internal object (a user, via their UUID) and fails to verify that the requesting user is authorized to perform actions on that object. The most specific CWE is:
+
+- **CWE-639: Authorization Bypass Through User-Controlled Key** — A user-controlled key (`user_uuid`) is used to directly access a user's participation data without proper authorization verification.
+
+While CWE-862 (Missing Authorization) broadly applies, CWE-639 is the more precise fit because the root cause is specifically the user-controlled identifier that grants access to another user's data.
+
+---
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

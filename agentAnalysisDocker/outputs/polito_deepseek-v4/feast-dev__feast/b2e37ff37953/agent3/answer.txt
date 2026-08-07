@@ -1,48 +1,64 @@
-Let me explore the repository systematically for security vulnerabilities. I'll look at the key code areas.
-Let me verify the critical findings by examining the actual code:
-Let me verify more of the SQL injection patterns and check other sources:
-Let me also check a few more areas to be thorough:
-Let me check one more area - how entity_df flows from the public API to the vulnerable SQL sinks:
-Now I have a thorough understanding of the codebase. Let me also look at what's in the Go and Java code to see if there are comparable vulnerabilities.
-Let me check one more important file path - the Couchbase offline store:
-I have thoroughly explored the Feast repository. Here is my complete security assessment:
+Let me do a few more targeted searches to be thorough.
+Now I have explored the codebase thoroughly. Let me verify a few more details before reaching a conclusion.
+After thorough analysis, I have identified multiple security vulnerabilities in this Feast repository. Here is my assessment:
 
 ---
 
 ## Findings Summary
 
-The repository is **Feast**, an open-source feature store for machine learning. The most critical codebase is the Python SDK (`/work/sdk/python/feast/`), where I identified **six distinct, confirmed vulnerability classes**:
+### 1. Path Traversal — `/read-document` endpoint (CWE-22)
+**File:** `sdk/python/feast/feature_server.py`, lines 385–398
 
-### 1. CWE-89: SQL Injection (Critical, Widespread)
-The `entity_df` parameter to `get_historical_features()` accepts raw SQL strings that are directly interpolated into SQL queries via f-strings with **zero sanitization or parameterization**. This affects every offline store implementation:
-- **BigQuery** (`bigquery.py:732`): `f"CREATE TABLE ... AS ({entity_df})"`
-- **Redshift** (`redshift.py:561`): `f"CREATE TABLE ... AS ({entity_df})"`
-- **Snowflake** (`snowflake.py:678`): `f"CREATE TEMPORARY TABLE ... AS ({entity_df})"`
-- **Athena** (`athena.py:490`): `f"CREATE TABLE ... AS ({entity_df})"`
-- **PostgreSQL** (`postgres.py:492`): `f"CREATE TABLE ... AS ({entity_df})"`
-- **Trino** (`trino.py:237`): `f"CREATE TABLE ... AS ({self._query})"`
-- Plus Spark, Couchbase, Clickhouse, MSSQL — the same pattern.
+The HTTP endpoint `POST /read-document` accepts a user-supplied `file_path` and reads it directly from the filesystem with **no path sanitization whatsoever**. There is no check against the working directory, no traversal blocking, and no allowlist. Any file on the server can be read — `/etc/passwd`, `/proc/self/environ`, configuration files, private keys, etc.
 
-### 2. CWE-22: Path Traversal (Critical)
-- **Arbitrary File Read** (`feature_server.py:386-398`): `POST /read-document` opens and returns any file path from user input with no sanitization.
-- **Arbitrary File Write** (`feature_server.py:400-419`, `ui_server.py:85-103`): `POST /save-document` writes to the filesystem with only a weak `str(file_path).startswith(os.getcwd())` check.
+```python
+@app.post("/read-document")
+async def read_document_endpoint(request: ReadDocumentRequest):
+    # ...
+    if not os.path.exists(request.file_path):
+        return {"error": f"File not found: {request.file_path}"}
+    with open(request.file_path, "r", encoding="utf-8") as file:
+        content = file.read()
+    return {"content": content, "file_path": request.file_path}
+```
 
-### 3. CWE-502: Deserialization of Untrusted Data (Critical)
-- **Unsafe YAML load** (`kubernetes/main.py:69-73`): Uses `yaml.load(f, Loader=yaml.Loader)` instead of `yaml.safe_load()`, enabling arbitrary code execution via `!!python/object` constructs.
-- **Arbitrary class instantiation** (`errors.py:54-69`): `from_error_detail()` deserializes JSON containing `"module"` and `"class"` fields, then uses `importlib.import_module()` and `getattr()` to instantiate arbitrary classes.
+### 2. Path Traversal — `/save-document` endpoint (CWE-22)
+**Files:** `feature_server.py` lines 400–418, `ui_server.py` lines 85–103
 
-### 4. CWE-94: Code Injection (Critical)
-- **Dynamic module import** (`repo_operations.py:114-135`): `parse_repo()` calls `importlib.import_module()` on every Python file in the repo directory, executing all module-level code.
-- **Bootstrap execution** (`repo_operations.py:485-494`): If `bootstrap.py` exists in the repo path, it is loaded via `exec_module()` and its `bootstrap()` function is called.
+These endpoints take a user-supplied `file_path` and write a JSON labels file derived from it. Although there is a check ensuring the resolved path starts with `os.getcwd()`, a determined attacker may bypass this restriction via symlinks within the working directory, enabling arbitrary file writes within the repository scope.
 
-### 5. CWE-918: Server-Side Request Forgery (High)
-- **OIDC service** (`permissions/oidc_service.py:16-18`): `_fetch_discovery_data()` issues `requests.get(self.discovery_url)` with no URL validation or whitelisting, allowing SSRF to internal/cloud metadata endpoints.
+### 3. Insecure Deserialization via `dill.loads()` (CWE-502)
+**Multiple files across the codebase**
 
-### 6. CWE-942: Permissive Cross-domain Policy (High)
-- **CORS misconfiguration** (`ui_server.py:28-34`): `allow_origins=["*"]` combined with `allow_credentials=True`, allowing any website to make authenticated cross-origin requests.
+The `dill` library is a superset of `pickle`, and `dill.loads()` can execute arbitrary Python code during deserialization. It is used in production code to deserialize user-defined transformation functions from protobuf registry data without any integrity verification:
+
+| File | Line |
+|------|------|
+| `transformation/python_transformation.py` | 161 |
+| `transformation/pandas_transformation.py` | 150 |
+| `stream_feature_view.py` | 276 |
+| `dqm/profilers/ge_profiler.py` | 158 |
+| `infra/common/serde.py` | 36 |
+| `transformation/substrait_transformation.py` | 163 |
+| `infra/compute_engines/ray/nodes.py` | 527 |
+| `infra/offline_stores/contrib/ray_offline_store/ray.py` | 1991 |
+
+An attacker who can inject malicious serialized data into the registry (via `feast apply` or by compromising the registry backend) can achieve **arbitrary remote code execution** when the deserialization occurs.
+
+### 4. Unsafe YAML Deserialization (CWE-502)
+**File:** `infra/compute_engines/kubernetes/main.py`, lines 70–73
+
+Uses `yaml.load(f, Loader=yaml.Loader)` instead of `yaml.safe_load()`. The default `yaml.Loader` can execute arbitrary Python code via crafted YAML payloads (e.g., `!!python/object/apply:os.system`). If an attacker can write to `/var/feast/feature_store.yaml` or `/var/feast/materialization_config.yaml`, this yields code execution.
+
+### 5. SQL Injection — MSSQL source (CWE-89)
+**File:** `infra/offline_stores/contrib/mssql_offline_store/mssqlserver_source.py`, lines 263–270
+
+Uses Python f-strings to construct SQL queries with the `table_name` and `database` variables from `data_source.table_ref`, without any parameterization or escaping. If the data source table reference is attacker-controlled, SQL injection is possible.
 
 ---
 
+**Verdict: The repository contains multiple security vulnerabilities.**
+
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-89, CWE-22, CWE-502, CWE-94, CWE-918, CWE-942
-CWE_NAME: SQL Injection, Path Traversal, Deserialization of Untrusted Data, Code Injection, Server-Side Request Forgery, Permissive Cross-domain Policy
+CWE_ID: CWE-22, CWE-502, CWE-89
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal'), Deserialization of Untrusted Data, SQL Injection

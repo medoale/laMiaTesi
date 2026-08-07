@@ -1,51 +1,50 @@
-Now let me explore the repository to understand the context of this protobuf decoding code.
-Let me also check the corresponding .cpp file to see the exact version currently in the workspace (which should be the "before" version):
-Now I have a complete understanding of the change. Let me verify one more thing — how the API receives network data so I can confirm remote exploitability:
-Let me check how `read_message` is called from the network layer:
-Now I have all the evidence I need. Here is my full analysis:
-
----
-
-## Analysis
+Now let me find the actual file in the repository and understand the context better.
+Now let me verify the exact current state of the code to confirm it matches the "before" version:
+Now I have full clarity. Let me confirm the architecture details to be certain about the overflow conditions:
+## Analysis Summary
 
 **File changed:** `esphome/components/api/proto.cpp`
 
-The commit modifies four bounds checks in the protobuf decoding logic — two each in `count_repeated_field()` and `decode()`:
+**The commit fixes 4 bounds-checks** across two methods (`count_repeated_field` and `decode`) in the protobuf decoding code, all with the same pattern:
 
-### The Bug: Integer Overflow in Pointer Arithmetic
-
-The original code used **addition-based** bounds checks:
-
+### Before (vulnerable)
 ```cpp
-// BEFORE (vulnerable):
-if (ptr + field_length > end)   // WIRE_TYPE_LENGTH_DELIMITED
-if (ptr + 4 > end)              // WIRE_TYPE_FIXED32
+if (ptr + field_length > end)     // pointer arithmetic, can wrap
+if (ptr + 4 > end)                // same pattern
 ```
 
-On a 32-bit microcontroller (ESP32, ESP8266, RP2040 — all ESPHome targets), pointer arithmetic is 32-bit. When an attacker supplies a `field_length` close to `UINT32_MAX`, the computation `ptr + field_length` **wraps around** the 32-bit address space. The wrapped result can be *less than* `end`, bypassing the bounds check entirely. After the check passes, `ptr += field_length` also wraps, and all subsequent reads from `ptr` access memory outside the original buffer.
-
-### Remote Exploitability
-
-The call chain is:
-1. **Network I/O** (`api_connection.cpp:210`) receives a packet over the native API
-2. **Dispatch** (`api_pb2_service.cpp:20`) calls `msg.decode(msg_data, msg_size)` on the message type
-3. **Decode** (`api_pb2.cpp:1059, 1102`) calls `ProtoDecodableMessage::decode(buffer, length)` and `count_repeated_field()`
-4. **Vulnerable check** (`proto.cpp:51, 113`) uses overflow-prone pointer arithmetic
-
-An unauthenticated or partially-authenticated network attacker can send a crafted protobuf message with a large length-delimited field length to trigger the overflow, bypass the bounds check, and read out-of-bounds memory.
-
-### The Fix
-
+### After (fixed)
 ```cpp
-// AFTER (fixed):
-if (field_length > static_cast<size_t>(end - ptr))   // compares length against remaining space — no overflow
-if (end - ptr < 4)                                    // same pattern for fixed-size field
+if (field_length > static_cast<size_t>(end - ptr))  // size comparison, no wrap
+if (end - ptr < 4)                                   // same safe approach
 ```
 
-Subtraction (`end - ptr`) cannot overflow because `end >= ptr` always holds, and the result is bounded by the original buffer allocation.
+### Why this is a security vulnerability
+
+**Root cause — CWE-190 (Integer Overflow or Wraparound):**
+
+On all ESPHome target platforms (ESP32, ESP8266, RP2040, LibreTiny), pointers are 32 bits. The expression `ptr + field_length` performs pointer arithmetic where `field_length` is a `uint32_t` read from the protobuf message. An attacker can set this to a value near `UINT32_MAX` (e.g., `0xFFFF0000`). The addition wraps around on 32-bit pointer width, producing a result *smaller* than `end`. The bounds check `ptr + field_length > end` passes because the wrapped-around pointer is less than `end`.
+
+**Consequence — CWE-125 (Out-of-bounds Read):**
+
+After the bounds check is bypassed, `ptr += field_length` advances the pointer to the wrapped-around address. Subsequent code reads from that corrupted position:
+- In `count_repeated_field`: the while-loop continues parsing field tags from the wrapped-around pointer — reading arbitrary memory.
+- In `decode`: `ptr[3], ptr[2], ptr[1], ptr[0]` (for fixed32 fields) and `ProtoLengthDelimited(ptr, field_length)` (for length-delimited fields) read attacker-controlled offsets from arbitrary memory locations.
+
+### Exploitability
+
+This code processes incoming native API protobuf messages from the network. An attacker who can send messages to an ESPHome device (on the local network, or remotely if exposed) can craft a malicious protobuf message with a large length-delimited field size. This bypasses the bounds check, leads to out-of-bounds reads, and can leak sensitive data or cause a crash (DoS).
+
+### Classification
+
+| CWE ID | Name | Role |
+|--------|------|------|
+| **CWE-190** | Integer Overflow or Wraparound | Root cause — `ptr + field_length` wraps on 32-bit pointers |
+| **CWE-125** | Out-of-bounds Read | Consequence — reading memory outside the buffer after wraparound |
+
+Both genuinely apply: CWE-190 describes *how* the check fails, and CWE-125 describes *what happens* as a result.
 
 ---
-
-**VULNERABILITY_FOUND:** yes
-**CWE_ID:** CWE-190, CWE-125
-**CWE_NAME:** Integer Overflow or Wraparound, Out-of-bounds Read
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-190, CWE-125
+CWE_NAME: Integer Overflow or Wraparound, Out-of-bounds Read

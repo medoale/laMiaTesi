@@ -1,23 +1,29 @@
-I'll start by reading the _CHANGES folder to understand the structure of this review task.
-Let me read all files for both changes:
-Now let me analyze both changes carefully.
+## Analysis
 
-**File 01 (diff.txt):**
-- **Change**: In `ProjectAssetEndpoint.patch()`, the query was changed from `FileAsset.objects.get(id=pk)` to `FileAsset.objects.get(id=pk, workspace__slug=slug, project_id=project_id)`.
-- **Before**: The PATCH endpoint would fetch any asset by `pk` alone, without verifying it belongs to the specified workspace and project. An attacker could provide a valid `pk` from a different project/workspace and modify its attributes.
-- **After**: The query now checks that the asset belongs to both the workspace (slug) and project (project_id), adding proper authorization/access control checks.
+Let me break down both changes:
 
-This is an **Incorrect Access Control (CWE-863)** / **missing authorization** vulnerability. The PATCH endpoint allows modifying asset attributes (like `attributes`) of any asset regardless of project/workspace ownership.
+### File 1 (`file_01`) — `ProjectAssetEndpoint.patch`
+**Before:** `FileAsset.objects.get(id=pk)` — fetches an asset purely by its primary key, with no check that the asset belongs to the workspace (`slug`) or project (`project_id`) provided in the URL.
 
-**File 02 (diff.txt):**
-- **Change**: In `IssueAttachmentEndpoint.delete()`, the query was changed from `FileAsset.objects.get(pk=pk)` to `FileAsset.objects.filter(pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id).first()` with a 404 check.
-- **Before**: The DELETE endpoint would fetch an attachment by `pk` alone, without verifying it belongs to the correct workspace, project, and issue. An attacker could delete attachments from other projects/issues.
-- **After**: Now checks all four scoping parameters. This is also an **Incorrect Access Control (CWE-863)** vulnerability fix.
+**After:** `FileAsset.objects.get(id=pk, workspace__slug=slug, project_id=project_id)` — scopes the query to the workspace and project from the URL.
 
-Note: There's also a secondary concern - the `@allow_permission([ROLE.ADMIN], creator=True, model=FileAsset)` decorator already checks that the user is the creator, but without the scoping fix, a user who created an attachment in project A could maliciously use project B's slug/project_id to delete an attachment in project A using a cross-project request, or an admin could delete attachments outside their workspace scope. The core fix here is ensuring the asset belongs to the right hierarchical scope.
+This is a classic **Insecure Direct Object Reference (IDOR)**. An authenticated user (with `ROLE.ADMIN, ROLE.MEMBER, ROLE.GUEST`) in workspace A could modify an asset in workspace B by providing workspace B's asset ID (`pk`) while using workspace A's slug in the URL. The original code only verified the asset existed — it never verified the caller had any right to access that asset across workspace/project boundaries.
 
-Both changes fix **Incorrect Access Control** (CWE-863) - they add missing authorization checks that verify the resource belongs to the correct workspace/project/issue context before allowing modification or deletion.
+### File 2 (`file_02`) — `IssueAttachmentEndpoint.delete`
+**Before:** `FileAsset.objects.get(pk=pk)` — fetches an attachment purely by primary key, ignoring the workspace, project, and issue context from the URL path.
+
+**After:** `FileAsset.objects.filter(pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id).first()` — properly scopes to all URL-level identifiers. Also added a 404 response if the scoped query returns nothing (instead of letting the `.get()` exception propagate or, in the original code, proceeding to delete an asset from a different context).
+
+Despite the `@allow_permission([ROLE.ADMIN], creator=True, model=FileAsset)` decorator checking admin role and creator status, the unscoped query meant an admin who created assets in multiple workspaces could manipulate attachments across workspace/project/issue boundaries by mixing URL parameters. The fix ensures the query respects the URL's hierarchical context (workspace → project → issue).
+
+### Conclusion
+
+Both changes fix the same class of security vulnerability: **Insecure Direct Object Reference (IDOR)**. An attacker can manipulate a user-controlled identifier (`pk`/asset ID) in the URL to access or modify resources belonging to other workspaces or projects. The fix adds proper authorization scoping by including `workspace__slug`, `project_id`, and/or `issue_id` in the database query.
+
+CWE-639 is the most specific and accurate classification here — it is the canonical IDOR identifier for "Authorization Bypass Through User-Controlled Key."
+
+CWE-863 (Incorrect Authorization) is a broader parent category, but CWE-639 is more precise for this exact pattern.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-863
-CWE_NAME: Incorrect Access Control
+CWE_ID: CWE-639
+CWE_NAME: Authorization Bypass Through User-Controlled Key

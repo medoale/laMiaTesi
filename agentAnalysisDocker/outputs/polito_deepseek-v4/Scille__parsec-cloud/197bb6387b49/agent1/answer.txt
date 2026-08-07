@@ -1,42 +1,20 @@
-I'll start by exploring the workspace structure to find the _CHANGES folder.
-Let me read all the files — before, after, and diff for each file.
-Let me read the diffs first to understand the changes, then the before/after files if needed.
-Now I have a clear picture of all the changes. Let me also quickly read the before and after for the key file (file_06) to see the full context of the original vs fixed code:
-Now I have a complete picture. Let me analyze this commit.
+Let me read all the diff files to understand the changes.
+Now let me read the before/after files for the key cryptographic files to get full context.
+Now I have all the information needed for a complete analysis. Let me examine the remaining files for completeness.
+## Analysis Complete
 
-## Analysis
+**What changed:** This commit fixes a security vulnerability in Parsec Cloud's X25519 Diffie-Hellman key exchange implementation across two separate code paths (one using `x25519-dalek`, one using `curve25519`/libsodium). The `generate_shared_secret_key` method previously performed scalar multiplication without validating that the peer's public key produces a **contributory** shared secret — meaning the result could be all zeros when the peer supplies a low-order point (like the all-zero public key `0x0000...0000`).
 
-This commit addresses a **cryptographic vulnerability** related to X25519 (Curve25519) Diffie-Hellman key exchange.
+**Vulnerability breakdown:**
+- The old code in `file_06` used the raw `x25519()` function, which offers no contributory check.
+- The old code in `file_07` called `curve25519::scalarmult()` and used `.expect()` — panicking instead of returning a proper error, and more critically, not treating a failed DH result as a security-relevant event.
+- The fix wraps the operation with **`was_contributory()`** validation (or propagates the library's error via `.map_err()`), refusing to produce a shared secret when the peer's key leads to a non-contributory result.
+- A new test in `file_08` explicitly verifies that the all-zero public key is rejected with `CryptoError::SharedSecretKey`.
 
-### The vulnerability
+**Security impact:** An attacker providing a low-order Curve25519 point (e.g., the identity element) could force the shared secret to a predictable value (all zeros), defeating key agreement confidentiality and integrity. This is a well-known pitfall of X25519 documented in e.g. [vnhacker.blogspot.com/2015/09/why-not-validating-curve25519-public.html](https://vnhacker.blogspot.com/2015/09/why-not-validating-curve25519-public.html) (referenced in test comments).
 
-The `generate_shared_secret_key` function performs X25519 scalar multiplication to derive a shared secret between two parties. The **before** code:
-
-1. **In file_06**: Uses the raw `x25519()` function from `x25519-dalek` directly, which returns the shared secret as bytes without checking whether the computation was **contributory** — i.e., whether the peer's public key is a valid, non-low-order point on the curve.
-2. **In file_07**: Uses `curve25519::scalarmult()` which returns a `Result`, but calls `.expect("Failed to compute shared key")` — panicking instead of propagating the error.
-
-If an attacker provides a **malicious public key** (e.g., an all-zero key, or other low-order points on the curve), the X25519 scalar multiplication can produce an all-zero shared secret (or a key from a small set of possible values). This completely undermines the security of the Diffie-Hellman exchange:
-- The shared secret becomes predictable/guessable.
-- An attacker who provides a low-order public key can force the shared secret to a known value, breaking confidentiality of any subsequent encryption.
-
-### The fix
-
-1. **file_06** (x25519-dalek variant): Switches from the low-level `x25519()` function to `StaticSecret::diffie_hellman()`, which provides a `SharedSecret` with a `was_contributory()` method. If the peer's public key is not contributory (i.e., the computation results in an all-zero key), it returns an error instead of silently producing a weak key.
-
-2. **file_07** (libsodium variant): Changes `.expect("Failed to compute shared key")` to `.map_err(|e| CryptoError::SharedSecretKey(e.to_string()))`, propagating the error properly instead of panicking. The underlying `curve25519::scalarmult` already validates contributory behavior.
-
-3. **Supporting changes**: A new `CryptoError::SharedSecretKey` variant is added (file_05), the `static_secrets` feature is enabled for x25519-dalek (file_04), error handling is propagated up through the call chain (files 01, 02), and tests are updated/added (files 03, 08) including a test that verifies an all-zero public key is rejected.
-
-### CWE Classification
-
-This is a classic **CWE-330: Use of Insufficiently Random Values** in the context of cryptographic key exchange — the shared secret could be all-zeros (not sufficiently random) when a malicious low-order public key is provided.
-
-Alternatively, it can also be classified as **CWE-325: Missing Cryptographic Step** — the code was missing the critical step of validating the contributory nature of the Diffie-Hellman computation.
-
-CWE-330 is more specific and widely used for this type of issue (low-order point attacks on Diffie-Hellman leading to weak/predictable shared secrets), so it should be listed first.
-
-**CWE-325** (Missing Required Cryptographic Step) also applies because the contributory check is a required step for safe X25519 usage.
+**CWE classification:** This is **CWE-325: Missing Required Cryptographic Step** — the contributory check is a required step in secure X25519 key agreement that was entirely omitted. No other CWE fits more precisely; the algorithm itself (X25519) is not broken — the implementation simply lacked the mandatory validation step.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-330, CWE-325
-CWE_NAME: Use of Insufficiently Random Values, Missing Required Cryptographic Step
+CWE_ID: CWE-325
+CWE_NAME: Missing Required Cryptographic Step

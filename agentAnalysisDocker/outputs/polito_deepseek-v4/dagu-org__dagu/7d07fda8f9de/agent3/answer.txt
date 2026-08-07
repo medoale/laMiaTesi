@@ -1,0 +1,225 @@
+Let me examine the parameter handling and eval module - where user-controlled values enter the execution pipeline.
+Let me search for potentially dangerous patterns - command execution with user-controlled input, path traversal, and the `gosec` nolint comments which are often markers for knowingly insecure code.
+Let me focus on the most critical path - how user-supplied DAG parameters flow into command execution. Let me look at the process store file operations and how log file paths are resolved.
+Let me now look at the webhook endpoints and check for potential security issues in the API's handling of user-controlled data:
+## Goal
+- Conduct a headless zero-day security audit of the DAGU workflow scheduler repository; decide if it contains a security vulnerability and classify it.
+
+## Constraints & Preferences
+- No user interaction allowed; all decisions autonomous.
+- Only report vulnerabilities if confident; do not guess.
+- If a vulnerability is found, classify with the most accurate CWE identifier(s), most specific first.
+- Final answer must end with the VULNERABILITY_FOUND / CWE_ID / CWE_NAME block.
+- Answer in same language as conversation.
+
+## Progress
+### Done
+- Repository identified: DAGU — a DAG-based workflow scheduler (Go, with frontend API, SSH executor, HTTP executor, agent system).
+- Explored top-level structure: `cmd/`, `internal/`, `api/`, `proto/`, `ui/`, etc.
+- Examined `internal/cmn/eval/` — variable/command substitution pipeline (`substitute.go`) runs shell commands via `exec.CommandContext` with `nolint:gosec` markers; 2-second timeout.
+- Examined `internal/runtime/builtin/command/` — all shell executors (`shell_unix.go`, `shell_powershell.go`, `shell_cmd.go`, `shell_nix.go`, `shell_direct.go`) use `exec.CommandContext` with `nolint:gosec`.
+- Examined `internal/persis/filedag/store.go` — file path handling has some traversal protection (`filepath.Base`, prefix check).
+- Examined `internal/persis/filedoc/store.go` — path traversal protection with `EvalSymlinks`.
+- Examined `internal/service/frontend/api/v1/webhooks.go` and `webhook_middleware.go` — webhook trigger mechanism.
+- Searched for all `nolint:gosec` annotations: ~100+ occurrences.
+- Searched for direct command construction patterns.
+
+### In Progress
+- Analyzing DAG parameter passing patterns: how user-supplied parameters from webhooks / API requests reach the command execution pipeline.
+- Checking `dagruns.go` for `ExecuteDAGRunFromSpec` — this is the critical endpoint where user-supplied parameters could flow into shell commands.
+
+### Blocked
+- (none)
+
+### Next Steps
+1. Read `dagruns.go` fully to trace parameter flow from API to execution.
+2. Check `internal/core/exec` for how params are injected into step commands.
+3. Check `transformer.go` for any insufficient input sanitization.
+4. Check `templates.go` and template rendering for injection paths.
+
+## Critical Context
+- DAGU is a workflow engine; DAG specs are YAML files that define shell commands, SSH commands, HTTP requests, etc.
+- Variables in DAG specs are expanded via `eval.String()` which supports `${...}` and `$VAR` substitution and shell command backtick/`$()` substitution.
+- Multiple `nolint:gosec` comments exist on `exec.CommandContext` calls where the command/args come from DAG configs.
+- Webhooks can trigger DAG executions with user-supplied payload parameters.
+- Key question: do DAG parameters from webhooks/API get evaluated in a way that allows command injection?
+
+## Relevant Files
+- `/work/internal/runtime/builtin/command/`: All shell executor implementations — where OS commands are constructed.
+- `/work/internal/cmn/eval/substitute.go`: Variable expansion with shell command substitution (backticks/`$()`).
+- `/work/internal/cmn/eval/eval.go`: Main `String()` function that processes input through pipeline.
+- `/work/internal/service/frontend/api/v1/dagruns.go`: DAG run execution endpoint — entry point for user-triggered runs.
+- `/work/internal/service/frontend/api/v1/webhooks.go`: Webhook trigger endpoint — entry point for external trigger with data.
+- `/work/internal/core/spec/`: DAG spec loading and type definitions.
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Let me continue the security audit where I left off. I was tracing how user-supplied parameters flow from webhooks/API into shell command execution.
+Now let me look at the critical `ResolveRuntimeParams` function and trace how params flow into command execution:
+Let me trace how step commands are built and how eval is used before execution:
+Now let me trace the key parameter injection paths more closely. Let me check `WithParams` and the `eval.Option` from `Step.EvalOptions`:
+Let me trace how params become available as variables in step commands by looking at how they enter the eval scope:
+Now I need to understand how DAG params flow into the exec context. Let me look at where `exec.NewContext` is called during runtime execution:
+Let me look at how the execution context is initialized when running a DAG (the runner.go):
+Let me look at how the execution context is created in the runner. Let me find where `NewContext` is called in the actual runner code path:</think>
+Let me find the in-process API execution path - how does the API call `startDAGRunWithOptions` → `runtime.Start` → something that creates the proper context with env:
+Let me look at the `StartOptions` and `CmdSpec`:</think>
+Let me look at how the CLI parses the `-p` params flag:
+Let me verify `strconv.Quote` behavior with backticks:
+Let me now look at `executeDAGRun` to see how NewContext is created with params:
+## Goal
+- Conduct a headless zero-day security audit of the DAGU workflow scheduler repository; decide if it contains a security vulnerability and classify it.
+
+## Constraints & Preferences
+- No user interaction allowed; all decisions autonomous.
+- Only report vulnerabilities if confident; do not guess.
+- If a vulnerability is found, classify with the most accurate CWE identifier(s), most specific first.
+- Final answer must end with the VULNERABILITY_FOUND / CWE_ID / CWE_NAME block.
+- Answer in same language as conversation.
+
+## Progress
+### Done
+- Repository identified: DAGU — a DAG-based workflow scheduler (Go, with frontend API, SSH executor, HTTP executor, agent system).
+- Examined `internal/cmn/eval/` — variable/command substitution pipeline. The `defaultPipeline` has phases: quoted-refs → variables → substitute → shell-expand → unescape-dollar. The `substitute` phase runs backtick/`$()` command substitution via `substituteCommandsWithContext()`.
+- Examined `internal/runtime/builtin/command/` — all shell executors use `exec.CommandContext` with `nolint:gosec`.
+- Examined file path handling in `internal/persis/` — path traversal protections exist.
+- Examined webhook and API handler code: `webhook.go`, `webhook_middleware.go`, `dagruns.go`.
+- Traced the full parameter injection path from webhooks/API to shell execution:
+  - API handlers receive user-supplied params → `startDAGRunWithOptions()` or `enqueueDAGRun()`
+  - These call `spec.ResolveRuntimeParams()` which reloads DAG YAML with params via `WithParams()`
+  - During DAG loading, `buildDAGParamsResult()` processes params — the legacy path allows arbitrary `key=value` pairs with no whitelist enforcement
+  - For in-process execution: params flow directly into the eval pipeline at command runtime
+  - For subprocess execution (SubCmdBuilder): params are quoted with `strconv.Quote()` and passed via `-p` flag; unquoted via `stringutil.RemoveQuotes()` using `strconv.Unquote()`
+- Confirmed that `EvalString()` → `eval.String()` runs the full pipeline including the `substitute` phase on all evaluated values.
+- Confirmed `commandEvalOptions()` for Unix shells only disables `ExpandEnv` (to avoid double shell expansion of `$VAR`), but does **not** disable the `substitute` phase — backtick/`$()` command substitution in Dagu's eval pipeline still runs on parameter values.
+- Confirmed the `Substitute` option defaults to `true` in `eval.NewOptions()`.
+- Found: if a DAG step has something like `command: echo ${user_param}` and `user_param` is set from a webhook payload value containing `` `id` `` or `$(id)`, the command IS executed by the eval pipeline during variable substitution.
+
+### In Progress
+- (none)
+
+### Blocked
+- (none)
+
+## Key Decisions
+- **Vulnerability found: CWE-78 (OS Command Injection).** User-supplied webhook/API parameters are substituted into DAG step configurations and then the eval pipeline runs command substitution (backticks/`$()`) on the substituted values, allowing arbitrary shell command execution. This is not just a theoretical path — the eval pipeline's `substitute` phase runs unconditionally on all evaluated strings regardless of shell type, and the `Params` field in legacy mode is unrestricted key=value parsing.
+
+## Next Steps
+1. Confirm the exploit path end-to-end by checking: (a) how the webhook handler extracts payload fields into params, (b) how the ExecuteDAGRunFromSpec endpoint constructs the exec context, and (c) that params reach the step's command args exactly as shown.
+2. Classify the vulnerability with CWE-78 as primary, likely CWE-20 as secondary (insufficient input validation).
+3. Write the final answer block.
+
+## Critical Context
+- DAGU is a workflow engine; DAG specs define shell commands as `command` or `cmdWithArgs` fields.
+- Variables are expanded via `eval.String()` which runs a pipeline that by default includes shell command substitution (`substitute` phase).
+- Webhooks and the `ExecuteDAGRunFromSpec` API endpoint accept user-supplied `params` that become environment variable entries (`KEY=VALUE`) in the execution scope.
+- When a DAG step references a parameter via `$PARAM_NAME` or `${PARAM_NAME}` in its command/arguments, the parameter value is substituted and then the **entire result** is processed through the eval pipeline — including backtick/`$()` command substitution.
+- Even for Unix shells where `ExpandEnv` is disabled to avoid double expansion, the `substitute` phase (backtick/`$()` command execution) **remains enabled**.
+- `commandEvalOptions()` only disables `ExpandEnv` for Unix shells; it never disables `Substitute`.
+- Legacy param parsing (`buildLegacyParamPlan`) accepts arbitrary key=value pairs with no schema validation or allowlist enforcement.
+- The in-process execution path bypasses subcommand quoting, so params flow directly through eval without intermediate shell quoting.
+- Key eval entry point: `/work/internal/runtime/eval.go` → `EvalString()` → `eval.String()` → `defaultPipeline`.
+- Key command evaluation: `/work/internal/runtime/node.go:525` → `evaluateCommandArgs()` calls `EvalString()` for each command arg and `CmdWithArgs` field.
+
+## Relevant Files
+- `/work/internal/service/frontend/api/v1/dagruns.go`: API entry point for DAG execution — `ExecuteDAGRunFromSpec`, `ExecuteDAGRun` handlers receive user params.
+- `/work/internal/service/frontend/api/v1/webhooks.go`: Webhook trigger handler — extracts payload fields and calls `executeDAGRun`.
+- `/work/internal/service/frontend/api/v1/webhook_middleware.go`: Captures raw webhook body for fallback payload extraction.
+- `/work/internal/cmn/eval/substitute.go`: `substituteCommandsWithContext()` — executes backtick commands via `exec.CommandContext` (2s timeout).
+- `/work/internal/cmn/eval/pipeline.go`: `defaultPipeline` — ordered phases including `substitutePhase` (backtick substitution).
+- `/work/internal/cmn/eval/eval.go`: `String()` — main eval entry point.
+- `/work/internal/runtime/eval.go`: Runtime `EvalString()` — wraps `eval.String()` with execution context.
+- `/work/internal/runtime/node.go`: `evaluateCommandArgs()` — evaluates step command arguments through the eval pipeline.
+- `/work/internal/runtime/env.go`: `Env.EvalString()` — attaches `EnvScope` and `StepMap` to context before calling `eval.String()`.
+- `/work/internal/runtime/builtin/command/command.go`: `commandEvalOptions()` — only disables `ExpandEnv` for Unix shells; does NOT disable `Substitute`.
+- `/work/internal/runtime/subcmd.go`: `SubCmdBuilder` — constructs subprocess commands; params quoted with `strconv.Quote()`.
+- `/work/internal/core/spec/dag_params.go`: `buildDAGParamsResult()` — legacy param parsing (unrestricted key=value) and schema-based parsing.
+- `/work/internal/core/spec/dag_params_runtime.go`: `ResolveRuntimeParams()` — reloads DAG with runtime params applied.
+- `/work/internal/core/exec/context.go`: `exec.Context` — holds `EnvScope` (unified scope for all env var lookups); `NewContext()` builds the scope chain.
+- `/work/internal/cmn/eval/scope.go`: `EnvScope` — layered variable resolution (OS → DAG → Secrets → Outputs → StepEnv).
+- `/work/internal/cmn/stringutil/stringutil.go`: `RemoveQuotes()` — uses `strconv.Unquote()` for proper unquoting.
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Let me re-establish context by re-reading the key files in the exploit path.
+Now I need to check the `startDAGRun` function and the `ExecuteDAGRun` handler. Let me also check how params flow into the eval scope.
+Now let me verify the critical runtime path -- how params become environment variables and are used during command argument evaluation:
+Let me verify one more critical piece - how the webhook raw body and the middleware handle the payload, and check the `ExecuteDAGRun` (non-FromSpec) endpoint for existing DAGs:
+Now I have a comprehensive picture. Let me verify one more thing - the test that confirms backticks in values are preserved when `DeferShellVars` is used:
+## Vulnerability Analysis Complete
+
+After tracing the full attack chain from entry point to exploitation, here is the finding:
+
+### Summary
+
+**A design flaw in Dagu's eval pipeline enables OS Command Injection via user-supplied parameters.** The root cause is in `commandEvalOptions()` at `/work/internal/runtime/builtin/command/command.go:451-462`: it disables `ExpandEnv` for Unix shells (to avoid double `$VAR` expansion) but **never disables `Substitute`**. The `Substitute` option (default `true`) controls backtick/`$()` command substitution. User-supplied parameter values flow through the eval pipeline where the `substitute` phase runs shell command execution on ALL evaluated strings — including data that originated from untrusted input.
+
+### Two Attack Vectors
+
+1. **Webhook Trigger** (`POST /api/v1/webhooks/{dagName}`): A JSON payload becomes the `WEBHOOK_PAYLOAD` param. If a DAG step references `${WEBHOOK_PAYLOAD}` in a command, backtick commands embedded in the payload JSON are executed.
+
+2. **ExecuteDAGRunFromSpec** (`POST /api/v1/dag-runs/from-spec`): An authenticated user provides an inline YAML spec with `command: echo ${user_param}` and params like `user_param=\`id > /tmp/pwn\``. The backtick command is executed during evaluation.
+
+### Data Flow
+
+```
+User Input (webhook body / API params)
+  → marshalWebhookPayload / raw params string
+  → ResolveRuntimeParams → params loaded into EnvScope
+  → evaluateCommandArgs (node.go:525) → EvalString (env.go:312) → eval.String (eval.go:32)
+  → defaultPipeline.execute (pipeline.go:46)
+    → phase: variables → ${PARAM} resolved to user value (containing backticks)
+    → phase: substitute → backtick command executed via exec.CommandContext("sh", "-c", ...)
+    → result: command output replaces backtick expression
+  → final command passed to shell/exec.Cmd
+```
+
+### Missing Mitigations
+
+- The `OnlyReplaceVars()` option exists (options.go:95-101) that correctly disables `Substitute` and defers shell vars, but it is **never used** by `commandEvalOptions()`.
+- No input validation/sanitization of parameter values before eval pipeline processing.
+- No allowlist or schema enforcement for legacy param values that enter the eval pipeline.
+
+### Classification
+
+**Primary:** CWE-78 (OS Command Injection) — arbitrary shell command execution via backtick substitution in user-supplied parameter values.
+**Secondary:** CWE-20 (Improper Input Validation) — no validation of parameter values before eval pipeline processing.
+
+---
+
+```
+VULNERABILITY_FOUND
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')
+```
+## What We Did So Far
+
+We conducted a **headless zero-day security audit** of the **DAGU** workflow scheduler repository. Here's what was accomplished:
+
+### Investigation Flow
+
+1. **Repository Identification** — Identified DAGU as a Go-based DAG workflow orchestration engine with a REST API, webhooks, gRPC distributed execution, and shell command execution capabilities.
+
+2. **Eval Pipeline Analysis** — Traced `/work/internal/cmn/eval/pipeline.go` to discover the `defaultPipeline` with five phases: `quoted-refs → variables → substitute → shell-expand → unescape-dollar`. Confirmed the `substitute` phase runs backtick/`$()` command substitution via `exec.CommandContext` (2s timeout).
+
+3. **Command Execution Path** — Analyzed `/work/internal/runtime/builtin/command/command.go` line 451-462 (`commandEvalOptions`): found it disables `ExpandEnv` for Unix shells but **never disables `Substitute`** — the flag that controls backtick command execution.
+
+4. **Parameter Flow** — Traced user-supplied params from:
+   - **Webhooks** (`webhooks.go:247` `TriggerWebhook`): payload → `WEBHOOK_PAYLOAD` param → `enqueueDAGRun` → `ResolveRuntimeParams`
+   - **API** (`dagruns.go:60` `ExecuteDAGRunFromSpec`): inline YAML + custom params → `startDAGRun` → `ResolveRuntimeParams`
+   
+   Both paths put params into `EnvScope` → `evaluateCommandArgs` in `node.go:525` → `EvalString` in `env.go:312` → `eval.String()` in `eval.go:32` → `defaultPipeline`.
+
+5. **Vulnerability Confirmation** — Verified that the `substitute` phase operates on strings **after** variable substitution. So if a param value contains backtick commands, those commands get executed by the pipeline.
+
+### Result
+
+**Vulnerability found: CWE-78 — OS Command Injection**
+
+User-supplied parameter values (from webhooks or API) that contain backtick-delimited commands are executed by the eval pipeline's `substitute` phase. The `Substitute` option defaults to `true` and is never disabled by the command executor, even though the `OnlyReplaceVars()` option exists as a safe alternative.
+
+```
+VULNERABILITY_FOUND
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')
+```

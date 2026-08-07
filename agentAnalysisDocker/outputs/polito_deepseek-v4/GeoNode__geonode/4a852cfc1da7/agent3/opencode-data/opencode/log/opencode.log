@@ -1,345 +1,579 @@
-timestamp=2026-07-28T19:38:03.132Z level=INFO run=40116291 message="creating instance" directory=/work
-timestamp=2026-07-28T19:38:03.133Z level=INFO run=40116291 message=fromDirectory directory=/work
-timestamp=2026-07-28T19:38:03.143Z level=INFO run=40116291 message=bootstrapping directory=/work
-timestamp=2026-07-28T19:38:03.147Z level=INFO run=40116291 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T19:38:03.147Z level=INFO run=40116291 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T19:38:03.148Z level=INFO run=40116291 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T19:38:03.148Z level=INFO run=40116291 message=loading path=/opencode.json
-timestamp=2026-07-28T19:38:03.157Z level=ERROR run=40116291 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T19:38:03.158Z level=INFO run=40116291 message=loading path=/opencode.json
-timestamp=2026-07-28T19:38:03.279Z level=INFO run=40116291 message="all LSPs are disabled"
-timestamp=2026-07-28T19:38:03.280Z level=INFO run=40116291 message="all formatters are disabled"
-timestamp=2026-07-28T19:38:03.280Z level=INFO run=40116291 message=init
-timestamp=2026-07-28T19:38:03.417Z level=INFO run=40116291 message=created id=ses_055c40ce6ffeYe4nslW6Vjaxt6 slug=clever-cactus version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T19:38:03.417Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785267483417 time.updated=1785267483417
-timestamp=2026-07-28T19:38:03.443Z level=INFO run=40116291 message="event connected"
-timestamp=2026-07-28T19:38:03.614Z level=WARN run=40116291 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T19:38:03.616Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=0
-timestamp=2026-07-28T19:38:03.625Z level=INFO run=40116291 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T19:38:03.630Z level=INFO run=40116291 message=init count=1
-timestamp=2026-07-28T19:38:03.631Z level=INFO run=40116291 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T19:38:03.648Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=true agent=title mode=primary
-timestamp=2026-07-28T19:38:03.686Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:03.712Z level=INFO run=40116291 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T19:38:03.846Z level=INFO run=40116291 message="project copy refresh started" projectID=global
-timestamp=2026-07-28T19:38:03.847Z level=INFO run=40116291 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T19:38:04.197Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3bf3e2001z5wEtOGTMPmgAU
-timestamp=2026-07-28T19:38:04.198Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:04.415Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:07.804Z level=INFO run=40116291 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:07.916Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=1
-timestamp=2026-07-28T19:38:07.925Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c04ad001a0Bc3H6fHClHqy
-timestamp=2026-07-28T19:38:07.925Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:07.926Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:09.961Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:10.621Z level=INFO run=40116291 message=evaluated permission=glob pattern=**/*.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:11.284Z level=INFO run=40116291 message=evaluated permission=glob pattern=**/*.js action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:11.456Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=2
-timestamp=2026-07-28T19:38:11.464Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c128100138BE8pmsNuBoRI
-timestamp=2026-07-28T19:38:11.465Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:11.466Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:16.431Z level=INFO run=40116291 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:16.529Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=3
-timestamp=2026-07-28T19:38:16.539Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c2652001mNBJFBYexMlzsv
-timestamp=2026-07-28T19:38:16.540Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:16.540Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:19.520Z level=INFO run=40116291 message=evaluated permission=grep pattern="os\\.system\\(|subprocess\\.(call|Popen|check_output|run)\\(.*shell\\s*=\\s*True|subprocess\\.(call|Popen|check_output|run)\\(.*shell=True" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:20.833Z level=INFO run=40116291 message=evaluated permission=grep pattern="eval\\(|exec\\(|__import__\\(|pickle\\.(loads|load)|yaml\\.(load|dump).*Loader=yaml\\.Load" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:21.957Z level=INFO run=40116291 message=evaluated permission=grep pattern="os\\.path\\.join\\(.*request|open\\(.*request|shutil\\.copy\\(.*request" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:22.911Z level=INFO run=40116291 message=evaluated permission=grep pattern="shell\\s*=\\s*True" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:23.400Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/proxy action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:23.885Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:24.050Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=4
-timestamp=2026-07-28T19:38:24.059Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c43b30012QUXPtAGBMLKVj
-timestamp=2026-07-28T19:38:24.059Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:24.060Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:27.360Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/proxy/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:27.368Z level=INFO run=40116291 message="touching file" file=/work/geonode/proxy/views.py
-timestamp=2026-07-28T19:38:28.374Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/br/management/commands/utils/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:28.384Z level=INFO run=40116291 message="touching file" file=/work/geonode/br/management/commands/utils/utils.py
-timestamp=2026-07-28T19:38:29.287Z level=INFO run=40116291 message=evaluated permission=read pattern=work/pavement.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:29.299Z level=INFO run=40116291 message="touching file" file=/work/pavement.py
-timestamp=2026-07-28T19:38:29.479Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=5
-timestamp=2026-07-28T19:38:29.494Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c58e8001fBzXeI6mgGoZfC
-timestamp=2026-07-28T19:38:29.494Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:29.495Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:33.429Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:34.520Z level=INFO run=40116291 message=evaluated permission=grep pattern="raw_url|request\\.GET\\[.url.\\]|request\\.POST\\[.url.\\]" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:35.009Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/security action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:36.221Z level=INFO run=40116291 message=evaluated permission=grep pattern="raw_input|mark_safe|format_html|__repr__|__str__.*return.*f[\\\"']" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:36.440Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=6
-timestamp=2026-07-28T19:38:36.453Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c7419001sTw8ItyC8tHJcP
-timestamp=2026-07-28T19:38:36.453Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:36.454Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:40.033Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:40.039Z level=INFO run=40116291 message="touching file" file=/work/geonode/views.py
-timestamp=2026-07-28T19:38:40.995Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:41.004Z level=INFO run=40116291 message="touching file" file=/work/geonode/harvesting/admin.py
-timestamp=2026-07-28T19:38:41.980Z level=INFO run=40116291 message=evaluated permission=grep pattern="format_html\\(f[\\\"']" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:42.731Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:42.735Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/views.py
-timestamp=2026-07-28T19:38:42.892Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=7
-timestamp=2026-07-28T19:38:42.900Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3c8d4d001dGaI2GHHt7SUAU
-timestamp=2026-07-28T19:38:42.901Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:42.902Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:46.009Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:46.018Z level=INFO run=40116291 message="touching file" file=/work/geonode/harvesting/admin.py
-timestamp=2026-07-28T19:38:47.503Z level=INFO run=40116291 message=evaluated permission=grep pattern="os\\.path\\.join\\(.*request\\.(GET|POST|FILES)|open\\(.*request\\.(GET|POST|FILES)|open\\(.*\\.read\\(\\)|shutil\\.copy\\(.*upload" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:48.617Z level=INFO run=40116291 message=evaluated permission=grep pattern="render_to_string|Template\\(|template\\.Template|Environment\\(|from_string" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:49.160Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/uploadhandler.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:49.165Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/uploadhandler.py
-timestamp=2026-07-28T19:38:49.343Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=8
-timestamp=2026-07-28T19:38:49.357Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3ca680001Ul19sLmLGTTNWv
-timestamp=2026-07-28T19:38:49.357Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:49.358Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:55.583Z level=INFO run=40116291 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:55.795Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=9
-timestamp=2026-07-28T19:38:55.811Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3cbfb4001w5OqMBB3DC81Wl
-timestamp=2026-07-28T19:38:55.812Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:38:55.812Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:38:58.675Z level=INFO run=40116291 message=evaluated permission=read pattern=work/pavement.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:38:58.685Z level=INFO run=40116291 message="touching file" file=/work/pavement.py
-timestamp=2026-07-28T19:38:59.700Z level=INFO run=40116291 message=evaluated permission=grep pattern="def kill_process|def stop_process|arg1|arg2" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:00.640Z level=INFO run=40116291 message=evaluated permission=read pattern=work/pavement.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:00.651Z level=INFO run=40116291 message="touching file" file=/work/pavement.py
-timestamp=2026-07-28T19:39:00.811Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=10
-timestamp=2026-07-28T19:39:00.827Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3cd34e001LAOn6edKEtQWw6
-timestamp=2026-07-28T19:39:00.828Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:00.828Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:04.042Z level=INFO run=40116291 message=evaluated permission=grep pattern=SafeString|mark_safe|format_html|format_html_join action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:05.085Z level=INFO run=40116291 message=evaluated permission=grep pattern="\\{\\{.*\\|safe\\}|autoescape.*off" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:06.204Z level=INFO run=40116291 message=evaluated permission=grep pattern=validate_host|PROXY_ALLOWED_HOSTS|proxy_allowed_hosts action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:07.169Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/base/api/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:07.180Z level=INFO run=40116291 message="touching file" file=/work/geonode/base/api/views.py
-timestamp=2026-07-28T19:39:07.368Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=11
-timestamp=2026-07-28T19:39:07.383Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3cece9001V2SdjHTvTMyrbL
-timestamp=2026-07-28T19:39:07.384Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:07.385Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:11.060Z level=INFO run=40116291 message=evaluated permission=grep pattern="def extract_ip_or_domain" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:11.592Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/proxy/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:11.596Z level=INFO run=40116291 message="touching file" file=/work/geonode/proxy/utils.py
-timestamp=2026-07-28T19:39:12.579Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:12.584Z level=INFO run=40116291 message="touching file" file=/work/geonode/harvesting/admin.py
-timestamp=2026-07-28T19:39:12.772Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=12
-timestamp=2026-07-28T19:39:12.781Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d0206001Tx9M9W0TPO9fln
-timestamp=2026-07-28T19:39:12.782Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:12.782Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:15.457Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:15.464Z level=INFO run=40116291 message="touching file" file=/work/geonode/utils.py
-timestamp=2026-07-28T19:39:16.371Z level=INFO run=40116291 message=evaluated permission=grep pattern="format_html\\(f" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:16.584Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=13
-timestamp=2026-07-28T19:39:16.594Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d10ea001rQCXYw7i9qdGem
-timestamp=2026-07-28T19:39:16.595Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:16.596Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:20.071Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/files.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:20.077Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/files.py
-timestamp=2026-07-28T19:39:21.957Z level=INFO run=40116291 message=evaluated permission=grep pattern="\\.replace\\(\\\"\\.\\.|\\.\\.\\\"\\)|startswith\\(\\\"/\\\"|traversal|path\\.join.*\\.\\." action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:21.976Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/documents/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:21.991Z level=INFO run=40116291 message="touching file" file=/work/geonode/documents/utils.py
-timestamp=2026-07-28T19:39:21.999Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=14
-timestamp=2026-07-28T19:39:22.015Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d26110011vPcepjUwM99JG
-timestamp=2026-07-28T19:39:22.016Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:22.016Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:26.312Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/assets/local.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:26.317Z level=INFO run=40116291 message="touching file" file=/work/geonode/assets/local.py
-timestamp=2026-07-28T19:39:27.233Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/version.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:27.237Z level=INFO run=40116291 message="touching file" file=/work/geonode/version.py
-timestamp=2026-07-28T19:39:28.323Z level=INFO run=40116291 message=evaluated permission=grep pattern="request\\.GET\\[|request\\.POST\\[|request\\.data" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:28.446Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=15
-timestamp=2026-07-28T19:39:28.455Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d3f40001bER5QZ5yYOo95B
-timestamp=2026-07-28T19:39:28.456Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:28.456Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:31.370Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:31.955Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:31.960Z level=INFO run=40116291 message="touching file" file=/work/geonode/management_commands_http/views.py
-timestamp=2026-07-28T19:39:32.147Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=16
-timestamp=2026-07-28T19:39:32.163Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d4db5001fpVnzOvZaLoNtS
-timestamp=2026-07-28T19:39:32.164Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:32.165Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:34.570Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/utils action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:35.169Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/mixins.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:35.173Z level=INFO run=40116291 message="touching file" file=/work/geonode/management_commands_http/mixins.py
-timestamp=2026-07-28T19:39:35.322Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=17
-timestamp=2026-07-28T19:39:35.331Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d5a1c001FkH0Y6EglkMTb4
-timestamp=2026-07-28T19:39:35.331Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:35.332Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:37.386Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/utils/commands.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:37.390Z level=INFO run=40116291 message="touching file" file=/work/geonode/management_commands_http/utils/commands.py
-timestamp=2026-07-28T19:39:37.979Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/utils/jobs.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:37.984Z level=INFO run=40116291 message="touching file" file=/work/geonode/management_commands_http/utils/jobs.py
-timestamp=2026-07-28T19:39:38.602Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/management_commands_http/utils/job_runner.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:38.607Z level=INFO run=40116291 message="touching file" file=/work/geonode/management_commands_http/utils/job_runner.py
-timestamp=2026-07-28T19:39:38.809Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=18
-timestamp=2026-07-28T19:39:38.819Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d67bb001GfA1hEVWOaWyUm
-timestamp=2026-07-28T19:39:38.820Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:38.821Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:42.688Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/remote/cog.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:42.711Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/remote/cog.py
-timestamp=2026-07-28T19:39:43.410Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/remote/flatgeobuf.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:43.421Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/remote/flatgeobuf.py
-timestamp=2026-07-28T19:39:44.237Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/raster.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:44.243Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/common/raster.py
-timestamp=2026-07-28T19:39:44.332Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=19
-timestamp=2026-07-28T19:39:44.341Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d7d4d001RoV8rg3soIBrtK
-timestamp=2026-07-28T19:39:44.342Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:44.342Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:48.006Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/proxy/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:48.045Z level=INFO run=40116291 message="touching file" file=/work/geonode/proxy/views.py
-timestamp=2026-07-28T19:39:49.047Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:49.056Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
-timestamp=2026-07-28T19:39:49.351Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=20
-timestamp=2026-07-28T19:39:49.363Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3d90ea00100fGE03UKQr135
-timestamp=2026-07-28T19:39:49.363Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:49.368Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:53.001Z level=INFO run=40116291 message=evaluated permission=grep pattern="requests\\.(get|post|put|delete|head|request)\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:53.876Z level=INFO run=40116291 message=evaluated permission=grep pattern=validate_host action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:54.816Z level=INFO run=40116291 message=evaluated permission=grep pattern="http_client\\.request" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:54.982Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=21
-timestamp=2026-07-28T19:39:54.991Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3da6e8001HeaF4H1KAavc8x
-timestamp=2026-07-28T19:39:54.991Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:54.992Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:39:57.541Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/services/serviceprocessors/base.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:57.547Z level=INFO run=40116291 message="touching file" file=/work/geonode/services/serviceprocessors/base.py
-timestamp=2026-07-28T19:39:58.670Z level=INFO run=40116291 message=evaluated permission=grep pattern="class.*View.*:.*\\n.*def (get|post|put|delete)" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:59.173Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/services/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:39:59.180Z level=INFO run=40116291 message="touching file" file=/work/geonode/services/views.py
-timestamp=2026-07-28T19:39:59.388Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=22
-timestamp=2026-07-28T19:39:59.400Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3db81f001mQf34LpY0dM5lY
-timestamp=2026-07-28T19:39:59.401Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:39:59.402Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:05.125Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/br/management/commands/utils/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:05.130Z level=INFO run=40116291 message="touching file" file=/work/geonode/br/management/commands/utils/utils.py
-timestamp=2026-07-28T19:40:06.392Z level=INFO run=40116291 message=evaluated permission=grep pattern="shutil\\.(copy|move|rmtree|copytree)|os\\.remove|os\\.unlink|os\\.rmdir" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:06.555Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=23
-timestamp=2026-07-28T19:40:06.568Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3dd41f001yx2hsceTie5rhl
-timestamp=2026-07-28T19:40:06.569Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:06.570Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:10.920Z level=INFO run=40116291 message=evaluated permission=grep pattern="curs\\.execute\\(f[\\\"']|\\.execute\\(f[\\\"']|\\.raw\\(f[\\\"']|extra\\(.*where.*f[\\\"']" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:12.016Z level=INFO run=40116291 message=evaluated permission=grep pattern="extra\\(|\\.raw\\(|connection\\.cursor|curs\\.execute" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:12.190Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=24
-timestamp=2026-07-28T19:40:12.206Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3dea21001q4zM8xe3ED24hd
-timestamp=2026-07-28T19:40:12.206Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:12.207Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:15.785Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/br/management/commands/utils/utils.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:15.796Z level=INFO run=40116291 message="touching file" file=/work/geonode/br/management/commands/utils/utils.py
-timestamp=2026-07-28T19:40:16.825Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/catalogue/backends/pycsw_plugin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:16.844Z level=INFO run=40116291 message="touching file" file=/work/geonode/catalogue/backends/pycsw_plugin.py
-timestamp=2026-07-28T19:40:17.815Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:17.823Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:18.860Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:18.885Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
-timestamp=2026-07-28T19:40:19.046Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=25
-timestamp=2026-07-28T19:40:19.063Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e04e90011fmA3Ih7O2DHv3
-timestamp=2026-07-28T19:40:19.063Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:19.064Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:23.797Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:23.807Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:25.020Z level=INFO run=40116291 message=evaluated permission=grep pattern="def delete_layer|def delete_dataset|delete_dataset|dataset_name.*request|dataset_name.*GET|dataset_name.*POST" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:26.208Z level=INFO run=40116291 message=evaluated permission=grep pattern="def gs_slurp_geoserver_layer|dataset_name\\s*=" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:26.418Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=26
-timestamp=2026-07-28T19:40:26.429Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e21b5001w30UZRIcc2O3Ks
-timestamp=2026-07-28T19:40:26.429Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:26.430Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:29.038Z level=INFO run=40116291 message=evaluated permission=grep pattern=delete_from_postgis action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:30.035Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:30.060Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/views.py
-timestamp=2026-07-28T19:40:30.210Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=27
-timestamp=2026-07-28T19:40:30.221Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e3085001E208c5GK3QE4DN
-timestamp=2026-07-28T19:40:30.222Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:30.222Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:33.091Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:33.102Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:34.108Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:34.121Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:34.314Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=28
-timestamp=2026-07-28T19:40:34.325Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e408d001KKeLkQkEYVHeqd
-timestamp=2026-07-28T19:40:34.325Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:34.326Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:37.559Z level=INFO run=40116291 message=evaluated permission=grep pattern="def geonode_upload_dataset|def upload_dataset|def import_datasource" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:38.603Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:38.611Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:38.698Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=29
-timestamp=2026-07-28T19:40:38.709Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e51ad0013WEHLg6QetUheA
-timestamp=2026-07-28T19:40:38.709Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:38.710Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:42.212Z level=INFO run=40116291 message=evaluated permission=grep pattern=_create_db_featurestore|cascading_delete action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:42.391Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=30
-timestamp=2026-07-28T19:40:42.410Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e6019001I70Qb9pNSMGkj9
-timestamp=2026-07-28T19:40:42.411Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:42.411Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:45.463Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:45.471Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/helpers.py
-timestamp=2026-07-28T19:40:45.674Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=31
-timestamp=2026-07-28T19:40:45.684Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e6ced001UgeSwOwcBx9CoL
-timestamp=2026-07-28T19:40:45.684Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:45.685Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:50.854Z level=INFO run=40116291 message=evaluated permission=grep pattern="self\\.filter\\s*=|filter\\s*=.*request|reserved_filter|pycsw_filter" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:51.711Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/catalogue/backends/pycsw_plugin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:51.717Z level=INFO run=40116291 message="touching file" file=/work/geonode/catalogue/backends/pycsw_plugin.py
-timestamp=2026-07-28T19:40:51.815Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=32
-timestamp=2026-07-28T19:40:51.923Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e84ea001cnVDjViR3zf5rG
-timestamp=2026-07-28T19:40:51.925Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:51.926Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:40:56.089Z level=INFO run=40116291 message=evaluated permission=grep pattern="GeoNodeRepository\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:40:56.326Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=33
-timestamp=2026-07-28T19:40:56.336Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3e9688001J2DFfovyEOezec
-timestamp=2026-07-28T19:40:56.337Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:40:56.337Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:00.314Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:00.322Z level=INFO run=40116291 message="touching file" file=/work/geonode/harvesting/admin.py
-timestamp=2026-07-28T19:41:00.396Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=34
-timestamp=2026-07-28T19:41:00.405Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3ea66f001DE33mUdMVh502x
-timestamp=2026-07-28T19:41:00.406Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:00.407Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:06.352Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:06.358Z level=INFO run=40116291 message="touching file" file=/work/geonode/harvesting/admin.py
-timestamp=2026-07-28T19:41:06.433Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=35
-timestamp=2026-07-28T19:41:06.442Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3ebe03001iqWlbD2d1dOy56
-timestamp=2026-07-28T19:41:06.442Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:06.443Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:12.399Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/geoserver/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:12.409Z level=INFO run=40116291 message="touching file" file=/work/geonode/geoserver/views.py
-timestamp=2026-07-28T19:41:12.495Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=36
-timestamp=2026-07-28T19:41:12.507Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3ed5b2001KQ0wekfJXOt167
-timestamp=2026-07-28T19:41:12.507Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:12.508Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:15.718Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/api/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:15.737Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/api/views.py
-timestamp=2026-07-28T19:41:15.878Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=37
-timestamp=2026-07-28T19:41:15.889Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3ee2e9001QfOjA5Py3mqQY5
-timestamp=2026-07-28T19:41:15.890Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:15.891Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:18.437Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/api/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:18.443Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/api/views.py
-timestamp=2026-07-28T19:41:18.537Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=38
-timestamp=2026-07-28T19:41:18.547Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3eed4b001d31ISKuTS5bDjP
-timestamp=2026-07-28T19:41:18.548Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:18.548Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:22.982Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/remote.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:22.988Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/common/remote.py
-timestamp=2026-07-28T19:41:23.154Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=39
-timestamp=2026-07-28T19:41:23.170Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3eff54001u33Gsith9r7qKd
-timestamp=2026-07-28T19:41:23.170Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:23.171Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:31.103Z level=INFO run=40116291 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:31.347Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=40
-timestamp=2026-07-28T19:41:31.360Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3f1f56001amLjQWzlUSxowU
-timestamp=2026-07-28T19:41:31.360Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:31.361Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:35.128Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:35.135Z level=INFO run=40116291 message="touching file" file=/work/geonode/settings.py
-timestamp=2026-07-28T19:41:35.361Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=41
-timestamp=2026-07-28T19:41:35.374Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3f2f0500111CPTsvSm3vTwu
-timestamp=2026-07-28T19:41:35.374Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:35.375Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:39.868Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:39.879Z level=INFO run=40116291 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
-timestamp=2026-07-28T19:41:40.047Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=42
-timestamp=2026-07-28T19:41:40.063Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3f4151001pV1JjsVEcYlUsT
-timestamp=2026-07-28T19:41:40.064Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:40.064Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:41:49.161Z level=INFO run=40116291 message=evaluated permission=read pattern=work/geonode/services/templates/services/service_detail.html action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:41:49.166Z level=INFO run=40116291 message="touching file" file=/work/geonode/services/templates/services/service_detail.html
-timestamp=2026-07-28T19:41:49.368Z level=INFO run=40116291 message=loop session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 step=43
-timestamp=2026-07-28T19:41:49.381Z level=INFO run=40116291 message=process session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 messageID=msg_faa3f65bb00111fngqdBgtyH5r
-timestamp=2026-07-28T19:41:49.381Z level=INFO run=40116291 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055c40ce6ffeYe4nslW6Vjaxt6 small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:41:49.382Z level=INFO run=40116291 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:31.768Z level=INFO run=7ded3547 message="creating instance" directory=/work
+timestamp=2026-08-07T08:23:31.769Z level=INFO run=7ded3547 message=fromDirectory directory=/work
+timestamp=2026-08-07T08:23:31.776Z level=INFO run=7ded3547 message=bootstrapping directory=/work
+timestamp=2026-08-07T08:23:31.785Z level=INFO run=7ded3547 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T08:23:31.785Z level=INFO run=7ded3547 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T08:23:31.785Z level=INFO run=7ded3547 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T08:23:31.786Z level=INFO run=7ded3547 message=loading path=/opencode.json
+timestamp=2026-08-07T08:23:31.793Z level=ERROR run=7ded3547 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T08:23:31.793Z level=INFO run=7ded3547 message=loading path=/opencode.json
+timestamp=2026-08-07T08:23:31.937Z level=INFO run=7ded3547 message="all LSPs are disabled"
+timestamp=2026-08-07T08:23:31.938Z level=INFO run=7ded3547 message="all formatters are disabled"
+timestamp=2026-08-07T08:23:31.939Z level=INFO run=7ded3547 message=init
+timestamp=2026-08-07T08:23:32.082Z level=INFO run=7ded3547 message=created id=ses_024ae000dffeQjalFavrehuo6i slug=witty-squid version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T08:23:32.082Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786091012082 time.updated=1786091012082
+timestamp=2026-08-07T08:23:32.111Z level=INFO run=7ded3547 message="event connected"
+timestamp=2026-08-07T08:23:32.312Z level=WARN run=7ded3547 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T08:23:32.314Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=0
+timestamp=2026-08-07T08:23:32.323Z level=INFO run=7ded3547 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T08:23:32.328Z level=INFO run=7ded3547 message=init count=1
+timestamp=2026-08-07T08:23:32.329Z level=INFO run=7ded3547 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T08:23:32.347Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=true agent=title mode=primary
+timestamp=2026-08-07T08:23:32.398Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:32.426Z level=INFO run=7ded3547 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T08:23:32.570Z level=INFO run=7ded3547 message="project copy refresh started" projectID=global
+timestamp=2026-08-07T08:23:32.571Z level=INFO run=7ded3547 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T08:23:32.976Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5200dc001KJc88F35N0Q3AB
+timestamp=2026-08-07T08:23:32.977Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:33.206Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:36.474Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:36.599Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=1
+timestamp=2026-08-07T08:23:36.616Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5211980017090Bn4neAQaiR
+timestamp=2026-08-07T08:23:36.616Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:36.617Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:38.602Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:39.136Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/setup.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:39.151Z level=INFO run=7ded3547 message="touching file" file=/work/setup.py
+timestamp=2026-08-07T08:23:39.656Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/SECURITY.md action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:39.665Z level=INFO run=7ded3547 message="touching file" file=/work/SECURITY.md
+timestamp=2026-08-07T08:23:39.784Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=2
+timestamp=2026-08-07T08:23:39.799Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb521e090013Y8KfCMDLJw0jQ
+timestamp=2026-08-07T08:23:39.799Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:39.800Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:42.745Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:42.750Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/urls.py
+timestamp=2026-08-07T08:23:43.255Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:43.760Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:43.971Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=3
+timestamp=2026-08-07T08:23:43.985Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb522e64001iU9Ks5lyR5DLy4
+timestamp=2026-08-07T08:23:43.986Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:43.986Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:47.071Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:47.076Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/proxy/views.py
+timestamp=2026-08-07T08:23:47.636Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:47.640Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/proxy/urls.py
+timestamp=2026-08-07T08:23:48.165Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:48.176Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/views.py
+timestamp=2026-08-07T08:23:48.370Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=4
+timestamp=2026-08-07T08:23:48.377Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb523f93001yZceYSY3T4X3Jd
+timestamp=2026-08-07T08:23:48.377Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:48.378Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:23:54.423Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="def extract_ip_or_domain" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:55.241Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="def validate_host" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:55.654Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:23:55.668Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:23:55.864Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=5
+timestamp=2026-08-07T08:23:55.966Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb525cd9001g0z3wbS4enRnSL
+timestamp=2026-08-07T08:23:55.967Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:23:55.970Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:04.558Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:04.573Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:24:05.064Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/security action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:05.607Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:05.611Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/views.py
+timestamp=2026-08-07T08:24:05.778Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=6
+timestamp=2026-08-07T08:24:05.792Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb528394001PEW3DFSPMaJ75L
+timestamp=2026-08-07T08:24:05.793Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:05.794Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:08.507Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/api action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:09.147Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/uploadhandler.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:09.158Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/uploadhandler.py
+timestamp=2026-08-07T08:24:09.570Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/layers action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:09.774Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=7
+timestamp=2026-08-07T08:24:09.782Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb529330001cZnY9N3NLYleWV
+timestamp=2026-08-07T08:24:09.783Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:09.783Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:13.172Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/api/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:13.178Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/api/views.py
+timestamp=2026-08-07T08:24:13.730Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/layers/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:13.735Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/layers/views.py
+timestamp=2026-08-07T08:24:13.869Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=8
+timestamp=2026-08-07T08:24:13.879Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb52a32f0010WgIu884FQaw9o
+timestamp=2026-08-07T08:24:13.879Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:13.880Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:18.324Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/geoserver action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:19.512Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="eval\\(|exec\\(|os\\.system\\(|subprocess\\.|popen|pickle\\.loads|yaml\\.load\\(|yaml\\.load\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:19.706Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=9
+timestamp=2026-08-07T08:24:19.714Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb52b9fc001BwX6SFtVPkXbLO
+timestamp=2026-08-07T08:24:19.714Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:19.715Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:26.811Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/base/management/commands/delete_resources.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:26.816Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/base/management/commands/delete_resources.py
+timestamp=2026-08-07T08:24:27.421Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/br/management/commands/utils/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:27.428Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/br/management/commands/utils/utils.py
+timestamp=2026-08-07T08:24:27.553Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=10
+timestamp=2026-08-07T08:24:27.572Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb52d8a4001vs82PN6VyE4DsI
+timestamp=2026-08-07T08:24:27.572Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:27.573Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:33.793Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:33.798Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/proxy/utils.py
+timestamp=2026-08-07T08:24:34.370Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/geoserver/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:34.375Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/geoserver/views.py
+timestamp=2026-08-07T08:24:34.949Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/geoserver/ows.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:35.042Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/geoserver/ows.py
+timestamp=2026-08-07T08:24:35.186Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=11
+timestamp=2026-08-07T08:24:35.196Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb52f674001qaWpzoXSIa0uqB
+timestamp=2026-08-07T08:24:35.196Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:35.197Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:43.723Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/layers/api action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:44.276Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/security/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:44.282Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/security/views.py
+timestamp=2026-08-07T08:24:44.485Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=12
+timestamp=2026-08-07T08:24:44.496Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb531ac8001nDNaqPbZs7htIB
+timestamp=2026-08-07T08:24:44.497Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:44.498Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:24:48.314Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/layers/api/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:48.322Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/layers/api/views.py
+timestamp=2026-08-07T08:24:49.093Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/base/api/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:24:49.100Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/base/api/views.py
+timestamp=2026-08-07T08:24:49.228Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=13
+timestamp=2026-08-07T08:24:49.239Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb532d4e001R18YSqQ2Zcza21
+timestamp=2026-08-07T08:24:49.239Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:24:49.240Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:00.334Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/storage action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:01.265Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="class StorageManager|def clone_remote_files|def get_retrieved_paths" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:01.433Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=14
+timestamp=2026-08-07T08:25:01.445Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb535cfc0010pAmPAMgCbcdXV
+timestamp=2026-08-07T08:25:01.445Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:01.446Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:03.448Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/storage/manager.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:03.453Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/storage/manager.py
+timestamp=2026-08-07T08:25:03.569Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=15
+timestamp=2026-08-07T08:25:03.586Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb536554001Ari4BA5bRWCcgs
+timestamp=2026-08-07T08:25:03.586Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:03.587Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:07.887Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/storage/data_retriever.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:07.893Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/storage/data_retriever.py
+timestamp=2026-08-07T08:25:08.442Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:08.591Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=16
+timestamp=2026-08-07T08:25:08.603Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5378f2001ZEhxmSRI31WtZ2
+timestamp=2026-08-07T08:25:08.603Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:08.604Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:12.264Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/remote action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:12.918Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/remote/__init__.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:12.925Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/remote/__init__.py
+timestamp=2026-08-07T08:25:13.484Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:13.671Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=17
+timestamp=2026-08-07T08:25:13.682Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb538cca001J9EY1kbuOA3DpX
+timestamp=2026-08-07T08:25:13.682Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:13.683Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:16.454Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/remote.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:16.460Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/common/remote.py
+timestamp=2026-08-07T08:25:17.291Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:17.308Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
+timestamp=2026-08-07T08:25:17.463Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=18
+timestamp=2026-08-07T08:25:17.474Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb539b9a001DpwpwMWcxiXs67
+timestamp=2026-08-07T08:25:17.475Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:17.475Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:24.464Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="Popen\\(|subprocess\\.call\\(|subprocess\\.Popen\\(|os\\.system\\(|shell=True" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:24.630Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=19
+timestamp=2026-08-07T08:25:24.641Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53b7990010fXSe6IVXH6Sn0
+timestamp=2026-08-07T08:25:24.642Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:24.643Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:28.049Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:28.059Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
+timestamp=2026-08-07T08:25:29.115Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/vector.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:29.125Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/common/vector.py
+timestamp=2026-08-07T08:25:29.343Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=20
+timestamp=2026-08-07T08:25:29.353Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53ca01001C7iiA4Q3OlCEhO
+timestamp=2026-08-07T08:25:29.354Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:29.354Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:33.292Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/common/raster.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:33.298Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/common/raster.py
+timestamp=2026-08-07T08:25:33.436Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=21
+timestamp=2026-08-07T08:25:33.446Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53d9ff001rqPYvDhZrE3k4t
+timestamp=2026-08-07T08:25:33.447Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:33.448Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:36.432Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/context_processors.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:36.441Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/context_processors.py
+timestamp=2026-08-07T08:25:37.221Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/base/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:37.226Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/base/views.py
+timestamp=2026-08-07T08:25:37.316Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=22
+timestamp=2026-08-07T08:25:37.335Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53e927001RCUnbsUROyjBWq
+timestamp=2026-08-07T08:25:37.335Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:37.336Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:41.794Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=mark_safe|format_html|safe action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:42.591Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/maps/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:42.608Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/maps/views.py
+timestamp=2026-08-07T08:25:42.754Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=23
+timestamp=2026-08-07T08:25:42.765Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53fe65001qEFXvKu5J8FS5q
+timestamp=2026-08-07T08:25:42.765Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:42.766Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:43.401Z level=ERROR run=7ded3547 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T08:25:43.403Z level=ERROR run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb53fe65001qEFXvKu5J8FS5q error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
+timestamp=2026-08-07T08:25:43.406Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=24
+timestamp=2026-08-07T08:25:43.423Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5400fe001boAce6FvRNbAql
+timestamp=2026-08-07T08:25:43.424Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=compaction mode=primary
+timestamp=2026-08-07T08:25:43.425Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:55.055Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=25
+timestamp=2026-08-07T08:25:55.074Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb542e72001QZA8IxnGc4J4gI
+timestamp=2026-08-07T08:25:55.074Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:25:55.075Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:25:59.055Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:25:59.061Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/proxy/views.py
+timestamp=2026-08-07T08:26:00.298Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="(eval|exec|subprocess|pickle|yaml\\.load|xml\\.etree|ElementTree|parsing)" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:01.574Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="(os\\.system|shutil\\.make_archive|tarfile|zipfile|unsafe|mark_safe|safe.*False)" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:01.802Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=26
+timestamp=2026-08-07T08:26:01.814Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5448cd001n1Yxw8NGFYq9kR
+timestamp=2026-08-07T08:26:01.814Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:01.815Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:10.533Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:10.543Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/harvesting/admin.py
+timestamp=2026-08-07T08:26:11.061Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/files.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:11.067Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/files.py
+timestamp=2026-08-07T08:26:11.634Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/upload/handlers/base.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:11.639Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/upload/handlers/base.py
+timestamp=2026-08-07T08:26:11.839Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=27
+timestamp=2026-08-07T08:26:11.852Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb547003001dqKspnpxU4AjTM
+timestamp=2026-08-07T08:26:11.852Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:11.853Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:17.578Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/proxy/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:17.584Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/proxy/utils.py
+timestamp=2026-08-07T08:26:18.597Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:18.603Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:26:19.552Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="def extract_ip_or_domain|def http_client" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:19.828Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=28
+timestamp=2026-08-07T08:26:19.839Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb548f37001K7uBgtkUK0vC2I
+timestamp=2026-08-07T08:26:19.840Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:19.841Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:22.933Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="^def http_client" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:24.021Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:24.031Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=29
+timestamp=2026-08-07T08:26:24.037Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:26:24.053Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb549fa2001WMVu0Sew4VdfoJ
+timestamp=2026-08-07T08:26:24.054Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:24.055Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:26.870Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="http_client =|class http_client|def http_client|http_client = requests" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:27.978Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="^http_client\\s*=|from.*import.*http_client" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:28.117Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=30
+timestamp=2026-08-07T08:26:28.129Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb54af98001HHaWI32Ot2X7C0
+timestamp=2026-08-07T08:26:28.129Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:28.130Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:30.540Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="class HttpClient" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:30.772Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=31
+timestamp=2026-08-07T08:26:30.786Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb54b9f8001dPPIt4clOyGhmY
+timestamp=2026-08-07T08:26:30.786Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:30.787Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:33.169Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:33.180Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:26:33.262Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=32
+timestamp=2026-08-07T08:26:33.280Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb54c3b1001QCZ3lmFOf5y0Yq
+timestamp=2026-08-07T08:26:33.280Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:33.281Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:36.441Z level=INFO run=7ded3547 message=evaluated permission=glob pattern=**/management/commands/delete_resources.py action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:37.423Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=mark_safe action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:38.521Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="SECRET_KEY|DEBUG\\s*=\\s*True" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:38.663Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=33
+timestamp=2026-08-07T08:26:38.674Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb54d8ca001QYykfXLL9PI5hZ
+timestamp=2026-08-07T08:26:38.675Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:38.675Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:44.162Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/base/management/commands/delete_resources.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:44.174Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/base/management/commands/delete_resources.py
+timestamp=2026-08-07T08:26:44.978Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/storage/data_retriever.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:44.983Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/storage/data_retriever.py
+timestamp=2026-08-07T08:26:46.006Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="extractall|extract\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:46.247Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=34
+timestamp=2026-08-07T08:26:46.260Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb54f66b001xPJ2HrZvusEC0w
+timestamp=2026-08-07T08:26:46.260Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:46.261Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:50.644Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:50.650Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:26:51.574Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:51.586Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:26:52.796Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/storage/data_retriever.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:52.809Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=35
+timestamp=2026-08-07T08:26:52.815Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/storage/data_retriever.py
+timestamp=2026-08-07T08:26:52.828Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb55100d001mci0GFybxCDy8k
+timestamp=2026-08-07T08:26:52.828Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:52.829Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:26:55.562Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:55.570Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/settings.py
+timestamp=2026-08-07T08:26:56.982Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=CSRF_TRUSTED|CORS_|ALLOWED_HOSTS|X_FRAME|SESSION_COOKIE|SECURE_|CSRF_COOKIE action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:26:57.200Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=36
+timestamp=2026-08-07T08:26:57.211Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb552133001RHS3aRn5T83PHo
+timestamp=2026-08-07T08:26:57.211Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:26:57.212Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:01.218Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:01.224Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/serializer.py
+timestamp=2026-08-07T08:27:02.147Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/pavement.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:02.200Z level=INFO run=7ded3547 message="touching file" file=/work/pavement.py
+timestamp=2026-08-07T08:27:03.152Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:03.190Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/settings.py
+timestamp=2026-08-07T08:27:03.348Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=37
+timestamp=2026-08-07T08:27:03.366Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5539370016jG8l4UEIBuF7S
+timestamp=2026-08-07T08:27:03.366Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:03.367Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:06.354Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:06.363Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/settings.py
+timestamp=2026-08-07T08:27:07.335Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:07.340Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/serializer.py
+timestamp=2026-08-07T08:27:07.545Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=38
+timestamp=2026-08-07T08:27:07.557Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb55499c001DwgDDp8ZP0m5Gt
+timestamp=2026-08-07T08:27:07.557Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:07.558Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:11.430Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=kombu.*register|serialization.*register action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:12.410Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="def validate_host|validate_host\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:12.561Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=39
+timestamp=2026-08-07T08:27:12.581Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb555d35001nzSdU5ob1s1Um7
+timestamp=2026-08-07T08:27:12.581Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:12.582Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:15.354Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="register\\(.*serializer" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:16.394Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="register\\(|kombu.*register" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:16.558Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=40
+timestamp=2026-08-07T08:27:16.571Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb556cd2001I8eU70jV3e8u6V
+timestamp=2026-08-07T08:27:16.571Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:16.572Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:20.612Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=from_ewkt action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:21.909Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="SQL_PARAMS|RAW_SQL|extra\\(|RawSQL|connection\\.cursor|raw\\(.*sql|raw\\(.*quer" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:22.960Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="os\\.environ.*SECRET|SECRET_KEY.*=" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:23.093Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=41
+timestamp=2026-08-07T08:27:23.105Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb5586580017Ttxdbip4r2Gmo
+timestamp=2026-08-07T08:27:23.105Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:23.106Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:26.328Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/catalogue/backends/pycsw_plugin.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:26.333Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/catalogue/backends/pycsw_plugin.py
+timestamp=2026-08-07T08:27:27.279Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:27.286Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:27:27.408Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=42
+timestamp=2026-08-07T08:27:27.421Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb559734001WI6Drwcz3MqXtH
+timestamp=2026-08-07T08:27:27.421Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:27.422Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:33.514Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/catalogue/backends/pycsw_plugin.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:33.519Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/catalogue/backends/pycsw_plugin.py
+timestamp=2026-08-07T08:27:34.594Z level=INFO run=7ded3547 message=evaluated permission=grep pattern=class.*CatalogueBackend|class.*csw action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:34.808Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=43
+timestamp=2026-08-07T08:27:34.828Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb55b41d001Ul0Xs3D3O9fsll
+timestamp=2026-08-07T08:27:34.829Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:34.830Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:52.614Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/geoserver/ows.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:52.619Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/geoserver/ows.py
+timestamp=2026-08-07T08:27:53.600Z level=INFO run=7ded3547 message=evaluated permission=grep pattern="def get_headers" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:54.646Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/harvesting/admin.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:54.651Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/harvesting/admin.py
+timestamp=2026-08-07T08:27:54.856Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=44
+timestamp=2026-08-07T08:27:54.871Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb56026c001fRcro0uR6m7j02
+timestamp=2026-08-07T08:27:54.872Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:54.873Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:27:57.924Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:27:57.931Z level=INFO run=7ded3547 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T08:27:58.028Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=45
+timestamp=2026-08-07T08:27:58.047Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb560ed0001b51OEBHdGOMNZp
+timestamp=2026-08-07T08:27:58.048Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:27:58.048Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:28:11.808Z level=INFO run=7ded3547 message=evaluated permission=read pattern=work/create-envfile.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:28:11.813Z level=INFO run=7ded3547 message="touching file" file=/work/create-envfile.py
+timestamp=2026-08-07T08:28:12.058Z level=INFO run=7ded3547 message=loop session.id=ses_024ae000dffeQjalFavrehuo6i step=46
+timestamp=2026-08-07T08:28:12.073Z level=INFO run=7ded3547 message=process session.id=ses_024ae000dffeQjalFavrehuo6i messageID=msg_fdb56459e001zI9H61BtgRqiw0
+timestamp=2026-08-07T08:28:12.074Z level=INFO run=7ded3547 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_024ae000dffeQjalFavrehuo6i small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:28:12.075Z level=INFO run=7ded3547 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:36.291Z level=INFO run=31789bc3 message="creating instance" directory=/work
+timestamp=2026-08-07T12:21:36.292Z level=INFO run=31789bc3 message=fromDirectory directory=/work
+timestamp=2026-08-07T12:21:36.309Z level=INFO run=31789bc3 message=bootstrapping directory=/work
+timestamp=2026-08-07T12:21:36.314Z level=INFO run=31789bc3 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T12:21:36.317Z level=INFO run=31789bc3 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T12:21:36.318Z level=ERROR run=31789bc3 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T12:21:36.318Z level=INFO run=31789bc3 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T12:21:36.318Z level=INFO run=31789bc3 message=loading path=/opencode.json
+timestamp=2026-08-07T12:21:36.323Z level=INFO run=31789bc3 message=loading path=/opencode.json
+timestamp=2026-08-07T12:21:36.446Z level=INFO run=31789bc3 message="all LSPs are disabled"
+timestamp=2026-08-07T12:21:36.447Z level=INFO run=31789bc3 message="all formatters are disabled"
+timestamp=2026-08-07T12:21:36.447Z level=INFO run=31789bc3 message=init
+timestamp=2026-08-07T12:21:36.578Z level=INFO run=31789bc3 message=created id=ses_023d4093dffevusqbAavTqsteP slug=sunny-planet version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T12:21:36.578Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786105296578 time.updated=1786105296578
+timestamp=2026-08-07T12:21:36.606Z level=INFO run=31789bc3 message="event connected"
+timestamp=2026-08-07T12:21:36.768Z level=WARN run=31789bc3 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T12:21:36.776Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=0
+timestamp=2026-08-07T12:21:36.786Z level=INFO run=31789bc3 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T12:21:36.790Z level=INFO run=31789bc3 message=init count=1
+timestamp=2026-08-07T12:21:36.792Z level=INFO run=31789bc3 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T12:21:36.808Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=true agent=title mode=primary
+timestamp=2026-08-07T12:21:36.846Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:36.871Z level=INFO run=31789bc3 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T12:21:37.005Z level=INFO run=31789bc3 message="project copy refresh started" projectID=global
+timestamp=2026-08-07T12:21:37.006Z level=INFO run=31789bc3 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T12:21:37.585Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2bf78b001karCyhD6SdNsS6
+timestamp=2026-08-07T12:21:37.586Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:21:37.589Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:40.285Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:40.397Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=1
+timestamp=2026-08-07T12:21:40.413Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c05ae0019RmDkcKi1E1wtL
+timestamp=2026-08-07T12:21:40.414Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:21:40.414Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:42.361Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:42.858Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/tests action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:42.986Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=2
+timestamp=2026-08-07T12:21:43.001Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c0fcb001SrPqT3oeAl7drQ
+timestamp=2026-08-07T12:21:43.001Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:21:43.002Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:45.063Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/proxy action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:45.595Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:46.132Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/security action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:46.667Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/api action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:46.829Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=3
+timestamp=2026-08-07T12:21:46.863Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c1ece001Qr7idEY75D6UF0
+timestamp=2026-08-07T12:21:46.863Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:21:46.864Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:21:49.154Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/proxy/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:49.181Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/proxy/views.py
+timestamp=2026-08-07T12:21:49.742Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/security/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:49.768Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/security/views.py
+timestamp=2026-08-07T12:21:50.418Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/security/middleware.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:21:50.425Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/security/middleware.py
+timestamp=2026-08-07T12:21:50.461Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=4
+timestamp=2026-08-07T12:21:50.479Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c2cfe001qx4utVapsznjBX
+timestamp=2026-08-07T12:21:50.479Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:21:50.480Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:04.611Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:04.626Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T12:22:05.146Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/proxy/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:05.156Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/proxy/utils.py
+timestamp=2026-08-07T12:22:05.685Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:05.690Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/views.py
+timestamp=2026-08-07T12:22:05.829Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=5
+timestamp=2026-08-07T12:22:05.846Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c6906001lgmeUINCKOysB5
+timestamp=2026-08-07T12:22:05.847Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:05.848Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:14.573Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="def extract_ip_or_domain" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:15.340Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="def extract_user_from_headers" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:15.873Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:15.913Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/urls.py
+timestamp=2026-08-07T12:22:16.006Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=6
+timestamp=2026-08-07T12:22:16.022Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2c90c80014iAV70yVVXD1dZ
+timestamp=2026-08-07T12:22:16.022Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:16.023Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:19.132Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:19.138Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T12:22:19.658Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/base/auth.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:19.663Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/base/auth.py
+timestamp=2026-08-07T12:22:20.226Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/proxy/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:20.230Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/proxy/urls.py
+timestamp=2026-08-07T12:22:20.343Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=7
+timestamp=2026-08-07T12:22:20.357Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2ca1b8001gQ7SvsYXnFRzwo
+timestamp=2026-08-07T12:22:20.358Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:20.359Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:24.124Z level=INFO run=31789bc3 message=evaluated permission=grep pattern=ip_regex|domain_regex|remove_credentials_from_url action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:24.252Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=8
+timestamp=2026-08-07T12:22:24.269Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2cb0fe001MyULySWrAXQtbF
+timestamp=2026-08-07T12:22:24.270Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:24.271Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:26.881Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/utils.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:26.889Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/utils.py
+timestamp=2026-08-07T12:22:26.995Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=9
+timestamp=2026-08-07T12:22:27.004Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2cbbb5001VDVTwVMpgo47J7
+timestamp=2026-08-07T12:22:27.005Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:27.006Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:35.918Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/api action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:36.466Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/handlers action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:36.625Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=10
+timestamp=2026-08-07T12:22:36.665Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2ce153001VoveiCzDAoCmKP
+timestamp=2026-08-07T12:22:36.665Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:36.666Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:38.516Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/api/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:38.521Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/api/views.py
+timestamp=2026-08-07T12:22:39.100Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/handlers/xml action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:39.224Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=11
+timestamp=2026-08-07T12:22:39.241Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2ceb7a001WyHc1bwxw8Ys8o
+timestamp=2026-08-07T12:22:39.241Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:39.242Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:42.744Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/handlers/xml/handler.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:42.749Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/handlers/xml/handler.py
+timestamp=2026-08-07T12:22:43.319Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/handlers/kml action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:43.438Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=12
+timestamp=2026-08-07T12:22:43.453Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2cfbf0001HscbmnbKYnc9zp
+timestamp=2026-08-07T12:22:43.453Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:43.454Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:47.073Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/storage action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:47.839Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="def clone_remote_files" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:48.828Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="\\.extractall|zipfile|ZipFile|ZipFile\\(.*,.*r" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:48.961Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=13
+timestamp=2026-08-07T12:22:48.978Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d1183001DfymBium3Mb4qH
+timestamp=2026-08-07T12:22:48.979Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:48.980Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:52.316Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/handlers/base.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:52.323Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/handlers/base.py
+timestamp=2026-08-07T12:22:53.346Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/orchestrator.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:53.351Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/orchestrator.py
+timestamp=2026-08-07T12:22:54.342Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/storage/manager.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:54.346Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/storage/manager.py
+timestamp=2026-08-07T12:22:54.466Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=14
+timestamp=2026-08-07T12:22:54.487Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d270500109PXmvtxJoqPV8
+timestamp=2026-08-07T12:22:54.488Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:54.489Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:22:58.577Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/storage/data_retriever.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:22:58.582Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/storage/data_retriever.py
+timestamp=2026-08-07T12:22:58.699Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=15
+timestamp=2026-08-07T12:22:58.714Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d378d001nx5YI9yJDdy4zv
+timestamp=2026-08-07T12:22:58.714Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:22:58.715Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:04.442Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="\\.extractall\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:05.685Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="eval\\(|exec\\(|__import__|pickle\\.loads|yaml\\.load\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:05.913Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=16
+timestamp=2026-08-07T12:23:05.933Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d53be001p1mqV4FScQ5SD8
+timestamp=2026-08-07T12:23:05.934Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:05.935Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:11.598Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/base/management/commands/delete_resources.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:11.605Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/base/management/commands/delete_resources.py
+timestamp=2026-08-07T12:23:11.728Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=17
+timestamp=2026-08-07T12:23:11.742Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d6a72001bh0OnRCXD7yPcS
+timestamp=2026-08-07T12:23:11.743Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:11.743Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:16.835Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/management_commands_http action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:16.973Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=18
+timestamp=2026-08-07T12:23:16.989Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d7eef001UM2jullHjnYEt6
+timestamp=2026-08-07T12:23:16.990Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:16.991Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:19.215Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/management_commands_http/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:19.221Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/management_commands_http/views.py
+timestamp=2026-08-07T12:23:19.835Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/management_commands_http/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:19.841Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/management_commands_http/urls.py
+timestamp=2026-08-07T12:23:19.954Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=19
+timestamp=2026-08-07T12:23:19.971Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2d8a96001GIqumY2oP2d9kW
+timestamp=2026-08-07T12:23:19.972Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:19.972Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:24.711Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/base/api/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:24.718Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/base/api/views.py
+timestamp=2026-08-07T12:23:25.463Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/api/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:25.469Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/api/api.py
+timestamp=2026-08-07T12:23:25.595Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=20
+timestamp=2026-08-07T12:23:25.611Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2da09e001ENm5i7733B0I8U
+timestamp=2026-08-07T12:23:25.612Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:25.613Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:28.815Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/api/authentication.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:28.819Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/api/authentication.py
+timestamp=2026-08-07T12:23:29.869Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="def validate_host|ALLOWED_HOSTS" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:29.993Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=21
+timestamp=2026-08-07T12:23:30.008Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2db1cc001WkmVh9RsyMLKst
+timestamp=2026-08-07T12:23:30.008Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:30.009Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:44.788Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/geoserver/helpers.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:44.795Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/geoserver/helpers.py
+timestamp=2026-08-07T12:23:45.599Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/geoserver/ows.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:45.604Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/geoserver/ows.py
+timestamp=2026-08-07T12:23:45.807Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=22
+timestamp=2026-08-07T12:23:45.829Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2def92001zRHG2qW6k3JZuj
+timestamp=2026-08-07T12:23:45.830Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:45.831Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:50.451Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:50.462Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/settings.py
+timestamp=2026-08-07T12:23:50.564Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=23
+timestamp=2026-08-07T12:23:50.582Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2e0227001Dwt9hLRoYFuoKY
+timestamp=2026-08-07T12:23:50.582Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:50.583Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:23:56.589Z level=INFO run=31789bc3 message=evaluated permission=grep pattern=ALLOWED_DOCUMENT_TYPES|ALLOWED_UPLOAD_TYPES|UPLOADER|upload_size|UploadSizeLimit action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:57.558Z level=INFO run=31789bc3 message=evaluated permission=grep pattern=CSRF_COOKIE|CORS_ORIGIN|SESSION_COOKIE action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:23:57.698Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=24
+timestamp=2026-08-07T12:23:57.717Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2e1e05001tp6hgqy6eWtv4k
+timestamp=2026-08-07T12:23:57.718Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:23:57.719Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:24:03.771Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="session\\.verify\\s*=\\s*False|verify=False" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:24:04.773Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:24:04.801Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/settings.py
+timestamp=2026-08-07T12:24:04.906Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=25
+timestamp=2026-08-07T12:24:04.924Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2e3a2d001UX5F2J6Y3ZJHfZ
+timestamp=2026-08-07T12:24:04.924Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:24:04.925Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T12:24:15.783Z level=INFO run=31789bc3 message=evaluated permission=read pattern=work/geonode/upload/api/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T12:24:15.793Z level=INFO run=31789bc3 message="touching file" file=/work/geonode/upload/api/serializer.py
+timestamp=2026-08-07T12:24:16.882Z level=INFO run=31789bc3 message=evaluated permission=grep pattern="serializers\\.CharField|serializers\\.IntegerField|serializers\\.BooleanField|rest_framework" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T12:24:17.054Z level=INFO run=31789bc3 message=loop session.id=ses_023d4093dffevusqbAavTqsteP step=26
+timestamp=2026-08-07T12:24:17.071Z level=INFO run=31789bc3 message=process session.id=ses_023d4093dffevusqbAavTqsteP messageID=msg_fdc2e69a1001oADJQPqtwLwVzw
+timestamp=2026-08-07T12:24:17.072Z level=INFO run=31789bc3 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_023d4093dffevusqbAavTqsteP small=false agent=reviewer mode=primary
+timestamp=2026-08-07T12:24:17.073Z level=INFO run=31789bc3 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

@@ -27,4 +27,10 @@ cd /work 2>/dev/null || cd /
 opencode run -m "$OPENCODE_MODEL" --agent reviewer \
     --dangerously-skip-permissions --print-logs "$PROMPT" \
     >/output/answer.txt 2>/output/opencode.log
+# ONE pass, nothing after it. A model that ends without the verdict block —
+# typically by asking whether it should keep going — is left as it is: resuming
+# the session would hand a second chance, and an extra instruction, only to the
+# models that struggle, which is precisely the comparison we are trying to make.
+# The instruction not to ask questions lives in the prompt instead (see
+# verdict.py), so every model receives it identically from the start.
 echo "$?" >/output/exit_code.txt

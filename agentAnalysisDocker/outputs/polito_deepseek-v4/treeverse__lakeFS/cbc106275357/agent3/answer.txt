@@ -1,149 +1,224 @@
-Let me dig deeper into the most promising findings and look at the specific source code files.
-Let me look for more serious vulnerabilities, particularly around command injection, template injection, and arbitrary file operations.
-Let me look at the released token template and the login/logout handlers for potential vulnerabilities.
-Let me focus on the remaining key files for complete analysis.
-Let me look at the ListObjects handler for another authorization pattern issue and also check how the auth eval truly works for ARN matching.
 ## Goal
-- Identify security vulnerabilities in the lakeFS repository as a zero-day hunt, with no pre-existing hints.
+Analyze the lakeFS repository to find security vulnerabilities (zero-day hunt)
 
 ## Constraints & Preferences
-- Classify with accurate CWE identifier(s); list none if nothing found; output exact VULNERABILITY_FOUND/CWE_ID/CWE_NAME block at end.
+- No commit, no diff, no hint of where to look -- find it yourself
+- Never ask questions; cannot be answered
+- Classify with accurate CWE identifier(s) if vulnerability found
+- If nothing confident found, say so rather than guessing
 
 ## Progress
 ### Done
-- Explored repository structure: lakeFS = Go HTTP API server (go-chi/chi/v5), S3-compatible gateway, React web UI, CLI tool (lakectl), data version control over object storage.
-- Analyzed `pkg/gateway/` for S3 gateway security:
-  - Found `x-amz-copy-source` path parsing (putobject.go:86-96) with `url.QueryUnescape` + `path.ResolveAbsolutePath` — does not strip `..` or normalize; attacker can use `../` sequences to escape intended path within the same repo.
-  - `ResolveAbsolutePath` (path/resolver.go:45-57) uses `strings.SplitN` with no normalization — `../../` sequences pass through to catalog operations unsanitized.
-  - `ParseRequestParts` (middleware.go:258-307) does not validate or sanitize path segments.
-  - `ListObjects.RequiredPermissions` — checks `delimiter == "/"` and `!strings.Contains(prefix, "/")` to decide permission on `fs:ListBranches` vs `fs:ListObjects`; edge cases possible with crafted prefix/delimiter to bypass intended authorization scope.
-- Analyzed `pkg/api/` for API handler security:
-  - `releasedTokenTemplate` (controller.go:914-924) uses `html/template` with `{{.Username}}` — safe from XSS (auto-escaped).
-  - `InjectSnippetsFS` (injectsnippetsfs.go): code snippets from config injected into index.html OK, but `item.Code` is inserted raw without escaping (line 51). Snippets come from admin configuration, not user input — no XSS vector unless admin is attacker.
-  - No shell command injection in API handlers; only `os/exec` in CLI tools (lakectl plugins, bisect_run) which accept user-provided commands as intended.
-- Analyzed `pkg/auth/` for authn/authz:
-  - JWT token validation uses HMAC-SHA256 only (token.go), no algorithm confusion possible.
-  - Credential encryption uses NaCl secretbox with scrypt KDF (encryption.go) — properly implemented.
-  - RBAC policy evaluation (policy_filter.go, condition.go) uses wildcard matching with proper ARN-based resource checking.
-  - `DeleteObjects.RequiredPermissions` returns empty `permissions.Node{}` (deleteobjects.go:26-28) — effectively allows anyone who gets past authentication to perform delete requests.
-  - No hardcoded credentials found.
-- Analyzed `pkg/gateway/sig/` for signature handling: V4, V2, JavaV2 authenticators; clock skew limited to 15 minutes; no obvious bypass in signature verification.
+- Explored repository root directory and identified project as lakeFS (Go-based data version control / object storage gateway)
+- Reviewed README, go.mod, and overall directory structure
+- Examined `pkg/gateway/` (S3-compatible API gateway handler + middleware)
+- Examined `pkg/api/` (REST API controller, auth middleware, security middleware, UI handler)
+- Examined `pkg/api/injectsnippetsfs.go` (snippet injection into HTML)
+- Examined `pkg/gateway/path/resolver.go` (path resolution from URL)
+- Examined `pkg/gateway/operations/` (put/get/post object handlers)
+- Examined `pkg/auth/` (auth service, ARN parsing, policy filtering, wildcard matching, conditions)
+- Examined `pkg/actions/lua/` (Lua hook execution via go-lua, with OpenSafe sandboxing)
+- Examined `pkg/actions/airflow.go` (Airflow hook HTTP calls)
+- Checked for exec.Command use, SSRF patterns, path traversal risks
+- Reviewed `pkg/actions/lua/open.go` and `stdlib.go` for Lua sandbox setup
+- Reviewed `pkg/actions/lua/load.go` for script loading
+- Reviewed `pkg/api/controller.go` for physical address verification / `normalizePhysicalAddress`
+- Reviewed `pkg/catalog/catalog.go` for `VerifyLinkAddress` and address signing
 
 ### In Progress
-- Cross-referencing the `DeleteObjects.RequiredPermissions` empty return with actual authorization enforcement to confirm severity.
-- Verifying whether the ListObjects permission bypass (manipulating `prefix` + `delimiter`) can actually let attacker list objects when they only have `fs:ListBranches`.
+- Deeper analysis of potential injection points and access control bypass scenarios
+- Investigating whether the snippet injection in HTML is exploitable for XSS
+- Checking if path traversal exists via S3 gateway paths or repository/branch/path resolution
 
 ### Blocked
 - (none)
 
 ## Key Decisions
-- Found genuine vulnerability in `DeleteObjects` (CWE-862: Missing Authorization): `RequiredPermissions` returns empty node, meaning no permission check is performed on batch delete operations.
-- Found potential authorization bypass in `ListObjects` (CWE-285: Improper Authorization): permission decision depends on parsing query parameters that attacker controls.
+- (none yet -- analysis still in progress)
 
 ## Next Steps
-1. Confirm `DeleteObjects` authorization gap by tracing how empty `permissions.Node{}` is handled by authorization middleware.
-2. Determine if `ListObjectsRequiredPermissions` can be bypassed with crafted prefix/delimiter.
-3. Check for other S3 gateway operations with similar auth issues.
+- Complete analysis of snippet injection in `injectsnippetsfs.go` and `ui_handler.go`
+- Complete analysis of path traversal potential in `gateway/path/resolver.go` via `//` and encoded path handling
+- Check for SSRF vulnerabilities in `actions/airflow.go` (URL construction)
+- Evaluate Lua sandbox `OpenSafe` for escape vulnerabilities
+- Examine API authorization checks for potential privilege escalation
+- Commit to final conclusion
 
 ## Critical Context
-- `DeleteObjects.RequiredPermissions` returns empty `Node` — this may mean no authorization check is performed for batch deletes.
-- Path traversal via `x-amz-copy-source` is mitigated by `ResolveAbsolutePath` requiring exactly 3 parts, making cross-repo traversal hard.
-- `ResolveAbsolutePath` does split on `/` but only allows exactly 3 segments (repo/ref/path) — no `..` handling needed once split.
-- Project is `github.com/treeverse/lakefs` — Go 1.25.5, Apache 2.0 licensed.
+- lakeFS is an S3-compatible data lake version control system written in Go
+- It has both a REST API (`pkg/api/`) and an S3-compatible gateway (`pkg/gateway/`)
+- Auth uses ARN-based policies with wildcard matching and condition operators
+- Lua hooks execute user-defined scripts with a sandbox (`OpenSafe`)
+- Physical addresses are signed and verified (`VerifyLinkAddress`)
+- HTML snippet injection into index.html exists (`injectsnippetsfs.go`)
 
 ## Relevant Files
-- `pkg/gateway/operations/deleteobjects.go`: `RequiredPermissions` returns `permissions.Node{}` (empty) — potential authorization bypass for batch deletes.
-- `pkg/gateway/operations/listobjects.go`: `RequiredPermissions` logic distinguishes list branches vs list objects based on query params — potential permission elevation.
-- `pkg/gateway/middleware.go`: `ParseRequestParts` and `AuthenticationHandler` — where auth is actually enforced.
-- `pkg/gateway/path/resolver.go`: `ResolveAbsolutePath` — path parsing without `..` normalization.
-- `pkg/gateway/operations/putobject.go`: `x-amz-copy-source` parsing — potential path manipulation.
-- `pkg/api/controller.go`: API handlers including `ReleaseTokenToMailbox` with safe template.
-- `pkg/auth/service.go`: Authorization service with `CheckPermissions` method.
-- `pkg/auth/policy_filter.go`: Resource-based policy evaluation.
-- `pkg/permissions/permission.go`: ARN generation functions (`ObjectArn`, `RepoArn`, etc.).
+- `/work/pkg/api/injectsnippetsfs.go`: Snippet injection into HTML with `html.EscapeString` only on ID, not on `item.Code`
+- `/work/pkg/api/ui_handler.go`: UI handler serving injected content
+- `/work/pkg/api/auth_middleware.go`: API authentication middleware (cookie, JWT, OIDC)
+- `/work/pkg/gateway/handler.go`: S3 gateway routing and handler setup
+- `/work/pkg/gateway/middleware.go`: Gateway auth middleware (sig v2/v4)
+- `/work/pkg/gateway/path/resolver.go`: Path resolution from S3-like URLs (uses regex `(?P<path>.*)`)
+- `/work/pkg/actions/lua/open.go`: Lua library opens; includes net/http, storage/AWS/Azure/GCloud
+- `/work/pkg/actions/airflow.go`: Airflow hook - builds URLs with `path.Join` and user-provided DagID
+- `/work/pkg/api/controller.go`: Physical address normalization (`normalizePhysicalAddress`)
+- `/work/pkg/catalog/catalog.go`: Address signing/verification (`VerifyLinkAddress`)
+- `/work/pkg/permissions/permission.go`: ARN resource definitions (`ObjectArn`, `RepoArn`, etc.)
 The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
 
 Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
-Let me resume the security analysis. I need to trace the authorization gap in `DeleteObjects` and other findings.
-Now I have the critical insight. Let me check the `authorize` function's handling of empty permissions, and also look at the singular `DeleteObject` for comparison.
-Now I understand the key structures. Let me trace the authorization logic closely. The `authorize` function in `handler.go` (line 267) shows that empty `permissions.Node{}` bypasses middleware authorization. Let me also check the path resolver and other operations that might have similar empty-permissions patterns.
-Let me now look at the graveler/catalog layer to understand if path traversal via copy source is possible, and also check the auth service implementation for policy evaluation.
-Let me check one more thing - the `ArnMatch` function and `wildcard.Match`:
-## Final Analysis Summary
+Let me re-explore the workspace and continue the security analysis where I left off.
+Let me dig deeper into the specific areas of concern.
+Let me check how Lua action hooks are loaded and who has access to configure them.
+Now let me look at how the API controller handles physical addresses and other potential authorization issues.
+Let me check for other potential issues like command execution, SQL injection, and log injection vulnerabilities.
+Let me look at how the gateway operations use the path, especially for GetObject and PutObject.
+Let me check the permissions/ARN construction for any spoofing or traversal issues.
+Let me check the auth service's `Authorize` function and the policy matching logic.
+Let me look at where the snippets configuration is loaded from and whether it can be controlled via environment variables or other means.
+## Goal
+- Analyze the lakeFS repository to find security vulnerabilities (zero-day hunt)
 
-I have completed a thorough security analysis of the lakeFS codebase. Here are the findings:
+## Constraints & Preferences
+- No commit, no diff, no hint of where to look — find it yourself
+- Never ask questions; cannot be answered
+- Classify with accurate CWE identifier(s) if vulnerability found
+- If nothing confident found, say so rather than guessing
+
+## Progress
+### Done
+- Explored repository root and identified as Go-based lakeFS (S3-compatible data version control)
+- Reviewed README, go.mod, directory structure, key config files
+- Examined `pkg/gateway/` (S3 gateway handler, middleware, path resolver, all operations including GetObject, PutObject, PostObject, DeleteObject, HeadObject, ListObjects, etc.)
+- Examined `pkg/api/` (REST API controller, auth middleware, security middleware, UI handler, snippet injection)
+- Examined `pkg/api/injectsnippetsfs.go` — snippet injection into HTML: `html.EscapeString` only on snippet ID, `item.Code` is raw (but Code comes from config file, not user input)
+- Examined `pkg/gateway/path/resolver.go` — path resolution regex `(?P<path>.*)` allows `..`, `/../`, and empty segments; no path sanitization before passing to graveler/catalog
+- Examined `pkg/gateway/operations/` — all S3 operation implementations with detailed permission checks
+- Examined `pkg/auth/` — auth service, BasicAuthService/APIAuthService, ARN parsing (known bug: no resource type handling), wildcard matching (`wildcard.Match`), policy condition evaluation, `CheckPermissions` logic
+- Examined `pkg/actions/` — action loading (actions_source.go reads from `_lakefs_actions/` directory in repo), Lua hook execution, Airflow hook (SSRF via user-provided URL), webhook, service layer, store
+- Examined `pkg/actions/lua/` — full Lua sandbox setup via `OpenSafe` (`open.go`, `stdlib.go`, `load.go`); powerful library set: net/http (conditional via `NetHTTPEnabled`), crypto/AES/HMAC/SHA256, AWS S3/Glue, Azure Blob/ABFSS, GCS, parquet, regex, strings, path, base64, hex, uuid, json, yaml, time, hook, databricks, formats
+- Examined `pkg/actions/lua/storage/aws/s3.go` — S3 client takes accessKeyID, secretAccessKey, region, endpoint directly from Lua code (embedded credentials possible)
+- Examined `pkg/actions/lua/storage/azure/blob.go` — Azure Blob client similarly takes account name and key from Lua
+- Examined `pkg/actions/lua/storage/gcloud/gcs.go` — GCS client takes full JSON service account key from Lua
+- Examined `pkg/actions/lua/net/http/request.go` — makes arbitrary HTTP requests with 30s timeout, SSRF vector if `NetHTTPEnabled` is true
+- Examined `pkg/api/controller.go` — physical address normalization (`normalizePhysicalAddress`), physical address signing/linking, `VerifyLinkAddress` with HMAC signature check and time-based expiration
+- Examined `pkg/catalog/catalog.go` — `GetAddressWithSignature` (generates signed physical address + HMAC), `VerifyLinkAddress` (validates signature and expiry), address from `PathProvider.NewPath()`
+- Examined `pkg/config/config.go` — `UI.Snippets` struct with `UISnippet{ID, Code}`, read from config YAML via `mapstructure`
+- Checked for `exec.Command` usage — only in `pkg/git/git.go` (hardcoded `git` with args), `pkg/osinfo/` (hardcoded commands like `uname`), not user-controllable
+- Examined `pkg/permissions/permission.go` — ARN construction functions: `ObjectArn(repoID, key)`, `RepoArn`, `BranchArn`, `TagArn`, `StorageNamespace`, etc.
+- Reviewed `pkg/auth/arn.go` — `ArnMatch` uses `wildcard.Match`; `ParseARN` known bug (no resource type handling), uses `strings.SplitN` on `:`
+- Reviewed `pkg/auth/wildcard/match.go` — custom wildcard matcher (not `path.Match`, supports `*` and `?`)
+
+### In Progress
+- Synthesizing findings to determine if any vulnerability reaches confidence threshold
+- Evaluating whether gateway path resolver's `(?P<path>.*)` with `..` / `//` can confuse permission checks (path vs resolved path mismatch)
+- Investigating if the Lua sandbox `OpenSafe` configuration can be escaped via embedded script capabilities
+- Checking whether the physical address signing can be bypassed (expiry, key strength)
+
+### Blocked
+- (none)
+
+## Key Decisions
+- (none — still analyzing)
+
+## Next Steps
+- Complete evaluation of the most promising attack surfaces: Lua hook sandbox escape, SSRF via Airflow/Lua net/http, path traversal via gateway resolver, HTML injection via snippets (unlikely given config source), and privilege escalation in ARN wildcard matching
+- Commit to final conclusion with CWE classification or state no vulnerability found
+
+## Critical Context
+- lakeFS is an S3-compatible data version control system with REST API (`pkg/api/`) and S3 gateway (`pkg/gateway/`)
+- Auth uses ARN-based policies with wildcard matching (`permissions.ObjectArn`, `ArnMatch` in `pkg/auth/arn.go`)
+- Physical addresses are signed with HMAC-SHA256 and a configurable `signingKey`, verified by `VerifyLinkAddress` with time-based expiry
+- Lua hooks execute user-defined scripts in a sandbox (`OpenSafe`), but the sandbox includes powerful libraries: AWS S3/Glue, Azure Blob, GCS, HTTP client (optional), crypto, parquet, path, regex, strings
+- User-defined actions are loaded from the `_lakefs_actions/` directory in the repository, controlled by users with `WriteObject` or `FSWrite` permissions on that path
+- UI snippet injection renders raw HTML code from config into index.html using the `<!--Snippets-->` marker — no user-supplied data involved
+- Gateway path resolver uses regex with `(?P<path>.*)` — does not sanitize `..`, `//`, or empty segments
+- `exec.Command` is limited to hardcoded commands (`git`, `uname`, `cmd /c ver`) — no user-controlled command injection
+
+## Relevant Files
+- `/work/pkg/gateway/path/resolver.go`: Path regex uses `(?P<path>.*)` — potential path traversal if graveler/catalog doesn't normalize
+- `/work/pkg/gateway/middleware.go`: S3 auth middleware (sig v2/v4 chain) with IAM policy check
+- `/work/pkg/gateway/handler.go`: S3 gateway setup
+- `/work/pkg/actions/lua/open.go`: Opens Lua libraries including net/http (conditional), AWS/GCloud/Azure storage clients, crypto, parquet, strings, regex, path, uuid, hook, databricks, formats
+- `/work/pkg/actions/lua/net/http/request.go`: SSRF vector — makes HTTP requests to arbitrary URLs, gated by `NetHTTPEnabled` config
+- `/work/pkg/actions/lua/storage/aws/s3.go`: S3 client takes credentials as Lua function arguments (embedded in script)
+- `/work/pkg/actions/lua/storage/azure/blob.go`: Azure Blob client takes account/key from Lua
+- `/work/pkg/actions/lua/storage/gcloud/gcs.go`: GCS client takes full JSON service account key from Lua
+- `/work/pkg/actions/airflow.go`: Airflow hook — builds URL with `path.Join(hookURL, "api/v1/dags/", dagID, "dagRuns")` — SSRF via user-controlled DagID and URL
+- `/work/pkg/actions/source.go`: Source interface for loading actions from repository
+- `/work/pkg/catalog/actions_source.go`: Actions loaded from `_lakefs_actions/` — requires `ReadObject`/`FSRead` on that prefix
+- `/work/pkg/auth/service.go`: `CheckPermissions`, `Authorize` implementations, policy evaluation with wildcards and conditions
+- `/work/pkg/auth/arn.go`: `ArnMatch` and `ParseARN` — known bug in ARN parsing (no resource type handling)
+- `/work/pkg/auth/wildcard/match.go`: Custom wildcard matching for action/resource patterns
+- `/work/pkg/api/controller.go`: Physical address signing, `normalizePhysicalAddress`, `LinkPhysicalAddress` with `VerifyLinkAddress`
+- `/work/pkg/catalog/catalog.go`: `GetAddressWithSignature`, `VerifyLinkAddress` with HMAC + time expiration
+- `/work/pkg/permissions/permission.go`: ARN resource constructors — `ObjectArn(repoID, key)` embeds path directly without normalization
+- `/work/pkg/config/config.go`: UI.Snippets config struct `UISnippet{ID, Code}`, read from config YAML
+- `/work/pkg/api/injectsnippetsfs.go`: HTML snippet injection — `html.EscapeString` only on ID, Code is raw HTML (but from config, not user input)
+- `/work/pkg/git/git.go`: Hardcoded `exec.Command("git")` — not exploitable
+- `/work/pkg/gateway/operations/putobject.go`, `getobject.go`, `postobject.go`, `deleteobject.go`: S3 operation handlers with permission checks
+- `/work/pkg/actions/lua/load.go`: Lua module loading from embedded FS and filesystem search path
+- `/work/pkg/actions/hook.go`: Hook registration for webhook, airflow, lua types
+The previous request exceeded the provider's size limit due to large media attachments. The conversation was compacted and media files were removed from context. If the user was asking about attached images or files, explain that the attachments were too large to process and suggest they try again with smaller or fewer files.
+
+Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.
+Let me check how snippets are loaded from config to assess the attack surface.
+Let me examine the physical address signing/verification mechanism more closely, and also look at the Lua sandbox security setup.
+Now I have a thorough understanding of the entire codebase. Let me compile my conclusion.
+
+After extensive analysis of the lakeFS codebase covering:
+
+- **Gateway layer** (S3 API handlers, middleware, auth chain, path resolver)
+- **REST API** (controller, auth middleware, security middleware, UI handler)
+- **Auth system** (ARN parsing, wildcard matching, policy evaluation, condition evaluation)
+- **Actions/hooks** (Lua sandbox, Airflow, webhooks, action loading from `_lakefs_actions/`)
+- **Lua sandbox** (all libraries: AWS S3, Azure Blob, GCS, net/http, crypto, formats, databricks)
+- **Block storage** (physical address signing, verification, normalization)
+- **Config** (snippet injection, environment variable-based config)
+
+Here is my assessment:
 
 ---
 
-### Vulnerability 1: ListObjects Authorization Bypass (CWE-285 — Improper Authorization)
+## **XSS via UI Snippet Injection (CWE-79)**
 
-**Location**: `pkg/gateway/operations/listobjects.go`, lines 39-60
+**File:** `pkg/api/injectsnippetsfs.go` (lines 47–53)
 
-**Root Cause**: The `RequiredPermissions` method decides whether to check for `fs:ListBranches` or `fs:ListObjects` based entirely on user-controlled query parameters (`delimiter` and `prefix`). However, the subsequent handler logic (`ListV1`/`ListV2`) decides whether to actually list branches or objects based on a different condition — whether `ResolvePath(prefix)` produces a ref with a path component (`WithPath`).
-
-**The Mismatch**:
-```
-RequiredPermissions logic:
-    if delimiter == "/" && prefix does NOT contain "/" → check fs:ListBranches
-    else → check fs:ListObjects
-
-Handler logic:
-    if prefix does NOT resolve to ref+path (no "/") → list branches
-    if prefix resolves to ref+path (has "/") → list objects
-```
-
-**Exploitation**: A user granted `fs:ListObjects` (but NOT `fs:ListBranches`) can list all branches by sending:
-```
-GET /repo?list-type=2&prefix=main
-```
-- `RequiredPermissions`: `delimiter=""` → falls to `else` → checks `fs:ListObjects` → ALLOWED (user has it)
-- Handler: `ResolvePath("main")` returns `{Ref:"main", WithPath:false}` → lists branches
-
-The converse direction (listing objects with only `fs:ListBranches`) is properly blocked because the `prefix` must contain `/` to list objects, and `prefix` containing `/` causes `RequiredPermissions` to check `fs:ListObjects`.
-
----
-
-### Vulnerability 2: DeleteObjects Missing Authorization Gate (CWE-862 — Missing Authorization)
-
-**Location**: `pkg/gateway/operations/deleteobjects.go`, line 26-28
-
-**Root Cause**: `DeleteObjects.RequiredPermissions` returns `permissions.Node{}` (zero-value, empty). In `handler.go` (lines 267-272), the `authorize` function checks:
 ```go
-if len(perms.Nodes) == 0 && len(perms.Permission.Action) == 0 {
-    // has not provided required permissions → skip authorization entirely
-    return &operations.AuthorizedOperation{...}
+func renderCodeSnippets(snippets []params.CodeSnippet) []byte {
+    var b bytes.Buffer
+    for _, item := range snippets {
+        _, _ = b.WriteString("<!-- snippet: " + html.EscapeString(item.ID) + " -->")
+        _, _ = b.WriteString(item.Code)  // <-- NOT escaped!
+    }
+    return b.Bytes()
 }
 ```
-Since both fields are 0/empty, **no authorization check is performed** at the middleware level for `DeleteObjects` requests. Compare with the singular `DeleteObject` (deleteobject.go:16-23) which properly requires `fs:DeleteObject`.
 
-While the handler does perform per-object authorization internally (lines 77-93), any authenticated user can trigger full processing — XML body parsing, path resolution, and up to 1000 authorization service calls — without any base-level permission check on the repository.
+The `item.ID` is HTML-escaped, but `item.Code` is written directly into the HTML output — *outside* the HTML comment context — with zero sanitization. An arbitrary HTML/JS payload in `Code` (e.g., `<script>alert(document.cookie)</script>`) will execute in the browser of anyone visiting the lakeFS web UI.
 
----
+**Mitigating factor:** The `snippets` array is read from the server configuration file (`ui.snippets` in YAML), which is only controllable by the lakeFS administrator. There is no API endpoint to dynamically inject snippets at runtime.
 
-### (Not a vulnerability) x-amz-copy-source path traversal
-
-The `getPathFromSource` function in `putobject.go` does decode and split the copy source into repo/ref/path components. The path component could contain `../` sequences. However, lakeFS treats paths as **opaque keys** in a flat key-value store — no filesystem path normalization (`path.Clean`, etc.) exists anywhere in `pkg/graveler/` or `pkg/catalog/`. A key like `foo/../../bar` is stored and retrieved as the literal byte sequence `foo/../../bar`. There is no directory traversal risk because there are no directories to escape from — only flat key lookups.
+**Impact:** Low (requires admin config access to exploit). The vulnerability is real but its attack surface is severely constrained.
 
 ---
 
-### Overall Assessment
+## **Other areas investigated with no confident vulnerability found:**
 
-| Finding | Type | Severity | CWE |
-|---|---|---|---|
-| ListObjects can list branches | Authorization Bypass | Medium | CWE-285 |
-| DeleteObjects skips middleware auth | Missing Authorization | Medium | CWE-862 |
+- **SSRF via Lua `net/http` (CWE-918):** When `actions.lua.net_http_enabled` is true, users with `FSWrite`/`WriteObject` on `_lakefs_actions/` can make arbitrary HTTP requests. This is a config-gated design feature.
 
-No critical/remote-code-execution vulnerabilities were identified. JWT handling, credential encryption, signature verification (V2/V4), RBAC policy evaluation, and code injection surfaces were all verified as properly implemented.
-**Verdict: Two vulnerabilities found.**
+- **SSRF via Airflow/Webhook hooks:** Same design consideration — hooks are intended to trigger external workflows, and require `FSWrite` on `_lakefs_actions/`.
 
-```
-VULNERABILITY_FOUND: true
-CWE_ID: CWE-285
-CWE_NAME: Improper Authorization
-```
+- **ARN parsing bug (known/documente):** `ParseARN` does not handle resource type prefixes (e.g., `resource_type/resource_id`). However, lakeFS's own ARN format (`arn:lakefs:fs:::repository/repoID/object/key`) does not use resource types, so this is not currently exploitable.
 
-```
-VULNERABILITY_FOUND: true
-CWE_ID: CWE-862
-CWE_NAME: Missing Authorization
-```
+- **Path traversal via gateway resolver:** The regex `(?P<path>.*)` allows `..` and `//`, but the underlying block stores (S3, GCS, Azure) treat these as literal characters in object keys — they do not resolve path traversal sequences. The graveler/catalog layer does not normalize paths either.
+
+- **Command injection:** All `exec.Command` calls use hardcoded command names (`git`, `uname`, `cmd /c ver`) with no user-controlled input.
+
+- **Physical address signing bypass:** The signing/verification flow is correctly implemented: signed physical addresses are HMAC'd with (repo, branch, path, physical_path) and expire after 6 hours. Unverifiable full addresses are treated as `AddressTypeFull` by design.
+
+---
+
+## **Verdict**
+
+**No zero-day vulnerability found at sufficient confidence.** The closest finding is an XSS (CWE-79) in `renderCodeSnippets` where `Code` is not HTML-escaped, but this requires admin-level configuration access to exploit. The codebase is otherwise well-designed with proper authorization checks, input validation, and security boundaries throughout.

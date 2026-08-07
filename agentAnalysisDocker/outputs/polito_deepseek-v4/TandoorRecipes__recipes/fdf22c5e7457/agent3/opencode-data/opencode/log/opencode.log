@@ -1,448 +1,393 @@
-timestamp=2026-07-28T20:49:20.301Z level=INFO run=516fefdc message="creating instance" directory=/work
-timestamp=2026-07-28T20:49:20.302Z level=INFO run=516fefdc message=fromDirectory directory=/work
-timestamp=2026-07-28T20:49:20.307Z level=INFO run=516fefdc message=bootstrapping directory=/work
-timestamp=2026-07-28T20:49:20.316Z level=INFO run=516fefdc message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T20:49:20.319Z level=INFO run=516fefdc message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T20:49:20.319Z level=INFO run=516fefdc message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T20:49:20.319Z level=ERROR run=516fefdc message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T20:49:20.320Z level=INFO run=516fefdc message=loading path=/opencode.json
-timestamp=2026-07-28T20:49:20.325Z level=INFO run=516fefdc message=loading path=/opencode.json
-timestamp=2026-07-28T20:49:20.444Z level=INFO run=516fefdc message="all LSPs are disabled"
-timestamp=2026-07-28T20:49:20.445Z level=INFO run=516fefdc message="all formatters are disabled"
-timestamp=2026-07-28T20:49:20.445Z level=INFO run=516fefdc message=init
-timestamp=2026-07-28T20:49:20.573Z level=INFO run=516fefdc message=created id=ses_05582c942ffe2s98JTKtrgXw3J slug=kind-pixel version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T20:49:20.573Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785271760573 time.updated=1785271760573
-timestamp=2026-07-28T20:49:20.598Z level=INFO run=516fefdc message="event connected"
-timestamp=2026-07-28T20:49:20.765Z level=WARN run=516fefdc message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T20:49:20.767Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=0
-timestamp=2026-07-28T20:49:20.776Z level=INFO run=516fefdc message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T20:49:20.780Z level=INFO run=516fefdc message=init count=1
-timestamp=2026-07-28T20:49:20.781Z level=INFO run=516fefdc message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T20:49:20.802Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=true agent=title mode=primary
-timestamp=2026-07-28T20:49:20.844Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:49:20.861Z level=INFO run=516fefdc message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T20:49:21.251Z level=INFO run=516fefdc message="project copy refresh started" projectID=global
-timestamp=2026-07-28T20:49:21.252Z level=INFO run=516fefdc message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T20:49:21.670Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa7d3781001R7n5smlamQJtjn
-timestamp=2026-07-28T20:49:21.676Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:49:21.821Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:49:31.504Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:49:33.527Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:49:33.531Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:49:40.559Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:49:44.564Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:49:44.567Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:49:47.886Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=true agent=title mode=primary error.error="AI_RetryError: Failed after 3 attempts. Last error: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:49:51.880Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:49:59.883Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:49:59.886Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:50:05.907Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:50:21.923Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:50:21.926Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:50:29.051Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:51:01.056Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:51:01.060Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:51:08.067Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:52:12.081Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:52:12.084Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:52:17.595Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:54:25.614Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:54:25.617Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:54:34.301Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'detail': 'No ready replicas. Use \"sky serve status [SERVICE_NAME]\" to check the replica status.'}. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T20:58:50.317Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:58:50.321Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:59:04.986Z level=INFO run=516fefdc message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:05.082Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=1
-timestamp=2026-07-28T20:59:05.092Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8621fb001sDcnw4R8YhwTRp
-timestamp=2026-07-28T20:59:05.092Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T20:59:05.093Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:59:19.185Z level=INFO run=516fefdc message=evaluated permission=task pattern=explore action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:19.186Z level=INFO run=516fefdc message=created id=ses_05579a6edffeiwkZ1qEee280hN slug=shiny-forest version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=ses_05582c942ffe2s98JTKtrgXw3J title="Explore repository structure (@explore subagent)" agent=explore model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"todowrite\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"task\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785272359186 time.updated=1785272359186
-timestamp=2026-07-28T20:59:19.202Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=0
-timestamp=2026-07-28T20:59:19.210Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa865923001UjQIPt57HNL6dE
-timestamp=2026-07-28T20:59:19.210Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:59:19.211Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:59:21.275Z level=INFO run=516fefdc message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:21.939Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.md action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:22.604Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.toml action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:23.274Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.cfg action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:23.923Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.ini action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:24.583Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.yml action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:25.254Z level=INFO run=516fefdc message=evaluated permission=glob pattern=**/*.yaml action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:25.433Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=1
-timestamp=2026-07-28T20:59:25.447Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa86717a001TRENl3sCMlcYFR
-timestamp=2026-07-28T20:59:25.447Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:59:25.448Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:59:36.729Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:36.740Z level=INFO run=516fefdc message="touching file" file=/work/README.md
-timestamp=2026-07-28T20:59:37.229Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/pyproject.toml action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:37.233Z level=INFO run=516fefdc message="touching file" file=/work/pyproject.toml
-timestamp=2026-07-28T20:59:37.708Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/SECURITY.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:37.711Z level=INFO run=516fefdc message="touching file" file=/work/SECURITY.md
-timestamp=2026-07-28T20:59:38.183Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/requirements.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:38.192Z level=INFO run=516fefdc message="touching file" file=/work/requirements.txt
-timestamp=2026-07-28T20:59:38.637Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/manage.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:38.641Z level=INFO run=516fefdc message="touching file" file=/work/manage.py
-timestamp=2026-07-28T20:59:39.112Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/.env.template action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:39.115Z level=INFO run=516fefdc message="touching file" file=/work/.env.template
-timestamp=2026-07-28T20:59:39.258Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=2
-timestamp=2026-07-28T20:59:39.266Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa86a77b001oLgSKYtGgzjS6T
-timestamp=2026-07-28T20:59:39.267Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:59:39.268Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T20:59:53.469Z level=INFO run=516fefdc message=evaluated permission=glob pattern=recipes/**/__init__.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:54.142Z level=INFO run=516fefdc message=evaluated permission=glob pattern=recipes/**/*.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:54.595Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T20:59:54.716Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=3
-timestamp=2026-07-28T20:59:54.724Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa86e3dd001BTHLeHKy8v36xw
-timestamp=2026-07-28T20:59:54.725Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T20:59:54.726Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:00:05.172Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:05.179Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:00:05.676Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/urls.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:05.680Z level=INFO run=516fefdc message="touching file" file=/work/recipes/urls.py
-timestamp=2026-07-28T21:00:06.179Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/middleware.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:06.182Z level=INFO run=516fefdc message="touching file" file=/work/recipes/middleware.py
-timestamp=2026-07-28T21:00:06.391Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=4
-timestamp=2026-07-28T21:00:06.399Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa871178001efrCfgMfdJf1oa
-timestamp=2026-07-28T21:00:06.400Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:00:06.401Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:00:21.970Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:22.936Z level=INFO run=516fefdc message=evaluated permission=glob pattern=cookbook/{views,models,forms,serializers,urls,api,helper,management,admin}*.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:23.083Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=5
-timestamp=2026-07-28T21:00:23.091Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8752ad001q7PGcGYWeAoeZs
-timestamp=2026-07-28T21:00:23.092Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:00:23.093Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:00:33.687Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/urls.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:33.692Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/urls.py
-timestamp=2026-07-28T21:00:34.181Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:34.675Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:34.858Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=6
-timestamp=2026-07-28T21:00:34.865Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8780ab0016MHe41O4GbRS2Z
-timestamp=2026-07-28T21:00:34.866Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:00:34.866Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:00:46.958Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:46.967Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:00:47.497Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:00:47.505Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/views.py
-timestamp=2026-07-28T21:00:47.664Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=7
-timestamp=2026-07-28T21:00:47.684Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa87b2b2001gHv1k9d7FoRY0P
-timestamp=2026-07-28T21:00:47.684Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:00:47.685Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:01:07.324Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:07.337Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:01:07.820Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/models.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:07.828Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/models.py
-timestamp=2026-07-28T21:01:07.933Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=8
-timestamp=2026-07-28T21:01:07.943Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8801df001qfVn0NuNZdxLJU
-timestamp=2026-07-28T21:01:07.944Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:01:07.945Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:01:23.625Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:23.636Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:01:24.135Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/forms.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:24.145Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/forms.py
-timestamp=2026-07-28T21:01:24.698Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/recipe_url_import.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:24.703Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/recipe_url_import.py
-timestamp=2026-07-28T21:01:25.263Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/permission_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:25.267Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/permission_helper.py
-timestamp=2026-07-28T21:01:25.445Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=9
-timestamp=2026-07-28T21:01:25.460Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa884647001hrleaHZZmfqEEe
-timestamp=2026-07-28T21:01:25.462Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:01:25.462Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:01:26.160Z level=ERROR run=516fefdc message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T21:01:26.163Z level=ERROR run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa884647001hrleaHZZmfqEEe error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
-timestamp=2026-07-28T21:01:26.166Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=10
-timestamp=2026-07-28T21:01:26.181Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa884924001nsvEyxwmos4jBb
-timestamp=2026-07-28T21:01:26.181Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=compaction mode=primary
-timestamp=2026-07-28T21:01:26.182Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:01:51.704Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=11
-timestamp=2026-07-28T21:01:51.717Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa88acdb001SzuMUGS6DGvSzt
-timestamp=2026-07-28T21:01:51.718Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:01:51.719Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:01:54.879Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:54.885Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/views.py
-timestamp=2026-07-28T21:01:55.438Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/import_export.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:55.442Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/import_export.py
-timestamp=2026-07-28T21:01:55.978Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/telegram.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:01:55.981Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/telegram.py
-timestamp=2026-07-28T21:01:56.162Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=12
-timestamp=2026-07-28T21:01:56.173Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa88be45001m5tuKpDyOL98D0
-timestamp=2026-07-28T21:01:56.174Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:01:56.175Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:02:01.198Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/ai_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:01.203Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/ai_helper.py
-timestamp=2026-07-28T21:02:01.741Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/image_processing.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:01.745Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/image_processing.py
-timestamp=2026-07-28T21:02:02.294Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/automation_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:02.300Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/automation_helper.py
-timestamp=2026-07-28T21:02:02.836Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/shopping_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:02.842Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/shopping_helper.py
-timestamp=2026-07-28T21:02:03.348Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:03.354Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/serializer.py
-timestamp=2026-07-28T21:02:03.539Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=13
-timestamp=2026-07-28T21:02:03.555Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa88db16001pN4uqahcrWsN0N
-timestamp=2026-07-28T21:02:03.555Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:02:03.556Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:02:14.213Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:14.230Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/serializer.py
-timestamp=2026-07-28T21:02:14.962Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:14.971Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:02:15.211Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=14
-timestamp=2026-07-28T21:02:15.224Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8908af001jaA0qlSptegwiG
-timestamp=2026-07-28T21:02:15.225Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:02:15.226Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:02:28.016Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:28.024Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:02:28.591Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/recipe_url_import.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:28.596Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/recipe_url_import.py
-timestamp=2026-07-28T21:02:29.152Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/__init__.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:29.156Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/__init__.py
-timestamp=2026-07-28T21:02:29.344Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=15
-timestamp=2026-07-28T21:02:29.362Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa893fe4001lBOG3JMcAo0Isc
-timestamp=2026-07-28T21:02:29.363Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:02:29.363Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:02:36.656Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/permission_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:36.674Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/permission_helper.py
-timestamp=2026-07-28T21:02:37.371Z level=INFO run=516fefdc message=evaluated permission=glob pattern=cookbook/helper/*.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:38.111Z level=INFO run=516fefdc message=evaluated permission=glob pattern=cookbook/integration/*.py action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:38.247Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=16
-timestamp=2026-07-28T21:02:38.260Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8962ab001GsA7LJqxZrmrZJ
-timestamp=2026-07-28T21:02:38.260Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:02:38.261Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:02:41.043Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:41.057Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:02:42.455Z level=INFO run=516fefdc message=evaluated permission=grep pattern=SECRET_KEY|DEBUG|GUNICORN_MEDIA|ALLOWED_HOSTS|PROXY|CORS|CSRF|SESSION|PASSWORD|AUTH|DATABASE action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:43.029Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/scope_middleware.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:02:43.033Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/scope_middleware.py
-timestamp=2026-07-28T21:02:43.165Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=17
-timestamp=2026-07-28T21:02:43.177Z level=INFO run=516fefdc message=process session.id=ses_05579a6edffeiwkZ1qEee280hN messageID=msg_faa8975e10017LtR8dxJXiOlie
-timestamp=2026-07-28T21:02:43.177Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05579a6edffeiwkZ1qEee280hN small=false agent=explore mode=subagent
-timestamp=2026-07-28T21:02:43.178Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:12.564Z level=INFO run=516fefdc message=loop session.id=ses_05579a6edffeiwkZ1qEee280hN step=18
-timestamp=2026-07-28T21:03:12.568Z level=INFO run=516fefdc message="exiting loop" session.id=ses_05579a6edffeiwkZ1qEee280hN
-timestamp=2026-07-28T21:03:12.579Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=2
-timestamp=2026-07-28T21:03:12.593Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa89e8c4001zVGTqWdVRN0UWx
-timestamp=2026-07-28T21:03:12.594Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:12.595Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:19.268Z level=INFO run=516fefdc message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:19.423Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=3
-timestamp=2026-07-28T21:03:19.430Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a0380001MEuHQebvFkwRTt
-timestamp=2026-07-28T21:03:19.430Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:19.431Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:21.612Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:21.627Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:03:22.588Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:22.597Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:03:23.109Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/image_processing.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:23.113Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/image_processing.py
-timestamp=2026-07-28T21:03:24.021Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:24.026Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:03:24.976Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:24.988Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:03:25.177Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=4
-timestamp=2026-07-28T21:03:25.190Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a19fa001qMYNME80nYR6gV
-timestamp=2026-07-28T21:03:25.191Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:25.191Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:40.598Z level=INFO run=516fefdc message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:40.819Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=5
-timestamp=2026-07-28T21:03:40.828Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a5714001kD3Mju69ZzWjkD
-timestamp=2026-07-28T21:03:40.828Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:40.829Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:43.175Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:43.181Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:03:43.637Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/urls.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:43.641Z level=INFO run=516fefdc message="touching file" file=/work/recipes/urls.py
-timestamp=2026-07-28T21:03:44.171Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:44.176Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/views.py
-timestamp=2026-07-28T21:03:44.299Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=6
-timestamp=2026-07-28T21:03:44.306Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a64ac001Rrza4fdf36Hs0l
-timestamp=2026-07-28T21:03:44.307Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:44.308Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:48.485Z level=INFO run=516fefdc message=evaluated permission=grep pattern="def validate_import_url" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:49.153Z level=INFO run=516fefdc message=evaluated permission=grep pattern="class RecipeSearch" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:49.855Z level=INFO run=516fefdc message=evaluated permission=grep pattern="def handle_uploaded_file" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:50.611Z level=INFO run=516fefdc message=evaluated permission=grep pattern="\\.save\\(" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:50.749Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=7
-timestamp=2026-07-28T21:03:50.757Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a7ddf001Lowy2jTwr53Fsb
-timestamp=2026-07-28T21:03:50.757Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:50.758Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:03:52.601Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/HelperFunctions.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:52.642Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/HelperFunctions.py
-timestamp=2026-07-28T21:03:53.141Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/recipe_search.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:53.148Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/recipe_search.py
-timestamp=2026-07-28T21:03:54.127Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:03:54.135Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:03:54.211Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=8
-timestamp=2026-07-28T21:03:54.218Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8a8b64001sZEV9doiMHMog9
-timestamp=2026-07-28T21:03:54.219Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:03:54.219Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:01.411Z level=INFO run=516fefdc message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:01.611Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=9
-timestamp=2026-07-28T21:04:01.627Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8aa84c001GAxLsExemQoOMW
-timestamp=2026-07-28T21:04:01.627Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:01.628Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:04.521Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:04.537Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:05.494Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:05.504Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:06.433Z level=INFO run=516fefdc message=evaluated permission=grep pattern="subprocess\\.check_output|subprocess\\.call|subprocess\\.Popen|os\\.system|os\\.popen" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:06.623Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=10
-timestamp=2026-07-28T21:04:06.725Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8abbe1001sSZb5oHZ25JTyh
-timestamp=2026-07-28T21:04:06.727Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:06.729Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:10.627Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:10.650Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:11.324Z level=INFO run=516fefdc message=evaluated permission=grep pattern="class AiProvider" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:12.149Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/recipe_url_import.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:12.153Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/recipe_url_import.py
-timestamp=2026-07-28T21:04:12.228Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=11
-timestamp=2026-07-28T21:04:12.236Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8ad1c5001zu2Yba2t2PMwM6
-timestamp=2026-07-28T21:04:12.236Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:12.237Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:15.014Z level=INFO run=516fefdc message=evaluated permission=grep pattern="class RecipeUrlImportView" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:15.972Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:15.984Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:16.483Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/urls.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:16.487Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/urls.py
-timestamp=2026-07-28T21:04:16.659Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=12
-timestamp=2026-07-28T21:04:16.668Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8ae315001yASJqggFyOYrNf
-timestamp=2026-07-28T21:04:16.668Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:16.669Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:24.078Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/models.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:24.092Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/models.py
-timestamp=2026-07-28T21:04:24.935Z level=INFO run=516fefdc message=evaluated permission=grep pattern=validate_import_url|import_url|class action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:25.479Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/permission_helper.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:25.485Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/permission_helper.py
-timestamp=2026-07-28T21:04:25.672Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=13
-timestamp=2026-07-28T21:04:25.688Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b064a001A41Y3cNWR2Y1R7
-timestamp=2026-07-28T21:04:25.689Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:25.690Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:31.507Z level=INFO run=516fefdc message=evaluated permission=grep pattern=CustomTokenHasReadWriteScope|CustomTokenHasScope action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:32.433Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:32.446Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=14
-timestamp=2026-07-28T21:04:32.451Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:32.462Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b20c0001eBcpY5JgPxPDOM
-timestamp=2026-07-28T21:04:32.463Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:32.463Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:37.033Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:37.038Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:04:37.909Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:37.916Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:38.058Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=15
-timestamp=2026-07-28T21:04:38.067Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b36ac001Ve4hOEcz4xFKIM
-timestamp=2026-07-28T21:04:38.067Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:38.068Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:40.990Z level=INFO run=516fefdc message=evaluated permission=grep pattern=GUNICORN_MEDIA|MEDIA_ROOT|MEDIA_URL action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:42.052Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:42.064Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=16
-timestamp=2026-07-28T21:04:42.069Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:04:42.084Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b4652001bWM501EcppM50k
-timestamp=2026-07-28T21:04:42.084Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:42.085Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:44.816Z level=INFO run=516fefdc message=evaluated permission=grep pattern="def download_file" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:45.791Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:45.803Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:45.945Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=17
-timestamp=2026-07-28T21:04:45.960Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b557b00131h3b1vQyeIiGn
-timestamp=2026-07-28T21:04:45.960Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:45.961Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:04:48.516Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:04:48.530Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:04:48.709Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=18
-timestamp=2026-07-28T21:04:48.724Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b6047001xQTBVbxbvrxBeL
-timestamp=2026-07-28T21:04:48.724Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:04:48.725Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:01.112Z level=INFO run=516fefdc message=evaluated permission=grep pattern="markdown|Markdown|safe\\|escape|autoescape|{% autoescape|{{.*\\|safe}}" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:01.580Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/templates action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:01.722Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=19
-timestamp=2026-07-28T21:05:01.732Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8b931c001aLtJH7dxdn314q
-timestamp=2026-07-28T21:05:01.733Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:01.734Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:03.841Z level=INFO run=516fefdc message=evaluated permission=grep pattern="\\|safe" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:04.568Z level=INFO run=516fefdc message=evaluated permission=grep pattern="{% autoescape" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:05.084Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/templates/system.html action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:05.092Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/templates/system.html
-timestamp=2026-07-28T21:05:05.299Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=20
-timestamp=2026-07-28T21:05:05.310Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8ba116001li4mu3wmktiy5a
-timestamp=2026-07-28T21:05:05.311Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:05.311Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:10.109Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:10.120Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:05:11.050Z level=INFO run=516fefdc message=evaluated permission=grep pattern="requests\\.get\\(.*recipe_json" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:11.754Z level=INFO run=516fefdc message=evaluated permission=grep pattern="requests\\.get\\(recipe_json" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:11.958Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=21
-timestamp=2026-07-28T21:05:11.967Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8bbb18001NIZxVNAU5bh2Oc
-timestamp=2026-07-28T21:05:11.968Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:11.968Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:27.346Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:27.356Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:05:28.668Z level=INFO run=516fefdc message=evaluated permission=grep pattern=CSRF_COOKIE|SESSION_COOKIE_SECURE|SESSION_COOKIE_HTTPONLY|SESSION_COOKIE_SAMESITE|SECURE_PROXY action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:28.853Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=22
-timestamp=2026-07-28T21:05:28.865Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8bfd17001gff2dGa7jdPLz3
-timestamp=2026-07-28T21:05:28.866Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:28.867Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:31.456Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:31.470Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:05:31.614Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=23
-timestamp=2026-07-28T21:05:31.624Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c07e0001OTUlATYcnRsab4
-timestamp=2026-07-28T21:05:31.625Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:31.625Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:37.115Z level=INFO run=516fefdc message=evaluated permission=grep pattern="__import__|pickle|eval\\(|exec\\(|yaml\\.load|Popen" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:37.626Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/middleware.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:37.631Z level=INFO run=516fefdc message="touching file" file=/work/recipes/middleware.py
-timestamp=2026-07-28T21:05:37.878Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=24
-timestamp=2026-07-28T21:05:37.889Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c2059001HqdiMNwTAugn7U
-timestamp=2026-07-28T21:05:37.889Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:37.890Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:40.497Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/open_data_importer.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:40.502Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/open_data_importer.py
-timestamp=2026-07-28T21:05:40.609Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=25
-timestamp=2026-07-28T21:05:40.618Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c2b03001fUwQGr4kZCk01B
-timestamp=2026-07-28T21:05:40.618Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:40.619Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:54.759Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/HelperFunctions.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:54.765Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/HelperFunctions.py
-timestamp=2026-07-28T21:05:55.667Z level=INFO run=516fefdc message=evaluated permission=grep pattern=get_external_file_link|get_recipe_file|file_path|FileResponse action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:55.886Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=26
-timestamp=2026-07-28T21:05:55.899Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c66b1001SMjUbvbwLvyNp8
-timestamp=2026-07-28T21:05:55.899Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:55.900Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:05:59.014Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/helper/image_processing.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:59.053Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/helper/image_processing.py
-timestamp=2026-07-28T21:05:59.747Z level=INFO run=516fefdc message=evaluated permission=grep pattern=handle_image action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:05:59.879Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=27
-timestamp=2026-07-28T21:05:59.890Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c764a001p84l6wQmow9s8v
-timestamp=2026-07-28T21:05:59.890Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:05:59.891Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:05.504Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:05.512Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:06:05.710Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=28
-timestamp=2026-07-28T21:06:05.719Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8c8d10001vzeDMon9JZ4Usj
-timestamp=2026-07-28T21:06:05.719Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:05.720Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:13.493Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:13.501Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:06:13.698Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=29
-timestamp=2026-07-28T21:06:13.707Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8cac44001Arz4tkXFrTPTn5
-timestamp=2026-07-28T21:06:13.708Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:13.709Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:25.391Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:25.399Z level=INFO run=516fefdc message="touching file" file=/work/cookbook/views/api.py
-timestamp=2026-07-28T21:06:25.584Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=30
-timestamp=2026-07-28T21:06:25.602Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8cdab2001imjQFYBPAyDL7E
-timestamp=2026-07-28T21:06:25.602Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:25.603Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:45.746Z level=INFO run=516fefdc message=evaluated permission=grep pattern=CORS_ALLOW_CREDENTIALS|CORS_ORIGIN|CSRF_COOKIE_HTTPONLY|CSRF_COOKIE_SAMESITE|CSRF_COOKIE_SECURE|SESSION_COOKIE_SAMESITE|SESSION_COOKIE_HTTPONLY|SESSION_COOKIE_SECURE|CSRF_USE_SESSIONS action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:45.969Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=31
-timestamp=2026-07-28T21:06:45.981Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8d2a54001Gs3f5TIjCidSxd
-timestamp=2026-07-28T21:06:45.981Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:45.982Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:48.788Z level=INFO run=516fefdc message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:48.801Z level=INFO run=516fefdc message="touching file" file=/work/recipes/settings.py
-timestamp=2026-07-28T21:06:48.926Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=32
-timestamp=2026-07-28T21:06:48.957Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8d35e0001w3M6WCG0d7WWrQ
-timestamp=2026-07-28T21:06:48.958Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:48.959Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T21:06:58.323Z level=INFO run=516fefdc message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T21:06:58.555Z level=INFO run=516fefdc message=loop session.id=ses_05582c942ffe2s98JTKtrgXw3J step=33
-timestamp=2026-07-28T21:06:58.565Z level=INFO run=516fefdc message=process session.id=ses_05582c942ffe2s98JTKtrgXw3J messageID=msg_faa8d5b7e001boh1k0sFjnnhIt
-timestamp=2026-07-28T21:06:58.565Z level=INFO run=516fefdc message=stream providerID=polito modelID=deepseek-v4 session.id=ses_05582c942ffe2s98JTKtrgXw3J small=false agent=reviewer mode=primary
-timestamp=2026-07-28T21:06:58.566Z level=INFO run=516fefdc message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:07:45.924Z level=INFO run=44ad1fae message="creating instance" directory=/work
+timestamp=2026-08-07T10:07:45.925Z level=INFO run=44ad1fae message=fromDirectory directory=/work
+timestamp=2026-08-07T10:07:45.931Z level=INFO run=44ad1fae message=bootstrapping directory=/work
+timestamp=2026-08-07T10:07:45.939Z level=INFO run=44ad1fae message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T10:07:45.939Z level=INFO run=44ad1fae message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T10:07:45.939Z level=INFO run=44ad1fae message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T10:07:45.941Z level=INFO run=44ad1fae message=loading path=/opencode.json
+timestamp=2026-08-07T10:07:45.945Z level=ERROR run=44ad1fae message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T10:07:45.946Z level=INFO run=44ad1fae message=loading path=/opencode.json
+timestamp=2026-08-07T10:07:46.078Z level=INFO run=44ad1fae message="all LSPs are disabled"
+timestamp=2026-08-07T10:07:46.079Z level=INFO run=44ad1fae message="all formatters are disabled"
+timestamp=2026-08-07T10:07:46.079Z level=INFO run=44ad1fae message=init
+timestamp=2026-08-07T10:07:46.216Z level=INFO run=44ad1fae message=created id=ses_0244e91d7ffecL7F50RJLTtKq6 slug=kind-meadow version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T10:07:46.216Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786097266216 time.updated=1786097266216
+timestamp=2026-08-07T10:07:46.242Z level=INFO run=44ad1fae message="event connected"
+timestamp=2026-08-07T10:07:46.425Z level=WARN run=44ad1fae message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T10:07:46.427Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=0
+timestamp=2026-08-07T10:07:46.436Z level=INFO run=44ad1fae message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T10:07:46.441Z level=INFO run=44ad1fae message=init count=1
+timestamp=2026-08-07T10:07:46.442Z level=INFO run=44ad1fae message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T10:07:46.460Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=true agent=title mode=primary
+timestamp=2026-08-07T10:07:46.507Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:07:46.532Z level=INFO run=44ad1fae message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T10:07:46.669Z level=INFO run=44ad1fae message="project copy refresh started" projectID=global
+timestamp=2026-08-07T10:07:46.670Z level=INFO run=44ad1fae message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T10:07:47.304Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb16efd0016BdtAPr6XO7Wfa
+timestamp=2026-08-07T10:07:47.305Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:07:47.310Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:07:50.364Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:50.477Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=1
+timestamp=2026-08-07T10:07:50.493Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb17ece001xqyFe7VhYOHqgT
+timestamp=2026-08-07T10:07:50.493Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:07:50.494Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:07:51.977Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:51.990Z level=INFO run=44ad1fae message="touching file" file=/work/README.md
+timestamp=2026-08-07T10:07:52.775Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/pyproject.toml action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:52.778Z level=INFO run=44ad1fae message="touching file" file=/work/pyproject.toml
+timestamp=2026-08-07T10:07:53.523Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/requirements.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:53.527Z level=INFO run=44ad1fae message="touching file" file=/work/requirements.txt
+timestamp=2026-08-07T10:07:54.267Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=**/*.py action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:54.389Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=2
+timestamp=2026-08-07T10:07:54.405Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb18e16001gdNzCo2EM8pb2C
+timestamp=2026-08-07T10:07:54.405Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:07:54.406Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:07:58.894Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:07:59.669Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=**/views/**/*.py action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:00.394Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=**/views/*.py action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:00.516Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=3
+timestamp=2026-08-07T10:08:00.529Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb1a605001z3UHu5pc2kNXIO
+timestamp=2026-08-07T10:08:00.529Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:00.530Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:02.743Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:02.788Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:03.276Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/urls.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:03.281Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/urls.py
+timestamp=2026-08-07T10:08:04.009Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/models.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:04.017Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/models.py
+timestamp=2026-08-07T10:08:04.125Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=4
+timestamp=2026-08-07T10:08:04.134Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb1b41e001C8o3cX56lJcbgB
+timestamp=2026-08-07T10:08:04.135Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:04.136Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:10.275Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="\\.format\\(.*self\\." action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:11.395Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="raw\\(|RawSQL|connection\\.execute|cursor\\.execute" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:12.588Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="subprocess|os\\.system|os\\.popen|shutil\\.which|Popen|shell=True" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:12.731Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=5
+timestamp=2026-08-07T10:08:12.745Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb1d5bd001UDB6dtbYpXVu6Y
+timestamp=2026-08-07T10:08:12.746Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:12.747Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:15.834Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/recipe_url_import.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:15.842Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/recipe_url_import.py
+timestamp=2026-08-07T10:08:16.400Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/import_export.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:16.404Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/import_export.py
+timestamp=2026-08-07T10:08:16.969Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/image_processing.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:16.973Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/image_processing.py
+timestamp=2026-08-07T10:08:17.087Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=6
+timestamp=2026-08-07T10:08:17.096Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb1e6c0001BCd99AXR7KKmX1
+timestamp=2026-08-07T10:08:17.096Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:17.097Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:21.140Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="scrape_html|requests\\.(get|post)|urlopen|urllib" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:22.264Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=markdown|bleach|sanitize|strip_tags|escape action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:23.039Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:23.044Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/views.py
+timestamp=2026-08-07T10:08:23.166Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=7
+timestamp=2026-08-07T10:08:23.174Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb1fe80001MCd9QdRyqAKGGj
+timestamp=2026-08-07T10:08:23.174Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:23.175Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:27.381Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:27.394Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:28.580Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="def recipe_url_import|class RecipeUrlImport|class AiImport|validate_import_url" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:29.777Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="eval\\(|exec\\(|pickle|yaml\\.load|yaml\\.full_load" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:29.905Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=8
+timestamp=2026-08-07T10:08:29.920Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb218d3001jCwe2yBnbrpq2K
+timestamp=2026-08-07T10:08:29.921Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:29.922Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:33.551Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/HelperFunctions.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:33.558Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/HelperFunctions.py
+timestamp=2026-08-07T10:08:34.557Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:34.566Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:34.679Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=9
+timestamp=2026-08-07T10:08:34.693Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb22b79001I6ueU3PS8GDPps
+timestamp=2026-08-07T10:08:34.693Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:34.694Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:39.037Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="def share_link|def download_file|def get_external_file_link|def get_recipe_file" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:40.039Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:40.048Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:40.171Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=10
+timestamp=2026-08-07T10:08:40.181Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb240ed001PLnYtCevhZfezc
+timestamp=2026-08-07T10:08:40.182Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:40.183Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:43.160Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:43.169Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:44.204Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:44.212Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:08:44.279Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=11
+timestamp=2026-08-07T10:08:44.293Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb250f8001TxIC7H3oJP1t0g
+timestamp=2026-08-07T10:08:44.293Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:44.294Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:48.345Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="\\.format\\(|%\\(|% \\}|f'|f\\\"" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:49.351Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:49.357Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/views.py
+timestamp=2026-08-07T10:08:49.477Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=12
+timestamp=2026-08-07T10:08:49.487Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb26546001LAMs9HoLyVRHVk
+timestamp=2026-08-07T10:08:49.488Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:49.489Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:53.301Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/views.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:53.307Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/views.py
+timestamp=2026-08-07T10:08:53.415Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=13
+timestamp=2026-08-07T10:08:53.431Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb274a9001cXhDl4QGWKV2Xq
+timestamp=2026-08-07T10:08:53.431Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:53.432Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:08:57.107Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/automation_helper.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:57.113Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/automation_helper.py
+timestamp=2026-08-07T10:08:57.715Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/templatetags/custom_tags.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:08:57.721Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/templatetags/custom_tags.py
+timestamp=2026-08-07T10:08:57.832Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=14
+timestamp=2026-08-07T10:08:57.848Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb285ea001Yuc3ifhaK6XADf
+timestamp=2026-08-07T10:08:57.849Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:08:57.849Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:05.927Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/provider/local.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:05.932Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/provider/local.py
+timestamp=2026-08-07T10:09:06.451Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/provider/provider.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:06.456Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/provider/provider.py
+timestamp=2026-08-07T10:09:06.632Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=15
+timestamp=2026-08-07T10:09:06.643Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb2a84a001OpvSoYr9ZhNcC1
+timestamp=2026-08-07T10:09:06.644Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:06.644Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:09.729Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:09.736Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/serializer.py
+timestamp=2026-08-07T10:09:10.728Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:10.772Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/serializer.py
+timestamp=2026-08-07T10:09:10.856Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=16
+timestamp=2026-08-07T10:09:10.872Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb2b8ca001EhEPSfNAMSltfb
+timestamp=2026-08-07T10:09:10.872Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:10.873Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:15.038Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:15.045Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:09:16.018Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:16.026Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:09:16.140Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=17
+timestamp=2026-08-07T10:09:16.156Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb2cd6e001TohMvexGBi7KUJ
+timestamp=2026-08-07T10:09:16.156Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:16.157Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:20.981Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="class UserViewSet|class SpaceViewSet|class StorageViewSet" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:22.160Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="class StorageViewSet|class UserFileViewSet|get_queryset.*UserFile" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:22.305Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=18
+timestamp=2026-08-07T10:09:22.322Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb2e583001tifW9Ey97DUPEU
+timestamp=2026-08-07T10:09:22.323Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:22.323Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:24.789Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:24.797Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:09:25.785Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:25.793Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:09:25.907Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=19
+timestamp=2026-08-07T10:09:25.924Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb2f396001LaosZVAICR6MB5
+timestamp=2026-08-07T10:09:25.924Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:25.925Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:30.441Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/connectors/homeassistant.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:30.446Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/connectors/homeassistant.py
+timestamp=2026-08-07T10:09:31.021Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/connectors/connector.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:31.026Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/connectors/connector.py
+timestamp=2026-08-07T10:09:31.610Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/connectors/connector_manager.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:31.616Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/connectors/connector_manager.py
+timestamp=2026-08-07T10:09:31.736Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=20
+timestamp=2026-08-07T10:09:31.746Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb30a5a001tUozwX3B4MO2Qj
+timestamp=2026-08-07T10:09:31.746Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:31.747Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:36.348Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/batch_edit_helper.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:36.353Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/batch_edit_helper.py
+timestamp=2026-08-07T10:09:36.915Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/shopping_helper.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:36.922Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/shopping_helper.py
+timestamp=2026-08-07T10:09:37.040Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=21
+timestamp=2026-08-07T10:09:37.051Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb31f13001LtLKMJISmF7QY3
+timestamp=2026-08-07T10:09:37.051Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:37.052Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:41.106Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/signals.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:41.110Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/signals.py
+timestamp=2026-08-07T10:09:41.852Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/forms.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:41.855Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/forms.py
+timestamp=2026-08-07T10:09:41.973Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=22
+timestamp=2026-08-07T10:09:41.984Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb33257001coImCnX8qDvp2J
+timestamp=2026-08-07T10:09:41.984Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:41.985Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:46.562Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=recipes/settings* action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:47.220Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/forms.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:47.224Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/forms.py
+timestamp=2026-08-07T10:09:47.392Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=23
+timestamp=2026-08-07T10:09:47.409Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb34783001ueJp48KC7ixYHD
+timestamp=2026-08-07T10:09:47.409Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:47.410Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:50.484Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:50.524Z level=INFO run=44ad1fae message="touching file" file=/work/recipes/settings.py
+timestamp=2026-08-07T10:09:50.663Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=24
+timestamp=2026-08-07T10:09:50.675Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb3544a001mC3qfZCzFP3JpM
+timestamp=2026-08-07T10:09:50.675Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:50.676Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:09:55.501Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/recipes/settings.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:55.506Z level=INFO run=44ad1fae message="touching file" file=/work/recipes/settings.py
+timestamp=2026-08-07T10:09:56.587Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=RecipeBatchUpdate|FoodBatchUpdate|batch_update action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:09:56.726Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=25
+timestamp=2026-08-07T10:09:56.742Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb36bf9001qi6JD5senwwTWY
+timestamp=2026-08-07T10:09:56.742Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:09:56.743Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:00.604Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:00.615Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:10:01.617Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:01.624Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:10:02.628Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:02.634Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/serializer.py
+timestamp=2026-08-07T10:10:02.750Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=26
+timestamp=2026-08-07T10:10:02.767Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb38380001eoUOyGHzS7J5IZ
+timestamp=2026-08-07T10:10:02.767Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:02.768Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:07.826Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:07.834Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:10:07.963Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=27
+timestamp=2026-08-07T10:10:07.981Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb397dd001Gyw0XdzDPrdMMg
+timestamp=2026-08-07T10:10:07.982Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:07.984Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:13.676Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="class RecipeViewSet" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:14.687Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:14.696Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:10:14.819Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=28
+timestamp=2026-08-07T10:10:14.839Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb3b2a6001HY6FuqkBId542a
+timestamp=2026-08-07T10:10:14.840Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:14.842Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:20.715Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="class RecipeSerializer" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:21.461Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=vue3/src/**/*.vue action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:21.598Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=29
+timestamp=2026-08-07T10:10:21.615Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb3cd21001vaFQBG32st6Or7
+timestamp=2026-08-07T10:10:21.615Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:21.616Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:25.001Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/components/display/RecipeView.vue action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:25.007Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/components/display/RecipeView.vue
+timestamp=2026-08-07T10:10:25.600Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/components/display/Instructions.vue action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:25.604Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/components/display/Instructions.vue
+timestamp=2026-08-07T10:10:25.728Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=30
+timestamp=2026-08-07T10:10:25.746Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb3dd43001bzZVmZAJuqt86x
+timestamp=2026-08-07T10:10:25.746Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:25.747Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:56.141Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=v-html action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:57.167Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=v-html|innerHTML action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:10:57.416Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=31
+timestamp=2026-08-07T10:10:57.434Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb4590b001lxcMDLVvEK210i
+timestamp=2026-08-07T10:10:57.435Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:10:57.436Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:10:58.153Z level=ERROR run=44ad1fae message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T10:10:58.155Z level=ERROR run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb4590b001lxcMDLVvEK210i error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
+timestamp=2026-08-07T10:10:58.159Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=32
+timestamp=2026-08-07T10:10:58.181Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb45c04001dwwdFlLSJ0Z3FL
+timestamp=2026-08-07T10:10:58.182Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=compaction mode=primary
+timestamp=2026-08-07T10:10:58.183Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:11:27.768Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=33
+timestamp=2026-08-07T10:11:27.791Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb4cf9b001I7rFTMKbuLEGy0
+timestamp=2026-08-07T10:11:27.791Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:11:27.792Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:11:32.609Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/components/display/Instructions.vue action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:11:32.615Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/components/display/Instructions.vue
+timestamp=2026-08-07T10:11:33.167Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/template_helper.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:11:33.171Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/template_helper.py
+timestamp=2026-08-07T10:11:33.296Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=34
+timestamp=2026-08-07T10:11:33.314Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb4e5330017qNRJWO1wnlDJp
+timestamp=2026-08-07T10:11:33.315Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:11:33.316Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:12:48.102Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/package.json action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:48.106Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/package.json
+timestamp=2026-08-07T10:12:49.044Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=vue action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:49.780Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=render_instructions action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:50.378Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=35
+timestamp=2026-08-07T10:12:50.397Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb6124d001bnPmwfyfnJE6Ee
+timestamp=2026-08-07T10:12:50.397Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:12:50.398Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:12:53.712Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/models.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:53.721Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/models.py
+timestamp=2026-08-07T10:12:54.382Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=instructions_html action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:54.502Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=36
+timestamp=2026-08-07T10:12:54.519Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb62269001kvoG2sZgAT08rD
+timestamp=2026-08-07T10:12:54.520Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:12:54.521Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:12:57.189Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/components/display/StepView.vue action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:57.196Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/components/display/StepView.vue
+timestamp=2026-08-07T10:12:57.949Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=instructionsMarkdown|instructions_markdown action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:12:58.077Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=37
+timestamp=2026-08-07T10:12:58.088Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb63060001Fhjrd01QX7XNDw
+timestamp=2026-08-07T10:12:58.088Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:12:58.088Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:13:01.199Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/serializer.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:13:01.204Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/serializer.py
+timestamp=2026-08-07T10:13:01.318Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=38
+timestamp=2026-08-07T10:13:01.329Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb63d09001BUjWYmcHls9sfJ
+timestamp=2026-08-07T10:13:01.330Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:13:01.330Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:13:22.567Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=Content-Security-Policy|CSP|csp action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:13:23.410Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="{% raw %}|endraw|raw.*endraw" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:13:23.991Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/openapi/models/Step.ts action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:13:23.996Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/openapi/models/Step.ts
+timestamp=2026-08-07T10:13:24.209Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=39
+timestamp=2026-08-07T10:13:24.228Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb69675001LiCDFDDZEB4rHf
+timestamp=2026-08-07T10:13:24.228Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:13:24.229Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:01.418Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="template:\\s*`" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:02.486Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="from_string\\(|from_str\\(|Template\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:03.067Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/helper/mdx_attributes.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:03.072Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/helper/mdx_attributes.py
+timestamp=2026-08-07T10:14:03.364Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=40
+timestamp=2026-08-07T10:14:03.378Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb72f68001qzFalBQTjqeNkF
+timestamp=2026-08-07T10:14:03.379Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:03.380Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:08.690Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/vue3/src/components/inputs/StepMarkdownEditor.vue action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:08.697Z level=INFO run=44ad1fae message="touching file" file=/work/vue3/src/components/inputs/StepMarkdownEditor.vue
+timestamp=2026-08-07T10:14:08.821Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=41
+timestamp=2026-08-07T10:14:08.833Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb744b8001d8TgGmFG1A6NIP
+timestamp=2026-08-07T10:14:08.833Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:08.834Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:43.685Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="pip show jinja2 2>/dev/null" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:43.685Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="head -10" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:45.927Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="python3 -c \"\nfrom jinja2 import SandboxedEnvironment\nenv = SandboxedEnvironment()\nprint('autoescape:', env.autoescape)\nprint('autoescape is callable:', callable(env.autoescape))\nif callable(env.autoescape):\n    print('autoescape result:', env.autoescape('test'))\n# Test raw tag\ntmpl = env.from_string('before {% raw %}{{ 7*7 }}{% endraw %} after')\nresult = tmpl.render()\nprint('result:', repr(result))\n\"" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:46.209Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=42
+timestamp=2026-08-07T10:14:46.222Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb7d6c4001CwIzFJ4cPOLYaR
+timestamp=2026-08-07T10:14:46.223Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:46.224Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:48.623Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="python3 -c \"import sys; print(sys.path)\"" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:49.324Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=**/requirements*.txt action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:50.041Z level=INFO run=44ad1fae message=evaluated permission=glob pattern=**/Pipfile* action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:50.169Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=43
+timestamp=2026-08-07T10:14:50.272Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb7e63c001zOLPq5bOQHPxiu
+timestamp=2026-08-07T10:14:50.273Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:50.275Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:52.298Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/requirements.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:52.303Z level=INFO run=44ad1fae message="touching file" file=/work/requirements.txt
+timestamp=2026-08-07T10:14:52.403Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=44
+timestamp=2026-08-07T10:14:52.414Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb7eef6001YEnCj7umlnnZCF
+timestamp=2026-08-07T10:14:52.414Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:52.415Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:14:58.134Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="pip install jinja2==3.1.6 2>&1" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:58.134Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="tail -3" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:14:58.404Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=45
+timestamp=2026-08-07T10:14:58.423Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb80668001E0hXX9ad04mYx3
+timestamp=2026-08-07T10:14:58.423Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:14:58.424Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:01.276Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="python3 -c \"import jinja2; print(jinja2.__version__); print(jinja2.__file__)\" 2>&1" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:01.276Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="find /usr -name \"jinja2\" -type d" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:01.277Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="head -5" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:01.792Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=46
+timestamp=2026-08-07T10:15:01.805Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb813a3001lJmUT2eE5LN4Q9
+timestamp=2026-08-07T10:15:01.805Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:01.806Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:07.767Z level=INFO run=44ad1fae message=evaluated permission=bash pattern="python3 -c \"\n# Look for any virtual environment or installed packages\nimport sys, os, subprocess\n# Check if we can use --user\nresult = subprocess.run([sys.executable, '-m', 'pip', 'install', 'jinja2', '--dry-run', '--user'], capture_output=True, text=True, timeout=10)\nprint('STDOUT:', result.stdout[:500])\nprint('STDERR:', result.stderr[:500])\n\" 2>&1" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:07.968Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=47
+timestamp=2026-08-07T10:15:07.989Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb82bc4001qW4ZVjbRtb53fV
+timestamp=2026-08-07T10:15:07.989Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:07.990Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:11.626Z level=INFO run=44ad1fae message=evaluated permission=grep pattern=autoescape|select_autoescape action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:11.795Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=48
+timestamp=2026-08-07T10:15:11.810Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb83ab7001gV4OANS3OUcTf7
+timestamp=2026-08-07T10:15:11.810Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:11.811Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:15.188Z level=INFO run=44ad1fae message=evaluated permission=grep pattern="class Step" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:16.157Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/models.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:16.167Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/models.py
+timestamp=2026-08-07T10:15:16.290Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=49
+timestamp=2026-08-07T10:15:16.309Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb84c46001qqw5AbMEydA5Aw
+timestamp=2026-08-07T10:15:16.309Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:16.310Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:19.419Z level=INFO run=44ad1fae message=evaluated permission=read pattern=work/cookbook/views/api.py action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:19.428Z level=INFO run=44ad1fae message="touching file" file=/work/cookbook/views/api.py
+timestamp=2026-08-07T10:15:19.531Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=50
+timestamp=2026-08-07T10:15:19.551Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb858ef001SOcHLKjUJHA2Vw
+timestamp=2026-08-07T10:15:19.551Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:19.552Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T10:15:27.637Z level=INFO run=44ad1fae message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
+timestamp=2026-08-07T10:15:27.802Z level=INFO run=44ad1fae message=loop session.id=ses_0244e91d7ffecL7F50RJLTtKq6 step=51
+timestamp=2026-08-07T10:15:27.823Z level=INFO run=44ad1fae message=process session.id=ses_0244e91d7ffecL7F50RJLTtKq6 messageID=msg_fdbb8793f001Df4O1CS2F88rKY
+timestamp=2026-08-07T10:15:27.824Z level=INFO run=44ad1fae message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0244e91d7ffecL7F50RJLTtKq6 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T10:15:27.825Z level=INFO run=44ad1fae message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

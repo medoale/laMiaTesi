@@ -1,25 +1,24 @@
-I'll start by exploring the workspace structure and reading the changes.
-Now let me analyze the change:
+Now let me quickly verify what `hmac.compare_digest` does to confirm the security relevance:
+## Analysis
 
-**Before the commit**: The signature comparison was done using the `==` operator:
-```python
-authorization_header == get_signature(message, secret)
-```
+The diff shows a single focused change in a Django REST Framework view (`sync_course_runs_from_request`) that handles a webhook for synchronizing course runs.
 
-**After the commit**: It uses `hmac.compare_digest`:
-```python
-hmac.compare_digest(authorization_header, get_signature(message, secret))
-```
+**What changed:**
+- An `import hmac` was added.
+- The HMAC signature comparison at line 16 of the diff was changed from:
+  - **Before:** `authorization_header == get_signature(message, secret)` — a plain Python `==` string comparison
+  - **After:** `hmac.compare_digest(authorization_header, get_signature(message, secret))` — a constant-time comparison
 
-The `==` operator for string comparison in Python is not constant-time. When comparing cryptographic signatures (like HMAC digests), using `==` makes the comparison vulnerable to **timing attacks**. An attacker can measure how long each comparison takes and iteratively guess the signature byte-by-byte.
+**Why this is a security vulnerability:**
+The original code uses Python's default `==` operator to compare an incoming `Authorization` header against a computed HMAC signature. The `==` operator performs a short-circuiting character-by-character comparison: it returns `False` as soon as the first differing byte is found. This introduces **observable timing differences** — a remote attacker can measure response timing to brute-force the correct HMAC signature one byte at a time, eventually forging a valid signature to bypass authentication on this webhook.
 
-`hmac.compare_digest()` is designed specifically to prevent this by performing the comparison in constant time, regardless of how many leading characters match.
+The `hmac.compare_digest()` function performs the comparison in constant time, meaning all bytes are compared regardless of where the first mismatch occurs, preventing the timing side channel.
 
-This is a textbook security vulnerability fix:
+**CWE classification:**
+The primary and most specific weakness is **CWE-208: Information Exposure Through Timing Discrepancy**. This is the textbook case: a cryptographic comparison leaking information through measurable response-time differences.
 
-- **CWE-208**: Improper handling of timing during comparison (Observable Timing Discrepancy) — the most specific CWE for timing attacks in comparison operations.
-- This is also related to **CWE-203** (Observable Discrepancy) but CWE-208 is the more specific one for timing attacks in comparison functions.
+---
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-208
-CWE_NAME: Observable Timing Discrepancy
+CWE_NAME: Information Exposure Through Timing Discrepancy

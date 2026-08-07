@@ -1,17 +1,26 @@
-I'll start by exploring the repository structure and the /changes folder to understand what we're working with.
-Now let me understand the project and the change more clearly. This is the `malcontent` project by Chainguard — a security scanning tool for malware detection. Let me look at the specific file paths the changes correspond to.
-Let me check if the relevant source file contains the code in question (before the commit).
-I have all the information I need to analyze the commit. Let me summarize my analysis:
+Now let me explore the workspace to understand the project context better.
+Let me read the actual production code in the workspace at the relevant section to confirm the before-state matches:
+Now I have a complete understanding of the change. Let me synthesize my analysis.
+
+---
 
 ## Analysis
 
-**Repository:** `malcontent` — a Chainguard malware content scanning tool that extracts and scans archives (tar, gzip, zip, etc.) for malware.
+### Context
 
-**The Commit** changes one source file (`pkg/archive/archive.go`) and its corresponding test file.
+This is **malcontent**, a malware scanning tool by Chainguard that detects supply-chain compromises using YARA rules and archive analysis. It transparently extracts nested archives during scanning.
+
+### The Changed Files
+
+**file_01** — Test file in the `action` package. It adds helper `createBrokenNestedArchive` and two new tests:
+- `TestNestedFailureRetention` — verifies that when a broken nested archive can't be extracted with `ExitExtraction=false`, the original archive file is *retained* in the extraction directory so it can still be scanned as a regular file.
+- `TestNestedFailureRetentionError` — verifies that with `ExitExtraction=true`, the error is propagated.
+
+**file_02** — Production code: `/work/pkg/archive/archive.go`, `extractNestedArchive` function. This is the core change.
 
 ### The Vulnerability (Before)
 
-In the **before** version of `extractNestedArchive()` (lines 192-204 of `archive.go`):
+In the before code (lines 192–204 of `archive.go`):
 
 ```go
 err = extract(ctx, archivePath, fullPath)
@@ -24,21 +33,19 @@ if err != nil {
 
 extracted.Store(f, true)
 
-if err := os.Remove(fullPath); err != nil {    // <-- PROBLEM: removes even on failure
+if err := os.Remove(fullPath); err != nil {
     return fmt.Errorf("failed to remove archive file: %w", err)
 }
 ```
 
-**The bug:** When extracting a nested archive file fails (and `ExitExtraction` is `false`), the code:
-1. Logs the error and continues
-2. Marks it as extracted in the `extracted` sync.Map
-3. **Then unconditionally deletes the nested archive file** (`os.Remove(fullPath)`)
+When a nested archive fails to extract (and `ExitExtraction=false`, i.e., "keep going despite errors"):
+1. The error is logged at `Debugf` level (inconspicuous).
+2. The file is **unconditionally deleted** via `os.Remove(fullPath)` on line 202.
+3. The deleted content is never scanned.
 
-This means if a nested archive (like `bad_nested.tar.gz`) cannot be properly extracted, the original file is still deleted from the temp directory. Since it's deleted, the malware scanner will never scan it as a regular file — it simply disappears silently. An attacker could package malware inside a deliberately broken nested archive, and the scanning tool would delete it and never inspect its contents.
+**Security impact:** A malware author can craft a nested archive (e.g., a tar.gz containing another broken archive) whose inner content cannot be extracted. The vulnerable code deletes that inner file entirely, so the YARA rules and scanner never inspect it. Malicious payloads hidden inside broken/degenerate nested archives silently evade detection — the tool reports a clean result while the malware remains on disk.
 
 ### The Fix (After)
-
-In the **after** version:
 
 ```go
 err = extract(ctx, archivePath, fullPath)
@@ -60,24 +67,18 @@ if err == nil {
 }
 ```
 
-The fix:
-1. Changes the log level from `Debugf` to `Warnf` with a clearer message
-2. **Conditionally removes the file only when extraction succeeded** (`if err == nil { ... }`)
-3. If extraction fails, the file is retained so it can still be scanned as a regular file
+The key change: `os.Remove` is now conditional on `err == nil`. If extraction failed, the file is preserved in the extraction directory and will be scanned as a regular non-archive file by the scanning infrastructure that walks the directory.
 
-### Security Classification
+### CWE Classification
 
-This is a **security vulnerability** because it causes **evidence deletion** / **loss of scanning coverage**: malware hidden inside a deliberately broken nested archive would be silently deleted before the scanner can inspect it. This allows an attacker to evade malware detection by packaging malicious content inside an archive that extraction fails on.
+The root cause is **improper handling of an exceptional condition**. The error return value from `extract()` is checked — but only for the purpose of deciding logging vs. early exit. The check is **incomplete**: the same error is not used to prevent the destructive deletion that should only happen when extraction succeeded. This is a textbook case of:
 
-The most accurate CWE is **CWE-778: Insufficient Logging** as a secondary aspect, but the more direct classification is:
+- **CWE-703: Improper Check or Handling of Exceptional Conditions** — The software properly detects an exceptional condition (extraction failure) but does not handle it correctly in all code paths, leading to the destruction of evidence that should have been scanned.
 
-The primary vulnerability is that the software fails to scan a file that could contain malware — the file is deleted before it can be inspected. This relates to **CWE-223: Omission of Security-relevant Information** (the file is omitted from scanning), but even more specifically:
+No other CWE applies more specifically: this is not a path traversal (CWE-22), not an information exposure (CWE-200), not a resource exhaustion (CWE-770), and not a pure logging issue (CWE-778) — the log level change is merely diagnostic. The core defect is the failure to guard a destructive operation with the error check.
 
-- **CWE-223: Omission of Security-relevant Information** — the nested archive file that could not be extracted is deleted, so its contents are never inspected for malware, effectively omitting it from security scanning.
-- **CWE-778: Insufficient Logging** — the original code used `Debugf` (a low-priority log level often not shown) and didn't indicate the security significance of the failure.
-
-However, the most fitting CWE is:
+---
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-223
-CWE_NAME: Omission of Security-relevant Information
+CWE_ID: CWE-703
+CWE_NAME: Improper Check or Handling of Exceptional Conditions

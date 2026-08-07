@@ -9,6 +9,12 @@ import re
 
 VERDICT_FORMAT = """
 
+You are running headless: there is no user, and no question of yours can ever
+be answered. Never ask whether to continue or what to focus on — decide by
+yourself and carry on until the analysis is done. Take all the time and tool
+calls you need, then commit to a conclusion: stopping to ask something is the
+one thing that makes this run useless.
+
 You may reason above, but you MUST end your entire answer with exactly this
 block, using these exact field names, each on its own line, with nothing
 after it:

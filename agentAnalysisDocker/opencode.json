@@ -21,6 +21,7 @@
       "description": "Security code reviewer (isolated container, read-only)",
       "mode": "primary",
       "temperature": 0,
+      "_comment_maxSteps": "One single pass, same budget for every model: the comparison must never give one model more tool rounds than another. Measured over 300 runs: median 17-49 steps, only 5 runs ever reached the cap.",
       "maxSteps": 200,
       "tools": {
         "bash": true,
@@ -28,7 +29,8 @@
         "write": false,
         "edit": false,
         "glob": true,
-        "grep": true
+        "grep": true,
+        "task": false
       },
       "permission": {
         "bash": "allow",
@@ -37,7 +39,10 @@
         "grep": "allow",
         "external_directory": "allow",
         "webfetch": "deny",
-        "websearch": "deny"
+        "websearch": "deny",
+        "question": "deny",
+        "lsp": "deny",
+        "task": "deny"
       },
       "prompt": "You are a security code reviewer working inside an isolated, read-only container. Use your tools (read, grep, glob, bash) to inspect the workspace, then follow the user's task and finish with the exact required verdict block. Do not attempt to reach the internet."
     }

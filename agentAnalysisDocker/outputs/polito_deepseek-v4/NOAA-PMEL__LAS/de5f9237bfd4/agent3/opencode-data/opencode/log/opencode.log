@@ -1,654 +1,227 @@
-timestamp=2026-07-28T19:45:18.644Z level=INFO run=c61c6e53 message="creating instance" directory=/work
-timestamp=2026-07-28T19:45:18.645Z level=INFO run=c61c6e53 message=fromDirectory directory=/work
-timestamp=2026-07-28T19:45:18.650Z level=INFO run=c61c6e53 message=bootstrapping directory=/work
-timestamp=2026-07-28T19:45:18.659Z level=INFO run=c61c6e53 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-07-28T19:45:18.661Z level=INFO run=c61c6e53 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-07-28T19:45:18.661Z level=INFO run=c61c6e53 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-07-28T19:45:18.661Z level=ERROR run=c61c6e53 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-07-28T19:45:18.662Z level=INFO run=c61c6e53 message=loading path=/opencode.json
-timestamp=2026-07-28T19:45:18.667Z level=INFO run=c61c6e53 message=loading path=/opencode.json
-timestamp=2026-07-28T19:45:18.793Z level=INFO run=c61c6e53 message="all LSPs are disabled"
-timestamp=2026-07-28T19:45:18.794Z level=INFO run=c61c6e53 message="all formatters are disabled"
-timestamp=2026-07-28T19:45:18.794Z level=INFO run=c61c6e53 message=init
-timestamp=2026-07-28T19:45:18.928Z level=INFO run=c61c6e53 message=created id=ses_055bd67afffed9iF5uqMDSUPwY slug=misty-mountain version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-07-28T19:45:18.928Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785267918928 time.updated=1785267918928
-timestamp=2026-07-28T19:45:18.953Z level=INFO run=c61c6e53 message="event connected"
-timestamp=2026-07-28T19:45:19.120Z level=WARN run=c61c6e53 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-07-28T19:45:19.129Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=0
-timestamp=2026-07-28T19:45:19.137Z level=INFO run=c61c6e53 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-07-28T19:45:19.142Z level=INFO run=c61c6e53 message=init count=1
-timestamp=2026-07-28T19:45:19.144Z level=INFO run=c61c6e53 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-07-28T19:45:19.161Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=true agent=title mode=primary
-timestamp=2026-07-28T19:45:19.199Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:19.239Z level=INFO run=c61c6e53 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-07-28T19:45:19.625Z level=INFO run=c61c6e53 message="project copy refresh started" projectID=global
-timestamp=2026-07-28T19:45:19.626Z level=INFO run=c61c6e53 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-07-28T19:45:19.737Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa42991b0012VH1mbg8Gg5tVZ
-timestamp=2026-07-28T19:45:19.738Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:45:19.957Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:22.602Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:22.726Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=1
-timestamp=2026-07-28T19:45:22.742Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa42a727001pcUYQZTk9zfHVC
-timestamp=2026-07-28T19:45:22.742Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:45:22.743Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:24.707Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:24.720Z level=INFO run=c61c6e53 message="touching file" file=/work/README.md
-timestamp=2026-07-28T19:45:25.215Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:25.718Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:26.210Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/conf action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:26.327Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=2
-timestamp=2026-07-28T19:45:26.339Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa42b538001Pj1dxQ2GHZruGE
-timestamp=2026-07-28T19:45:26.340Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:45:26.340Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:28.178Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/RequestInputFilter.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:28.615Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/RequestFilter.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:29.112Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:29.429Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=3
-timestamp=2026-07-28T19:45:29.437Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa42c156001FDxA6kZpdpzlCN
-timestamp=2026-07-28T19:45:29.438Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:45:29.439Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:30.859Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:30.867Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:45:31.430Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:31.576Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=4
-timestamp=2026-07-28T19:45:31.583Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa42c9b90012TFFC3W8vWMp6Q
-timestamp=2026-07-28T19:45:31.584Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:45:31.584Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:40.875Z level=INFO run=c61c6e53 message=evaluated permission=task pattern=general action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:40.877Z level=INFO run=c61c6e53 message=created id=ses_055bd11f2ffebcIsqMHSxEiiLI slug=stellar-harbor version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=ses_055bd67afffed9iF5uqMDSUPwY title="Deep code security audit (@general subagent)" agent=general model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"task\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785267940877 time.updated=1785267940877
-timestamp=2026-07-28T19:45:40.892Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=0
-timestamp=2026-07-28T19:45:40.900Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa42ee1c001b2g7s8p3QCFHGv
-timestamp=2026-07-28T19:45:40.900Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:45:40.901Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:44.283Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:45.118Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/*.java action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:45.810Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/*.vm action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:46.481Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/struts.xml action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:47.150Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/web.xml action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:47.895Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/*.xml action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:48.075Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=1
-timestamp=2026-07-28T19:45:48.082Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa430a2c001q8T69pmB0qvzqR
-timestamp=2026-07-28T19:45:48.083Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:45:48.084Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:50.759Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/struts.xml action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:51.417Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/web.xml action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:52.150Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:45:52.737Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:53.299Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:53.493Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=2
-timestamp=2026-07-28T19:45:53.509Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa431f56001EwfEc9NBngY431
-timestamp=2026-07-28T19:45:53.509Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:45:53.510Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:45:56.263Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:56.887Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:57.496Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/server action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:58.112Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:58.741Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:59.351Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:45:59.976Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/mains action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:00.602Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/session action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:01.235Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:01.375Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=3
-timestamp=2026-07-28T19:46:01.385Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa433e21001nNUonBJzSMoAVE
-timestamp=2026-07-28T19:46:01.386Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:46:01.386Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:46:03.714Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:04.346Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/request action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:04.993Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:05.610Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:06.242Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/kml action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:06.887Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:07.507Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/json action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:08.139Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/state action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:08.744Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/util action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:09.349Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/view action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:09.967Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/confluence action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:10.558Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/addxml action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:11.151Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/exception action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:11.749Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/iosp action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:12.336Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/jdom action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:12.560Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=4
-timestamp=2026-07-28T19:46:12.578Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa4369d2001LZtQjZHoaKCbCK
-timestamp=2026-07-28T19:46:12.579Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:46:12.580Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:46:14.854Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:14.869Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java
-timestamp=2026-07-28T19:46:15.525Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:15.530Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java
-timestamp=2026-07-28T19:46:16.213Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:16.219Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java
-timestamp=2026-07-28T19:46:16.898Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:16.909Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java
-timestamp=2026-07-28T19:46:17.586Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:17.592Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java
-timestamp=2026-07-28T19:46:18.250Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:18.259Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java
-timestamp=2026-07-28T19:46:18.759Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/struts.xml action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:18.763Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/struts.xml
-timestamp=2026-07-28T19:46:19.090Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=5
-timestamp=2026-07-28T19:46:19.106Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa438354001GYMJ79Obs1I6Eo
-timestamp=2026-07-28T19:46:19.107Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:46:19.108Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:46:36.501Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:36.508Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:46:37.168Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:37.173Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI.java
-timestamp=2026-07-28T19:46:37.853Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI7.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:37.858Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI7.java
-timestamp=2026-07-28T19:46:38.527Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetAnnotations.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:38.533Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetAnnotations.java
-timestamp=2026-07-28T19:46:39.210Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/ResolveURL.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:39.216Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/ResolveURL.java
-timestamp=2026-07-28T19:46:39.872Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetMetadata.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:39.912Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetMetadata.java
-timestamp=2026-07-28T19:46:40.536Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/CacheManager.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:40.540Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/CacheManager.java
-timestamp=2026-07-28T19:46:41.202Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/ReInit.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:41.208Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/ReInit.java
-timestamp=2026-07-28T19:46:41.878Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/SaveEdits.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:41.883Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/SaveEdits.java
-timestamp=2026-07-28T19:46:42.548Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/SaveQC.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:42.552Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/SaveQC.java
-timestamp=2026-07-28T19:46:42.745Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=6
-timestamp=2026-07-28T19:46:42.755Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa43dfbb001JKhMUwPuQ0uPjZ
-timestamp=2026-07-28T19:46:42.756Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:46:42.757Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:46:54.301Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:54.307Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
-timestamp=2026-07-28T19:46:55.017Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASJDOMUtils.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:55.039Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASJDOMUtils.java
-timestamp=2026-07-28T19:46:55.704Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/proxy/LASProxy.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:55.711Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/proxy/LASProxy.java
-timestamp=2026-07-28T19:46:56.447Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretBackendService.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:56.452Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretBackendService.java
-timestamp=2026-07-28T19:46:57.175Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:57.180Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java
-timestamp=2026-07-28T19:46:57.741Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/WEB-INF/web.xml.in action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:57.745Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/WEB-INF/web.xml.in
-timestamp=2026-07-28T19:46:58.310Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/WEB-INF/velocity.properties action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:46:58.316Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/WEB-INF/velocity.properties
-timestamp=2026-07-28T19:46:58.521Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=7
-timestamp=2026-07-28T19:46:58.532Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa441d5c001cIvMEdOAuM7Ps6
-timestamp=2026-07-28T19:46:58.533Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:46:58.534Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:06.669Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:06.677Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java
-timestamp=2026-07-28T19:47:07.324Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Tool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:07.330Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Tool.java
-timestamp=2026-07-28T19:47:08.001Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:08.007Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java
-timestamp=2026-07-28T19:47:08.696Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ProductLocalService.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:08.702Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ProductLocalService.java
-timestamp=2026-07-28T19:47:09.388Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/BackendService.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:09.392Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/BackendService.java
-timestamp=2026-07-28T19:47:10.121Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:10.126Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java
-timestamp=2026-07-28T19:47:10.822Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:10.828Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:47:11.580Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapBackendService.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:11.584Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapBackendService.java
-timestamp=2026-07-28T19:47:12.305Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:12.312Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapTool.java
-timestamp=2026-07-28T19:47:12.541Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=8
-timestamp=2026-07-28T19:47:12.553Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa445421001BwxP4072EXMbJp
-timestamp=2026-07-28T19:47:12.554Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:47:12.555Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:13.561Z level=ERROR run=c61c6e53 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T19:47:13.564Z level=ERROR run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa445421001BwxP4072EXMbJp error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
-timestamp=2026-07-28T19:47:13.567Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=9
-timestamp=2026-07-28T19:47:13.582Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa44582d001tOIgo3eCMdqvhF
-timestamp=2026-07-28T19:47:13.583Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=compaction mode=primary
-timestamp=2026-07-28T19:47:13.583Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:31.925Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=10
-timestamp=2026-07-28T19:47:31.940Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa449fd9001VLUZLIn1sxNvWK
-timestamp=2026-07-28T19:47:31.940Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:47:31.942Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:35.441Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:36.201Z level=INFO run=c61c6e53 message=evaluated permission=bash pattern="find /work/JavaSource/gov/noaa/pmel/tmap/las -type f -name \"*.java\"" action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:47:36.201Z level=INFO run=c61c6e53 message=evaluated permission=bash pattern=sort action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:47:36.301Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=11
-timestamp=2026-07-28T19:47:36.325Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa44b0f2001VMdFbETlkqsLt7
-timestamp=2026-07-28T19:47:36.325Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:47:36.326Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:41.329Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/*.vm action.permission=* action.action=allow action.pattern=*
-timestamp=2026-07-28T19:47:42.006Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:42.013Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java
-timestamp=2026-07-28T19:47:42.692Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:42.701Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java
-timestamp=2026-07-28T19:47:43.386Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:43.395Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java
-timestamp=2026-07-28T19:47:43.569Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=12
-timestamp=2026-07-28T19:47:43.586Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa44cd550016r0DfdSaFG1k5k
-timestamp=2026-07-28T19:47:43.587Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:47:43.587Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:47:51.039Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:51.044Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
-timestamp=2026-07-28T19:47:51.709Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:51.714Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java
-timestamp=2026-07-28T19:47:52.410Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:52.418Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:47:53.121Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendResponse.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:47:53.127Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendResponse.java
-timestamp=2026-07-28T19:47:53.300Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=13
-timestamp=2026-07-28T19:47:53.323Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa44f358001SA6aevR6K3dRqd
-timestamp=2026-07-28T19:47:53.323Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:47:53.324Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:03.572Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:03.600Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:48:04.258Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:04.264Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java
-timestamp=2026-07-28T19:48:04.950Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:04.955Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java
-timestamp=2026-07-28T19:48:05.597Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:05.606Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java
-timestamp=2026-07-28T19:48:06.263Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:06.268Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java
-timestamp=2026-07-28T19:48:06.914Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Tool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:06.919Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Tool.java
-timestamp=2026-07-28T19:48:07.124Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=14
-timestamp=2026-07-28T19:48:07.145Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa452958001awjfapbMZIAxhx
-timestamp=2026-07-28T19:48:07.145Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:07.146Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:14.302Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:14.308Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java
-timestamp=2026-07-28T19:48:15.002Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:15.096Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:48:15.725Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapTool.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:15.734Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap/TabledapTool.java
-timestamp=2026-07-28T19:48:16.420Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:16.427Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
-timestamp=2026-07-28T19:48:16.618Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=15
-timestamp=2026-07-28T19:48:16.637Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa454e6f001nDK5YWBu924Hwp
-timestamp=2026-07-28T19:48:16.638Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:16.639Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:17.403Z level=ERROR run=c61c6e53 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T19:48:17.405Z level=ERROR run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa454e6f001nDK5YWBu924Hwp error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
-timestamp=2026-07-28T19:48:17.411Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=16
-timestamp=2026-07-28T19:48:17.426Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa4551910010yQmWEFWmPZ2Bs
-timestamp=2026-07-28T19:48:17.427Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=compaction mode=primary
-timestamp=2026-07-28T19:48:17.428Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:40.687Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=17
-timestamp=2026-07-28T19:48:40.704Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa45ac74001EkC7vTcgCOH1aG
-timestamp=2026-07-28T19:48:40.704Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:40.705Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:44.442Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:44.609Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=18
-timestamp=2026-07-28T19:48:44.632Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa45bbc70010SdCBN7VO5fP1D
-timestamp=2026-07-28T19:48:44.632Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:44.633Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:46.403Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:46.868Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:47.059Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=19
-timestamp=2026-07-28T19:48:47.079Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa45c558001NaHirpPDCuyuWO
-timestamp=2026-07-28T19:48:47.080Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:47.080Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:49.575Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/addxml action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:50.197Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/iosp action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:50.816Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/esgf action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:51.429Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/confluence action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:52.061Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/plume action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:52.668Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/server action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:53.287Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/proxy action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:53.770Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:53.922Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=20
-timestamp=2026-07-28T19:48:53.939Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa45e027001cUw5WUCK9iXZGL
-timestamp=2026-07-28T19:48:53.940Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:53.941Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:48:55.379Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/esgf/GetCategory.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:55.386Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/esgf/GetCategory.java
-timestamp=2026-07-28T19:48:56.051Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/confluence/Confluence.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:56.072Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/confluence/Confluence.java
-timestamp=2026-07-28T19:48:56.707Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:56.717Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java
-timestamp=2026-07-28T19:48:57.380Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/proxy/LASProxy.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:57.385Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/proxy/LASProxy.java
-timestamp=2026-07-28T19:48:57.895Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:48:58.219Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=21
-timestamp=2026-07-28T19:48:58.235Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa45f0f0001Y3Rr82L8gSE4Tw
-timestamp=2026-07-28T19:48:58.235Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:48:58.236Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:08.908Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:08.921Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/server/RPCServiceImpl.java
-timestamp=2026-07-28T19:49:09.533Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:10.131Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:10.736Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/util action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:11.342Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/view action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:11.950Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:12.571Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/session action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:13.176Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/client action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:13.376Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=22
-timestamp=2026-07-28T19:49:13.401Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa462c26001uYRkIzbVU0RKMQ
-timestamp=2026-07-28T19:49:13.402Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:49:13.403Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:16.099Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:16.104Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java
-timestamp=2026-07-28T19:49:16.786Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:16.791Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java
-timestamp=2026-07-28T19:49:17.472Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:17.477Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java
-timestamp=2026-07-28T19:49:18.159Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:18.164Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:49:18.394Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=23
-timestamp=2026-07-28T19:49:18.410Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa463fbf001QHbWLVJWf6GjBr
-timestamp=2026-07-28T19:49:18.410Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:49:18.411Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:24.295Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/output.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:24.299Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/output.vm
-timestamp=2026-07-28T19:49:24.860Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/UI.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:25.440Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/V7UI.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:25.444Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/V7UI.vm
-timestamp=2026-07-28T19:49:25.949Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/UI.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:25.954Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/UI.vm
-timestamp=2026-07-28T19:49:26.473Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/SPPV.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:26.477Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/SPPV.vm
-timestamp=2026-07-28T19:49:27.001Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/VizGal.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:27.007Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/VizGal.vm
-timestamp=2026-07-28T19:49:27.202Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=24
-timestamp=2026-07-28T19:49:27.239Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa466227001ExCu07oVAGSKSV
-timestamp=2026-07-28T19:49:27.240Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:49:27.241Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:32.407Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/multivariate.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:32.972Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/error.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:32.977Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/error.vm
-timestamp=2026-07-28T19:49:33.544Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/info.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:33.549Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/info.vm
-timestamp=2026-07-28T19:49:34.118Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/metadata.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:34.124Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/metadata.vm
-timestamp=2026-07-28T19:49:34.702Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/kml_output.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:34.708Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/kml_output.vm
-timestamp=2026-07-28T19:49:35.269Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/output_response.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:35.273Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/output_response.vm
-timestamp=2026-07-28T19:49:35.887Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/VM_global_library.vm action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:36.112Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=25
-timestamp=2026-07-28T19:49:36.145Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa4684f9001OPr8fLWTTUOFtz
-timestamp=2026-07-28T19:49:36.145Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:49:36.147Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:39.763Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:39.768Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
-timestamp=2026-07-28T19:49:40.449Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:40.455Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java
-timestamp=2026-07-28T19:49:41.339Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASConfig.java action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:41.358Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASConfig.java
-timestamp=2026-07-28T19:49:41.787Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/conf action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:42.421Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:43.067Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:43.715Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/tabledap action.permission=read action.pattern=* action.action=allow
-timestamp=2026-07-28T19:49:43.890Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=26
-timestamp=2026-07-28T19:49:43.912Z level=INFO run=c61c6e53 message=process session.id=ses_055bd11f2ffebcIsqMHSxEiiLI messageID=msg_faa46a358001wnKv4rqfce6zYR
-timestamp=2026-07-28T19:49:43.913Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd11f2ffebcIsqMHSxEiiLI small=false agent=general mode=subagent
-timestamp=2026-07-28T19:49:43.913Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:49:57.831Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd11f2ffebcIsqMHSxEiiLI step=27
-timestamp=2026-07-28T19:49:57.837Z level=INFO run=c61c6e53 message="exiting loop" session.id=ses_055bd11f2ffebcIsqMHSxEiiLI
-timestamp=2026-07-28T19:49:57.851Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=5
-timestamp=2026-07-28T19:49:57.868Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa46d9dc001O34uLx2ovl6gWa
-timestamp=2026-07-28T19:49:57.869Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:49:57.870Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:03.498Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/jdom/JDOMUtils.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:04.145Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/jdom/MyResolver.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:04.269Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=6
-timestamp=2026-07-28T19:50:04.277Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa46f2ee0018PFHQ3VtcoBQ2o
-timestamp=2026-07-28T19:50:04.277Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:04.278Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:05.481Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/JDOMUtils.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:05.925Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/MyResolver.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:06.383Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/JDOMUtils* action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:06.813Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/*.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:07.121Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=7
-timestamp=2026-07-28T19:50:07.144Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa46fe15001FEavhvxaEUVdcI
-timestamp=2026-07-28T19:50:07.145Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:07.146Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:09.789Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:09.795Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
-timestamp=2026-07-28T19:50:10.464Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:10.470Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java
-timestamp=2026-07-28T19:50:10.616Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=8
-timestamp=2026-07-28T19:50:10.624Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa470bb9001jkhr0cUQ9xKEEb
-timestamp=2026-07-28T19:50:10.624Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:10.625Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:13.064Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:13.279Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=9
-timestamp=2026-07-28T19:50:13.287Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa471620001zW0GEAzUlBJ5QY
-timestamp=2026-07-28T19:50:13.287Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:13.288Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:15.953Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:15.960Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
-timestamp=2026-07-28T19:50:16.561Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:16.678Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=10
-timestamp=2026-07-28T19:50:16.687Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa472368001MrxC3RbmlLyzlH
-timestamp=2026-07-28T19:50:16.688Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:16.689Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:21.650Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:22.293Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/Util.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:22.299Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/Util.java
-timestamp=2026-07-28T19:50:22.499Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=11
-timestamp=2026-07-28T19:50:22.512Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa473a25001i9vDU2fYtOYS7M
-timestamp=2026-07-28T19:50:22.513Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:22.514Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:25.840Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:25.850Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java
-timestamp=2026-07-28T19:50:26.528Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:26.533Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java
-timestamp=2026-07-28T19:50:26.693Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=12
-timestamp=2026-07-28T19:50:26.702Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa474a87001dM6D00Ajappuif
-timestamp=2026-07-28T19:50:26.703Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:26.703Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:34.255Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/FerretBackendService.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:34.713Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/FerretTool.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:35.155Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/TemplateTool.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:35.300Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=13
-timestamp=2026-07-28T19:50:35.311Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa476c26001XzGP1pRAOB1Nvi
-timestamp=2026-07-28T19:50:35.312Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:35.313Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:37.208Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:37.231Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java
-timestamp=2026-07-28T19:50:37.869Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:37.875Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java
-timestamp=2026-07-28T19:50:38.062Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=14
-timestamp=2026-07-28T19:50:38.081Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4776f1001MCvgLxKpvWVWJk
-timestamp=2026-07-28T19:50:38.082Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:38.083Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:41.814Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/velocity.properties action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:42.495Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/RuntimeEnvironment.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:42.513Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/RuntimeEnvironment.java
-timestamp=2026-07-28T19:50:43.133Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:43.137Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java
-timestamp=2026-07-28T19:50:43.283Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=15
-timestamp=2026-07-28T19:50:43.296Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa478b550014jS4XP616lsJqO
-timestamp=2026-07-28T19:50:43.296Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:43.297Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:46.939Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/DatabaseBackendService.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:47.385Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/DatabaseTool.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:47.949Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/WEB-INF/velocity.properties action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:47.955Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/WEB-INF/velocity.properties
-timestamp=2026-07-28T19:50:48.065Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=16
-timestamp=2026-07-28T19:50:48.074Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa479e03001V1QLZr1SSO5JSk
-timestamp=2026-07-28T19:50:48.075Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:48.076Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:49.854Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:49.860Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java
-timestamp=2026-07-28T19:50:50.543Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:50.552Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:50:50.764Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=17
-timestamp=2026-07-28T19:50:50.773Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa47a88e0017ehjZKbVh0aLrR
-timestamp=2026-07-28T19:50:50.774Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:50.774Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:50:55.088Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:50:55.097Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:50:55.198Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=18
-timestamp=2026-07-28T19:50:55.207Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa47b9e0001fSI6APu6KoP4oI
-timestamp=2026-07-28T19:50:55.208Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:50:55.208Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:02.971Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:02.983Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:51:03.123Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=19
-timestamp=2026-07-28T19:51:03.132Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa47d8d50014boy50IUGKagJz
-timestamp=2026-07-28T19:51:03.132Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:03.133Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:08.946Z level=INFO run=c61c6e53 message=evaluated permission=grep pattern="Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:09.646Z level=INFO run=c61c6e53 message=evaluated permission=grep pattern="Runtime\\.getRuntime\\(\\)" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:09.807Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=20
-timestamp=2026-07-28T19:51:09.918Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa47f2f2001pjk8gFzUIATqT6
-timestamp=2026-07-28T19:51:09.918Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:09.919Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:12.319Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/LASVelocityViewServlet.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:13.095Z level=INFO run=c61c6e53 message=evaluated permission=grep pattern="\\.exec\\(|Process|escapeHtml|escapeXml" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:13.292Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=21
-timestamp=2026-07-28T19:51:13.308Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa48008e001HORJ7zMSWwTPmw
-timestamp=2026-07-28T19:51:13.309Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:13.310Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:16.867Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:16.877Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/view/LASVelocityViewServlet.java
-timestamp=2026-07-28T19:51:17.311Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/AuthenticationFilter.java action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:17.491Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=22
-timestamp=2026-07-28T19:51:17.508Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4810f7001Ks2ZQvZrQ6AQZE
-timestamp=2026-07-28T19:51:17.509Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:17.509Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:19.886Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:19.895Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java
-timestamp=2026-07-28T19:51:20.053Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=23
-timestamp=2026-07-28T19:51:20.066Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa481af8001MSw2pj3WnLnqKr
-timestamp=2026-07-28T19:51:20.067Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:20.068Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:23.965Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:24.465Z level=INFO run=c61c6e53 message=evaluated permission=glob pattern=**/productserver/templates/*.vm action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:24.663Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=24
-timestamp=2026-07-28T19:51:24.681Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa482cfa001ZBA1Xg4S4cYAn2
-timestamp=2026-07-28T19:51:24.682Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:24.683Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:27.622Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/V7UI.vm action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:27.631Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/V7UI.vm
-timestamp=2026-07-28T19:51:28.442Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent/productserver/templates/zoom.vm action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:51:28.448Z level=INFO run=c61c6e53 message="touching file" file=/work/WebContent/productserver/templates/zoom.vm
-timestamp=2026-07-28T19:51:28.528Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=25
-timestamp=2026-07-28T19:51:28.538Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa483c12001DSnnvERfqQwsd4
-timestamp=2026-07-28T19:51:28.538Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:28.539Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:29.254Z level=ERROR run=c61c6e53 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T19:51:29.256Z level=ERROR run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa483c12001DSnnvERfqQwsd4 error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
-timestamp=2026-07-28T19:51:29.262Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=26
-timestamp=2026-07-28T19:51:29.283Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa483f02001dwh8CSaoYwbqFo
-timestamp=2026-07-28T19:51:29.284Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=compaction mode=primary
-timestamp=2026-07-28T19:51:29.284Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:51:57.281Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=27
-timestamp=2026-07-28T19:51:57.294Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa48ac64001oroQX3dWIvjee2
-timestamp=2026-07-28T19:51:57.295Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:51:57.296Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:01.297Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:01.305Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java
-timestamp=2026-07-28T19:52:01.983Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:02.003Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerRunner.java
-timestamp=2026-07-28T19:52:02.683Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:02.693Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:52:02.849Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=28
-timestamp=2026-07-28T19:52:02.861Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa48c224001Gb2VyX72dgKV0R
-timestamp=2026-07-28T19:52:02.861Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:02.862Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:14.151Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretBackendService.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:14.180Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretBackendService.java
-timestamp=2026-07-28T19:52:14.873Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:14.878Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/ferret/FerretTool.java
-timestamp=2026-07-28T19:52:15.537Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:15.545Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java
-timestamp=2026-07-28T19:52:16.186Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:16.191Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/Task.java
-timestamp=2026-07-28T19:52:16.369Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=29
-timestamp=2026-07-28T19:52:16.389Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa48f6f5001wjPHb50XxUilY5
-timestamp=2026-07-28T19:52:16.390Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:16.390Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:22.415Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:22.422Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseBackendService.java
-timestamp=2026-07-28T19:52:23.100Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:23.106Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:52:24.044Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:24.050Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
-timestamp=2026-07-28T19:52:24.130Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=30
-timestamp=2026-07-28T19:52:24.150Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa491546001L7np6KHyDarp9R
-timestamp=2026-07-28T19:52:24.151Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:24.152Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:30.138Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:30.164Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java
-timestamp=2026-07-28T19:52:30.292Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=31
-timestamp=2026-07-28T19:52:30.306Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa492d58001Eldm7Uihl2Fajm
-timestamp=2026-07-28T19:52:30.306Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:30.307Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:36.224Z level=INFO run=c61c6e53 message=evaluated permission=bash pattern="wc -l /work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:36.442Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=32
-timestamp=2026-07-28T19:52:36.455Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa49455e0016ZCsZU7Aa59niL
-timestamp=2026-07-28T19:52:36.456Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:36.456Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:38.468Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:38.474Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:52:38.694Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=33
-timestamp=2026-07-28T19:52:38.707Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa494e2a001pbwdYVWdVNt7XL
-timestamp=2026-07-28T19:52:38.707Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:38.708Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:47.941Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:47.954Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
-timestamp=2026-07-28T19:52:48.113Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=34
-timestamp=2026-07-28T19:52:48.134Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4972f6001zPgQrkaIu756s4
-timestamp=2026-07-28T19:52:48.135Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:48.136Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:52:52.589Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/RuntimeEnvironment.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:52.596Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/RuntimeEnvironment.java
-timestamp=2026-07-28T19:52:53.535Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:52:53.541Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/request/ProductRequest.java
-timestamp=2026-07-28T19:52:53.629Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=35
-timestamp=2026-07-28T19:52:53.643Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa498882001m8hh82KVHlFnMx
-timestamp=2026-07-28T19:52:53.644Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:52:53.644Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:05.670Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:05.682Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:53:05.832Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=36
-timestamp=2026-07-28T19:53:05.851Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa49b82c0019tYiAxmiUzt5oJ
-timestamp=2026-07-28T19:53:05.852Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:05.852Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:06.636Z level=ERROR run=c61c6e53 message="stream error" providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None"
-timestamp=2026-07-28T19:53:06.638Z level=ERROR run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa49b82c0019tYiAxmiUzt5oJ error="litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None" stack="AI_APICallError: litellm.ContextWindowExceededError: litellm.BadRequestError: ContextWindowExceededError: OpenAIException - This model's maximum context length is 131072 tokens. However, you requested 32000 output tokens and your prompt contains at least 99073 input tokens, for a total of at least 131073 tokens. Please reduce the length of the input prompt or the number of requested output tokens. (parameter=input_tokens, value=99073)\nmodel=deepseek-v4. context_window_fallbacks=None. fallbacks=None.\n\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks. Received Model Group=deepseek-v4\nAvailable Model Group Fallbacks=None\n    at <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:14583)\n    at async <anonymous> (/$bunfs/root/chunk-dwvrcch0.js:6:12790)\n    at processTicksAndRejections (native:7:39)"
-timestamp=2026-07-28T19:53:06.643Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=37
-timestamp=2026-07-28T19:53:06.654Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa49bb5d001WLQj0jAtXZW12P
-timestamp=2026-07-28T19:53:06.655Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=compaction mode=primary
-timestamp=2026-07-28T19:53:06.655Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:39.116Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=38
-timestamp=2026-07-28T19:53:39.132Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4a3a31001IZS79YZ2s5AZjk
-timestamp=2026-07-28T19:53:39.132Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:39.133Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:42.963Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:43.100Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=39
-timestamp=2026-07-28T19:53:43.114Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4a49c0001ekdJApYyA2oQTd
-timestamp=2026-07-28T19:53:43.115Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:43.115Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:44.768Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:44.777Z level=INFO run=c61c6e53 message="touching file" file=/work/README.md
-timestamp=2026-07-28T19:53:45.230Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:45.691Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/WebContent action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:45.864Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=40
-timestamp=2026-07-28T19:53:45.879Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4a548d001XsGf0aYVXcY7PS
-timestamp=2026-07-28T19:53:45.880Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:45.880Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:48.421Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:48.429Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
-timestamp=2026-07-28T19:53:49.101Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:49.106Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
-timestamp=2026-07-28T19:53:49.785Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:49.790Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/MyResolver.java
-timestamp=2026-07-28T19:53:50.061Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=41
-timestamp=2026-07-28T19:53:50.082Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4a64f40011MmGkgvGcO0BrL
-timestamp=2026-07-28T19:53:50.082Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:50.083Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:53:54.824Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:54.831Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendRequest.java
-timestamp=2026-07-28T19:53:55.513Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:53:55.556Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
-timestamp=2026-07-28T19:53:55.697Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=42
-timestamp=2026-07-28T19:53:55.717Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4a7af6001KdURRj5XRix5zr
-timestamp=2026-07-28T19:53:55.718Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:53:55.719Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
-timestamp=2026-07-28T19:54:04.404Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:54:04.417Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:54:05.532Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:54:05.544Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/database/DatabaseTool.java
-timestamp=2026-07-28T19:54:06.197Z level=INFO run=c61c6e53 message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-07-28T19:54:06.202Z level=INFO run=c61c6e53 message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/service/TemplateTool.java
-timestamp=2026-07-28T19:54:06.352Z level=INFO run=c61c6e53 message=loop session.id=ses_055bd67afffed9iF5uqMDSUPwY step=43
-timestamp=2026-07-28T19:54:06.370Z level=INFO run=c61c6e53 message=process session.id=ses_055bd67afffed9iF5uqMDSUPwY messageID=msg_faa4aa495001RXAeMQea3vA2ot
-timestamp=2026-07-28T19:54:06.371Z level=INFO run=c61c6e53 message=stream providerID=polito modelID=deepseek-v4 session.id=ses_055bd67afffed9iF5uqMDSUPwY small=false agent=reviewer mode=primary
-timestamp=2026-07-28T19:54:06.372Z level=INFO run=c61c6e53 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:42.049Z level=INFO run=1b6c5d4c message="creating instance" directory=/work
+timestamp=2026-08-07T08:42:42.050Z level=INFO run=1b6c5d4c message=fromDirectory directory=/work
+timestamp=2026-08-07T08:42:42.056Z level=INFO run=1b6c5d4c message=bootstrapping directory=/work
+timestamp=2026-08-07T08:42:42.063Z level=INFO run=1b6c5d4c message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T08:42:42.064Z level=INFO run=1b6c5d4c message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T08:42:42.064Z level=INFO run=1b6c5d4c message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T08:42:42.065Z level=INFO run=1b6c5d4c message=loading path=/opencode.json
+timestamp=2026-08-07T08:42:42.070Z level=ERROR run=1b6c5d4c message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T08:42:42.071Z level=INFO run=1b6c5d4c message=loading path=/opencode.json
+timestamp=2026-08-07T08:42:42.207Z level=INFO run=1b6c5d4c message="all LSPs are disabled"
+timestamp=2026-08-07T08:42:42.208Z level=INFO run=1b6c5d4c message="all formatters are disabled"
+timestamp=2026-08-07T08:42:42.208Z level=INFO run=1b6c5d4c message=init
+timestamp=2026-08-07T08:42:42.353Z level=INFO run=1b6c5d4c message=created id=ses_0249c72ceffeHpVb2e95CmD7m5 slug=misty-knight version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T08:42:42.353Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786092162353 time.updated=1786092162353
+timestamp=2026-08-07T08:42:42.379Z level=INFO run=1b6c5d4c message="event connected"
+timestamp=2026-08-07T08:42:42.556Z level=WARN run=1b6c5d4c message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T08:42:42.576Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=0
+timestamp=2026-08-07T08:42:42.586Z level=INFO run=1b6c5d4c message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T08:42:42.591Z level=INFO run=1b6c5d4c message=init count=1
+timestamp=2026-08-07T08:42:42.593Z level=INFO run=1b6c5d4c message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T08:42:42.611Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=true agent=title mode=primary
+timestamp=2026-08-07T08:42:42.657Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:42.681Z level=INFO run=1b6c5d4c message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T08:42:42.825Z level=INFO run=1b6c5d4c message="project copy refresh started" projectID=global
+timestamp=2026-08-07T08:42:42.826Z level=INFO run=1b6c5d4c message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T08:42:43.459Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb638e13001jiihcC3fvcNd6U
+timestamp=2026-08-07T08:42:43.460Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:42:43.468Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:46.421Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:46.528Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=1
+timestamp=2026-08-07T08:42:46.537Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb639d81001hyBmfVKmuKRkSK
+timestamp=2026-08-07T08:42:46.537Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:42:46.538Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:49.210Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:49.719Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:50.216Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/conf action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:50.699Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/data action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:51.171Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/docs action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:51.688Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/README.md action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:51.699Z level=INFO run=1b6c5d4c message="touching file" file=/work/README.md
+timestamp=2026-08-07T08:42:51.809Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=2
+timestamp=2026-08-07T08:42:51.824Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb63b222001VupjSDE77GsXlh
+timestamp=2026-08-07T08:42:51.824Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:42:51.825Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:54.573Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:55.402Z level=INFO run=1b6c5d4c message=evaluated permission=glob pattern=**/*Request*Filter*.java action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:56.194Z level=INFO run=1b6c5d4c message=evaluated permission=glob pattern=**/*Filter*.java action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:56.325Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=3
+timestamp=2026-08-07T08:42:56.338Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb63c3c60018e0tHDxcBUCH5Q
+timestamp=2026-08-07T08:42:56.339Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:42:56.340Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:42:59.262Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:42:59.274Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/RequestInputFilter.java
+timestamp=2026-08-07T08:42:59.378Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=4
+timestamp=2026-08-07T08:42:59.393Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb63cfb3001s46S5OfJTImtFh
+timestamp=2026-08-07T08:42:59.394Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:42:59.394Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:43:22.969Z level=INFO run=1b6c5d4c message=evaluated permission=glob pattern=**/*.java action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:23.696Z level=INFO run=1b6c5d4c message=evaluated permission=glob pattern=**/*.vm action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:24.362Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:24.619Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=5
+timestamp=2026-08-07T08:43:24.629Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb64324c001nT3IehRH15SV8t
+timestamp=2026-08-07T08:43:24.629Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:43:24.630Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:43:28.697Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:28.702Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/LASAction.java
+timestamp=2026-08-07T08:43:29.369Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/addxml/JDOMUtils.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:29.375Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/addxml/JDOMUtils.java
+timestamp=2026-08-07T08:43:29.905Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/UI.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:29.909Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/UI.vm
+timestamp=2026-08-07T08:43:30.098Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=6
+timestamp=2026-08-07T08:43:30.111Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb6447b4001Bj7m9YdHOy6m51
+timestamp=2026-08-07T08:43:30.111Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:43:30.112Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:43:34.372Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:34.384Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/product/server/ProductServerAction.java
+timestamp=2026-08-07T08:43:34.871Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/error.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:34.875Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/error.vm
+timestamp=2026-08-07T08:43:35.454Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/output.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:35.458Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/output.vm
+timestamp=2026-08-07T08:43:35.602Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=7
+timestamp=2026-08-07T08:43:35.609Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb645d33001sYj7JA87IUTVip
+timestamp=2026-08-07T08:43:35.610Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:43:35.610Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:43:42.067Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/info.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:42.076Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/info.vm
+timestamp=2026-08-07T08:43:42.652Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/progress.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:42.657Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/progress.vm
+timestamp=2026-08-07T08:43:43.253Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/output_GE.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:43.258Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/output_GE.vm
+timestamp=2026-08-07T08:43:43.826Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/admin.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:43:43.865Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/admin.vm
+timestamp=2026-08-07T08:43:44.112Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=8
+timestamp=2026-08-07T08:43:44.122Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb647e72001LENZXAWo7Ee5Su
+timestamp=2026-08-07T08:43:44.122Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:43:44.123Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:44:15.684Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/addxml/MyResolver.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:15.690Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/addxml/MyResolver.java
+timestamp=2026-08-07T08:44:16.328Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:16.944Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:17.291Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=9
+timestamp=2026-08-07T08:44:17.301Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb65000d0014gOHUwanxtc8C7
+timestamp=2026-08-07T08:44:17.302Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:44:17.303Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:44:21.502Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:21.517Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASUIRequest.java
+timestamp=2026-08-07T08:44:22.231Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendResponse.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:22.238Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASBackendResponse.java
+timestamp=2026-08-07T08:44:22.409Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=10
+timestamp=2026-08-07T08:44:22.427Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb65140b001pJPvASGixZoKO3
+timestamp=2026-08-07T08:44:22.427Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:44:22.428Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:44:36.299Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/svn.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:36.889Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/revision.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:37.491Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/struts.xml action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:37.499Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/struts.xml
+timestamp=2026-08-07T08:44:37.960Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/WEB-INF action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:38.282Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=11
+timestamp=2026-08-07T08:44:38.292Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb65520c001DIj1BehE12dJoL
+timestamp=2026-08-07T08:44:38.292Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:44:38.293Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:44:41.370Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/WEB-INF/web.xml.in action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:41.375Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/WEB-INF/web.xml.in
+timestamp=2026-08-07T08:44:41.956Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/WEB-INF/velocity.properties action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:41.961Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/WEB-INF/velocity.properties
+timestamp=2026-08-07T08:44:42.594Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/WEB-INF/VM_global_library.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:42.598Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/WEB-INF/VM_global_library.vm
+timestamp=2026-08-07T08:44:42.788Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=12
+timestamp=2026-08-07T08:44:42.804Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb6563a6001sYP5Gpsh3CZJAB
+timestamp=2026-08-07T08:44:42.804Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:44:42.805Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:44:47.745Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/bin action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:48.349Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/output_wms.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:48.353Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/output_wms.vm
+timestamp=2026-08-07T08:44:48.942Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/zoom.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:48.948Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/zoom.vm
+timestamp=2026-08-07T08:44:49.531Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/cache.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:44:49.535Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/cache.vm
+timestamp=2026-08-07T08:44:49.750Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=13
+timestamp=2026-08-07T08:44:49.762Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb657ed9001YoTlt8oKXo8iPr
+timestamp=2026-08-07T08:44:49.762Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:44:49.763Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:45:37.014Z level=INFO run=1b6c5d4c message=evaluated permission=bash pattern="ls /work/JavaSource/gov/noaa/pmel/tmap/las/filter/" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T08:45:37.470Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=14
+timestamp=2026-08-07T08:45:37.483Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb6639410013eErkWDxnu4vgh
+timestamp=2026-08-07T08:45:37.484Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:45:37.485Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:45:40.926Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:45:40.931Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AuthenticationFilter.java
+timestamp=2026-08-07T08:45:41.652Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:45:41.662Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/filter/AddUsernameFilter.java
+timestamp=2026-08-07T08:45:41.774Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=15
+timestamp=2026-08-07T08:45:41.784Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb664a11001UhJFhM8LFV7rGm
+timestamp=2026-08-07T08:45:41.785Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:45:41.786Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:46:02.363Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern="\\$request\\.getParam" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:03.402Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern="\\$las_response\\.getResult\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:04.445Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern="<\\?xml" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:04.796Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=16
+timestamp=2026-08-07T08:46:04.817Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb66a4000014uKkHZYZIX1Mm3
+timestamp=2026-08-07T08:46:04.817Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:46:04.818Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:46:17.081Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/WebContent/productserver/templates/V7UI.vm action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:17.087Z level=INFO run=1b6c5d4c message="touching file" file=/work/WebContent/productserver/templates/V7UI.vm
+timestamp=2026-08-07T08:46:17.303Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=17
+timestamp=2026-08-07T08:46:17.315Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb66d4da001bsDIVh48hXEUX5
+timestamp=2026-08-07T08:46:17.316Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:46:17.316Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:46:40.895Z level=INFO run=1b6c5d4c message=evaluated permission=glob pattern=**/GetUI7.java action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:41.539Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:41.782Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=18
+timestamp=2026-08-07T08:46:41.794Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb6734780013Pcue146txOq0f
+timestamp=2026-08-07T08:46:41.794Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:46:41.795Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:46:44.791Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI7.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:44.797Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetUI7.java
+timestamp=2026-08-07T08:46:44.950Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=19
+timestamp=2026-08-07T08:46:44.962Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb6740d9001nprg6bZcVr6pG1
+timestamp=2026-08-07T08:46:44.962Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:46:44.963Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:46:54.716Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern="\\.getParameter\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:55.856Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern="\\.getParameter\\(" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:46:56.017Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=20
+timestamp=2026-08-07T08:46:56.029Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb676c14001FlVe3ynlBpCDxK
+timestamp=2026-08-07T08:46:56.029Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:46:56.030Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:47:00.804Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetAnnotations.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:00.810Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/ui/GetAnnotations.java
+timestamp=2026-08-07T08:47:00.924Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=21
+timestamp=2026-08-07T08:47:00.941Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb677f3e001UNGX5tDVXWcSbl
+timestamp=2026-08-07T08:47:00.941Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:47:00.942Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:47:17.761Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern=getIDs action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:18.027Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=22
+timestamp=2026-08-07T08:47:18.040Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb67c20e001c3OZQj3dRMr97G
+timestamp=2026-08-07T08:47:18.041Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:47:18.042Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:47:22.025Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASConfig.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:22.039Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=23
+timestamp=2026-08-07T08:47:22.045Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/LASConfig.java
+timestamp=2026-08-07T08:47:22.072Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb67d1ba001lFNoDWvygx2sOz
+timestamp=2026-08-07T08:47:22.072Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:47:22.073Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:47:28.122Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/confluence/Confluence.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:28.129Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/confluence/Confluence.java
+timestamp=2026-08-07T08:47:28.243Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=24
+timestamp=2026-08-07T08:47:28.261Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb67e9f6001jnnP3N5g8tYbUa
+timestamp=2026-08-07T08:47:28.262Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:47:28.263Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:47:31.761Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/refresh.sh action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:31.765Z level=INFO run=1b6c5d4c message="touching file" file=/work/refresh.sh
+timestamp=2026-08-07T08:47:32.253Z level=INFO run=1b6c5d4c message=evaluated permission=read pattern=work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T08:47:32.260Z level=INFO run=1b6c5d4c message="touching file" file=/work/JavaSource/gov/noaa/pmel/tmap/las/jdom/JDOMUtils.java
+timestamp=2026-08-07T08:47:32.469Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=25
+timestamp=2026-08-07T08:47:32.481Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb67fa78001etZxcWUUKcLdEC
+timestamp=2026-08-07T08:47:32.481Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:47:32.482Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:48:05.272Z level=INFO run=1b6c5d4c message=evaluated permission=grep pattern=lasRequest action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T08:48:05.570Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=26
+timestamp=2026-08-07T08:48:05.589Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb687bc5001W1J3gH41dMX6Wi
+timestamp=2026-08-07T08:48:05.590Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:48:05.591Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4
+timestamp=2026-08-07T08:48:10.668Z level=INFO run=1b6c5d4c message=evaluated permission=bash pattern="javac -version 2>&1" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T08:48:10.668Z level=INFO run=1b6c5d4c message=evaluated permission=bash pattern="echo \"No Java compiler found\"" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T08:48:10.900Z level=INFO run=1b6c5d4c message=loop session.id=ses_0249c72ceffeHpVb2e95CmD7m5 step=27
+timestamp=2026-08-07T08:48:10.918Z level=INFO run=1b6c5d4c message=process session.id=ses_0249c72ceffeHpVb2e95CmD7m5 messageID=msg_fdb689097001J4yLgcEitP19Pr
+timestamp=2026-08-07T08:48:10.918Z level=INFO run=1b6c5d4c message=stream providerID=polito modelID=deepseek-v4 session.id=ses_0249c72ceffeHpVb2e95CmD7m5 small=false agent=reviewer mode=primary
+timestamp=2026-08-07T08:48:10.919Z level=INFO run=1b6c5d4c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=deepseek-v4

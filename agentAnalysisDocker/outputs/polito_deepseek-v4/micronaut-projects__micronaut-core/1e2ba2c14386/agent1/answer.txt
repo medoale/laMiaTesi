@@ -1,20 +1,38 @@
-Let me also read the before and after files to confirm the full context.
+Now let me analyze the changes carefully.
+
 ## Analysis
 
-The commit changes `DefaultHtmlErrorResponseBodyProvider.java` in the Micronaut framework. The class generates HTML error pages and caches them using `computeIfAbsent` on a `Map<HtmlErrorPage, String>`.
+### File 01: `DefaultHtmlErrorResponseBodyProvider.java`
 
-**Before the fix:** The cache was a plain `ConcurrentHashMap` with **no size bound**. Every unique `HtmlErrorPage` key (which includes a `Locale`, HTTP status code, status reason, error messages, etc.) would be cached indefinitely. An attacker can generate unique error pages by sending requests with arbitrary parameters (different `nonce` values, different locales, different error messages), causing the cache to grow without limit and eventually exhaust available heap memory — a classic denial-of-service vector.
+**Before:** The cache was an unbounded `ConcurrentHashMap`:
+```java
+private final Map<HtmlErrorPage, String> cache = new ConcurrentHashMap<>();
+```
 
-**After the fix:** The cache is replaced with a `ConcurrentLinkedHashMap` capped at `MAX_CACHE_SIZE = 100` entries, bounding memory consumption.
+**After:** Replaced with a bounded `ConcurrentLinkedHashMap` capped at 100 entries:
+```java
+private static final int MAX_CACHE_SIZE = 100;
+private final Map<HtmlErrorPage, String> cache = new ConcurrentLinkedHashMap.Builder<HtmlErrorPage, String>()
+    .maximumWeightedCapacity(MAX_CACHE_SIZE)
+    .build();
+```
 
-**File 2** is a new test class that validates the cache size is properly bounded (verifying at 10 entries and at 110 entries against a max of 100).
+A getter `getCache()` was also added for testing.
 
-This is a security fix for **uncontrolled resource consumption** (memory exhaustion via unbounded cache growth). The most specific CWE is:
+### File 02: `DefaultHtmlErrorResponseBodyProviderCacheMaxSizeTest.java`
 
-- **CWE-770** (Allocation of Resources Without Limits or Throttling) — because a memory-backed cache is allocated without any cap, allowing an attacker to trigger unbounded allocation.
+A new test file that validates the cache stays bounded at 100 entries even when 110 distinct error-generating requests are made.
 
-CWE-400 (Uncontrolled Resource Consumption) is the parent category and also applies, but CWE-770 is more specific.
+### Security Impact
+
+The core issue is **Uncontrolled Resource Consumption**. The original code used an unbounded `ConcurrentHashMap` as a cache for error HTML pages. The `HtmlErrorPage` record keys include `locale`, `httpStatusCode`, `httpStatusReason`, `error`, `errorBold`, and `messages` — all of which vary per request. An attacker could craft thousands of distinct requests (e.g., varying query parameters, headers, paths) that produce different `HtmlErrorPage` keys, causing the cache to grow without bound and exhaust server heap memory — a **denial-of-service** condition.
+
+The fix caps the cache at 100 entries, preventing unbounded memory growth. This directly mitigates the resource-exhaustion vector.
+
+### Classification
+
+This is a security vulnerability fix: **CWE-400 (Uncontrolled Resource Consumption)**.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-770
-CWE_NAME: Allocation of Resources Without Limits or Throttling
+CWE_ID: CWE-400
+CWE_NAME: Uncontrolled Resource Consumption
