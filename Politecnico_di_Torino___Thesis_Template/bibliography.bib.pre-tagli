@@ -1028,6 +1028,55 @@
   note         = {Introduce il dataset PrimeVul; pubblicato a ICSE 2025}
 }
 
+@misc{secvuleval2025,
+  author       = {Ahmed, Md Basim Uddin and Shin, Jiho
+                  Harzevili, Nima Shiri and Pham, Hung Viet and Wang, Song},
+  title        = {{SecVulEval}: Benchmarking {LLMs} for Real-World {C/C++}
+                  Vulnerability Detection},
+  year         = {2025},
+  eprint       = {2505.19828},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.CR},
+  url          = {https://arxiv.org/abs/2505.19828}
+}
+
+@misc{vultrial2025,
+  author       = {Widyasari, Ratnadira and Weyssow, Martin
+                  Irsan, Ivana Clairine and Ang, Han Wei and Liauw, Frank
+                  Ouh, Eng Lieh and Shar, Lwin Khin and Kang, Hong Jin
+                  Lo, David},
+  title        = {Let the Trial Begin: A Mock-Court Approach to Vulnerability
+                  Detection using {LLM}-Based Agents},
+  year         = {2025},
+  eprint       = {2505.10961},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.SE},
+  url          = {https://arxiv.org/abs/2505.10961}
+}
+
+@misc{vulnagentr22026,
+  author       = {Meng, Renwei and Wu, Haoyi and Wang, Jingming},
+  title        = {{VulnAgent-R2}: Evidence-Calibrated Multi-Agent Auditing for
+                  Repository-Level Vulnerability Detection},
+  year         = {2026},
+  eprint       = {2603.13384},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.CR},
+  url          = {https://arxiv.org/abs/2603.13384}
+}
+
+@misc{aegis2026,
+  author       = {Fang, Sen and Ding, Weiyuan and Cao, Zhezhen and Yang, Zhou
+                  Xu, Bowen},
+  title        = {{AEGIS}: From Clues to Verdicts -- Graph-Guided Deep
+                  Vulnerability Reasoning via Dialectics and Meta-Auditing},
+  year         = {2026},
+  eprint       = {2603.20637},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.CR},
+  url          = {https://arxiv.org/abs/2603.20637}
+}
+
 @misc{vulinstruct2025,
   author       = {Zhu, Hao and Li, Jia and Gao, Cuiyun and Qian, Jiaru
                   Dong, Yihong and Liu, Huanyu and Wang, Lecheng
@@ -1064,6 +1113,21 @@
   eprintclass  = {cs.CR},
   url          = {https://arxiv.org/abs/2605.21779},
   note         = {Finalista DARPA AIxCC; 29 zero-day su 12 progetti open source}
+}
+
+@misc{cvebench2025,
+  author       = {Zhu, Yuxuan and Kellermann, Antony and Bowman, Dylan
+                  Li, Philip and Gupta, Akul and Danda, Adarsh
+                  Fang, Richard and Jensen, Conner and Ihli, Eric
+                  Benn, Jason and Geronimo, Jet and Dhir, Avi and Rao, Sudhit
+                  Yu, Kaicheng and Stone, Twm and Kang, Daniel},
+  title        = {{CVE-Bench}: A Benchmark for {AI} Agents' Ability to Exploit
+                  Real-World Web Application Vulnerabilities},
+  year         = {2025},
+  eprint       = {2503.17332},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.CR},
+  url          = {https://arxiv.org/abs/2503.17332}
 }
 
 @misc{slrllmvuln2025,
@@ -1317,25 +1381,43 @@
 % 7. Classificazione CWE con LLM
 % -----------------------------------------------------------------------------
 
-@inproceedings{cvellm,
-  author       = {Ghosh, Rikhiya and von Stockhausen, Hans-Martin and
-                  Schmitt, Martin and Vasile, George Marica and
-                  Karn, Sanjeev Kumar and Farri, Oladimeji},
+% TODO autori: pagina ACM DL
+@misc{llmvulnclassification2025,
+  title        = {On Using {LLMs} for Vulnerability Classification},
+  howpublished = {Proceedings of the 2025 Workshop on Large AI Systems and Models
+                  with Privacy and Security Analysis, ACM},
+  year         = {2025},
+  doi          = {10.1145/3733800.3763267},
+  note         = {Un classificatore TF-IDF (74\%) supera l'LLM generativo (59\%)
+                  nella classificazione CWE da descrizione CVE}
+}
+
+% TODO autori e numero di volume
+@misc{cvellm,
   title        = {{CVE-LLM}: Ontology-Assisted Automatic Vulnerability Evaluation
                   Using Large Language Models},
-  booktitle    = {Proceedings of the 39th AAAI Conference on Artificial
-                  Intelligence (AAAI-25)},
+  howpublished = {Proceedings of the AAAI Conference on Artificial Intelligence,
+                  AAAI Press},
   year         = {2025},
-  publisher    = {AAAI Press},
   url          = {https://ojs.aaai.org/index.php/AAAI/article/view/35139}
+}
+
+% TODO autori oltre il primo
+@misc{simonetto2026cwemapping,
+  author       = {Simonetto and others},
+  title        = {What Matters Most in Vulnerabilities? {K}ey Term Extraction for
+                  {CVE}-to-{CWE} Mapping with {LLMs}},
+  howpublished = {Springer Nature},
+  year         = {2026},
+  doi          = {10.1007/978-981-95-4434-9_22}
 }
 
 % -----------------------------------------------------------------------------
 % 8. Contaminazione dei benchmark e validita' della valutazione
 % -----------------------------------------------------------------------------
 
+% TODO autori
 @misc{javavulbench2026,
-  author       = {Szolnoki, Norbert S{\'a}ndor and Antal, G{\'a}bor},
   title        = {{JavaVulBench}: A {Java} Vulnerability Benchmark with Realistic
                   Splits, a Unified Multi-Backend Harness, and a Leakage-Aware
                   Evaluation Mode},
@@ -1361,13 +1443,44 @@
                   quelli pubblici}
 }
 
+% TODO autori
+@misc{memorizationcodellm2026,
+  title        = {Learned or Memorized? {Q}uantifying Memorization Advantage in
+                  Code {LLMs}},
+  year         = {2026},
+  eprint       = {2604.13997},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.SE},
+  url          = {https://arxiv.org/abs/2604.13997}
+}
+
+% TODO autori
+@misc{contaminationresistant2026,
+  title        = {{LLM} Benchmark Datasets Should Be Contamination-Resistant},
+  year         = {2026},
+  eprint       = {2605.19999},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.LG},
+  url          = {https://arxiv.org/abs/2605.19999}
+}
+
+% TODO autori
+@misc{secbench2025,
+  title        = {{SEC-bench}: Automated Benchmarking of {LLM} Agents on Real-World
+                  Software Security Tasks},
+  year         = {2025},
+  eprint       = {2506.11791},
+  eprinttype   = {arXiv},
+  eprintclass  = {cs.CR},
+  url          = {https://arxiv.org/abs/2506.11791}
+}
+
 % -----------------------------------------------------------------------------
 % 9. Aderenza al formato e instruction following in scenari agentici
 % -----------------------------------------------------------------------------
 
+% TODO autori: gruppo KEG, Tsinghua
 @misc{agentif2025,
-  author       = {Qi, Yunjia and Peng, Hao and Wang, Xiaozhi and Xin, Amy and
-                  Liu, Youfeng and Xu, Bin and Hou, Lei and Li, Juanzi},
   title        = {{AgentIF}: Benchmarking Instruction Following of Large Language
                   Models in Agentic Scenarios},
   year         = {2025},
@@ -1376,9 +1489,8 @@
                   segue perfettamente meno del 30\% delle istruzioni}
 }
 
+% TODO autori
 @misc{firebench2026,
-  author       = {Zhang, Yunfan and Bei, Yijie and Ravi, Jetashree and
-                  Garbacki, Pawel},
   title        = {{FireBench}: Evaluating Instruction Following in Enterprise and
                   {API}-Driven {LLM} Applications},
   year         = {2026},

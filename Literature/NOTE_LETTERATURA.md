@@ -460,57 +460,40 @@ nulla.
 
 | Lavoro | arXiv | Rilevanza |
 |---|---|---|
-| **SecVulEval** — benchmark C/C++ real-world | 2505.19828 | detection a livello di statement, complementare |
-| **VulTrial / mock-court** — agenti LLM in dibattito | 2505.10961 | architettura multi-agente alternativa alla nostra singola |
-| **VulnAgent-R2** — auditing multi-agente calibrato sull'evidenza | 2603.13384 | repository-level, multi-agente |
-| **AEGIS** — reasoning guidato da grafo con meta-auditing | 2603.20637 | spiegabilità del verdetto |
 | **VulInstruct** — root-cause reasoning via specifiche | 2511.04014 | migliora il ragionamento causale |
 | **Code-Augur** — detection agentica via inferenza di specifiche | 2606.18619 | l'agente esplicita assunzioni come specifiche e un fuzzer guidato prova a falsificarle |
 | **FuzzingBrain V2** — sistema multi-agente, finalista DARPA AIxCC | 2605.21779 | **90% (36/40)** su AIxCC 2025 Final C/C++; **29 zero-day** su 12 progetti reali, 2 con CVE assegnata |
-| **CVE-Bench** — agenti che *sfruttano* vulnerabilità web | 2503.17332 | lato offensivo, utile per contrasto |
 | **Systematic Literature Review** su LLM e vulnerability detection | 2507.22659 | da citare per inquadrare il campo |
 
 Indice della comunità costantemente aggiornato, utile per non perdere lavori
 nuovi: `github.com/huhusmang/Awesome-LLMs-for-Vulnerability-Detection`.
 
-### 3.6 ✅ Classificazione CWE con LLM — colma il buco lasciato dal riferimento falso
+### 3.6 ✅ Classificazione CWE con LLM
 
-Questa era la parte più scoperta delle note: il riferimento multi-agente che
-circolava (`arXiv:2508.01451`) non esiste. Ecco i lavori reali.
+> R. Ghosh, H.-M. von Stockhausen, M. Schmitt, G. M. Vasile, S. K. Karn,
+> O. Farri, "CVE-LLM: Ontology-Assisted Automatic Vulnerability Evaluation Using
+> Large Language Models", **AAAI-25** (Siemens Healthineers) → `cvellm`
 
-**Il risultato più importante — ed è negativo, quindi prezioso.**
+Valutazione automatica delle vulnerabilita' con prompt arricchiti da
+un'**ontologia**: gli autori riportano prestazioni paragonabili a quelle di
+esperti umani. E' il riferimento agentico/LLM piu' vicino al nostro task di
+assegnazione della CWE, e l'unico del filone che abbiamo in versione integrale.
 
-> "On Using {LLMs} for Vulnerability Classification", Workshop on Large AI
-> Systems and Models with Privacy and Security Analysis, 2025.
-> DOI: `10.1145/3733800.3763267`
+Insieme a `colefunda2023` (§1.1) copre i due lati del problema: CoLeFunDa parte
+dal **codice** e usa la gerarchia CWE-1000 per gestire le classi rare, CVE-LLM
+parte dalla **descrizione testuale** e usa un'ontologia.
 
-Confronta tre approcci per assegnare la CWE partendo dalla descrizione della CVE:
-
-| approccio | accuratezza |
-|---|---|
-| Random Forest su embedding LLM (Llama 3.1, Qwen 2.5) | ~44% |
-| LLM generativo con prompt | fino a 59% |
-| **classificatore banale su embedding TF-IDF** | **74%** |
-
-Un classificatore lessicale batte l'LLM di 15 punti. La spiegazione degli autori:
-le descrizioni CVE sono **altamente schematiche**, e le feature basate su parole
-chiave catturano il tipo di vulnerabilità direttamente.
-
-**Perché è cruciale per noi.** È il baseline onesto contro cui misurare la nostra
-accuratezza CWE, ed è anche un avvertimento: se i nostri agenti classificano
-bene, va dimostrato che non stanno semplicemente facendo *pattern matching*
-lessicale. Nota però la differenza di setting, che gioca a nostro favore e va
-sottolineata: loro classificano partendo dal **testo della CVE**, noi partiamo
-dal **codice**, dove le parole chiave della descrizione non ci sono. Il confronto
-non è diretto, ma il numero resta il termine di paragone da citare.
-
-**Altri lavori sulla mappatura CVE → CWE:**
-
-| Lavoro | Riferimento | Nota |
-|---|---|---|
-| CVE-LLM: Ontology-Assisted Automatic Vulnerability Evaluation | AAAI | prompt arricchiti da ontologia; prestazioni paragonabili a esperti umani |
-| Simonetto et al., "What Matters Most in Vulnerabilities? Key Term Extraction for CVE-to-CWE Mapping with LLMs" | Springer, 2026 | estrazione dei termini chiave |
-| CTIBench | benchmark | include un task di mappatura CVE → CWE ed estrazione di severità |
+> ⚠️ **Riferimento mancante da recuperare.** "On Using LLMs for Vulnerability
+> Classification" (Workshop on Large AI Systems and Models with Privacy and
+> Security Analysis, 2025, DOI `10.1145/3733800.3763267`) contiene il baseline
+> piu' scomodo e piu' utile per noi: su assegnazione della CWE da descrizione
+> CVE, un classificatore **TF-IDF raggiunge il 74%** contro il **59%** di un LLM
+> generativo e il **44%** di un Random Forest su embedding LLM. Il PDF e' dietro
+> paywall ACM e la voce e' stata rimossa dalla bibliografia in attesa di
+> verifica: **vale la pena scaricarlo dalla rete PoliTo e reinserirlo**, perche'
+> obbliga a dimostrare che i nostri agenti non stiano solo facendo pattern
+> matching lessicale. Nota a nostro favore: loro classificano dal testo della
+> CVE, noi dal codice, dove quelle parole chiave non esistono.
 
 ---
 
@@ -546,14 +529,6 @@ quantifica il rischio che stiamo evitando.
 > pubblicazione**. Sono criteri diversi: 10 delle nostre CVE hanno ID 2025 ma
 > pubblicazione 2026. Il nostro criterio è più conservativo dal punto di vista
 > della disclosure, ma va dichiarato quale si usa, perché i due non coincidono.
-
-**Contorno sulla contaminazione:**
-
-| Lavoro | arXiv | Nota |
-|---|---|---|
-| Learned or Memorized? Quantifying Memorization Advantage in Code LLMs | 2604.13997 | quantifica il vantaggio da memorizzazione |
-| LLM Benchmark Datasets Should Be Contamination-Resistant | 2605.19999 | posizione metodologica generale |
-| SEC-bench: Automated Benchmarking of LLM Agents on Security | 2506.11791 | benchmark agentico costruito automaticamente |
 
 Argomento generale citabile: benchmark pubblici come **Juliet**, **OWASP
 Benchmark** e gli esempi CVE sono apertamente disponibili e quindi
@@ -594,6 +569,68 @@ scelta ingegneristica di un **parser tollerante**, e rende difendibile riportare
 sia l'accuratezza grezza sia quella dopo recupero.
 
 
+### 3.9 ✅ L'era pre-LLM — la profondita' storica che mancava alla review
+
+Senza questo filone il capitolo di letteratura comincia nel 2023 e non spiega
+**perche'** si sia arrivati agli agenti. Bastano quattro riferimenti.
+
+> **VulDeePecker** — Li, Zou, Xu, Ou, Jin, Wang, Deng, Zhong, **NDSS 2018**,
+> arXiv:1801.01681 → `vuldeepecker2018`
+
+Punto di partenza canonico del deep learning applicato al rilevamento di
+vulnerabilita'. Introduce i **code gadget**, frammenti estratti euristicamente
+che catturano semantica e struttura dei flussi di dati vulnerabili. Motivazione
+dichiarata: superare la dipendenza dalla conoscenza esperta e gli alti tassi di
+falsi positivi degli approcci tradizionali.
+
+> **ReVeal** — Chakraborty, Krishna, Ding, Ray, **IEEE TSE**,
+> arXiv:2009.07235 → `reveal2022`
+
+**Il piu' importante dei quattro.** Chiede quanto valgano davvero i modelli DL in
+uno scenario realistico e trova che **le prestazioni crollano di oltre il 50%**.
+L'indagine sulle cause mostra che i modelli imparavano artefatti dei dataset
+invece che vulnerabilita'.
+
+Serve a costruire **una linea narrativa unica** invece di osservazioni scollegate:
+
+> dataset ingenui → critica di ReVeal (2020) → benchmark rigorosi con PrimeVul
+> (68% → 3% di F1) → contaminazione nell'era LLM (`javavulbench2026`,
+> `securityevalase2025`)
+
+E' lo stesso argomento che si ripete su tre generazioni di tecnologia. Nota anche
+che **Yangruibo Ding e' autore sia di ReVeal sia di PrimeVul**: la continuita' e'
+letterale, non solo tematica.
+
+> **LineVul** — Fu, Tantithamthavorn, **MSR 2022**, pp. 608–620,
+> DOI `10.1145/3524842.3528452` → `linevul2022`
+
+Chiude l'arco pre-agentico: predizione a **livello di riga** basata su CodeBERT.
+Si collega direttamente a **FCBERT** di CoLeFunDa, che usa la stessa famiglia di
+encoder — il ponte naturale tra §3.9 e §1.1. Valutato su oltre 188k funzioni
+C/C++, riporta un F1 superiore del 160–379% e un Effort@20%Recall inferiore del
+29–53% rispetto allo stato dell'arte dell'epoca.
+
+> **From Lab to Reality** — Lu, Lagaisse (DistriNet, KU Leuven),
+> arXiv:2512.10485 → `fromlabtoreality2026`
+
+Confronta direttamente **modelli DL e LLM** sullo stesso terreno: e' il ponte che
+evita di dover argomentare a mano il passaggio tra le due generazioni.
+
+---
+
+### 3.10 ✅ ReAct — la fonte del metodo che usiamo
+
+> S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, Y. Cao,
+> "ReAct: Synergizing Reasoning and Acting in Language Models",
+> **ICLR 2023**, arXiv:2210.03629 (Princeton / Google Brain) → `react2023`
+
+Il ciclo **thought–action–observation** e' il meccanismo su cui si reggono sia gli
+agenti valutati da `yildiz2025jitvul` e `han2025llmsagents`, sia la modalita'
+agentica di OpenCode che usiamo noi. Citarlo non e' opzionale: e' la fonte
+primaria del metodo, e finora mancava in bibliografia mentre il nome comparira'
+decine di volte nel testo.
+
+
 ---
 
 ## 4. Mappa: quale paper per quale capitolo
@@ -606,10 +643,11 @@ sia l'accuratezza grezza sia quella dopo recupero.
 | **Approccio 1 — solo commit** (agent1) | Han et al. 2511.08060 · CoLeFunDa · VulFixMiner |
 | **Approccio 2 — repository + diff** (agent2) | **JitVul** · VulnGym |
 | **Approccio 3 — zero-day** (agent3) | **ZeroDayBench** · VulnGym · FuzzingBrain V2 · Code-Augur |
-| **Classificazione CWE** | CoLeFunDa (gerarchia CWE-1000, user study) · `llmvulnclassification2025` (baseline TF-IDF) · `cvellm` · `simonetto2026cwemapping` |
-| **Contaminazione e validita' della valutazione** | `javavulbench2026` (leakage-aware) · `securityevalase2025` · `memorizationcodellm2026` · `contaminationresistant2026` |
+| **Classificazione CWE** | CoLeFunDa (gerarchia CWE-1000, user study) · `cvellm` |
+| **Contaminazione e validita' della valutazione** | `javavulbench2026` (leakage-aware) · `securityevalase2025` |
 | **Fallimenti di formato del verdetto** | `agentif2025` · `firebench2026` |
-| **Perché agenti e non LLM semplici** | JitVul (ReAct meglio) · Han et al. (ReAct = FPR minimo) |
+| **Sfondo storico (pre-LLM)** | `vuldeepecker2018` · `reveal2022` · `linevul2022` · `fromlabtoreality2026` |
+| **Perché agenti e non LLM semplici** | `react2023` (fonte del metodo) · JitVul (ReAct meglio) · Han et al. (ReAct = FPR minimo) |
 | **Problema del context length** | SITPatchTracer · Han et al. RQ6 |
 | **Confronto tra modelli** | Han et al. (usa DeepSeek e Gemma come noi) |
 | **Threats to validity** | ZeroDayBench (contaminazione) · PrimeVul (qualità dataset) · CoLeFunDa (limiti linguaggio/funzione) |
@@ -623,10 +661,10 @@ Li segnalo per evitare che finiscano in bibliografia.
 
 - ⚠️ **"Revelio: Cost-Efficient Agentic Memory Safety Vulnerability Detection
   For Repository-Scale Codebases"** (arXiv:2606.22263) — nessun riscontro.
-  Per quel ruolo usare **VulnGym** (§3.2) o **VulnAgent-R2**.
+  Per quel ruolo usare **VulnGym** (§3.2).
 - ⚠️ **"CWE Identification with Multi-Agent Large Language Models"**
   (arXiv:2508.01451) — nessun riscontro. Per la classificazione CWE restano
-  CoLeFunDa e, come controparte agentica, AEGIS o VulnAgent-R2.
+  CoLeFunDa e `cvellm` (§3.6).
 
 Inoltre, due numeri circolati in precedenza sono **sbagliati** e vanno corretti:
 FuzzingBrain V2 riporta **29 zero-day su 12 progetti** (non 124 su 53), e non
@@ -668,14 +706,9 @@ Tutte le fonti sono state inserite in
 | VulnGym | `vulngym2026` |
 | ZeroDayBench | `zerodaybench2026` |
 | PrimeVul | `primevul2025` |
-| SecVulEval | `secvuleval2025` |
-| VulTrial (mock-court) | `vultrial2025` |
-| VulnAgent-R2 | `vulnagentr22026` |
-| AEGIS | `aegis2026` |
 | VulInstruct | `vulinstruct2025` |
 | Code-Augur | `codeaugur2026` |
 | FuzzingBrain V2 | `fuzzingbrain2026` |
-| CVE-Bench | `cvebench2025` |
 | Systematic Literature Review | `slrllmvuln2025` |
 | SITPatchTracer | `liu2025sitpatchtracer` |
 | GitPatchDB | `gitpatchdb2026` |
@@ -713,29 +746,16 @@ il punteggio è calcolato.
 
 | Fonte | Chiave |
 |---|---|
-| On Using LLMs for Vulnerability Classification | `llmvulnclassification2025` |
 | CVE-LLM (ontologia, AAAI) | `cvellm` |
-| Simonetto et al., CVE-to-CWE key terms | `simonetto2026cwemapping` |
 | **JavaVulBench** (leakage-aware evaluation) | `javavulbench2026` |
 | Should We Evaluate LLM-Based Security Analysis (ASE 2025) | `securityevalase2025` |
-| Learned or Memorized? | `memorizationcodellm2026` |
-| Contamination-Resistant Benchmarks | `contaminationresistant2026` |
-| SEC-bench | `secbench2025` |
 | **AgentIF** (instruction following agentico) | `agentif2025` |
 | FireBench (output format compliance) | `firebench2026` |
 
-**Voci con `% TODO autori`.** Molte voci recenti hanno l'elenco autori da
-confermare prima della consegna: `vulngym2026`, `zerodaybench2026`,
-`primevul2025`, `secvuleval2025`, `vultrial2025`, `vulnagentr22026`, `aegis2026`,
-`vulinstruct2025`, `codeaugur2026`, `fuzzingbrain2026`, `cvebench2025`,
-`slrllmvuln2025`, `llmvulnclassification2025`, `cvellm`,
-`simonetto2026cwemapping`, `javavulbench2026`, `securityevalase2025`,
-`memorizationcodellm2026`, `contaminationresistant2026`, `secbench2025`,
-`agentif2025`, `firebench2026`. Sono segnalate da un commento nel file `.bib`.
-**I PDF sono ora in `Literature/`**, quindi gli autori si estraggono dalla prima
-pagina senza tornare online — per le quattro voci non su arXiv
-(`llmvulnclassification2025`, `cvellm`, `simonetto2026cwemapping`,
-`securityevalase2025`) serve invece la pagina dell'editore.
+**Stato di verifica.** Ogni voce della bibliografia ha ora il PDF corrispondente
+in `Literature/`, e tutti gli elenchi autori sono stati estratti dalla prima
+pagina del PDF. Unica eccezione: `gitpatchdb2026`, in revisione a doppio cieco,
+i cui autori sono legittimamente anonimi.
 
 ---
 
