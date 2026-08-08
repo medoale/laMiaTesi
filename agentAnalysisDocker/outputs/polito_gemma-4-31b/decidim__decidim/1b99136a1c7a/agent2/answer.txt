@@ -1,14 +1,55 @@
-The reviewed commit introduces fine-grained settings for the "Amendments" feature in the Proposals component. Previously, the permission to create, reject, promote, or accept amendments was globally enabled for all users once the amendments feature was enabled (or if the user was the author of the amendment).
+The analysis of the provided changes reveals that the commit primarily focuses on implementing a new feature for "amendments" within the Proposals component of Decidim. Specifically, it introduces the ability to enable, disable, and configure amendment-related features (creation, reaction, and promotion) at both a global and a step-specific level.
 
-The changes implement the following:
-1.  **Fine-grained settings**: Added new settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) that allow administrators to enable/disable specific parts of the amendment workflow.
-2.  **Permission Enforcement**: Updated `Decidim::Permissions#amend_action?` to check these new settings. If a specific feature (like promotion) is disabled in the settings, the permission is no longer granted unconditionally.
-3.  **Controller Updates**: Updated `AmendmentsController` to pass the `current_component` to the `enforce_permission_to` method, ensuring that the permission check has access to the component's settings.
-4.  **UI/UX Improvements**: Added logic to hide/show corresponding UI elements (buttons, forms) based on these settings and added help texts in the admin panel.
-5.  **Linked Resources**: Added the ability to link a promoted emendation to the resulting proposal.
+A key security-relevant change is found in the `AmendmentsController` and its associated permissions logic. 
 
-These changes are feature enhancements and a refactoring of how permissions are handled for the amendments feature. They are not fixing a security vulnerability. The commit focuses on providing administrators with more control over the feature's functionality rather than addressing a bug that could be exploited for unauthorized access or data leakage.
+In the `before` state, the `AmendmentsController` called `enforce_permission_to` without providing the `current_component` context:
+```ruby
+enforce_permission_to :create, :amendment
+enforce_permission_to :reject, :amendment, amendment: @form.amendable
+enforce_permission_to :promote, :amendment, amendment: @form.emendation
+enforce_permission_to :accept, :amendment, amendment: @form.amendable
+```
 
-VULNERABILITY_FOUND: no
-CWE_ID: none
-CWE_NAME: none
+In the `after` state, `current_component: @form.component` is added to these calls:
+```ruby
+enforce_permission_to :create, :amendment, current_component: @form.component
+enforce_permission_to :reject, :amendment, amendment: @form.amendable, current_component: @form.component
+enforce_permission_to :promote, :amendment, amendment: @form.emendation, current_component: @form.component
+enforce_permission_to :accept, :amendment, amendment: @form.amendable, current_component: @form.component
+```
+
+Simultaneously, the permission check logic in `Decidim::Permissions` (via `amend_action?`) was updated to enforce these new component-level settings. In the `before` version, `amend_action?` simply allowed `:create`, `:reject`, `:promote`, and `:accept` actions for any authenticated user:
+```ruby
+def amend_action?
+  return unless permission_action.subject == :amendment
+  return allow! if permission_action.action == :create
+  return allow! if permission_action.action == :reject
+  return allow! if permission_action.action == :promote
+  return allow! if permission_action.action == :accept
+  # ...
+end
+```
+
+In the `after` version, the permission check now depends on the `component.current_settings`:
+```ruby
+def amend_action?
+  return unless permission_action.subject == :amendment
+  return disallow! unless component.settings.amendments_enabled
+
+  case permission_action.action
+  when :create
+    return allow! if component.current_settings.amendment_creation_enabled
+  when :accept, :reject
+    return allow! if component.current_settings.amendment_reaction_enabled
+  when :promote
+    return allow! if component.current_settings.amendment_promotion_enabled
+  end
+  # ...
+end
+```
+
+This change prevents users from performing amendment actions (creating, rejecting, promoting, or accepting) if the respective feature has been disabled in the component settings. Without this fix, a user could potentially bypass the administrative settings by sending requests directly to the controller endpoints, as the controller previously lacked the necessary component context to verify these settings. This is a classic case of Improper Access Control, specifically where a functional permission is granted regardless of the application's configuration settings.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-285
+CWE_NAME: Improper Authorization

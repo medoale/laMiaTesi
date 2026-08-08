@@ -1,11 +1,9 @@
-I have performed a security review of the provided repository.
+In the file `/work/sdk/python/feast/offline_server.py`, the `do_get` method (line 232) uses `ast.literal_eval()` to parse the `ticket.ticket` value from the `fl.Ticket` object. While `ast.literal_eval()` is significantly safer than `eval()`, it can still be used to cause a Denial of Service (DoS) by providing deeply nested structures (e.g., very large lists or dictionaries), leading to a stack overflow or excessive memory consumption.
 
-During the exploration, I identified a critical security vulnerability in `/work/sdk/python/feast/offline_server.py`. The `do_get` method (line 232) uses `ast.literal_eval()` to process the `ticket.ticket.decode()` input. While `ast.literal_eval` is safer than `eval()`, it is still vulnerable to Denial of Service (DoS) attacks. Specifically, deeply nested structures (such as deeply nested lists or dictionaries) can cause the Python interpreter to crash due to a stack overflow during the parsing process. Since the `ticket` is provided by the client (as part of the Arrow Flight protocol), an unauthenticated or authenticated attacker could send a specially crafted ticket to crash the `OfflineServer`.
+However, a more critical vulnerability is present in `/work/sdk/python/feast/infra/compute_engines/kubernetes/main.py`. On lines 70 and 73, the code uses `yaml.load(f, Loader=yaml.Loader)`. The `yaml.Loader` (which is an alias for `FullLoader` or `UnsafeLoader` depending on the PyYAML version) is capable of executing arbitrary Python code if the YAML file contains specially crafted tags (e.g., `!!python/object/apply:os.system`).
 
-Additionally, I noted the use of `yaml.load(f, Loader=yaml.Loader)` in `/work/sdk/python/feast/infra/compute_engines/kubernetes/main.py` (lines 70 and 73). In PyYAML, `yaml.Loader` is equivalent to `FullLoader` in newer versions, but in older versions, it could potentially be used for arbitrary code execution if the input is untrusted. However, since these files are read from fixed paths within a container (`/var/feast/feature_store.yaml`), the risk is lower unless an attacker has already achieved file-write access.
-
-The most significant and direct vulnerability is the potential for a DoS via `ast.literal_eval` on user-controlled input.
+Since `/var/feast/feature_store.yaml` and `/var/feast/materialization_config.yaml` are read from the filesystem, if an attacker can control the content of these files (e.g., through a compromised configuration management system or a previous vulnerability), they can achieve arbitrary code execution (RCE) on the Kubernetes pod. In a cloud environment, this is a high-severity vulnerability.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-400
-CWE_NAME: Uncontrolled Resource Consumption (Resource Exhaustion)
+CWE_ID: CWE-502
+CWE_NAME: Deserialization of Untrusted Data

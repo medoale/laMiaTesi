@@ -1,9 +1,10 @@
-The commit involves adding the `e()` function (which is a common shorthand for `htmlspecialchars()` in frameworks like Laravel) to several output expressions in PHP templates.
+The commit addresses a security vulnerability in the `Range` and `Values` classes within the `Filament\Tables\Columns\Summarizers` namespace.
 
-In `file_01`, the variables `$from` and `$to` are now escaped before being echoed.
-In `file_02`, the result of `$this->formatState($stateItem)` is now escaped before being echoed.
+In `file_01` (`Range.php`), the `toEmbeddedHtml()` method was directly printing the `$from` and `$to` variables using the `<?= $from ?>` and `<?= $to ?>` shortcuts. Since these variables are derived from the state of the database query (through the `summarize()` and `formatState()` methods), they can contain arbitrary strings if the database content is user-controlled. This allows an attacker to inject malicious HTML or scripts into the page, leading to a Cross-Site Scripting (XSS) vulnerability. The fix wraps these variables in the `e()` helper function, which performs HTML escaping.
 
-These changes prevent Cross-Site Scripting (XSS) vulnerabilities by ensuring that user-supplied or dynamic data is properly encoded before being rendered in the HTML output. This prevents an attacker from injecting malicious scripts into the page.
+Similarly, in `file_02` (`Values.php`), the `toEmbeddedHtml()` method was iterating over a list of states and printing the result of `$this->formatState($stateItem)` directly. The fix now wraps this output in the `e()` helper function to prevent XSS.
+
+Both changes specifically address the lack of output encoding for data rendered in the HTML templates.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-79

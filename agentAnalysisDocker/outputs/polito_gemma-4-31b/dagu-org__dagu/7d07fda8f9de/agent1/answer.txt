@@ -1,12 +1,12 @@
-The provided changes introduce validation for DAG file names in multiple parts of the application.
+The commit introduces validation for DAG (Directed Acyclic Graph) file names in multiple parts of the application.
 
-In `file_01`, a new middleware `validateDAGFileNameMiddleware` is added to the API routes. This middleware uses `core.ValidateDAGName` to validate the `FileName` field of request objects, returning a `400 Bad Request` if the validation fails.
+In `file_01`, a new middleware `validateDAGFileNameMiddleware` is added to the API routing. This middleware uses reflection to find a `FileName` field in the request object and validates it using `core.ValidateDAGName`.
 
-In `file_02`, new tests are added specifically to verify that encoded path traversal attempts (e.g., `..%2F..%2Ftmp%2Fsecret`) are rejected with a `400 Bad Request` status.
+In `file_04`, the `canonicalizeTopicIdentifier` function is updated to explicitly validate DAG identifiers for `TopicTypeDAG` and `TopicTypeDAGHistory` using the same `core.ValidateDAGName` function.
 
-In `file_03` and `file_04`, similar validation is added to the topic parsing logic, ensuring that identifiers for DAGs and DAG history are validated using `core.ValidateDAGName`, preventing path traversal via topic identifiers.
+The tests added in `file_02` and `file_03` specifically target path traversal attempts, such as `..%2F..%2Ftmp%2Fsecret` and `../../tmp/secret.yaml`, and verify that these now result in errors (`http.StatusBadRequest` or a Go error).
 
-These changes are clearly designed to prevent Path Traversal vulnerabilities, where an attacker could use `../` or encoded equivalents to access files outside of the intended directory.
+By validating the `FileName` and identifiers to ensure they do not contain path traversal sequences (like `..`), the commit fixes a Path Traversal vulnerability, preventing attackers from accessing or manipulating files outside the intended directory.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-22

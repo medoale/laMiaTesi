@@ -1,13 +1,17 @@
-I have conducted a security review of the provided workspace. 
+The analysis of the codebase has revealed a critical security vulnerability.
 
-My investigation focused on common Ruby on Rails vulnerabilities, such as:
-1.  **Remote Code Execution (RCE):** I searched for dangerous methods like `eval`, `send`, `public_send`, `constantize`, and `safe_constantize` being called with user-controlled input (e.g., from `params`). While these methods are used throughout the codebase (particularly in `Spree::Admin::ResourceController` and various serializers), they are applied to controlled constants, hardcoded strings, or validated internal identifiers rather than direct user input.
-2.  **Cross-Site Scripting (XSS):** I inspected views and controllers for raw output of user-supplied data. The application consistently follows Rails conventions and uses standard helpers, which provide automatic escaping.
-3.  **Insecure Direct Object References (IDOR):** I reviewed how resources are loaded in controllers. The application uses `accessible_by(current_ability)` via CanCanCan and scopes resources by `current_store`, ensuring that users can only access records they are authorized to view.
-4.  **Mass Assignment:** I checked for the use of strong parameters. The codebase utilizes `Spree::PermittedAttributes` and `permitted_resource_params` to strictly define allowed parameters for each resource.
+In the `spree_page_builder` engine, there is a `CustomCode` page section (`Spree::PageSections::CustomCode`) that allows administrators to provide a custom string of code via a preference called `custom_code`. This value is stored in the database and then rendered directly onto the storefront without any sanitization or escaping.
 
-After a thorough exploration of the controllers, models, and views across the `core`, `admin`, `api`, and `storefront` packages, I did not find any security vulnerabilities that I am confident about.
+The vulnerability is located in the following file:
+`/work/storefront/app/views/themes/default/spree/page_sections/_custom_code.html.erb`
 
-VULNERABILITY_FOUND: no
-CWE_ID: none
-CWE_NAME: none
+The relevant line is:
+`<%= raw(section.preferred_custom_code) %>`
+
+The `raw()` helper in Rails marks the string as HTML-safe, bypassing the automatic HTML escaping that Rails normally performs. This allows an administrator (or anyone who can compromise an admin account or find a way to update these preferences) to inject arbitrary HTML and JavaScript into the storefront. 
+
+Since this code is executed in the context of the storefront's users, this is a classic Stored Cross-Site Scripting (XSS) vulnerability. While the input is provided by an administrator, this can be used for various attacks, including stealing customer session cookies, redirecting users to malicious sites, or defacing the storefront.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')

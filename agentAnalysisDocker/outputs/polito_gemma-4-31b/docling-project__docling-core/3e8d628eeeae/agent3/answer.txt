@@ -1,8 +1,10 @@
-The `docling_core` library provides a data model and serialization tools for document analysis. During the security review, a potential vulnerability was identified in the `DoclingDocument.load_from_yaml` method located in `docling_core/types/doc/document.py`.
+In the provided codebase, a security vulnerability exists in the `DoclingDocument.load_from_yaml` method located in `/work/docling_core/types/doc/document.py`.
 
-The `load_from_yaml` method uses `yaml.load(f, Loader=yaml.FullLoader)` to deserialize YAML files into Python objects. While `FullLoader` is more secure than the unsafe `yaml.load` (which uses `Loader=yaml.Loader` by default in some versions and can lead to arbitrary code execution), it is still potentially vulnerable to certain types of Denial of Service (DoS) attacks, such as YAML bombs (entity expansion), and in some configurations or older versions of PyYAML, may still be susceptible to the instantiation of arbitrary Python objects if not carefully restricted.
+The `load_from_yaml` method uses `yaml.load(f, Loader=yaml.FullLoader)` to deserialize YAML data from a file. According to the PyYAML documentation, `FullLoader` is designed to avoid the execution of arbitrary Python code that `yaml.load` (with the default loader in older versions) allowed. However, `FullLoader` still permits the instantiation of any Python object that is registered with the loader, and in many environments, it can be bypassed or misused to achieve arbitrary code execution (ACE) if the input is untrusted. 
 
-The industry standard for secure YAML loading is `yaml.safe_load`, which restricts the loader to basic YAML types and prevents the execution of arbitrary code or the instantiation of complex Python objects.
+The recommended secure alternative for loading YAML from untrusted sources is `yaml.safe_load()`, which only allows the loading of basic YAML types and prevents the instantiation of arbitrary Python objects.
+
+Since `DoclingDocument.load_from_yaml` accepts a filename and loads the content without sufficient validation or the use of a strictly safe loader, an attacker who can provide a crafted YAML file could potentially execute arbitrary code on the system running the library.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-502

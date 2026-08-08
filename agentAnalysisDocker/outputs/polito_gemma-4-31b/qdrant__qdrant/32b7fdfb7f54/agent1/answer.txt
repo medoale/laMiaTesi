@@ -1,11 +1,11 @@
-The changes in `file_01` and `file_03` implement access control for the `/logger` endpoints. Specifically:
+The commit addresses two security vulnerabilities in the `/logger` endpoints:
 
-1.  **Broken Access Control Fix**: In `file_01`, `get_logger_config` and `update_logger_config` previously lacked any authentication or authorization checks. The commit adds `ActixAccess` and calls `access.check_global_access(...)`, ensuring that only authorized users can view or modify the logger configuration.
-2.  **Arbitrary File Write/Overwrite Prevention**: In `update_logger_config`, the line `config.on_disk.log_file = None;` is added. This prevents an attacker with access to the endpoint from changing the log file path to an arbitrary location on the server's filesystem, which could lead to overwriting critical system files or performing a denial-of-service attack.
-3.  **Authorization Mapping**: `file_03` updates the access control list (`ACTION_ACCESS`) to define the required permissions for these new checks.
+1.  **Missing Access Control (Broken Access Control):** 
+    In `file_01`, both `get_logger_config` (GET `/logger`) and `update_logger_config` (POST `/logger`) previously lacked any authorization checks. Any user (or unauthenticated requester) could read or modify the logger configuration. The commit introduces `ActixAccess` and calls `access.check_global_access(AccessRequirements::new())` for reading and `access.check_global_access(AccessRequirements::new().manage())` for updating, effectively restricting these operations to authorized users/administrators. This is a fix for **CWE-284: Improper Access Control**.
 
-The primary security vulnerability being addressed is the lack of access control on sensitive administrative endpoints, which falls under **CWE-285 (Improper Authorization)**. Additionally, the restriction on `log_file` specifically prevents a potential path traversal or arbitrary file write vulnerability via the configuration update.
+2.  **Arbitrary File Write/Manipulation (Insecure Configuration):**
+    In `file_01`, the `update_logger_config` function allowed updating the `tracing::LoggerConfig`. If this configuration included a `log_file` path, a privileged user (or anyone, before the access control fix) could potentially change the log file location to an arbitrary path on the system, leading to potential file overwrite or denial of service. The commit explicitly sets `config.on_disk.log_file = None` before calling `update_config`, ensuring that the log file path cannot be changed via the API and can only be specified in the static configuration file (as noted in the comment on line 169 of `after.txt` and the error message update in `file_02`). This prevents an attacker from manipulating the log file path, addressing **CWE-73: External Control of File Name or Path**.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-285, CWE-73
-CWE_NAME: Improper Authorization, External Control of File Name or Path
+CWE_ID: CWE-284, CWE-73
+CWE_NAME: Improper Access Control, External Control of File Name or Path

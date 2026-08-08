@@ -1,26 +1,12 @@
-The provided change moves the call to `$this->checkPermission('predefined_properties');` from inside an `if ($request->get('data'))` block to the very beginning of the `propertiesAction` method.
+The analysis of the provided changes in `SettingsController.php` reveals a security fix related to access control.
 
-In the `before.txt` version:
-```php
-public function propertiesAction(Request $request): JsonResponse
-{
-    if ($request->get('data')) {
-        $this->checkPermission('predefined_properties');
-        // ... (processing logic)
-    } else {
-        // get list of types
-        $list = new Property\Predefined\Listing();
-        // ... (listing logic)
-        return $this->adminJson(['data' => $properties, 'success' => true, 'total' => $list->getTotalCount()]);
-    }
-    return $this->adminJson(['success' => false]);
-}
-```
-When `data` is not provided in the request, the code enters the `else` block, which retrieves and returns a list of predefined properties without ever calling `checkPermission('predefined_properties')`. This allows any authenticated admin user (or potentially any user who can reach this controller) to list predefined properties, even if they lack the specific `predefined_properties` permission.
+In the `propertiesAction` method (lines 262-347 of the `before.txt` file), the permission check `$this->checkPermission('predefined_properties');` was previously located inside an `if ($request->get('data'))` block (line 265). This meant that if a request was made to the `/properties` endpoint without a `data` parameter, the permission check would be skipped entirely.
 
-By moving `checkPermission('predefined_properties')` to the start of the method, the developer ensures that both the modification/destruction of properties and the listing of properties are protected by the same permission check.
+Looking at the `else` block of that same `if` statement (lines 314-344), the code proceeds to list predefined properties by creating a `Property\Predefined\Listing` and returning the results. Consequently, any authenticated user (or potentially unauthenticated users, depending on the global security configuration of the `AdminAbstractController`) could access the list of predefined properties without having the `predefined_properties` permission.
 
-This is a fix for a Broken Access Control vulnerability, specifically missing functional-level access control.
+The commit moves the `$this->checkPermission('predefined_properties');` call to the very beginning of the `propertiesAction` method (line 264 of `after.txt`), ensuring that the permission is verified for all requests to this endpoint, regardless of whether the `data` parameter is present.
+
+This is a classic case of **Missing Function Level Access Control** (or Improper Access Control), where a sensitive operation (listing system properties) was accessible without the required authorization.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-285

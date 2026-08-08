@@ -1,66 +1,61 @@
-timestamp=2026-08-03T13:40:16.933Z level=INFO run=97eb95a1 message="creating instance" directory=/work
-timestamp=2026-08-03T13:40:16.934Z level=INFO run=97eb95a1 message=fromDirectory directory=/work
-timestamp=2026-08-03T13:40:16.940Z level=INFO run=97eb95a1 message=bootstrapping directory=/work
-timestamp=2026-08-03T13:40:16.948Z level=INFO run=97eb95a1 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-03T13:40:16.950Z level=INFO run=97eb95a1 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-03T13:40:16.950Z level=INFO run=97eb95a1 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-03T13:40:16.950Z level=ERROR run=97eb95a1 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-03T13:40:16.951Z level=INFO run=97eb95a1 message=loading path=/opencode.json
-timestamp=2026-08-03T13:40:16.955Z level=INFO run=97eb95a1 message=loading path=/opencode.json
-timestamp=2026-08-03T13:40:17.074Z level=INFO run=97eb95a1 message="all LSPs are disabled"
-timestamp=2026-08-03T13:40:17.074Z level=INFO run=97eb95a1 message="all formatters are disabled"
-timestamp=2026-08-03T13:40:17.074Z level=INFO run=97eb95a1 message=init
-timestamp=2026-08-03T13:40:17.198Z level=INFO run=97eb95a1 message=created id=ses_038257152ffecYywapMNGtXW4Z slug=swift-canyon version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-03T13:40:17.198Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785764417198 time.updated=1785764417198
-timestamp=2026-08-03T13:40:17.224Z level=INFO run=97eb95a1 message="event connected"
-timestamp=2026-08-03T13:40:17.376Z level=WARN run=97eb95a1 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-03T13:40:17.390Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=0
-timestamp=2026-08-03T13:40:17.399Z level=INFO run=97eb95a1 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-03T13:40:17.403Z level=INFO run=97eb95a1 message=init count=1
-timestamp=2026-08-03T13:40:17.405Z level=INFO run=97eb95a1 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-03T13:40:17.420Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=true agent=title mode=primary
-timestamp=2026-08-03T13:40:17.461Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:17.484Z level=INFO run=97eb95a1 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-03T13:40:17.612Z level=INFO run=97eb95a1 message="project copy refresh started" projectID=global
-timestamp=2026-08-03T13:40:17.613Z level=INFO run=97eb95a1 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-03T13:40:17.978Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7da8f71001E3Z2H8wYao6P5K
-timestamp=2026-08-03T13:40:17.979Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:18.154Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:20.406Z level=ERROR run=97eb95a1 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-03T13:40:22.413Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:22.415Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:24.312Z level=INFO run=97eb95a1 message=evaluated permission=glob pattern="\"_CHANGES/**/*\"" action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:24.339Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=1
-timestamp=2026-08-03T13:40:24.360Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7daaa950014m4mjjEjhkUr7B
-timestamp=2026-08-03T13:40:24.360Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:24.361Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:26.347Z level=INFO run=97eb95a1 message=evaluated permission=glob pattern="\"**/_CHANGES/**/*\"" action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:26.363Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=2
-timestamp=2026-08-03T13:40:26.377Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7dab27c001HXPqe6W9aCQPo2
-timestamp=2026-08-03T13:40:26.378Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:26.378Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:28.419Z level=INFO run=97eb95a1 message=evaluated permission=bash pattern="ls -R /" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:28.697Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=3
-timestamp=2026-08-03T13:40:28.712Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7dabb9a001kZTKhuHVi6AJod
-timestamp=2026-08-03T13:40:28.713Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:28.714Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:38.437Z level=INFO run=97eb95a1 message=evaluated permission=read pattern=work/_CHANGES/file_01/before.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:38.452Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=4
-timestamp=2026-08-03T13:40:38.456Z level=INFO run=97eb95a1 message="touching file" file=/work/_CHANGES/file_01/before.txt
-timestamp=2026-08-03T13:40:38.467Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7dae1b5001M1N3hD9YnYkeBV
-timestamp=2026-08-03T13:40:38.467Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:38.468Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:41.314Z level=ERROR run=97eb95a1 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-03T13:40:43.328Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:43.330Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:50.123Z level=INFO run=97eb95a1 message=evaluated permission=read pattern=work/_CHANGES/file_01/after.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:50.132Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=5
-timestamp=2026-08-03T13:40:50.135Z level=INFO run=97eb95a1 message="touching file" file=/work/_CHANGES/file_01/after.txt
-timestamp=2026-08-03T13:40:50.147Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7db0f55001hXalCm4y3sToAa
-timestamp=2026-08-03T13:40:50.147Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:50.148Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-03T13:40:56.352Z level=INFO run=97eb95a1 message=evaluated permission=read pattern=work/_CHANGES/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-03T13:40:56.359Z level=INFO run=97eb95a1 message=loop session.id=ses_038257152ffecYywapMNGtXW4Z step=6
-timestamp=2026-08-03T13:40:56.363Z level=INFO run=97eb95a1 message="touching file" file=/work/_CHANGES/file_01/diff.txt
-timestamp=2026-08-03T13:40:56.368Z level=INFO run=97eb95a1 message=process session.id=ses_038257152ffecYywapMNGtXW4Z messageID=msg_fc7db27a9001yUCkYx5LpdL02T
-timestamp=2026-08-03T13:40:56.368Z level=INFO run=97eb95a1 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_038257152ffecYywapMNGtXW4Z small=false agent=reviewer mode=primary
-timestamp=2026-08-03T13:40:56.369Z level=INFO run=97eb95a1 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:21.566Z level=INFO run=1117842c message="creating instance" directory=/work
+timestamp=2026-08-07T22:18:21.567Z level=INFO run=1117842c message=fromDirectory directory=/work
+timestamp=2026-08-07T22:18:21.573Z level=INFO run=1117842c message=bootstrapping directory=/work
+timestamp=2026-08-07T22:18:21.581Z level=INFO run=1117842c message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T22:18:21.583Z level=INFO run=1117842c message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T22:18:21.583Z level=INFO run=1117842c message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T22:18:21.583Z level=ERROR run=1117842c message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T22:18:21.583Z level=INFO run=1117842c message=loading path=/opencode.json
+timestamp=2026-08-07T22:18:21.588Z level=INFO run=1117842c message=loading path=/opencode.json
+timestamp=2026-08-07T22:18:21.707Z level=INFO run=1117842c message="all LSPs are disabled"
+timestamp=2026-08-07T22:18:21.708Z level=INFO run=1117842c message="all formatters are disabled"
+timestamp=2026-08-07T22:18:21.708Z level=INFO run=1117842c message=init
+timestamp=2026-08-07T22:18:21.826Z level=INFO run=1117842c message=created id=ses_021b1b0fdffeWc6nNMQF5H7Dwd slug=misty-garden version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T22:18:21.826Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786141101826 time.updated=1786141101826
+timestamp=2026-08-07T22:18:21.852Z level=INFO run=1117842c message="event connected"
+timestamp=2026-08-07T22:18:22.004Z level=WARN run=1117842c message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T22:18:22.011Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=0
+timestamp=2026-08-07T22:18:22.020Z level=INFO run=1117842c message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T22:18:22.024Z level=INFO run=1117842c message=init count=1
+timestamp=2026-08-07T22:18:22.025Z level=INFO run=1117842c message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T22:18:22.040Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=true agent=title mode=primary
+timestamp=2026-08-07T22:18:22.081Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:22.104Z level=INFO run=1117842c message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T22:18:22.224Z level=INFO run=1117842c message="project copy refresh started" projectID=global
+timestamp=2026-08-07T22:18:22.225Z level=INFO run=1117842c message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T22:18:22.575Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4e4fbe001oS9v73LbKJ3rVB
+timestamp=2026-08-07T22:18:22.575Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:22.791Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:25.398Z level=ERROR run=1117842c message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T22:18:27.405Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:27.406Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:29.189Z level=INFO run=1117842c message=evaluated permission=glob pattern="\"_CHANGES/**/*\"" action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T22:18:29.209Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=1
+timestamp=2026-08-07T22:18:29.227Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4e6bda0015k1FytuCIwxcJK
+timestamp=2026-08-07T22:18:29.228Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:29.228Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:30.039Z level=INFO run=1117842c message=evaluated permission=bash pattern="ls -R /" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T22:18:30.360Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=2
+timestamp=2026-08-07T22:18:30.373Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4e70590019rFE7VCHe2PhcS
+timestamp=2026-08-07T22:18:30.374Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:30.374Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:38.611Z level=INFO run=1117842c message=evaluated permission=read pattern=work/_CHANGES/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T22:18:38.711Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=3
+timestamp=2026-08-07T22:18:38.718Z level=INFO run=1117842c message="touching file" file=/work/_CHANGES/file_01/diff.txt
+timestamp=2026-08-07T22:18:38.728Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4e90f8001BWAREy9Q6hVH97
+timestamp=2026-08-07T22:18:38.728Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:38.729Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:40.261Z level=INFO run=1117842c message=evaluated permission=read pattern=work/_CHANGES/file_01/before.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T22:18:40.276Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=4
+timestamp=2026-08-07T22:18:40.280Z level=INFO run=1117842c message="touching file" file=/work/_CHANGES/file_01/before.txt
+timestamp=2026-08-07T22:18:40.291Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4e9715001UtSY2yuzuxBoNb
+timestamp=2026-08-07T22:18:40.291Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:40.292Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:45.517Z level=INFO run=1117842c message=evaluated permission=read pattern=work/_CHANGES/file_01/after.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T22:18:45.530Z level=INFO run=1117842c message=loop session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd step=5
+timestamp=2026-08-07T22:18:45.534Z level=INFO run=1117842c message="touching file" file=/work/_CHANGES/file_01/after.txt
+timestamp=2026-08-07T22:18:45.543Z level=INFO run=1117842c message=process session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd messageID=msg_fde4eab9b001OmLYLgl1vuOifw
+timestamp=2026-08-07T22:18:45.544Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:45.544Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T22:18:48.437Z level=ERROR run=1117842c message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T22:18:50.442Z level=INFO run=1117842c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_021b1b0fdffeWc6nNMQF5H7Dwd small=false agent=reviewer mode=primary
+timestamp=2026-08-07T22:18:50.444Z level=INFO run=1117842c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b

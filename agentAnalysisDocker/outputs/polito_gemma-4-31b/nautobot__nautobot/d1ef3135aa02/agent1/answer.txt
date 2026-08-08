@@ -1,10 +1,10 @@
-The commit addresses a security vulnerability (CVE-2026-34203) where password validation rules defined in Django's `AUTH_PASSWORD_VALIDATORS` setting were not enforced when creating or updating users via the REST API.
+The provided commit fixes a security vulnerability where the REST API for user creation and editing bypassed the configured Django password validation rules (`AUTH_PASSWORD_VALIDATORS`).
 
-In `file_04`, the `UserSerializer.validate` method is updated to import `validate_password` from `django.contrib.auth.password_validation` and call it whenever a password is provided in the validated data. This ensures that any configured password complexity requirements (e.g., minimum length, common password checks) are checked before the user object is created or updated.
+As described in the `diff.txt` of `file_03` and the changes in `file_04`, the `UserSerializer` in the REST API was not calling `validate_password()` when a password was provided during user creation or update. This allowed users to be created or updated with passwords that did not comply with the security policies (e.g., minimum length, complexity) defined in the system's configuration.
 
-The changes in `file_02` (adding `AUTH_PASSWORD_VALIDATORS` to the settings schema) and `file_05` (adding tests to verify that weak passwords are rejected when validators are active) support this fix.
+The fix involves importing `validate_password` from `django.contrib.auth.password_validation` and invoking it within the `validate` method of the `UserSerializer` whenever a password is present in the validated data.
 
-This is a classic case of missing input validation for security-sensitive fields, specifically failing to enforce password policies. The most accurate CWE for this is CWE-521: Weak Password Requirements.
+This vulnerability is a failure to enforce password complexity/validation rules, which falls under CWE-521 (Weak Password Requirements).
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-521

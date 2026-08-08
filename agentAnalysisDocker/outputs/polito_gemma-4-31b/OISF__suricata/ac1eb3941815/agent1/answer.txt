@@ -1,16 +1,39 @@
-The commit modifies the `AlertQueueExpand` function to prevent an integer overflow when calculating the new capacity of the alert queue.
+The commit modifies the `AlertQueueExpand` function in `detect-engine-alert.c` (implied by the context of Suricata detection engine).
 
-In the original code:
+In the `before.txt` version:
 ```c
-uint16_t new_cap = det_ctx->alert_queue_capacity * 2;
-void *tmp_queue = SCRealloc(det_ctx->alert_queue, (size_t)(sizeof(PacketAlert) * new_cap));
+static uint16_t AlertQueueExpand(DetectEngineThreadCtx *det_ctx)
+{
+    // ...
+    uint16_t new_cap = det_ctx->alert_queue_capacity * 2;
+    void *tmp_queue = SCRealloc(det_ctx->alert_queue, (size_t)(sizeof(PacketAlert) * new_cap));
+    // ...
+    det_ctx->alert_queue_capacity = new_cap;
+    // ...
+}
 ```
-The `det_ctx->alert_queue_capacity` is a `uint16_t`. If `alert_queue_capacity` is greater than `UINT16_MAX / 2` (e.g., 32769), the expression `det_ctx->alert_queue_capacity * 2` will overflow the `uint16_t` range, resulting in a value smaller than the current capacity. This would lead to `SCRealloc` allocating a smaller buffer than intended, but the code would then set `det_ctx->alert_queue_capacity = new_cap`, which is incorrect and leads to a heap-based buffer overflow when the queue is subsequently accessed via indices up to the (incorrectly) updated capacity or if the original capacity was assumed to be maintained.
+Here, `det_ctx->alert_queue_capacity` is a `uint16_t`. If `alert_queue_capacity` is greater than `32767` (half of `UINT16_MAX`), the multiplication `det_ctx->alert_queue_capacity * 2` will overflow the `uint16_t` type. For example, if `alert_queue_capacity` is `32768`, `new_cap` becomes `0` (due to overflow), and `SCRealloc` will be called with a size of `0`, which typically acts like `free()`. Subsequent access to `det_ctx->alert_queue[pos]` in `AlertQueueAppend` would then lead to a heap-based buffer overflow or a crash.
 
-The fix introduces checks to ensure that `new_cap` does not exceed `UINT16_MAX` and handles the case where the capacity is already at the maximum. Specifically, it checks if `det_ctx->alert_queue_capacity == UINT16_MAX` and ensures `new_cap` is capped at `UINT16_MAX`.
+In the `after.txt` version:
+```c
+static uint16_t AlertQueueExpand(DetectEngineThreadCtx *det_ctx)
+{
+    // ...
+    if (det_ctx->alert_queue_capacity == UINT16_MAX) {
+        return det_ctx->alert_queue_capacity;
+    }
 
-This is a classic integer overflow leading to a heap buffer overflow.
+    uint16_t new_cap;
+    if (det_ctx->alert_queue_capacity > (UINT16_MAX / 2)) {
+        new_cap = UINT16_MAX;
+    } else {
+        new_cap = det_ctx->alert_queue_capacity * 2;
+    }
+    return AlertQueueExpandDo(det_ctx, new_cap);
+}
+```
+The commit adds checks to prevent the overflow of `new_cap`. It ensures that `new_cap` is capped at `UINT16_MAX` and does not wrap around. This fixes an integer overflow that could lead to an incorrect memory allocation size and subsequent memory corruption.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-190, CWE-122
-CWE_NAME: Integer Overflow, Heap-based Buffer Overflow
+CWE_ID: CWE-190, CWE-119
+CWE_NAME: Integer Overflow, Improper Restriction of Operations within the Bounds of a Memory Buffer

@@ -1,23 +1,23 @@
-The codebase contains a potential security vulnerability in the `geonode.proxy.views.proxy` function.
+The analysis of the repository revealed a critical security vulnerability in the file `/work/geonode/base/management/commands/delete_resources.py`.
 
-The `proxy` view acts as an HTTP proxy that takes a `url` parameter from the user's GET request and forwards the request to that destination. To prevent Server-Side Request Forgery (SSRF), it implements a host validation check:
+The `delete_resources` management command allows users to specify filters for deleting datasets, maps, and documents. These filters can be provided via command-line arguments (`--dataset_filters`, `--map_filters`, `--document_filters`) or through a JSON configuration file.
+
+In lines 126, 142, and 155, the code uses the `eval()` function to process these filters:
 
 ```python
-proxy_allowed_hosts = list(proxy_urls_registry.get_proxy_allowed_hosts())
-if sec_chk_hosts:
-    if any(needle.lower() in url.query.lower() for needle in PROXY_ALLOWED_PARAMS_NEEDLES) or any(
-        needle.lower() in url.path.lower() for needle in PROXY_ALLOWED_PATH_NEEDLES
-    ):
-        proxy_allowed_hosts.append(url.hostname)
-
-    if not validate_host(extract_ip_or_domain(raw_url), proxy_allowed_hosts):
-        # ... returns 403 Forbidden
+126:                 layers_q_expressions = [eval(expr) for expr in dataset_filters]
+...
+142:                 maps_q_expressions = [eval(expr) for expr in map_filters]
+...
+155:                 documents_q_expressions = [eval(expr) for expr in document_filters]
 ```
 
-The vulnerability lies in the logic that automatically adds the requested hostname to the `proxy_allowed_hosts` list if certain "needles" (substrings) are present in the URL's query or path. If `PROXY_ALLOWED_PARAMS_NEEDLES` or `PROXY_ALLOWED_PATH_NEEDLES` contains any common strings, or if they are configured loosely, an attacker can bypass the host whitelist entirely by simply including one of those needles in their request. 
+The `eval()` function in Python executes the string passed to it as Python code. Since the `expr` values come directly from user-provided arguments or a configuration file without any sanitization or validation, an attacker with the ability to run management commands (or provide a configuration file to an administrator) can achieve arbitrary code execution (RCE) on the server.
 
-For example, if `PROXY_ALLOWED_PARAMS_NEEDLES` contains `"request=GetCapabilities"` (as seen in the test files), an attacker can request `http://internal-service.local/?request=GetCapabilities`, and the proxy will automatically add `internal-service.local` to the allowed hosts for that request, effectively bypassing the SSRF protection and allowing access to internal infrastructure.
+For example, providing a filter like `__import__('os').system('touch /tmp/rce')` would execute the command on the underlying system.
+
+This is a classic case of arbitrary code execution via the use of a dangerous function (`eval`) on untrusted input.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-918
-CWE_NAME: Server-Side Request Forgery (SSRF)
+CWE_ID: CWE-94
+CWE_NAME: Improper Control of Generation of Code ('Code Injection')

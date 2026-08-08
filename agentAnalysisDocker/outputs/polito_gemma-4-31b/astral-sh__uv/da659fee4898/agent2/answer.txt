@@ -1,10 +1,16 @@
-The commit introduces a validation step for filenames within ZIP archives. Specifically, it adds a `validate_archive_member_name` function (in `file_05`) that rejects filenames containing any non-printable/control characters (using the regex `\p{C}`) or empty filenames. This validation is then integrated into both the streaming `unzip` function (in `file_06`) and the seek-based `unzip` function (in `file_07`).
+The commit introduces validation for filenames within ZIP archives, specifically rejecting archives that contain files with empty filenames or filenames containing non-printable (control) characters. 
 
-The purpose of this change is to prevent potential issues where non-printable characters in filenames could lead to inconsistent behavior across different ZIP implementations or potentially exploit vulnerabilities in how those filenames are handled by the operating system or other tools. While the code explicitly states that this "doesn't refer to directory traversal risk" (which is handled by `enclosed_name`), rejecting control characters is a common security hardening practice to prevent "filename spoofing" or other unexpected behaviors caused by specially crafted filenames (e.g., using control characters to manipulate terminal output or deceive users/systems).
+Looking at the changes:
+1.  `file_05` introduces `validate_archive_member_name`, which uses a regex (`\p{C}`) to identify control characters and returns an `UnacceptableFilename` error if any are found or if the filename is empty.
+2.  `file_06` (async unzip) and `file_07` (sync unzip) integrate this validation into their respective `unzip` functions, calling `validate_archive_member_name` on both local file headers and central directory entries.
+3.  `file_04` adds the necessary error variants (`EmptyFilename` and `UnacceptableFilename`) to the `Error` enum.
+4.  `file_08` adds a test case `reject_invalid_archive_member_names` that confirms the rejection of a filename containing a control character (as seen in the stderr output `RECORD�`).
 
-The test case in `file_08` demonstrates the rejection of a filename containing a replacement character (indicating a failed control character check), confirming that the commit is intended to mitigate risks associated with malformed or malicious filenames in archives.
+The motivation stated in the comments of `file_05` is: *"Safe" in this context doesn't refer to directory traversal risk, but whether we believe that other ZIP implementations handle the name correctly and consistently.*
 
-This falls under the category of improper validation of input, specifically when handling archive members. The most relevant CWE is CWE-20 (Improper Input Validation).
+While the comments explicitly say this isn't about directory traversal (which is handled separately by `enclosed_name`), the presence of control characters in filenames can lead to various security issues depending on how those filenames are subsequently used by the operating system or other tools (e.g., terminal injection, unexpected file creation, or bypassing certain security filters). By restricting filenames to printable characters and ensuring they are not empty, the code mitigates risks associated with "malformed" or "unexpected" filenames that could be exploited.
+
+This is a defense-in-depth measure against improper input validation of archive member names, which can often lead to various vulnerabilities (though the most common one, ZipSlip/Directory Traversal, is already addressed). Specifically, allowing control characters in filenames is a form of improper input validation.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-20

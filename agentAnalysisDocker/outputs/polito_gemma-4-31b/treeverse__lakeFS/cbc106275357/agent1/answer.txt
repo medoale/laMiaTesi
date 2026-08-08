@@ -1,21 +1,22 @@
-The code changes address a path traversal vulnerability in a local storage adapter.
+The commit fixes a path traversal vulnerability in the `local` storage adapter.
 
-In `file_01`, the `verifyRelPath` method was updated to append a directory separator to the base path before performing a prefix check:
-```go
--	if !strings.HasPrefix(filepath.Clean(p), l.path) {
-+	if !strings.HasPrefix(filepath.Clean(p), l.path+string(filepath.Separator)) {
-```
-This prevents a "prefix bypass" attack where a path starting with the same characters as the base path (but not actually within it, e.g., `/tmp/lakefs_evil` vs `/tmp/lakefs`) could be mistakenly validated.
+### Analysis:
+1.  **Original Vulnerability**:
+    *   In `verifyRelPath`, the code checked if the cleaned path had the adapter's base path as a prefix: `strings.HasPrefix(filepath.Clean(p), l.path)`. This is a classic vulnerability where a directory named `/tmp/lakefs_evil` would satisfy the prefix check if the base path was `/tmp/lakefs`.
+    *   In `extractParamsFromObj`, the code joined the base path, the storage namespace, and the object identifier using `path.Join`. While `path.Join` cleans the result, it does not prevent an identifier containing `../` from escaping the intended storage namespace directory, as long as the resulting path still starts with the adapter's base path. This allows an attacker to access sibling directories within the adapter's root.
 
-Furthermore, `extractParamsFromObj` was modified to implement a two-stage verification process. Previously, it only verified that the final resolved path was under the adapter's root path. The update now ensures that:
-1. The `namespacePath` itself is within the adapter's root path.
-2. The final resolved path `p` is within the specific `namespacePath`.
+2.  **Fix**:
+    *   **Prefix Bypass Fix**: `verifyRelPath` now appends a directory separator to the base path: `strings.HasPrefix(filepath.Clean(p), l.path+string(filepath.Separator))`. This ensures that the path is actually *inside* the directory, not just sharing a prefix.
+    *   **Namespace Escape Fix**: `extractParamsFromObj` now implements a two-stage verification. It first verifies that the `namespacePath` is within the adapter's base path. Then, it verifies that the final path `p` (which includes the object identifier) is either equal to the `namespacePath` or is contained within it (by checking for the prefix including the separator). This prevents the object identifier from using `../` to escape the assigned storage namespace.
 
-This prevents an attacker from using `..` sequences in the `Identifier` to escape their assigned namespace and access other namespaces or files within the adapter's root directory, even if they remain within the root.
+3.  **Verification**:
+    The addition of `TestPathTraversalPrevention` and `TestPathTraversalDataAccess` in `file_02` explicitly tests these scenarios:
+    *   `prefix_bypass_attempt`: Tests the `lakefs_evil` scenario.
+    *   `dotdot_traversal`: Tests general traversal attempts.
+    *   `identifier_dotdot_traversal`: Tests traversal via the object identifier.
+    *   `TestPathTraversalDataAccess`: Specifically creates a secret file in a sibling directory of the namespace to verify that `../` in the identifier cannot be used to access it.
 
-`file_02` adds comprehensive tests (`TestPathTraversalPrevention` and `TestPathTraversalDataAccess`) specifically designed to detect these path traversal and prefix bypass scenarios.
-
-These changes directly mitigate a path traversal vulnerability, which is classified under CWE-22.
+The vulnerability is a Path Traversal, specifically allowing both escape from the root directory (via prefix bypass) and escape from the intended sub-directory/namespace.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-22

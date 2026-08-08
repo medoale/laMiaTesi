@@ -1,10 +1,39 @@
-The commit modifies the `propertiesAction` method in `SettingsController`.
+The analyzed commit modifies the `propertiesAction` method in the `SettingsController` class.
 
-In the `before.txt` version, the permission check `$this->checkPermission('predefined_properties');` is performed inside the `if ($request->get('data'))` block. This means that if a request is made to the `/properties` route without a `data` parameter, the code bypasses the permission check and proceeds to the `else` block (lines 314-344), which fetches and returns a list of predefined properties.
+In the `before.txt` version:
+```php
+public function propertiesAction(Request $request): JsonResponse
+{
+    if ($request->get('data')) {
+        $this->checkPermission('predefined_properties');
+        // ... actions for destroy, update, create ...
+    } else {
+        // ... get list of types (listing) ...
+        return $this->adminJson(['data' => $properties, 'success' => true, 'total' => $list->getTotalCount()]);
+    }
+    return $this->adminJson(['success' => false]);
+}
+```
 
-In the `after.txt` version, the permission check `$this->checkPermission('predefined_properties');` is moved to the very beginning of the `propertiesAction` method (line 264), ensuring that any request to this endpoint—regardless of whether it's for listing properties or performing an action on them—is subject to the permission check.
+In the `after.txt` version:
+```php
+public function propertiesAction(Request $request): JsonResponse
+{
+    $this->checkPermission('predefined_properties');
+    
+    if ($request->get('data')) {
+        // ... actions for destroy, update, create ...
+    } else {
+        // ... get list of types (listing) ...
+        return $this->adminJson(['data' => $properties, 'success' => true, 'total' => $list->getTotalCount()]);
+    }
+    return $this->adminJson(['success' => false]);
+}
+```
 
-This fixes a Broken Access Control vulnerability where an unauthorized user could list predefined properties by simply omitting the `data` parameter in the request.
+The change moves the `checkPermission('predefined_properties')` call from inside the `if ($request->get('data'))` block to the beginning of the method. This means that the permission check is now applied to the `else` block as well, which handles the listing of predefined properties. Previously, any authenticated user (or potentially unauthenticated users, depending on the rest of the application's security configuration) could list the predefined properties by making a request without the `data` parameter. 
+
+This is a fix for a missing access control check on a sensitive operation (listing system properties). The most accurate CWE for this is CWE-285: Improper Authorization.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-285

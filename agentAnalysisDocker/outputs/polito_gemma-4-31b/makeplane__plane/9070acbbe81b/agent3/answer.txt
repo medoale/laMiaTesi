@@ -1,18 +1,15 @@
-I have performed a security review of the provided repository.
+The security review of the repository identified multiple instances where user-supplied input from query parameters is passed directly into Django's `.order_by()` method.
 
-I examined several areas where HTML is processed, specifically looking for Cross-Site Scripting (XSS) vulnerabilities.
+In several API endpoints, the `order_by` parameter is retrieved from the request using `request.GET.get("order_by", ...)` and then passed without validation to the `order_by()` method of a Django QuerySet. For example:
 
-In `/work/apps/web/core/hooks/use-parse-editor-content.ts`, the function `replaceCustomComponentsFromHTMLContent` processes HTML content using `DOMParser`. While it performs various replacements, I found a potential XSS vector at line 80:
-`div.innerHTML = codeElement.innerHTML.replace(/\n/g, "<br>") || "";`
+- In `/work/apps/api/plane/api/views/project.py`, line 181: `.order_by(request.GET.get("order_by", "sort_order"))`
+- In `/work/apps/api/plane/api/views/issue.py`, lines 1656 and 1713: `.order_by(request.GET.get("order_by", "created_at"))`
+- In `/work/apps/api/plane/api/views/module.py` and `/work/apps/api/plane/api/views/cycle.py`, the `order_by` variable is assigned from `request.GET.get` and subsequently passed to `.order_by(order_by)`.
 
-This line takes the `innerHTML` of a `code` element found within a `pre` block and assigns it to the `innerHTML` of a newly created `div`. If the original `code` element contains malicious HTML (which could be inserted into the document if the editor's input sanitization is bypassed or if the content is loaded from an untrusted source), this operation would execute that HTML when the `div` is eventually rendered or serialized.
+While Django's `order_by()` provides some protection, passing unsanitized user input to it can lead to SQL injection in certain database backends or, more commonly, can be used for "blind" SQL injection through time-based attacks or by inducing database errors that reveal information about the schema or data. Specifically, in some Django versions and database configurations, this pattern allows attackers to inject expressions that can be used to extract sensitive data from the database.
 
-However, based on the broader context of the codebase, this appears to be part of a PDF export or content serialization process. While it is a dangerous pattern, the impact depends on where the resulting `serializedDoc` is used. If it is only used for PDF generation on the server or in a controlled environment, the risk is lower. But if this HTML is ever rendered back in the browser, it constitutes a stored XSS vulnerability.
-
-Additionally, in `/work/packages/utils/src/editor/common.ts`, the `getTextContent` function uses `div.innerHTML = jsx.toString();`. Depending on how `jsx.toString()` is implemented for various React node types, this could also be a risk if the input is not sanitized.
-
-Given the explicit use of `.innerHTML` to assign content derived from user-controllable editor content without explicit sanitization in the parsing logic, this is a vulnerability.
+This is a classic example of improper input validation leading to potential SQL injection.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-79
-CWE_NAME: Cross-Site Scripting
+CWE_ID: CWE-89
+CWE_NAME: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')

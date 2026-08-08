@@ -1,14 +1,24 @@
-The commit introduces a `strict_validation` parameter to the `AuthenticodeSignature.verify` method, which defaults to `True`. When `strict_validation` is enabled, it enforces checks on the certificate's `keyUsage` and `extendedKeyUsage` (EKU) extensions.
+The commit introduces a `strict_validation` parameter to `AuthenticodeSignature.verify` (defaulting to `True`) and updates `VerificationContext` to more rigorously validate certificate `keyUsage` and `extendedKeyUsage` (EKU).
 
-Specifically, in `file_01` (`AuthenticodeSignature.verify`), if `strict_validation` is `True`, the code now ensures that:
-1. `key_usages` includes `digital_signature` and is not optional (via `optional_ku=True` in the `VerificationContext`, but the `verify` method logic in `file_02` now handles `optional_ku` more carefully).
-2. `extended_key_usage` (EKU) must be present and set (by setting `optional_eku=False`).
+Specifically, in `VerificationContext.verify`:
+1.  **Key Usage (`keyUsage`)**: Previously, if `key_usages` were specified, they were passed to the validator. The update adds logic to ensure that if `optional_ku` is `False` (as it is in `strict_validation` mode), the `keyUsage` extension **must** be present in the certificate. It also introduces a `"critical"` mode to handle cases where the extension's criticality is checked.
+2.  **Extended Key Usage (`EKU`)**: Similarly, if `optional_eku` is `False` (strict mode), the `extendedKeyUsage` extension must be present.
 
-Looking at `file_02` (`VerificationContext.verify`), the logic for `validate_usage` was modified to properly handle cases where `keyUsage` or `extendedKeyUsage` are missing or marked as critical. Previously, if `key_usages` were provided, they were passed to the validator regardless of whether the certificate actually contained the `keyUsage` extension. The update adds logic to only pass `key_usages` to the validator if the extension is present (or if it's not marked as critical and `optional_ku` allows it).
+The `AuthenticodeSignature.verify` method now defaults to `strict_validation=True`, which sets `optional_ku=True` (wait, let me re-read the diff).
+Wait, in `file_01/diff.txt`:
+```python
++        if strict_validation:
++            verification_context_kwargs.setdefault("key_usages", ["digital_signature"])
++            verification_context_kwargs.setdefault("optional_ku", True)
+...
++        if strict_validation:
++            verification_context_kwargs.setdefault("optional_eku", False)
+```
+And in `file_02/diff.txt`, `VerificationContext.verify` uses `self.optional_ku` and `self.optional_eku` to decide whether the extensions must be present. If `optional_eku` is `False`, the EKU must be present.
 
-The motivation stated in the comments in `file_01` is that Windows often ignores these checks (a bug in Windows), but the library now provides a way to be "strict" about them. The fact that `strict_validation` defaults to `True` suggests that the previous behavior (which aligned with Windows) was considered too permissive and potentially a security weakness, as it allowed certificates without the required `code_signing` EKU or proper `keyUsage` to be accepted.
+The addition of a test case `test_17ad_valid_without_strict` specifically checks a sample with "incorrect keyUsage" that is valid only when `strict_validation=False`. This confirms that the previous behavior allowed certificates with missing or incorrect usage extensions to be accepted as valid for code signing.
 
-By enforcing `digital_signature` key usage and the `code_signing` EKU, the commit prevents the use of certificates issued for other purposes (e.g., email encryption) to sign code, which is a critical security check in PKI. Failing to validate the intended purpose of a certificate (CWE-295) can lead to privilege escalation or trust boundary violations.
+Failure to properly verify that a certificate is intended for the purpose it is being used for (e.g., code signing) by checking its key usage extensions is a security vulnerability. This allows a certificate issued for a different purpose (e.g., email encryption) to be used to sign code, potentially bypassing security policies or trust models.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-295

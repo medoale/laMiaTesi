@@ -1,16 +1,9 @@
-The provided changes fix a potential integer overflow in `ProtoDecodableMessage::count_repeated_field` and `ProtoDecodableMessage::decode`.
+The commit fixes a potential integer overflow vulnerability in the `ProtoDecodableMessage` class within the ESPHome API implementation. 
 
-In the original code, the bounds checks were performed using addition:
-`if (ptr + field_length > end)` and `if (ptr + 4 > end)`.
+In the `count_repeated_field` and `decode` methods, the code was performing boundary checks using the pattern `if (ptr + field_length > end)` and `if (ptr + 4 > end)`. Since `ptr` and `end` are pointers and `field_length` is an unsigned integer, the addition `ptr + field_length` can overflow if `field_length` is sufficiently large. If an overflow occurs, the resulting pointer may be smaller than `end`, causing the boundary check to pass even when the data is actually out of bounds. This could lead to an out-of-bounds read when the code subsequently accesses the buffer.
 
-Since `ptr` and `end` are pointers, and `field_length` is a `uint32_t`, `ptr + field_length` can overflow if `field_length` is very large. If the addition overflows, the resulting address may be smaller than `end`, causing the bounds check to pass erroneously. This could lead to an out-of-bounds read when the code subsequently accesses the buffer.
-
-The fix replaces these additions with subtractions or comparisons that avoid overflow:
-- `if (field_length > static_cast<size_t>(end - ptr))`
-- `if (end - ptr < 4)`
-
-This is a classic integer overflow leading to a buffer overflow (specifically, an out-of-bounds read).
+The fix changes these checks to use subtraction (`end - ptr`), which is safe as `end` is guaranteed to be greater than or equal to `ptr`, and then compares the result with the required length.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-190, CWE-125
-CWE_NAME: Integer Overflow, Out-of-bounds Read
+CWE_NAME: Integer Overflow or Wraparound, Out-of-bounds Read

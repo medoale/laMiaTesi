@@ -1,25 +1,37 @@
-The commit modifies the `is_message_crc_correct` function to add a check for the size of the input vector `vec` before accessing its elements.
+The commit modifies the `is_message_crc_correct` function in `file_01`.
 
-In the `before.txt` version, the code was:
+In the `before.txt` version:
 ```cpp
 inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
     auto crc_check = static_cast<std::uint16_t>((vec[vec.size() - 1] << 8) | vec[vec.size() - 2]);
-    // ...
+    // remove CRC tail from vector
+    for (std::uint8_t i = 0; i < 2; i++) {
+        vec.pop_back();
+    }
+    auto crc_calc = calculate_xModem_crc16(vec);
+    return crc_check == crc_calc;
+}
 ```
-If `vec` has fewer than 2 elements, `vec.size() - 1` and `vec.size() - 2` would result in underflow (since `size()` returns an unsigned type), leading to out-of-bounds access. This is a classic buffer over-read/out-of-bounds access vulnerability.
+The code accesses `vec[vec.size() - 1]` and `vec[vec.size() - 2]` without checking if the vector `vec` contains at least two elements. If `vec` is empty or has only one element, this leads to an out-of-bounds memory access, which is undefined behavior and can potentially lead to a crash (denial of service) or other security issues.
 
-The `after.txt` version introduces a guard:
+In the `after.txt` version:
 ```cpp
 inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
     if (vec.size() < 2) {
         return false;
     }
     auto crc_check = static_cast<std::uint16_t>((vec.at(vec.size() - 1) << 8) | vec.at(vec.size() - 2));
-    // ...
+    // remove CRC tail from vector
+    for (std::uint8_t i = 0; i < 2; i++) {
+        vec.pop_back();
+    }
+    auto crc_calc = calculate_xModem_crc16(vec);
+    return crc_check == crc_calc;
+}
 ```
-This check prevents the out-of-bounds access when the vector is too small. Additionally, it switches from `operator[]` to `.at()`, which provides bounds checking (throwing an exception if out of bounds), although the explicit size check already handles the risk.
+The fix introduces a check `if (vec.size() < 2)` to ensure the vector has enough elements before attempting to access the CRC bytes. Additionally, it changes the access method from `operator[]` to `.at()`, which provides bounds checking by throwing an exception if the index is out of range.
 
-This is a security fix for an out-of-bounds read.
+This is a clear fix for an out-of-bounds read vulnerability.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-125

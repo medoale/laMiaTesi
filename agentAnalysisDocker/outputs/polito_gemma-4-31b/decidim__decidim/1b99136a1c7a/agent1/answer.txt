@@ -1,39 +1,13 @@
-The provided commit introduces granular settings for the "Amendments" feature in the Proposals component of the Decidim platform. Previously, the "Amendments" feature was either globally enabled or disabled for a component. The changes introduce three new step-level settings: `amendment_creation_enabled`, `amendment_reaction_enabled`, and `amendment_promotion_enabled`.
+The provided commit introduces several features and refactorings related to "Amendments" in the `Decidim` Proposals component.
 
-From a security perspective, the most significant change is in the authorization logic. In `Decidim::Amendable::Policy`, the `amend_action?` method was modified:
+Key changes include:
+1.  **Granular Amendment Settings**: The commit introduces three new settings: `amendment_creation_enabled`, `amendment_reaction_enabled`, and `amendment_promotion_enabled`. These allow administrators to enable or disable specific parts of the amendment process (creating an amendment, reacting to one by accepting/rejecting, or promoting a rejected emendation to a full proposal).
+2.  **Permission Enforcement**: In `file_09/diff.txt`, the `enforce_permission_to` calls in the `AmendmentsController` are updated to include `current_component: @form.component`. This ensures that permission checks are performed against the specific component being accessed.
+3.  **Access Control Logic**: In `file_13/diff.txt`, the `amend_action?` method is updated to explicitly check the new granular settings (`amendment_creation_enabled`, `amendment_reaction_enabled`, `amendment_promotion_enabled`) before allowing actions. Previously, it seemed to allow these actions more broadly if the general `:amendment` subject was matched.
+4.  **UI/UX Improvements**: Various changes to views and JavaScript to hide/show fields based on these settings and to provide better links between proposals and their original emendations.
+5.  **Refactoring**: Some cleanup of how "promoted" status is determined, moving from checking `ActionLog` to checking for a linked promoted resource.
 
-```ruby
--      return allow! if permission_action.action == :create
--      return allow! if permission_action.action == :reject
--      return allow! if permission_action.action == :promote
--      return allow! if permission_action.action == :accept
-+      return disallow! unless component.settings.amendments_enabled
-+
-+      case permission_action.action
-+      when :create
-+        return allow! if component.current_settings.amendment_creation_enabled
-+      when :accept,
-+          :reject
-+        return allow! if component.current_settings.amendment_reaction_enabled
-+      when :promote
-+        return allow! if component.current_settings.amendment_promotion_enabled
-+      end
-```
-
-Additionally, the `AmendmentsController` now passes `current_component` to the `enforce_permission_to` calls for `create`, `reject`, `promote`, and `accept` actions.
-
-These changes implement a more restrictive and configurable access control model. By moving from a blanket `allow!` to checking specific component settings, the developers are ensuring that users can only perform these actions if the corresponding feature is explicitly enabled for the current component/step. This is a hardening measure that prevents unauthorized access to features that should be disabled.
-
-While this is a security improvement (improving authorization granularity), it doesn't fix a specific, known vulnerability like a bypass or an injection. Instead, it implements the "Principle of Least Privilege" by allowing administrators to disable specific risky or unwanted functionalities.
-
-However, looking closer at the `AmendmentsController` changes:
-```ruby
--      enforce_permission_to :create, :amendment
-+      enforce_permission_to :create, :amendment, current_component: @form.component
-```
-This ensures that the policy has the necessary context (`current_component`) to evaluate the new granular settings. Without this, the policy might have failed or defaulted to an incorrect state.
-
-Overall, this commit is a feature enhancement that improves the security posture of the application by providing finer-grained access control, but it is not a fix for a specific security vulnerability (CWE).
+The changes in `file_09/diff.txt` and `file_13/diff.txt` specifically improve access control by ensuring that the component's specific settings are honored during permission checks and that the `current_component` context is passed to the permission system. However, these are primarily feature additions (adding granular settings) and ensuring those settings are correctly applied, rather than fixing a specific security vulnerability (like a bypass or an injection). There is no evidence of a previous vulnerability being patched; instead, it is a move towards more fine-grained configuration of a feature.
 
 VULNERABILITY_FOUND: no
 CWE_ID: none

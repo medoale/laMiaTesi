@@ -1,19 +1,23 @@
-The commit introduces a comprehensive fix for Server-Side Request Forgery (SSRF) vulnerabilities.
+The commit introduces a robust defense mechanism against Server-Side Request Forgery (SSRF). 
 
-### Analysis:
-1.  **Vulnerability Identification**: Before the commit, the application used `requests.get()` and `requests.post()` directly on URLs provided by users (e.g., image URLs in recipes, import URLs). While there was a basic `validate_import_url` function, it was insufficient.
-2.  **Fixes implemented in `validate_import_url`**:
-    *   **URL Normalization**: It now encodes paths and queries to prevent bypasses using unencoded characters.
-    *   **Input Validation**: It rejects URLs containing control characters.
-    *   **Advanced IP Resolution**: It now explicitly detects and handles various IP encodings (DWORD, Hex, Octal) that are often used to bypass simple SSRF filters.
-    *   **Local Address Blocking**: It continues to block local addresses (e.g., `127.0.0.1`, `localhost`).
-3.  **Introduction of `safe_request`**:
-    *   The commit replaces `requests.request` with a `safe_request` wrapper across the codebase.
-    *   **Redirect Handling**: The most critical improvement is that `safe_request` disables automatic redirects (`allow_redirects=False`) and manually handles them. It validates every single URL in the redirect chain using `validate_import_url` before following it. This prevents "SSRF via redirect" attacks, where an initial URL is safe, but redirects the server to an internal resource.
-    *   **Circular Redirect Protection**: It implements a `visited_urls` set and a `max_redirects` limit to prevent Denial of Service (DoS) via circular redirects.
-4.  **Widespread Application**: The `safe_request` wrapper is applied to numerous integration points (`CookBookApp`, `Cookmate`, `Paprika`, `Plantoeat`, `RecetteTek`, `RecipeSage`, `Dropbox`, `Nextcloud`, etc.), ensuring consistent security across the application.
+In the `before` state, the application used `requests.get()` and `requests.post()` directly on URLs provided by users or external integrations (e.g., recipe images, imports from other services). While there was a basic `validate_import_url` function used in some places, it was insufficient to prevent advanced SSRF attacks.
 
-The changes specifically target and mitigate SSRF by ensuring that neither the initial request nor any subsequent redirects can target internal network resources or use obfuscated IP formats to bypass filters.
+The `after` state implements several critical security improvements in `cookbook/helper/HelperFunctions.py`:
+
+1.  **Enhanced URL Validation**: The `validate_import_url` function is significantly strengthened. It now:
+    *   Rejects URLs containing control characters.
+    *   Normalizes URLs (encoding paths and queries) before validation.
+    *   Explicitly detects and blocks various IP encodings often used to bypass SSRF filters, including DWORD (decimal), Hex, and Octal representations of IP addresses.
+    *   Continues to block local addresses (e.g., localhost, 127.0.0.1).
+
+2.  **Introduction of `safe_request`**: The commit introduces a `safe_request` wrapper that replaces direct calls to the `requests` library. This wrapper:
+    *   **Manually Handles Redirects**: It sets `allow_redirects=False` and manually processes each redirect. This is crucial because `requests.get(url, allow_redirects=True)` would follow a redirect to a local IP address *after* the initial URL had already passed validation.
+    *   **Re-validates Every Step**: The `validate_import_url` check is performed on the initial URL and every subsequent URL in a redirect chain, ensuring that no redirect can lead the server to request a restricted internal resource.
+    *   **Prevents Circular Redirects**: It tracks visited URLs to prevent infinite loops.
+
+3.  **Widespread Application**: These changes are applied across the codebase (`file_02` through `file_13`), replacing dangerous `requests` calls with `safe_request` in various integration and API views.
+
+These changes directly address the common SSRF pattern where an attacker provides a URL that redirects to an internal service or uses an alternative IP encoding to bypass simple filters.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-918

@@ -1,10 +1,10 @@
-The changes in this commit focus on preventing the automatic generation of thumbnails for remote documents. 
+The provided changes focus on restricting thumbnail generation for remote documents in a GeoNode-based application. 
 
-In `file_02` (`DocumentUploadView`), the code was modified to only call `resource_manager.set_thumbnail` if `self.object.is_local` is true. This ensures that when a user uploads a document by providing a remote URL (instead of uploading a file), the system does not attempt to fetch that remote resource to generate a thumbnail.
+In `file_02`, the `DocumentUploadView` was modified to only call `resource_manager.set_thumbnail` if the document is local (`if self.object.is_local`). Previously, thumbnails were generated for all documents, including those provided via a remote URL. 
 
-This is a classic security fix for **Server-Side Request Forgery (SSRF)**. By blindly fetching a URL provided by a user to generate a thumbnail, the server could be tricked into making requests to internal network resources, metadata services (like AWS IMDS), or other prohibited endpoints.
+Generating thumbnails for remote URLs typically involves the server fetching a resource from an arbitrary external URL and processing it with an image library (like Pillow, as seen in the tests in `file_01`). This pattern is a classic source of **Server-Side Request Forgery (SSRF)**. An attacker could provide a URL pointing to internal services (e.g., `http://localhost:8080/admin` or cloud metadata services like `http://169.254.169.254/`) to probe the internal network or extract sensitive information. By disabling thumbnail generation for remote documents, the application removes the trigger that would cause the server to make an outbound request to a user-supplied URL for the purpose of thumbnailing.
 
-The changes in `file_01` are corresponding test updates to verify that thumbnails are no longer generated for remote documents, confirming the fix. `file_03` appears to be a related but less critical adjustment.
+`file_01` updates the test suite to reflect this change, asserting that remote documents should no longer have thumbnails. `file_03` adds a comment clarifying that certain data types also do not receive thumbnails.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-918

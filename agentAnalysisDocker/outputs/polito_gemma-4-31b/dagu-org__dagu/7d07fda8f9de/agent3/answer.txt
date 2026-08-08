@@ -1,24 +1,25 @@
-The `dagu ai install` command allows users to install a "skill" (a set of markdown files) into various AI coding tool directories (e.g., Claude Code, Codex, OpenCode, Gemini CLI, Copilot CLI). 
+The analysis of the repository reveals a critical security vulnerability. 
 
-In the `installSkill` function (lines 348-377 of `internal/cmd/ai.go`), the tool iterates over the embedded `skillFS` and writes files to a destination path. The destination path is constructed by joining a `targetDir` (derived from the detected AI tool's skill directory) and a `relPath` (the relative path of the file in the embedded filesystem).
+The application, Dagu, allows users to define workflows (DAGs) using YAML files. These workflows can include steps that execute shell commands. The core of the vulnerability lies in how the `command` executor handles the `shell` configuration.
 
-The `targetDir` is determined by the `detect` functions of the `aiTool` definitions (lines 76-141). For example, the "Claude Code" detector returns `filepath.Join(homeDir, ".claude", "skills")`. If a user provides a custom skills directory via the `--skills-dir` flag, it is processed by `validateSkillRootDir` (lines 548-572).
+In `internal/runtime/builtin/command/shell_unix.go`, the `Build` method implements the logic for constructing the final `exec.Cmd`. When a command string is executed via a shell (the most common use case), the code does the following:
 
-The vulnerability exists because the `installSkill` function does not sufficiently validate the `relPath` obtained from `skillFS.WalkDir`. While `skillFS` is an embedded filesystem, a malicious or compromised embedded asset could contain paths with `..` components. More critically, if the `skillEmbedPrefix` or the embedded files themselves were to be manipulated, `filepath.Join(targetDir, relPath)` could result in a path outside the intended `targetDir`.
+1. It starts with the configured shell (e.g., `/bin/sh`).
+2. It appends arguments provided in the `shell` configuration.
+3. It appends the `-c` flag if not already present.
+4. It appends the raw `b.ShellCommandArgs` string.
 
-However, the more immediate and severe issue is that `installSkill` uses `os.WriteFile` (line 371) to write files to the filesystem based on paths derived from the `targetDir`. If a user can influence the `targetDir` (which they can via the `--skills-dir` flag), they can specify any directory on their system. While this is a CLI tool usually run by the user themselves, the lack of restriction on where files are written allows for arbitrary file creation/overwrite within the user's permissions.
+The `b.ShellCommandArgs` comes directly from the DAG's YAML specification (via `step.Commands[0].CmdWithArgs` or `step.ShellCmdArgs`). While Dagu provides some environment variable expansion, it does not sanitize or escape the command string before passing it to the shell via `exec.CommandContext(ctx, cmd, args...)`.
 
-More specifically, looking at `installSkill`:
-```go
-relPath := strings.TrimPrefix(path, skillEmbedPrefix+"/")
-destPath := filepath.Join(targetDir, relPath)
-// ...
-if wErr := os.WriteFile(destPath, data, 0o600); wErr != nil {
+Because these DAG specifications can be created or updated via the REST API (e.g., `CreateNewDAG`, `UpdateDAGSpec` in `internal/service/frontend/api/v1/dags.go`), an authenticated user with permissions to write DAGs can specify arbitrary shell commands. While this is intended functionality for a workflow engine, the lack of any restrictions on the command string itself, combined with the fact that the server typically runs with significant privileges to manage processes and files, allows for full Remote Code Execution (RCE) on the host machine.
+
+Specifically, by creating a DAG with a step like:
+```yaml
+steps:
+  - command: "touch /tmp/rce_success"
 ```
-If `relPath` contains `..`, `filepath.Join` will resolve it, potentially allowing files to be written outside `targetDir`. Since `relPath` comes from `skillFS` (embedded), this depends on the contents of the embedded FS. If the embedded FS is trusted, this is less of a risk.
-
-But there is a clear path traversal in the `--skills-dir` flag handling. The `validateSkillRootDir` function (lines 548-572) only checks if the path is a directory and not a specific file. It does not prevent the user from providing a path that, when combined with `skillDirName` ("dagu") and "SKILL.md", points to a sensitive location. Although the user is the one providing the path, this pattern is a classic "Arbitrary File Write" via path traversal if the input is not strictly validated.
+or using a shell with specialized arguments, an attacker can execute any command the Dagu process has permissions for. This is a textbook Command Injection vulnerability, where the "injection" is the entire purpose of the feature, but without sufficient sandboxing or restriction of the executable environment.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-22
-CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ("Path Traversal")
+CWE_ID: CWE-78
+CWE_NAME: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')

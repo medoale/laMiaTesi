@@ -1,10 +1,10 @@
-The changes in `file_01` show a replacement of `yaml.load(f, Loader=yaml.Loader)` with `yaml.safe_load(f)`. 
+The commit replaces `yaml.load(f, Loader=yaml.Loader)` with `yaml.safe_load(f)` in `file_01`. 
 
-In PyYAML, `yaml.Loader` (and the default `yaml.load()` in older versions) is capable of executing arbitrary Python code if the input YAML contains specially crafted tags (e.g., `!!python/object/apply:os.system`). This is a well-known vulnerability that allows for Remote Code Execution (RCE) when loading untrusted YAML data. `yaml.safe_load()` restricts the loader to simple Python objects, preventing the execution of arbitrary code.
+In PyYAML, `yaml.Loader` (and the default `yaml.load` in older versions) can instantiate any Python object, which allows for arbitrary code execution if the input YAML file is maliciously crafted. Using `yaml.safe_load` restricts the parsing to simple Python objects, mitigating the risk of remote code execution (RCE).
 
-The changes in `file_02` are purely cosmetic (fixing a docstring) and do not affect security.
+The files being loaded are `/var/feast/feature_store.yaml` and `/var/feast/materialization_config.yaml`. While these may be controlled by an administrator, the shift to `safe_load` is a standard security hardening practice to prevent deserialization vulnerabilities.
 
-The modification in `file_01` is a security fix for an unsafe deserialization vulnerability.
+`file_02` contains a trivial docstring change and is unrelated to security.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-502

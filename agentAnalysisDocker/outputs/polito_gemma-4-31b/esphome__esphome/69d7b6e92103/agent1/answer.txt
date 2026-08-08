@@ -1,15 +1,15 @@
-The code changes in `file_01` address a potential integer overflow vulnerability. 
+The code reviewed is part of a Protobuf-like decoder (`ProtoDecodableMessage`). The commit addresses potential integer overflow vulnerabilities in boundary checks.
 
-In the original code, boundary checks were performed using addition:
+In the `before.txt` version, boundary checks were performed using addition:
 `if (ptr + field_length > end)` and `if (ptr + 4 > end)`.
 
-Since `ptr` is a pointer and `field_length` (or the constant `4`) is an unsigned integer, the expression `ptr + field_length` can overflow if `field_length` is sufficiently large. If the addition overflows, the resulting pointer may wrap around to a small address, making it less than `end`, thus bypassing the boundary check and leading to an out-of-bounds read when `ptr` is later incremented by `field_length` or accessed.
+If `ptr` is near the end of the address space and `field_length` is large, the addition `ptr + field_length` can overflow, resulting in a value smaller than `end`. This would cause the boundary check to be bypassed, leading to an out-of-bounds read when `ptr` is subsequently incremented or accessed.
 
-The fix replaces these additions with subtraction (or by comparing the length against the remaining distance to the end):
+The `after.txt` version replaces these additions with subtractions and comparisons that are safe from overflow:
 `if (field_length > static_cast<size_t>(end - ptr))` and `if (end - ptr < 4)`.
 
-By calculating the remaining space (`end - ptr`) and comparing it with the required length, the code avoids the integer overflow entirely, ensuring that memory accesses stay within the allocated buffer. This is a classic fix for integer overflow leading to heap or stack buffer over-read.
+By calculating the remaining distance (`end - ptr`) first and comparing it to the required length, the code ensures that the check cannot be bypassed via integer overflow. This is a classic fix for an integer overflow leading to a buffer overflow (out-of-bounds read).
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-190
-CWE_NAME: Integer Overflow or Wraparound
+CWE_ID: CWE-190, CWE-125
+CWE_NAME: Integer Overflow or Wraparound, Out-of-bounds Read

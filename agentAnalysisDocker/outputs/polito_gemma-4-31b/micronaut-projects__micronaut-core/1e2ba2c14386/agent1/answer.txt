@@ -1,10 +1,23 @@
-The commit replaces a `ConcurrentHashMap` with a `ConcurrentLinkedHashMap` with a maximum capacity of 100 in the `DefaultHtmlErrorResponseBodyProvider` class.
+The commit changes the implementation of the `cache` in `DefaultHtmlErrorResponseBodyProvider` from a `ConcurrentHashMap` to a `ConcurrentLinkedHashMap` with a maximum size of 100.
 
-In the original code, the `cache` was an unbounded `ConcurrentHashMap`. The `body` method uses `cache.computeIfAbsent(key, this::html)`, where the `key` is an `HtmlErrorPage` record. Looking at the `error` method, an `HtmlErrorPage` is created using several parameters, including `httpStatusReason` and a list of `messages` derived from `errorContext.getErrors()`.
+In the `before.txt` version, `cache` is an unbounded `ConcurrentHashMap`:
+```java
+private final Map<HtmlErrorPage, String> cache = new ConcurrentHashMap<>();
+```
 
-If an attacker can control the content of the error messages or the response reason (which are part of the `HtmlErrorPage` key), they can force the creation of a large number of unique `HtmlErrorPage` objects. Since the original `ConcurrentHashMap` was unbounded, this allows an attacker to consume an arbitrary amount of memory by triggering different error responses, leading to a Denial of Service (DoS) through memory exhaustion.
+The `body` method uses `computeIfAbsent` to populate this cache:
+```java
+public String body(@NonNull ErrorContext errorContext, @NonNull HttpResponse<?> response) {
+    HtmlErrorPage key = error(errorContext, response);
+    return cache.computeIfAbsent(key, this::html);
+}
+```
 
-By introducing a `maximumWeightedCapacity` (a bounded cache), the developer has mitigated this resource exhaustion vulnerability.
+The `HtmlErrorPage` key depends on various inputs, including the locale, HTTP status code, status reason, and error messages retrieved from `ErrorContext`. If an attacker can trigger an error response with a large number of unique error messages or reasons (e.g., by including unique values in a request that results in an error), they can cause the `cache` to grow indefinitely. This is a classic unbounded cache vulnerability, which can lead to memory exhaustion and a Denial of Service (DoS).
+
+The commit fixes this by introducing a maximum cache size (`MAX_CACHE_SIZE = 100`) using `ConcurrentLinkedHashMap`, which implements an LRU (Least Recently Used) eviction policy. This ensures that the memory used by the cache remains bounded regardless of the number of unique error pages generated.
+
+The accompanying test file `DefaultHtmlErrorResponseBodyProviderCacheMaxSizeTest` verifies this fix by attempting to populate the cache with more than 100 unique entries and asserting that the cache size does not exceed the limit.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-770

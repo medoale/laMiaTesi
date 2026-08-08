@@ -1,22 +1,31 @@
-The commit introduces a check to ensure that users who are not leaders of an event can only manage their own participation.
+The analysis of the provided code change in `/changes/file_01` reveals a security fix related to broken access control.
 
-In the `before.txt` version:
-The variable `$getUserUuid` was initialized at line 47:
-`$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', $gValidLogin ? array('defaultValue' => $gCurrentUser->getValue('usr_uuid')) : []);`
-This allowed a logged-in user to provide any `user_uuid` via the `$_GET` parameter. If they provided a `user_uuid` belonging to another user, they could potentially modify that user's participation in an event (e.g., marking them as attending, cancelling their participation, or adding guests on their behalf), as long as the event was open for participation or the current user had some rights.
-
-In the `after.txt` version:
-A check is added at lines 417-419:
+In the original code (`before.txt`), the `user_uuid` parameter was retrieved from the `$_GET` request:
 ```php
-        // if user is no leader of the event then only allow to handle their own participation
-        if (!$participants->isLeader($gCurrentUserId)) {
-            $getUserUuid = $gCurrentUser->getValue('usr_uuid');
-        }
+$getUserUuid = admFuncVariableIsValid($_GET, 'user_uuid', 'uuid', $gValidLogin ? array('defaultValue' => $gCurrentUser->getValue('usr_uuid')) : []);
 ```
-If the current user is not a leader of the event, `$getUserUuid` is forced to be the UUID of the currently logged-in user, ignoring any `user_uuid` provided in the `$_GET` request. This prevents an attacker from manipulating other users' participation data.
+This value was subsequently used to instantiate a `User` object:
+```php
+$user = new User($gDb, $gProfileFields);
+$user->readDataByUuid($getUserUuid);
+```
+And later used to modify memberships in the "participation" modes (`participate`, `participate_cancel`, `participate_maybe`):
+```php
+$member->readDataByColumns(array('mem_rol_id' => (int)$event->getValue('dat_rol_id'), 'mem_usr_id' => $user->getValue('usr_id')));
+// ...
+$member->save();
+```
+Because `$getUserUuid` could be any valid UUID provided via the `user_uuid` GET parameter, an authenticated user could potentially change the participation status or modify details (like comments or guest counts) for any other user by simply supplying that user's UUID, provided the current user had some right to access the event participation logic (e.g., if the event was open for participation).
 
-This is a classic Broken Access Control vulnerability, specifically an Insecure Direct Object Reference (IDOR), where a user-supplied identifier (`user_uuid`) was used to access/modify data without verifying if the requester had the authority to do so.
+The fix introduced in `after.txt` adds a check to ensure that if the current user is not a leader of the event, the `user_uuid` is forced to be the current user's own UUID:
+```php
+// if user is no leader of the event then only allow to handle their own participation
+if (!$participants->isLeader($gCurrentUserId)) {
+    $getUserUuid = $gCurrentUser->getValue('usr_uuid');
+}
+```
+This prevents non-leader users from manipulating other users' participation data, effectively fixing an Insecure Direct Object Reference (IDOR) vulnerability.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-639
-CWE_NAME: Authorization Bypass Through User-Controlled Key
+CWE_NAME: Insecure Direct Object Reference

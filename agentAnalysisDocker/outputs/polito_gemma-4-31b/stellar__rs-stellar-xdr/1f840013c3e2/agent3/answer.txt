@@ -1,4 +1,13 @@
-I have explored the repository and found no evidence of any security vulnerabilities. The codebase is a Rust library for Stellar XDR types and encoding/decoding. It explicitly forbids unsafe code (`#![forbid(unsafe_code)]`), and it implements depth and length limits during XDR decoding to prevent stack overflows and memory exhaustion. The logic for encoding and decoding appears robust, with comprehensive tests for edge cases and boundary conditions.
+I have conducted a thorough security review of the `stellar-xdr` repository. 
+
+The project is a Rust library and CLI tool for encoding and decoding Stellar XDR (External Data Representation) types. My analysis focused on the following areas:
+1.  **Memory Safety**: The codebase explicitly forbids unsafe code (`#![forbid(unsafe_code)]` in `src/lib.rs`), leveraging Rust's strong memory safety guarantees.
+2.  **Resource Exhaustion (DoS)**: I examined the XDR decoding logic, specifically how lengths and recursion are handled. The library implements a `Limited` reader/writer wrapper (`src/curr/generated.rs`) that enforces `depth` and `len` limits. These limits are used throughout the generated decoding functions to prevent stack overflow (via `with_limited_depth`) and excessive memory allocation (via `consume_len`).
+3.  **Input Validation**: I reviewed the `ReadXdr` implementations for common types (integers, booleans, arrays, and vectors). The library correctly validates XDR padding (checking for non-zero padding) and enforces maximum length constraints (`MAX` constant in `VecM` and `BytesM`) during decoding.
+4.  **CLI Security**: The CLI tool primarily acts as a wrapper around the library's decode/encode functions. It uses `clap` for argument parsing and handles input/output streams safely.
+5.  **Logic Vulnerabilities**: I inspected the `Frame` implementation and other custom types. The `Frame` logic correctly identifies the last-fragment flag and uses the underlying `ReadXdr` traits for data extraction.
+
+No security vulnerabilities, such as buffer overflows, injection flaws, or unconstrained resource consumption, were found. The implementation of depth and length limits is a robust defense against maliciously crafted XDR payloads.
 
 VULNERABILITY_FOUND: no
 CWE_ID: none

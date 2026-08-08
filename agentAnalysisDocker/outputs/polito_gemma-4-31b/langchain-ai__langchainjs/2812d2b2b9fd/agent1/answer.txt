@@ -1,15 +1,14 @@
-The commit modifies the `RecursiveUrlLoader` in the `@langchain/community` package to prevent Server-Side Request Forgery (SSRF) vulnerabilities arising from HTTP redirects.
+The commit addresses a security vulnerability related to Server-Side Request Forgery (SSRF).
 
-### Analysis:
-1.  **Vulnerability**: Previously, `RecursiveUrlLoader` relied on the default `fetch` behavior for redirects. While it performed an initial validation of the starting URL using `validateSafeUrl`, it did not validate the URLs returned in `Location` headers during redirects. An attacker could provide a safe initial URL that redirects to a restricted internal resource (e.g., `http://127.0.0.1/admin` or cloud metadata services at `http://169.254.169.254`), bypassing the initial check.
-2.  **Fix**: 
-    -   The code now sets `redirect: "manual"` in the `fetch` options.
-    -   It implements a manual redirect loop (up to `MAX_REDIRECTS = 10`).
-    -   Crucially, it calls `validateSafeUrl(currentUrl, { allowHttp: true })` **inside the loop** for every redirect target before the request is made.
-    -   This ensures that any redirect to a private IP or restricted range is caught and blocked, preventing SSRF.
-3.  **Verification**: The added tests in `file_02` specifically verify that redirects to localhost, cloud metadata IPs, and private network ranges are blocked, while safe redirects are followed.
+Specifically, in `file_03` (`RecursiveUrlLoader`), the previous implementation of `fetchWithTimeout` relied on the default behavior of the `fetch` API, which automatically follows redirects. While the initial URL was validated using `validateSafeUrl`, any subsequent redirects provided by the server were followed without validation. This allowed an attacker to bypass SSRF protections by providing a safe-looking URL that redirected to a restricted internal resource (e.g., `localhost` or cloud metadata services).
 
-This is a classic fix for SSRF bypasses via redirects.
+The fix introduces:
+1.  Manual redirect handling by setting `redirect: "manual"` in the `fetch` options.
+2.  A loop that explicitly checks for redirect status codes (`301`, `302`, etc.).
+3.  Call to `validateSafeUrl(currentUrl, ...)` for every step of the redirect chain, ensuring that the destination of each redirect is also safe.
+4.  A `MAX_REDIRECTS` limit to prevent infinite redirect loops (denial of service).
+
+The tests added in `file_02` specifically verify that redirects to private IPs (`127.0.0.1`), cloud metadata IPs (`169.254.169.254`), and private network ranges (`192.168.1.1`) are now blocked, confirming the fix for the SSRF bypass.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-918

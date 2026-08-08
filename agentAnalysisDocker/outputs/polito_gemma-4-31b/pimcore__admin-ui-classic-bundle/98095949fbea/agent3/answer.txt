@@ -1,26 +1,21 @@
-I have analyzed the repository and identified a security vulnerability.
+I have analyzed the provided codebase and identified a security vulnerability in `src/Controller/Admin/EmailController.php`.
 
-The vulnerability is located in the `Pimcore\Bundle\AdminBundle\DataObject\GridColumnConfig\Operator\PHPCode` class. This class implements a mechanism where it instantiates a PHP class specified in the configuration:
+In the `showEmailLogAction` method, when the `type` parameter is set to `'html'`, the controller returns the HTML log of an email directly as a response:
 
 ```php
-81:     private function buildInstance(): OperatorInterface
-82:     {
-83:         $phpClass = $this->getPhpClass();
-84: 
-85:         if ($phpClass && class_exists($phpClass)) {
-86:             $operatorInstance = new $phpClass($this->config, $this->context);
-87: 
-88:             return $operatorInstance;
-89:         }
-90: 
-91:         throw new \Exception('PHPCode operator class does not exist: ' . $phpClass);
-92:     }
+137:         } elseif ($type === 'html') {
+138:             return new Response($emailLog->getHtmlLog(), 200, [
+139:                 'Content-Security-Policy' => "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data:",
+140:             ]);
+141:         }
 ```
 
-The `phpClass` value is derived from the `$config` object, which is part of the `GridConfig`. The `DataObjectHelperController::gridSaveColumnConfigAction` allows an administrator (or a user with sufficient permissions) to save a `GridConfig` via a POST request, where the `gridconfig` parameter is a JSON string containing the configuration for grid columns.
+The `getHtmlLog()` method retrieves the HTML content of a previously sent email. If an attacker can induce the system to send an email containing malicious JavaScript (e.g., through a contact form or any other input that ends up in an email log), an administrative user viewing this log in the admin panel will have the malicious script executed in their browser context.
 
-If an attacker can influence the `GridConfig` (e.g., by having permissions to save their own grid configuration or by exploiting a vulnerability that allows modifying another user's configuration), they can specify an arbitrary class name in the `phpClass` attribute. If that class exists in the PHP environment and its constructor can be triggered to perform a malicious action (a "gadget"), this leads to an arbitrary object instantiation vulnerability. While it is not a direct `eval()`, it allows the instantiation of any existing class, which is a classic precursor to Remote Code Execution (RCE) in PHP when combined with suitable gadgets.
+Although a `Content-Security-Policy` (CSP) header is present, it allows `'unsafe-inline'` for styles and `img-src * data:`, which may be insufficient to prevent all forms of XSS, especially if the HTML log content itself is not sanitized before being returned. Most importantly, the core issue is that user-controlled content (via the email log) is reflected back to the user without proper encoding or sanitization.
+
+This is a classic Stored Cross-Site Scripting (XSS) vulnerability.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-502
-CWE_NAME: Deserialization of Untrusted Data
+CWE_ID: CWE-79
+CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-Site Scripting')

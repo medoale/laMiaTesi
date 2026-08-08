@@ -1,28 +1,23 @@
-I have conducted a security review of the provided codebase, focusing on potential vulnerabilities such as Cross-Site Scripting (XSS), SQL Injection, and Remote Code Execution (RCE).
+The repository contains a security vulnerability where user-provided or configuration-defined JavaScript strings are passed directly to the JavaScript `eval()` function in the browser.
 
-During my exploration, I identified a potentially dangerous pattern in `packages/support/resources/views/anonymous-partial.blade.php`, which contains `{!! value($html) !!}`. This pattern renders the content of the `$html` variable without escaping it, which is a common source of XSS if the input can be controlled by a user.
-
-I traced the usage of this partial to `packages/support/src/Livewire/Partials/PartialsComponentHook.php`. In the `dehydrate` method, the hook iterates through partials and renders them. If a partial is not an instance of `View`, it wraps it in the `filament::anonymous-partial` view:
+Specifically, in `Filament\Schemas\Components\Component::toSchemaHtml()` and `Filament\Schemas\resources\views\components\flex.blade.php`, the `getAfterStateUpdatedJs()` method returns an array of JavaScript strings. These strings are then rendered into the HTML within an `x-init` attribute, wrapped in a `$wire.watch()` call that executes them via `eval()`.
 
 ```php
-if (! ($view instanceof View)) {
-    $view = view('filament::anonymous-partial', ['html' => $view]);
-}
+// /work/packages/schemas/src/Components/Component.php:196
+fn (string $js): string => '$wire.watch(' . Js::from($statePath) . ', ($state, $old) => isStateChanged($state, $old) && eval(' . Js::from($js) . '))',
 ```
 
-This means that any string passed as a partial render will be rendered unescaped. While this feature is intended to allow the framework to render HTML fragments, it creates a vulnerability if an attacker can influence the content of the partials being rendered. In many Filament configurations, partials are defined by the developer in the backend, but if there are any paths where user-supplied data can reach this mechanism, it would lead to XSS.
+Additionally, `Filament\Schemas\JsContent::toHtml()` explicitly uses `eval()` to render content:
 
-However, after reviewing the `PartialsComponentHook` and the way partials are stored and retrieved from the Livewire component's store, I did not find a direct, trivial path for an external attacker to inject arbitrary strings into the `partials` store. The partials are typically registered via `renderPartial()`, which is called within the component's logic.
+```php
+// /work/packages/schemas/src/JsContent.php:27
+return <<<HTML
+    <span x-text="() => eval({$content})"></span>
+HTML;
+```
 
-Despite this, the use of `{!! !!}` in a generic partial renderer is a high-risk pattern. In a complex framework like Filament, where components are highly composable and can be extended by users, such a sink increases the likelihood of XSS vulnerabilities appearing in plugin or custom component implementations.
-
-I have also checked for other common vulnerabilities:
-- **SQL Injection**: The codebase uses Laravel's Eloquent and Query Builder, which provide strong protection against SQLi. I reviewed `generate_search_column_expression` in `helpers.php` and found that while it handles raw expressions, it does so in a controlled manner for internal use.
-- **RCE**: I searched for dangerous functions like `eval`, `system`, and `exec` and found no evidence of their unsafe use.
-- **Path Traversal**: File upload and storage logic (e.g., in `ImportAction.php`) uses Laravel's filesystem abstractions, which are generally secure.
-
-In conclusion, while I found a dangerous sink (`{!! value($html) !!}`), I did not find a clear, exploitable path to it in the core codebase. However, the pattern itself is a security weakness.
+If an attacker can influence the strings passed to `afterStateUpdatedJs()` or `JsContent::make()`, they can achieve Cross-Site Scripting (XSS). While these are often used by developers in configuration, if any part of these strings is derived from user-controlled input (e.g., through a dynamic form builder or a settings page that allows custom JS), it leads to a critical vulnerability.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-79
-CWE_NAME: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+CWE_ID: CWE-94
+CWE_NAME: Improper Control of Generation of Code ('Code Injection')

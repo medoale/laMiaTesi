@@ -1,8 +1,10 @@
-The commit modifies the `hostIDReaderDarwin.read()` method in the `resource` package. Specifically, it changes the execution of the `ioreg` command from using a relative command name (`"ioreg"`) to using its absolute path (`"/usr/sbin/ioreg"`).
+The commit changes the way the `ioreg` command is called on Darwin (macOS) in the `hostIDReaderDarwin.read` method. Specifically, it changes the command from `ioreg` (relying on the `PATH` environment variable) to the absolute path `/usr/sbin/ioreg`.
 
-Executing a command by its relative name relies on the `PATH` environment variable to locate the executable. If an attacker can modify the `PATH` environment variable (e.g., by adding a malicious directory to the beginning of the path), they could potentially place a malicious executable named `ioreg` in that directory. When the application calls `ioreg`, it would execute the attacker's malicious version instead of the legitimate system utility. This is a known security vulnerability called "PATH injection" or "Insecure Search Path".
+In security terms, calling an executable by its relative name (relying on `PATH`) can lead to a vulnerability known as "PATH hijacking" or "untrusted search path," where an attacker who can modify the `PATH` environment variable or place a malicious executable in a directory listed in the `PATH` (and which precedes the legitimate executable's directory) can cause the application to execute the malicious code instead of the intended system command.
 
-By specifying the absolute path `/usr/sbin/ioreg`, the application bypasses the `PATH` lookup and ensures that only the intended system binary is executed, thereby mitigating the risk of command hijacking via `PATH` manipulation.
+By specifying the absolute path `/usr/sbin/ioreg`, the application ensures that it executes the legitimate system utility regardless of the current `PATH` configuration, thereby mitigating this risk.
+
+This is a classic fix for CWE-426: Untrusted Search Path.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-426

@@ -1,24 +1,12 @@
-The analyzed commit addresses a security vulnerability related to authorization bypass in the `UsersController`.
+The commit fixes an authorization bypass vulnerability in `UsersController::actionSavePermissions`.
 
-1.  **Authorization Bypass in `actionSavePermissions`**: 
-    In the `before` version, `actionSavePermissions` only called `$this->requireCpRequest()`. While it verified the request came from the Control Panel, it failed to check if the current user had the necessary permissions to access the permissions screen before proceeding to save changes. The `after` version adds a check:
-    ```php
-    if (!$this->showPermissionsScreen()) {
-        throw new ForbiddenHttpException('User not authorized to perform this action.');
-    }
-    ```
-    This ensures that any user attempting to save permissions must be authorized to view the permissions screen, preventing an unauthorized user from potentially modifying permissions via a direct POST request.
+In the version before the commit, `actionSavePermissions` allowed any user with a valid control panel session to potentially save user permissions, as it did not verify if the current user was authorized to access the permissions screen. While the subsequent calls to `_saveUserGroups` and `_saveUserPermissions` (not fully shown but hinted at in the diff) might have had their own checks, the entry point `actionSavePermissions` lacked a high-level authorization check. Specifically, it allowed users who should not have access to the permissions management functionality to trigger the permission saving process.
 
-2.  **Missing Permission Check in `_saveUserGroups`**:
-    In the `before` version, the `_saveUserGroups` method (called by `actionSavePermissions`) did not verify if the current user had the general permission to assign user groups before processing the group IDs from the request. The `after` version adds:
-    ```php
-    if (!$currentUser->canAssignUserGroups()) {
-        return;
-    }
-    ```
-    This prevents the modification of user groups if the current user lacks the required capability, closing another authorization gap.
+The commit adds a call to `$this->showPermissionsScreen()` at the beginning of `actionSavePermissions`. The `showPermissionsScreen()` method (defined in `EditUserTrait`) ensures that only users with appropriate privileges (e.g., admins in the Team edition or users with the `assignUserPermissions` permission in the Pro edition) can access the permissions management features.
 
-These changes directly mitigate an authorization bypass where users could potentially modify administrative settings (user groups and permissions) without sufficient privileges. This is a classic example of **CWE-285: Improper Authorization**.
+Additionally, the commit adds a check in `_saveUserGroups` to ensure the current user has the `canAssignUserGroups()` permission before proceeding to update user groups.
+
+These changes prevent unauthorized users from bypassing authorization checks to modify user groups and permissions, which is a classic authorization bypass (Broken Access Control).
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-285

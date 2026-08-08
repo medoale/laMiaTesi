@@ -1,10 +1,26 @@
-The changes in `file_01` and `file_02` address a common security vulnerability where an object is retrieved from the database using only its primary key (`pk` or `id`), without verifying that the object belongs to the project, workspace, or issue associated with the request.
+The analysis of the provided changes reveals that the commit fixes a security vulnerability related to **Insecure Direct Object References (IDOR)**.
 
-In `file_01`, the `patch` method was previously retrieving a `FileAsset` using only `pk`. An attacker could potentially modify any `FileAsset` in the system by guessing or providing a different `pk`, regardless of whether they had access to the workspace or project it belonged to. The fix adds `workspace__slug=slug` and `project_id=project_id` to the query, ensuring the asset belongs to the expected context.
+In `file_01`, the `patch` method of `ProjectAssetEndpoint` was previously fetching a `FileAsset` object using only its primary key (`pk`):
+```python
+asset = FileAsset.objects.get(id=pk)
+```
+This allowed any authenticated user with the required role (ADMIN, MEMBER, GUEST) to modify any `FileAsset` in the system by simply providing its ID, regardless of whether that asset belonged to the workspace or project specified in the URL. The fix adds validation to ensure the asset belongs to the requested workspace and project:
+```python
+asset = FileAsset.objects.get(id=pk, workspace__slug=slug, project_id=project_id)
+```
 
-Similarly, in `file_02`, the `delete` method was retrieving a `FileAsset` using only `pk`. An attacker could potentially delete any `FileAsset` by providing its `pk`. The fix ensures the asset is filtered by `workspace__slug`, `project_id`, and `issue_id`.
+Similarly, in `file_02`, the `delete` method of `IssueAttachmentEndpoint` was fetching the asset using only the primary key:
+```python
+issue_attachment = FileAsset.objects.get(pk=pk)
+```
+This allowed an attacker to delete any `FileAsset` by guessing or obtaining its ID. The fix ensures the asset is constrained by the workspace, project, and issue identifiers provided in the request:
+```python
+issue_attachment = FileAsset.objects.filter(
+    pk=pk, workspace__slug=slug, project_id=project_id, issue_id=issue_id
+).first()
+```
 
-These are classic examples of Broken Object Level Authorization (BOLA), which is classified under CWE-285 (Improper Authorization) and more specifically CWE-639 (Authorization Bypass Through User-Controlled Key).
+Both changes implement proper authorization checks by validating that the object being accessed belongs to the context (workspace/project/issue) the user is authorized to access, thus preventing IDOR attacks.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-639

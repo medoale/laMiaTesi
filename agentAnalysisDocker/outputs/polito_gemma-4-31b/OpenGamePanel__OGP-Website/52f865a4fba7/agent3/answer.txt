@@ -1,19 +1,21 @@
-The review of the provided software repository, specifically the Open Game Panel (OGP) modules, revealed a critical security vulnerability in the module management functionality.
+The code contains a critical vulnerability in `/work/modules/extras/extras.php`. Specifically, the `exec_ogp_module()` function processes a `$_POST['remove']` parameter that is passed directly to the `recursiveDelete()` function (defined in `/work/includes/helpers.php`).
 
-In `modules/modulemanager/add_module.php` and `modules/modulemanager/delete_module.php`, the application takes the `module` parameter directly from the `$_REQUEST` array and passes it to the `install_module()` and `uninstall_module()` functions defined in `modules/modulemanager/module_handling.php`.
-
-Inside `install_module()`, `uninstall_module()`, and `update_module()`, the code performs a check using `is_file()` to ensure a `module.php` file exists in the directory specified by the `module` parameter. However, it then uses the `include()` statement to include that file:
-
+The logic intended to prevent abuse is based on the existence of an `.nfo` file:
 ```php
-include("modules/".$module."/module.php");
+$install_nfo = DATA_PATH . $folderToDelete . ".nfo";
+if(file_exists($install_nfo)){
+    unlink($install_nfo);
+    $dirToDelete = $remove . "/" . strtolower($folderToDelete);
+    if(file_exists($dirToDelete) && is_dir($dirToDelete)){
+        recursiveDelete($dirToDelete);
+    }
+    // ...
+}
 ```
+However, the `$remove` variable is taken directly from `$_POST['remove']` without any validation or sanitization. An attacker who can upload or find a way to create a file in the `DATA_PATH` (which is `modules/[m]/data/`) can trigger the deletion of arbitrary directories on the filesystem by manipulating the `$remove` parameter (e.g., using directory traversal sequences like `../../`). Even if creating the `.nfo` file is difficult, the lack of sanitization on the path used for deletion constitutes a severe Arbitrary File Deletion vulnerability.
 
-Because the `module` parameter is not properly sanitized or validated against a whitelist of allowed module names, an attacker can use path traversal sequences (e.g., `../../`) to manipulate the path. While the inclusion is appended with `/module.php`, an attacker can bypass this on many systems or in certain configurations using null bytes (in older PHP versions) or by targeting other directories that happen to contain a file named `module.php`. More importantly, if an attacker can upload a file named `module.php` anywhere on the filesystem, they can leverage this vulnerability to achieve Remote Code Execution (RCE) by inducing the application to include their malicious file.
-
-Additionally, the `add_module.php` and `delete_module.php` files directly print the `$_REQUEST['module']` value back to the user in the HTML output without escaping, which leads to a Reflected Cross-Site Scripting (XSS) vulnerability.
-
-The most severe issue is the Local File Inclusion (LFI) which can lead to RCE.
+Furthermore, the `recursiveDelete` function itself uses `glob` and `unlink`/`rmdir` on the provided path, allowing for recursive deletion of any directory the web server has permissions to access, provided the `.nfo` check is bypassed or met.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-94, CWE-79
-CWE_NAME: Improper Control of Generation of Code ('Code Injection'), Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+CWE_ID: CWE-22
+CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')

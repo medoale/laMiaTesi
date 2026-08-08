@@ -1,8 +1,8 @@
-The commit replaces the loose comparison operator `==` with the strict comparison operator `===` in two locations where a password hash (generated via `md5()`) is compared against a stored password hash from the database.
+The commit changes two files, `file_01` and `file_02`, in the same manner: it replaces the loose comparison operator `==` with the strict comparison operator `===` when comparing a hashed password (`md5($_POST['upassword'])` or `md5($password)`) with the stored password hash from the database (`$userInfo['users_passwd']`).
 
-In PHP, loose comparison (`==`) can lead to a security vulnerability known as "type juggling." If one of the operands is a string that looks like a scientific notation number (e.g., `"0e1234..."`) and the other operand also looks like a scientific notation number, PHP will treat both as floats. Since any number multiplied by $10^n$ where $n$ is the exponent is treated as equal if the significands are the same (in this case, $0$), any two hashes starting with `0e` followed only by digits will be considered equal, regardless of the rest of the hash. This allows an attacker to bypass authentication if they can find or produce a password whose MD5 hash begins with `0e` and consists only of digits thereafter.
+In PHP, loose comparison (`==`) can lead to security vulnerabilities known as "type juggling." If a password hash happens to start with "0e" followed only by digits (the "magic hash" problem), PHP treats it as scientific notation (0 raised to the power of something), which evaluates to 0. If both the calculated hash and the stored hash match this pattern, `0 == 0` evaluates to `true`, even if the actual strings are different. This allows an attacker to bypass authentication by providing a password that generates such a "magic hash."
 
-By changing `==` to `===`, the commit ensures that both the type (string) and the value are compared strictly, effectively neutralizing the type juggling vulnerability.
+By using strict comparison (`===`), PHP compares both the value and the type, ensuring that the strings must be identical and preventing the type juggling exploit.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-287

@@ -1,27 +1,40 @@
-I have analyzed the repository and found a security vulnerability in the `LatexManager` class.
+The analysis of the provided source code reveals a command injection vulnerability in `net.sourceforge.plantuml.LatexManager`.
 
-The `LatexManager` class allows the specification of a `system` (the command to run) and a `preamble` which are then used to start a process. 
+In the `LatexManager` constructor, the `system` parameter is used to determine the command to be executed via `ProcessBuilder`. The code performs a superficial check to ensure the command ends with `"latex"`:
 
-In `LatexManager.java`:
 ```java
-25: 	public LatexManager(String system, String preamble) {
-26: 		String command = (system != null && !system.isEmpty()) ? system : "xelatex";
-27: 		if (!command.endsWith("latex")) {
-28: 			throw new IllegalArgumentException("command " + command + " is unsupported");
-29: 		}
-30: 		try {
-31: 			File tempDir = Files.createTempDirectory("plantuml-latex-").toFile();
-32: 			tempDir.deleteOnExit();
-33: 			this.process = new ProcessBuilder(command, "-halt-on-error")
-34: 							.directory(tempDir)
-35: 							.start();
+public LatexManager(String system, String preamble) {
+    String command = (system != null && !system.isEmpty()) ? system : "xelatex";
+    if (!command.endsWith("latex")) {
+        throw new IllegalArgumentException("command " + command + " is unsupported");
+    }
+    try {
+        File tempDir = Files.createTempDirectory("plantuml-latex-").toFile();
+        tempDir.deleteOnExit();
+        this.process = new ProcessBuilder(command, "-halt-on-error")
+                        .directory(tempDir)
+                        .start();
+    }
+    // ...
+}
 ```
 
-The validation on line 27 only checks if the `command` ends with `"latex"`. An attacker could provide a command like `sh -c "calc; echo latex"`, which ends with `latex` but executes arbitrary commands.
+This check is insufficient because it only verifies the suffix of the string. An attacker who can control the `system` parameter can specify a command that ends in `"latex"` but executes arbitrary code. For example, on a Unix-like system, a command like `"/bin/sh -c 'touch /tmp/pwned' # xelatex"` would satisfy the `.endsWith("latex")` condition (if the attacker appends `latex` at the end) or more simply use a command that legitimately ends in `latex` but is controlled. However, `ProcessBuilder`'s first argument is the executable. While `ProcessBuilder` does not invoke a shell by default, an attacker could point `system` to a malicious executable they uploaded or a system utility that allows command execution, provided the filename ends in `"latex"`.
 
-These values are populated from `TikzFontDistortion` (lines 92-103), which in turn gets them from `Pragma` (lines 101-102). `Pragma` values are defined via `define(String keyName, String value)` (lines 59-65).
+More critically, the `system` value is sourced from `TikzFontDistortion`, which is populated via `Pragma`. The `CommandPragma` class allows any user who can provide a PlantUML diagram to define arbitrary pragmas:
 
-In many PlantUML environments, pragma values can be influenced by the input diagram description (e.g., using `!pragma` or similar mechanisms if the preprocessor allows it). If an attacker can set the `TEX_SYSTEM` pragma, they can achieve Command Injection.
+```java
+// In CommandPragma.java
+protected CommandExecutionResult executeArg(TitledDiagram system, LineLocation location, RegexResult arg, ParserPass currentPass) {
+    final String name = StringUtils.goLowerCase(arg.get("NAME", 0));
+    final String value = arg.get("VALUE", 0);
+    // ...
+    system.getPragma().define(name, value);
+    // ...
+}
+```
+
+By using the `!pragma TEX_SYSTEM` directive in a PlantUML file, an attacker can control the `system` argument passed to the `LatexManager` constructor, leading to arbitrary executable invocation.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-78

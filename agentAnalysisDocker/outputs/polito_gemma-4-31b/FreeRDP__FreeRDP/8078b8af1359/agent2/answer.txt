@@ -1,6 +1,6 @@
-The commit introduces calls to `sspi_SecureHandleInvalidate()` in several functions responsible for freeing or deleting security context and credential handles (e.g., `credssp_FreeCredentialsHandle`, `ntlm_FreeCredentialsHandle`, `ntlm_DeleteSecurityContext`, `negotiate_DeleteSecurityContext`, `negotiate_FreeCredentialsHandle`, `schannel_FreeCredentialsHandle`, and `schannel_DeleteSecurityContext`).
+The commit involves adding calls to `sspi_SecureHandleInvalidate()` in several security-related functions across multiple files: `credssp`, `kerberos`, `ntlm`, `negotiate`, and `schannel`.
 
-Looking at the implementation of `sspi_SecureHandleInvalidate` in `sspi_winpr.c`:
+Looking at `sspi_SecureHandleInvalidate` in `/work/winpr/libwinpr/sspi/sspi_winpr.c`:
 ```c
 void sspi_SecureHandleInvalidate(SecHandle* handle)
 {
@@ -24,11 +24,16 @@ void* sspi_SecureHandleGetLowerPointer(SecHandle* handle)
 	return pointer;
 }
 ```
-The handles in this library are used to store pointers to internal data structures. The `sspi_SecureHandleGetLowerPointer` function retrieves these pointers. If a handle is not invalidated after the underlying data it points to is freed, but the handle itself persists, any subsequent call to a function using that handle (which calls `sspi_SecureHandleGetLowerPointer`) would retrieve a pointer to freed memory.
+(Note: `SecIsValidHandle` is likely a macro checking if the handle is not null and has valid members).
 
-By calling `sspi_SecureHandleInvalidate(phContext)` or `sspi_SecureHandleInvalidate(phCredential)` immediately after retrieving the pointer to the internal data (and before freeing that data), the code ensures that the handle is marked as invalid. Any subsequent attempts to use the same handle will return `nullptr` from `sspi_SecureHandleGetLowerPointer`, preventing Use-After-Free (UAF) vulnerabilities.
+The changes consistently follow this pattern:
+1.  Retrieve the underlying pointer from the handle using `sspi_SecureHandleGetLowerPointer`.
+2.  Immediately call `sspi_SecureHandleInvalidate(phHandle)`, which sets `dwLower` and `dwUpper` to 0.
+3.  Proceed to use the retrieved pointer to free the actual resource.
 
-This is a classic fix for a Use-After-Free vulnerability where a handle is not invalidated upon the destruction of the object it references.
+Without these changes, the handle remained "valid" (its `dwLower` was non-zero) even after the underlying memory was freed by the package-specific free function (e.g., `ntlm_ContextFree(context)`). This creates a Use-After-Free (UAF) condition if any other part of the code attempts to use that handle again, as `sspi_SecureHandleGetLowerPointer` would still return the now-freed address.
+
+By invalidating the handle immediately after extracting the pointer and before freeing the memory, the commit ensures that subsequent calls to `sspi_SecureHandleGetLowerPointer` for that handle will return `nullptr`, preventing UAF.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-416

@@ -1,16 +1,12 @@
-The commit fixes a path traversal vulnerability in the `local` adapter of the blockstore.
+The commit addresses two separate path traversal vulnerabilities in the `local` adapter:
 
-### Analysis:
+1.  **Base Path Prefix Bypass**: In `verifyRelPath`, the check `strings.HasPrefix(filepath.Clean(p), l.path)` was used to ensure the requested path `p` was within the adapter's base directory `l.path`. However, if `l.path` was, for example, `/tmp/lakefs`, a path like `/tmp/lakefs_evil` would satisfy this prefix check, allowing access to directories outside the intended base path. The fix changes this to check for `l.path + string(filepath.Separator)`, ensuring that the path is actually *inside* the directory.
 
-1.  **Insufficient Prefix Check**: In `verifyRelPath`, the code previously used `strings.HasPrefix(filepath.Clean(p), l.path)`. This is a classic vulnerability where if `l.path` is `/tmp/lakefs`, a path like `/tmp/lakefs_evil/file.txt` would satisfy the prefix check, allowing access to directories outside the intended base path that start with the same prefix. The fix adds a trailing separator: `l.path + string(filepath.Separator)`, ensuring that only paths actually *inside* the directory (or the directory itself) are allowed.
+2.  **Namespace Escape via Identifier**: In `extractParamsFromObj`, the code previously joined the base path, the namespace, and the identifier using `path.Join` and then verified the resulting path against the base path. This was insufficient because it allowed an attacker to use `..` sequences in the `Identifier` to escape the `StorageNamespace` directory and access other namespaces or sibling directories within the base path. The fix introduces a two-step verification:
+    *   First, it verifies that the `namespacePath` itself is within the base path.
+    *   Second, it verifies that the final path `p` (after joining the identifier) is either equal to the `namespacePath` or is a child of it (using the separator prefix check).
 
-2.  **Namespace Escape**: In `extractParamsFromObj`, the code previously joined the base path, the namespace, and the identifier, then checked if the result was under the base path. However, it did not verify that the final resolved path remained within the specific namespace directory. An attacker could use `..` sequences in the `identifier` to escape the namespace and access other files within the adapter's base path (as demonstrated in the newly added test `TestPathTraversalDataAccess`).
-
-The fix introduces a two-step verification:
-- First, it verifies that the `namespacePath` is under the adapter's base path.
-- Second, it verifies that the final path `p` (after joining the identifier) is either equal to the `namespacePath` or is a child of it (using the separator prefix check).
-
-These changes prevent both "prefix-based" bypasses and "dot-dot" traversal escapes from the namespace.
+These changes prevent attackers from accessing unauthorized files on the local filesystem via path traversal.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-22

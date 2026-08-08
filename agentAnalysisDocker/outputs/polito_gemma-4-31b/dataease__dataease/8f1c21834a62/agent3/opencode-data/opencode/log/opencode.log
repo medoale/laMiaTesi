@@ -1,159 +1,179 @@
-timestamp=2026-08-05T09:27:30.201Z level=INFO run=7cc21a35 message="creating instance" directory=/work
-timestamp=2026-08-05T09:27:30.202Z level=INFO run=7cc21a35 message=fromDirectory directory=/work
-timestamp=2026-08-05T09:27:30.208Z level=INFO run=7cc21a35 message=bootstrapping directory=/work
-timestamp=2026-08-05T09:27:30.215Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-05T09:27:30.217Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-05T09:27:30.217Z level=INFO run=7cc21a35 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-05T09:27:30.217Z level=ERROR run=7cc21a35 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-05T09:27:30.218Z level=INFO run=7cc21a35 message=loading path=/opencode.json
-timestamp=2026-08-05T09:27:30.223Z level=INFO run=7cc21a35 message=loading path=/opencode.json
-timestamp=2026-08-05T09:27:30.341Z level=INFO run=7cc21a35 message="all LSPs are disabled"
-timestamp=2026-08-05T09:27:30.342Z level=INFO run=7cc21a35 message="all formatters are disabled"
-timestamp=2026-08-05T09:27:30.342Z level=INFO run=7cc21a35 message=init
-timestamp=2026-08-05T09:27:30.462Z level=INFO run=7cc21a35 message=created id=ses_02ec02661ffe5nkGgR31zqQqX1 slug=glowing-meadow version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-05T09:27:30.462Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785922050462 time.updated=1785922050462
-timestamp=2026-08-05T09:27:30.487Z level=INFO run=7cc21a35 message="event connected"
-timestamp=2026-08-05T09:27:30.651Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=0
-timestamp=2026-08-05T09:27:30.661Z level=INFO run=7cc21a35 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-05T09:27:30.667Z level=INFO run=7cc21a35 message=init count=1
-timestamp=2026-08-05T09:27:30.669Z level=INFO run=7cc21a35 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-05T09:27:30.678Z level=WARN run=7cc21a35 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-05T09:27:30.687Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=true agent=title mode=primary
-timestamp=2026-08-05T09:27:30.730Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:30.756Z level=INFO run=7cc21a35 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-05T09:27:31.128Z level=INFO run=7cc21a35 message="project copy refresh started" projectID=global
-timestamp=2026-08-05T09:27:31.129Z level=INFO run=7cc21a35 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-05T09:27:31.441Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd13fda5e001Jd3YNFYWNZW6fX
-timestamp=2026-08-05T09:27:31.442Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:31.545Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:34.294Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:27:36.309Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:36.312Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:38.341Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:27:42.355Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:42.359Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:43.157Z level=INFO run=7cc21a35 message=evaluated permission=glob pattern="\"**/*\"" action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-08-05T09:27:43.184Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=1
-timestamp=2026-08-05T09:27:43.204Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1400b51001oZedAG1fCXNg4c
-timestamp=2026-08-05T09:27:43.205Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:43.205Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:44.045Z level=INFO run=7cc21a35 message=evaluated permission=bash pattern="ls -R /" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-08-05T09:27:44.393Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=2
-timestamp=2026-08-05T09:27:44.405Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140100a0013R1wjpKWHM8E0u
-timestamp=2026-08-05T09:27:44.406Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:44.406Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:48.108Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="Runtime\\.getRuntime\\(\\).exec|ProcessBuilder|FileOutputStream|FileInputStream|FileWriter|FileReader|BufferedReader|InputStreamReader" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:27:48.215Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=3
-timestamp=2026-08-05T09:27:48.228Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1401ef8001ZkLKcleIPyUfs1
-timestamp=2026-08-05T09:27:48.229Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:48.229Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:50.845Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getClassLoader\\(\\).loadClass|ClassLoader\\.getSystemClassLoader\\(\\)|URLClassLoader" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:27:50.870Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=4
-timestamp=2026-08-05T09:27:50.884Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1402957001kSZNNDufa7znw9
-timestamp=2026-08-05T09:27:50.885Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:50.886Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:53.992Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:27:56.008Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:56.011Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:27:57.612Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider/ExtendedJdbcClassLoader.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:27:57.630Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=5
-timestamp=2026-08-05T09:27:57.635Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/provider/ExtendedJdbcClassLoader.java
-timestamp=2026-08-05T09:27:57.648Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14043c0001B3jnTNZ2EWeT3H
-timestamp=2026-08-05T09:27:57.649Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:27:57.650Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:00.798Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=ExtendedJdbcClassLoader action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:00.822Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=6
-timestamp=2026-08-05T09:28:00.836Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1405037001LDsyJ176U9Dz4Z
-timestamp=2026-08-05T09:28:00.836Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:00.837Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:02.494Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="new ExtendedJdbcClassLoader" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:02.510Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=7
-timestamp=2026-08-05T09:28:02.524Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14056d0001qI5CKcTF7GFXg6
-timestamp=2026-08-05T09:28:02.525Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:02.525Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:04.995Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:28:07.009Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:07.011Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:08.646Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="new ExtendedJdbcClassLoader" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:08.663Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=8
-timestamp=2026-08-05T09:28:08.677Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1406ed8001Ppz7GCFew8H23Z
-timestamp=2026-08-05T09:28:08.678Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:08.678Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:10.158Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=ExtendedJdbcClassLoader action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:10.196Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=9
-timestamp=2026-08-05T09:28:10.209Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd14074d5001WSMJXIDjLvcObP
-timestamp=2026-08-05T09:28:10.209Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:10.210Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:12.866Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=FileOutputStream action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:12.915Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=10
-timestamp=2026-08-05T09:28:12.929Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1407f75001mxtzQiW3W268iq
-timestamp=2026-08-05T09:28:12.929Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:12.930Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:14.533Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:14.538Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
-timestamp=2026-08-05T09:28:14.605Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=11
-timestamp=2026-08-05T09:28:14.612Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140860f0012H7BWrEKYU4qE7
-timestamp=2026-08-05T09:28:14.612Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:14.613Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:17.549Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo/XpackPluginsDatasourceVO.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:17.558Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=12
-timestamp=2026-08-05T09:28:17.561Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/vo/XpackPluginsDatasourceVO.java
-timestamp=2026-08-05T09:28:17.565Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd1409197001LoucJqb9HvDuZl
-timestamp=2026-08-05T09:28:17.566Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:17.573Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:20.315Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:28:22.319Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:22.321Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:24.001Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:24.010Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=13
-timestamp=2026-08-05T09:28:24.013Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java
-timestamp=2026-08-05T09:28:24.024Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140aacb001BsMIFSa6LTAPt9
-timestamp=2026-08-05T09:28:24.024Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:24.025Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:25.992Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=FileOutputStream|FileInputStream action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:26.019Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=14
-timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140b2a5001fRtzwHZJuqW1py
-timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:26.036Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:27.468Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:27.475Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=15
-timestamp=2026-08-05T09:28:27.479Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java
-timestamp=2026-08-05T09:28:27.483Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140b8550019byzk0yL3UYIJ4
-timestamp=2026-08-05T09:28:27.483Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:27.484Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:31.050Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getConfig\\(\\)" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:31.079Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=16
-timestamp=2026-08-05T09:28:31.087Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140c669001UU0NJMmaUNRYyi
-timestamp=2026-08-05T09:28:31.087Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:31.095Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:33.177Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="getPluginInfo\\(\\)" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:33.193Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=17
-timestamp=2026-08-05T09:28:33.207Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140ceab001fYMXBkQbNxPoWR
-timestamp=2026-08-05T09:28:33.208Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:33.208Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:36.424Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:28:38.428Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:38.431Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:40.426Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern="extends DataEasePlugin" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:40.440Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=18
-timestamp=2026-08-05T09:28:40.456Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140eafa001uX1P4JC0eOIn2c
-timestamp=2026-08-05T09:28:40.456Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:40.457Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:43.583Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=DataEasePlugin action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:43.609Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=19
-timestamp=2026-08-05T09:28:43.622Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd140f75a001Yj2RWZMBLZ7Wjw
-timestamp=2026-08-05T09:28:43.623Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:43.623Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:46.469Z level=ERROR run=7cc21a35 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T09:28:48.472Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:48.475Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:50.288Z level=INFO run=7cc21a35 message=evaluated permission=grep pattern=DataEasePlugin action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:50.312Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=20
-timestamp=2026-08-05T09:28:50.327Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd141118a001gq3vErrhUgWCqP
-timestamp=2026-08-05T09:28:50.327Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:50.328Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T09:28:52.257Z level=INFO run=7cc21a35 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T09:28:52.266Z level=INFO run=7cc21a35 message=loop session.id=ses_02ec02661ffe5nkGgR31zqQqX1 step=21
-timestamp=2026-08-05T09:28:52.269Z level=INFO run=7cc21a35 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
-timestamp=2026-08-05T09:28:52.274Z level=INFO run=7cc21a35 message=process session.id=ses_02ec02661ffe5nkGgR31zqQqX1 messageID=msg_fd141192c001XYjdDLV2ZNmZYa
-timestamp=2026-08-05T09:28:52.274Z level=INFO run=7cc21a35 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02ec02661ffe5nkGgR31zqQqX1 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T09:28:52.281Z level=INFO run=7cc21a35 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:01:43.040Z level=INFO run=abf15031 message="creating instance" directory=/work
+timestamp=2026-08-07T23:01:43.041Z level=INFO run=abf15031 message=fromDirectory directory=/work
+timestamp=2026-08-07T23:01:43.047Z level=INFO run=abf15031 message=bootstrapping directory=/work
+timestamp=2026-08-07T23:01:43.056Z level=INFO run=abf15031 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T23:01:43.057Z level=INFO run=abf15031 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T23:01:43.058Z level=INFO run=abf15031 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T23:01:43.058Z level=ERROR run=abf15031 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T23:01:43.058Z level=INFO run=abf15031 message=loading path=/opencode.json
+timestamp=2026-08-07T23:01:43.063Z level=INFO run=abf15031 message=loading path=/opencode.json
+timestamp=2026-08-07T23:01:43.183Z level=INFO run=abf15031 message="all LSPs are disabled"
+timestamp=2026-08-07T23:01:43.183Z level=INFO run=abf15031 message="all formatters are disabled"
+timestamp=2026-08-07T23:01:43.184Z level=INFO run=abf15031 message=init
+timestamp=2026-08-07T23:01:43.307Z level=INFO run=abf15031 message=created id=ses_02189fef4ffe0Q36ROMgY3co4d slug=curious-wizard version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T23:01:43.307Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786143703307 time.updated=1786143703307
+timestamp=2026-08-07T23:01:43.332Z level=INFO run=abf15031 message="event connected"
+timestamp=2026-08-07T23:01:43.506Z level=WARN run=abf15031 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T23:01:43.508Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=0
+timestamp=2026-08-07T23:01:43.517Z level=INFO run=abf15031 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T23:01:43.523Z level=INFO run=abf15031 message=init count=1
+timestamp=2026-08-07T23:01:43.524Z level=INFO run=abf15031 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T23:01:43.542Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=true agent=title mode=primary
+timestamp=2026-08-07T23:01:43.585Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:01:43.603Z level=INFO run=abf15031 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T23:01:43.736Z level=INFO run=abf15031 message="project copy refresh started" projectID=global
+timestamp=2026-08-07T23:01:43.737Z level=INFO run=abf15031 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T23:01:44.295Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7601d6001IetSyE3f9PxXYN
+timestamp=2026-08-07T23:01:44.303Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:01:44.404Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:01:45.997Z level=INFO run=abf15031 message=evaluated permission=glob pattern="\"**/*\"" action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T23:01:46.031Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=1
+timestamp=2026-08-07T23:01:46.048Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde760bb0001aWrrdNw7oRul96
+timestamp=2026-08-07T23:01:46.048Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:01:46.049Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:01:46.827Z level=INFO run=abf15031 message=evaluated permission=bash pattern="ls -R /" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T23:01:47.208Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=2
+timestamp=2026-08-07T23:01:47.222Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde761049001DI68LylnK8JqhE
+timestamp=2026-08-07T23:01:47.223Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:01:47.223Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:02:56.840Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:02:56.842Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:02.549Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:02.550Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:07.548Z level=INFO run=abf15031 message=evaluated permission=grep pattern="Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder|new ProcessBuilder|FileInputStream|FileOutputStream|FileWriter|FileWriter\\(.*true\\)|FileWriter\\(.*false\\)|File\\(\\)\\.delete\\(\\)|File\\(\\)\\.mkdir\\(\\)|File\\(\\)\\.mkdirs\\(\\)|Files\\.write|Files\\.delete|Files\\.copy|Files\\.move|java\\.lang\\.reflect\\.Field\\.setAccessible\\(true\\)|java\\.lang\\.reflect\\.Method\\.setAccessible\\(true\\)|System\\.getProperty|System\\.setProperty|Runtime\\.getRuntime\\(\\)\\.load|System\\.loadLibrary|System\\.load" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:07.845Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=3
+timestamp=2026-08-07T23:04:07.851Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7835a7001KIoGHW0nGJv9Bq
+timestamp=2026-08-07T23:04:07.851Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:07.852Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:12.014Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\.executeQuery|\\.prepareStatement|\\\\.executeUpdate|\\\\+ \" WHERE|\\\\+ \" AND|\\\\+ \" OR|\\\\+ \" ORDER BY|\\\\+ \" LIMIT|\\\\.append\\(\\\".*WHERE.*\\\"\\)|\\.append\\(\\\".*AND.*\\\"\\)|\\.append\\(\\\".*OR.*\\\"\\)|\\\\.append\\(\\\".*ORDER BY.*\\\"\\)|\\\\.append\\(\\\".*LIMIT.*\\\"\\)|JDBC|Statement|Connection|ResultSet" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:12.072Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=4
+timestamp=2026-08-07T23:04:12.086Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde784629001XxO0olNfR3iuBl
+timestamp=2026-08-07T23:04:12.086Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:12.087Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:15.061Z level=INFO run=abf15031 message=evaluated permission=grep pattern="eval\\(\\)|exec\\(\\)|system\\(\\)|popen\\(\\)|shell_exec\\(\\)|passthru\\(\\)|`.*`|process\\.exec|process\\.spawn|child_process\\.exec|child_process\\.spawn" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:15.084Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=5
+timestamp=2026-08-07T23:04:15.100Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7851ee001r2rwqI08m5wiLD
+timestamp=2026-08-07T23:04:15.100Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:15.101Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:18.053Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(Runtime|ProcessBuilder|System)\\.(exec|getRuntime\\(\\)\\.exec|getProperty|setProperty)\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:18.075Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=6
+timestamp=2026-08-07T23:04:18.092Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde785d9c001uzh1VtPEwuDhLD
+timestamp=2026-08-07T23:04:18.093Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:18.094Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:19.691Z level=INFO run=abf15031 message=evaluated permission=grep pattern="FileOutputStream|FileInputStream|FileWriter|Files\\.write|Files\\.delete|Files\\.copy|Files\\.move" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:19.709Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=7
+timestamp=2026-08-07T23:04:19.723Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7863fe0016VAZ54JeYQQlYe
+timestamp=2026-08-07T23:04:19.723Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:19.724Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:22.356Z level=INFO run=abf15031 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:22.368Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=8
+timestamp=2026-08-07T23:04:22.371Z level=INFO run=abf15031 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/auth/config/SubstituleLoginConfig.java
+timestamp=2026-08-07T23:04:22.383Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde786e61001PzGKs5dRomLfmb
+timestamp=2026-08-07T23:04:22.383Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:22.384Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:24.439Z level=INFO run=abf15031 message=evaluated permission=read pattern=work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:24.449Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=9
+timestamp=2026-08-07T23:04:24.452Z level=INFO run=abf15031 message="touching file" file=/work/sdk/extensions/extensions-datasource/src/main/java/io/dataease/extensions/datasource/plugin/DataEaseDatasourcePlugin.java
+timestamp=2026-08-07T23:04:24.462Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7876820014iTVfJcbJq4v5K
+timestamp=2026-08-07T23:04:24.462Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:24.463Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:26.388Z level=INFO run=abf15031 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:26.398Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=10
+timestamp=2026-08-07T23:04:26.401Z level=INFO run=abf15031 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/utils/FileUtils.java
+timestamp=2026-08-07T23:04:26.411Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde787e1f001d12DCVuPlq3zYn
+timestamp=2026-08-07T23:04:26.411Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:26.412Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:29.213Z level=INFO run=abf15031 message=evaluated permission=grep pattern=MultipartFile|uploadFile|saveFile|storeFile action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:29.234Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=11
+timestamp=2026-08-07T23:04:29.252Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde788934001jF8oOWkLYhZ2G0
+timestamp=2026-08-07T23:04:29.252Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:29.253Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:31.671Z level=INFO run=abf15031 message=evaluated permission=grep pattern="FileUtils\\.upload" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:31.777Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=12
+timestamp=2026-08-07T23:04:31.792Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7893220017qK0lsLCprlobl
+timestamp=2026-08-07T23:04:31.792Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:31.793Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:33.216Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\"\\\\.\\\\./\"|\"\\\\.\\\\.\\\\\\\\\"" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:33.233Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=13
+timestamp=2026-08-07T23:04:33.248Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7898d2001R0xEJdp73TQIsl
+timestamp=2026-08-07T23:04:33.248Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:33.249Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:36.381Z level=ERROR run=abf15031 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T23:04:38.383Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:38.384Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:41.296Z level=ERROR run=abf15031 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T23:04:45.298Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:45.299Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:46.914Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(Runtime|ProcessBuilder|System)\\.(exec|getRuntime\\(\\)\\.exec)\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:46.935Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=14
+timestamp=2026-08-07T23:04:46.942Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde78ce58001JqbPY9FcqOwp6J
+timestamp=2026-08-07T23:04:46.942Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:46.949Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:48.365Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(Runtime|ProcessBuilder|System)\\.load\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:48.384Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=15
+timestamp=2026-08-07T23:04:48.398Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde78d401001YjightHOP7mv0u
+timestamp=2026-08-07T23:04:48.398Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:48.399Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:49.856Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(Runtime|ProcessBuilder|System)\\.loadLibrary\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:49.871Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=16
+timestamp=2026-08-07T23:04:49.885Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde78d9d1001G2hJWFoaduBeez
+timestamp=2026-08-07T23:04:49.886Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:49.886Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:51.026Z level=INFO run=abf15031 message=evaluated permission=grep pattern="// TODO|// FIXME" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:51.043Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=17
+timestamp=2026-08-07T23:04:51.058Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde78de64001EHfIZexrGhBLvC
+timestamp=2026-08-07T23:04:51.058Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:51.059Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:53.482Z level=ERROR run=abf15031 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-07T23:04:55.484Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:55.484Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:56.984Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(eval|execute|run)\\b.*\\(.*sql.*\\)" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:57.006Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=18
+timestamp=2026-08-07T23:04:57.014Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde78f5b0001xhKy672mne7e12
+timestamp=2026-08-07T23:04:57.014Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:57.020Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:04:59.860Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\\"\\s*\\+\\s*.*?\\s*\\+\\s*\\\" WHERE \\\"|\\\"\\s*\\+\\s*.*?\\s*\\+\\s*\\\" AND \\\"" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:04:59.887Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=19
+timestamp=2026-08-07T23:04:59.903Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7900f1001e4kIJjAzUpXhCq
+timestamp=2026-08-07T23:04:59.904Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:04:59.905Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:01.112Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\* from .* where .* = .*" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:01.157Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=20
+timestamp=2026-08-07T23:05:01.172Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7905e60011pwXlkY2S88n9e
+timestamp=2026-08-07T23:05:01.172Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:01.173Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:02.700Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(chmod|chown|rm -rf|wget|curl)\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:02.717Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=21
+timestamp=2026-08-07T23:05:02.731Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde790bfe001X0vdlUrDLjUh35
+timestamp=2026-08-07T23:05:02.732Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:02.732Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:04.274Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(password|pwd|secret|token|key)\\b.*=.*\\\"\\\"" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:04.293Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=22
+timestamp=2026-08-07T23:05:04.307Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde791227001gCxHqCw4BsKkOz
+timestamp=2026-08-07T23:05:04.307Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:04.308Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:06.078Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(password|pwd|secret|token|key)\\b.*=.*\\\"[^\\\"]*\\\"" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:06.096Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=23
+timestamp=2026-08-07T23:05:06.132Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde791933001CopLuDnD4ULawq
+timestamp=2026-08-07T23:05:06.133Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:06.134Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:08.245Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\<script\\>|innerHTML|document\\.write" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:08.286Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=24
+timestamp=2026-08-07T23:05:08.294Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7921c0001Tbn2qAIS03BwhL
+timestamp=2026-08-07T23:05:08.294Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:08.295Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:09.867Z level=INFO run=abf15031 message=evaluated permission=grep pattern="\\b(TrustAllStrategy|NoopHostnameVerifier|TrustSelfSignedStrategy)\\b" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:09.885Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=25
+timestamp=2026-08-07T23:05:09.904Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7927ff001mV5aoQDi1SL1g9
+timestamp=2026-08-07T23:05:09.905Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:09.905Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:11.404Z level=INFO run=abf15031 message=evaluated permission=read pattern=work/sdk/common/src/main/java/io/dataease/utils/HttpClientUtil.java action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:11.411Z level=INFO run=abf15031 message="touching file" file=/work/sdk/common/src/main/java/io/dataease/utils/HttpClientUtil.java
+timestamp=2026-08-07T23:05:11.419Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=26
+timestamp=2026-08-07T23:05:11.435Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde792dfd00142otSyBmE0G3A1
+timestamp=2026-08-07T23:05:11.436Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:11.436Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:05:17.285Z level=INFO run=abf15031 message=evaluated permission=grep pattern=NoopHostnameVerifier|loadTrustMaterial|TrustAllStrategy action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-07T23:05:17.304Z level=INFO run=abf15031 message=loop session.id=ses_02189fef4ffe0Q36ROMgY3co4d step=27
+timestamp=2026-08-07T23:05:17.318Z level=INFO run=abf15031 message=process session.id=ses_02189fef4ffe0Q36ROMgY3co4d messageID=msg_fde7944fa0019fHNGxhV1Xobcn
+timestamp=2026-08-07T23:05:17.318Z level=INFO run=abf15031 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02189fef4ffe0Q36ROMgY3co4d small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:05:17.319Z level=INFO run=abf15031 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b

@@ -1,14 +1,15 @@
-I have analyzed the codebase and found a security vulnerability in the `ImportOpenData` class within `/work/cookbook/views/api.py`.
-
-In the `post` method of the `ImportOpenData` class, the application takes a `selected_version` value from the user request via the `ImportOpenDataSerializer`. This value is then used directly in an f-string to construct a URL for a `requests.get()` call:
+The application contains multiple instances of Server-Side Request Forgery (SSRF). Specifically, in `cookbook/views/api.py`, the `ImportOpenData` view's `post` method (lines 2989-2994) uses a user-supplied value `serializer.validated_data["selected_version"]` directly within an f-string to construct a URL for a `requests.get()` call:
 
 ```python
-# /work/cookbook/views/api.py
-2992:             response = requests.get(
-2993:                 f'https://raw.githubusercontent.com/TandoorRecipes/open-tandoor-data/main/build/{serializer.validated_data["selected_version"]}.json')
+response = requests.get(
+    f'https://raw.githubusercontent.com/TandoorRecipes/open-tandoor-data/main/build/{serializer.validated_data["selected_version"]}.json')
 ```
 
-The `ImportOpenDataSerializer` defines `selected_version` as a simple `CharField`, which does not perform any validation or sanitization on the input. An attacker can provide a specially crafted string (e.g., using path traversal sequences like `../../`) to manipulate the final URL. While the URL is prefixed with a GitHub domain, this allows the attacker to request arbitrary files from the `raw.githubusercontent.com` domain or potentially other paths if the domain structure allows, which is a form of Server-Side Request Forgery (SSRF).
+While the URL starts with a hardcoded domain, an attacker can provide a value for `selected_version` that includes path traversal characters (e.g., `../../`) or other URL manipulation techniques to request arbitrary files or endpoints from the `raw.githubusercontent.com` domain, or potentially other domains if the library handles certain characters unexpectedly.
+
+Furthermore, in `cookbook/views/api.py` at line 2858, user-supplied `query` and `data_types` are similarly concatenated into a URL for the USDA FDC API. While less severe than the `ImportOpenData` case, it still demonstrates a pattern of insecure URL construction.
+
+The most critical instance is the `ImportOpenData` POST method, where the input is directly embedded into a remote request URL, allowing for SSRF against the hosted data repository.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-918

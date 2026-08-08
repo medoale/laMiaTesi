@@ -1,6 +1,6 @@
-The security review of the repository revealed a critical vulnerability in the Android-specific wrapper for the `gpsd` daemon.
+The security review of the repository revealed a critical command injection vulnerability in the Android wrapper for `gpsd`.
 
-In the file `/work/android/gpsd_wrapper.c`, the `main` function retrieves a value from the Android system property `service.gpsd.parameters` using `property_get`. It then performs a very limited sanitization (replacing commas with spaces) before using `sprintf` to construct a shell command string and executing it via `system()`.
+In `/work/android/gpsd_wrapper.c`, the application retrieves a system property named `service.gpsd.parameters` using `property_get()`. It then performs a minimal transformation on this string, replacing commas with spaces:
 
 ```c
 11: 	property_get("service.gpsd.parameters", gpsd_params, "-Nn,-D2,/dev/ttyACM0,/dev/ttyACM1");
@@ -8,17 +8,19 @@ In the file `/work/android/gpsd_wrapper.c`, the `main` function retrieves a valu
 13: 		if (gpsd_params[i] == ',') gpsd_params[i] = ' ';
 14: 		i++;
 15: 	}
-16: 
+```
+
+Subsequently, this string is concatenated into a command buffer using `sprintf()` and executed via `system()`:
+
+```c
 17: 	sprintf(cmd, "/vendor/bin/logwrapper /vendor/bin/gpsd %s", gpsd_params);
-18: 
-19: 	__android_log_print(ANDROID_LOG_DEBUG, "gpsd_wrapper", "Starting gpsd: %s", cmd);
-20: 
+...
 21: 	system(cmd);
 ```
 
-Since Android system properties can potentially be modified by an attacker with sufficient privileges (or through other vulnerabilities that allow property modification), an attacker could inject shell metacharacters (e.g., `;`, `&&`, `|`, `` ` ``) into `service.gpsd.parameters` to execute arbitrary commands with the privileges of the `gpsd_wrapper` process.
+Because `gpsd_params` is taken directly from a system property and is not sanitized for shell metacharacters (such as `;`, `&`, `|`, `` ` ``, or `$()`), an attacker who can modify system properties (e.g., through a separate vulnerability, a malicious app with certain permissions, or a compromised system service) can inject arbitrary commands. For example, setting `service.gpsd.parameters` to `; /data/data/com.attacker/evil_script.sh ;` would result in the execution of the attacker's script with the privileges of the `gpsd_wrapper` process.
 
-For example, setting `service.gpsd.parameters` to `; /data/data/com.attacker/evil_script.sh ;` would result in the execution of the attacker's script.
+This is a classic example of OS Command Injection.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-78

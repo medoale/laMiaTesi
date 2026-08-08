@@ -1,10 +1,24 @@
-The review of the provided changes reveals a security fix in `UsersController.php` (file_02).
+The commit fixes a security vulnerability. 
 
-In `actionSavePermissions()`, the original code allowed any user with a control panel request to save permissions for any user, provided they passed the `userId` in the request body. While there were checks for admin status changes (requiring an elevated session), the general process of assigning user groups and permissions lacked a proper authorization check at the entry point of the action. The commit adds a call to `$this->showPermissionsScreen()`, which throws a `ForbiddenHttpException` if the current user is not authorized to view or edit the permissions screen for the targeted user.
+Looking at `_CHANGES/file_01/diff.txt`, the release notes explicitly state:
+`- Fixed a [moderate-severity](https://github.com/craftcms/cms/security/policy#severity--remediation) authorization bypass vulnerability. (GHSA-jq2f-59pj-p3m3)`
 
-Additionally, in `_saveUserGroups()`, a check was added to ensure the current user has the specific permission to assign user groups (`$currentUser->canAssignUserGroups()`) before proceeding with the update.
+Examining the actual code changes in `_CHANGES/file_02/diff.txt`, we see that `UsersController::actionSavePermissions()` now includes a check for `showPermissionsScreen()` before proceeding:
+```php
++        if (!$this->showPermissionsScreen()) {
++            throw new ForbiddenHttpException('User not authorized to perform this action.');
++        }
+```
+Additionally, `_saveUserGroups()` now checks if the current user can assign user groups:
+```php
++        if (!$currentUser->canAssignUserGroups()) {
++            return;
++        }
+```
 
-These changes prevent an authorization bypass where a user with limited privileges could potentially modify the permissions or group assignments of other users by directly calling the `save-permissions` endpoint. This is a classic case of missing or insufficient access control.
+Previously, `actionSavePermissions` only checked `requireCpRequest()` and had logic for admin status changes, but it lacked a robust check to ensure the current user was actually authorized to save permissions for the target user. This allowed an authorization bypass where a user with control panel access might have been able to modify user groups or permissions they weren't authorized to change.
+
+This is a classic example of an Improper Authorization (CWE-285).
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-285

@@ -1,23 +1,9 @@
-In the `DataEaseDatasourcePlugin.java` class, specifically in the `loadDriver()` method (lines 49-76), there is a security vulnerability related to arbitrary file write.
+The analysis of the provided repository revealed a security vulnerability in the `HttpClientUtil.java` class within the `io.dataease.utils` package.
 
-The `loadDriver()` method retrieves a configuration object of type `XpackPluginsDatasourceVO` using `getConfig()`. It then determines a `localPath` for writing driver JAR files. If `config.getDriverPath()` is provided, it uses that value; otherwise, it defaults to `/opt/dataease2.0/drivers/plugin`.
+Specifically, the `buildHttpClient(boolean ssl)` method implements a custom SSL context that disables all certificate validation. It uses `builder.loadTrustMaterial(null, (X509Certificate[] x509Certificates, String s) -> true);`, which unconditionally trusts any certificate presented by the server, regardless of its validity, issuer, or expiration. Additionally, it employs `NoopHostnameVerifier.INSTANCE`, which skips the verification that the certificate's hostname matches the server's hostname.
 
-```java
-49:     private void loadDriver() throws Exception {
-50:         XpackPluginsDatasourceVO config = getConfig();
-51:         String localPath = StringUtils.isEmpty(config.getDriverPath()) ? DEFAULT_FILE_PATH : config.getDriverPath();
-...
-60:                     File file = new File(localPath, Paths.get(name).getFileName().toString());
-...
-66:                          FileOutputStream outputStream = new FileOutputStream(file)) {
-```
-
-Since the `XpackPluginsDatasourceVO` configuration (which includes `driverPath`) is parsed from a JSON string provided in the plugin's configuration (`pluginInfo.getConfig()`), and this configuration can be controlled by an administrator or potentially via other configuration interfaces, an attacker who can influence the plugin configuration can specify an arbitrary `driverPath`. 
-
-Combined with the fact that the code iterates through JAR entries of the plugin itself and writes them to the specified `localPath`, an attacker can overwrite existing files on the system or place a JAR file in a sensitive location (e.g., a directory where it might be automatically loaded or execute scripts). While the filename is derived from the JAR entry, the destination directory is fully controllable via `driverPath`.
-
-Furthermore, `FileUtils.upload` (lines 64-84) also exhibits a similar path traversal/arbitrary file write vulnerability, as it concatenates a user-provided `filePath` with a filename derived from `MultipartFile.getOriginalFilename()`, and uses `getCanonicalFile()` on the result, but it does not validate that the resulting path is within an expected base directory.
+This combination of disabled certificate and hostname verification makes the application susceptible to Man-in-the-Middle (MitM) attacks. An attacker could intercept the encrypted traffic and present a fraudulent certificate, which the application would trust, allowing the attacker to decrypt, read, and potentially modify sensitive data being transmitted between the application and the remote server.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-22
-CWE_NAME: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')
+CWE_ID: CWE-295
+CWE_NAME: Improper Certificate Validation

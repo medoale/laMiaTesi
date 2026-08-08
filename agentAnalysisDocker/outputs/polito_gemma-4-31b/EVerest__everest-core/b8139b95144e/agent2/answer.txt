@@ -1,0 +1,30 @@
+The analysis focuses on the change in `is_message_crc_correct` in `file_01`.
+
+In the original code (`before.txt`), the function `is_message_crc_correct` accessed the last two elements of the `std::vector<std::uint8_t>& vec` using the `[]` operator without checking the size of the vector first:
+
+```cpp
+inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
+    auto crc_check = static_cast<std::uint16_t>((vec[vec.size() - 1] << 8) | vec[vec.size() - 2]);
+    // ...
+}
+```
+
+If `vec` had fewer than 2 elements, `vec.size() - 1` and `vec.size() - 2` would result in underflow (since `size()` returns `size_t`, an unsigned type), leading to out-of-bounds memory access.
+
+The fix introduces a size check and switches to `.at()`, which performs bounds checking:
+
+```cpp
+inline bool is_message_crc_correct(std::vector<std::uint8_t>& vec) {
+    if (vec.size() < 2) {
+        return false;
+    }
+    auto crc_check = static_cast<std::uint16_t>((vec.at(vec.size() - 1) << 8) | vec.at(vec.size() - 2));
+    // ...
+}
+```
+
+This change prevents a potential buffer over-read (or out-of-bounds access) that could lead to a crash (Denial of Service) or potentially leak information from the heap. In the context of the `unpack` function, `sub_messages` are populated from the input `message`, and if a malformed input is provided, a `sub_message` could indeed be smaller than 2 bytes.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-125
+CWE_NAME: Out-of-bounds Read

@@ -1,59 +1,69 @@
-timestamp=2026-08-05T10:08:56.806Z level=INFO run=3a286a1c message="creating instance" directory=/work
-timestamp=2026-08-05T10:08:56.807Z level=INFO run=3a286a1c message=fromDirectory directory=/work
-timestamp=2026-08-05T10:08:56.813Z level=INFO run=3a286a1c message=bootstrapping directory=/work
-timestamp=2026-08-05T10:08:56.820Z level=INFO run=3a286a1c message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-05T10:08:56.822Z level=INFO run=3a286a1c message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-05T10:08:56.822Z level=INFO run=3a286a1c message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-05T10:08:56.822Z level=ERROR run=3a286a1c message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-05T10:08:56.823Z level=INFO run=3a286a1c message=loading path=/opencode.json
-timestamp=2026-08-05T10:08:56.827Z level=INFO run=3a286a1c message=loading path=/opencode.json
-timestamp=2026-08-05T10:08:56.952Z level=INFO run=3a286a1c message="all LSPs are disabled"
-timestamp=2026-08-05T10:08:56.953Z level=INFO run=3a286a1c message="all formatters are disabled"
-timestamp=2026-08-05T10:08:56.953Z level=INFO run=3a286a1c message=init
-timestamp=2026-08-05T10:08:57.085Z level=INFO run=3a286a1c message=created id=ses_02e9a3502ffeFLnCBqXxB6QLC8 slug=gentle-garden version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-05T10:08:57.085Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785924537085 time.updated=1785924537085
-timestamp=2026-08-05T10:08:57.111Z level=INFO run=3a286a1c message="event connected"
-timestamp=2026-08-05T10:08:57.278Z level=INFO run=3a286a1c message=loop session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 step=0
-timestamp=2026-08-05T10:08:57.287Z level=INFO run=3a286a1c message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-05T10:08:57.292Z level=INFO run=3a286a1c message=init count=1
-timestamp=2026-08-05T10:08:57.293Z level=INFO run=3a286a1c message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-05T10:08:57.294Z level=WARN run=3a286a1c message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-05T10:08:57.309Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=true agent=title mode=primary
-timestamp=2026-08-05T10:08:57.345Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:08:57.371Z level=INFO run=3a286a1c message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-05T10:08:57.498Z level=INFO run=3a286a1c message="project copy refresh started" projectID=global
-timestamp=2026-08-05T10:08:57.499Z level=INFO run=3a286a1c message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-05T10:08:57.752Z level=INFO run=3a286a1c message=process session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 messageID=msg_fd165cbc0001TIQeSVp6eAKsHD
-timestamp=2026-08-05T10:08:57.753Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:08:57.860Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:09:01.856Z level=INFO run=3a286a1c message=evaluated permission=bash pattern="ls -R /changes" action.permission=bash action.action=allow action.pattern=*
-timestamp=2026-08-05T10:09:01.900Z level=INFO run=3a286a1c message=loop session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 step=1
-timestamp=2026-08-05T10:09:01.918Z level=INFO run=3a286a1c message=process session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 messageID=msg_fd165ddce001J1AuEyBLqzn9EV
-timestamp=2026-08-05T10:09:01.918Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:09:01.919Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:09:02.915Z level=INFO run=3a286a1c message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-08-05T10:09:02.915Z level=INFO run=3a286a1c message=asking id=per_fd165e1c3001xbwqvQJUkuHyIq permission=external_directory patterns="[\"/changes/file_01/*\"]"
-timestamp=2026-08-05T10:09:02.917Z level=INFO run=3a286a1c message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T10:09:02.928Z level=INFO run=3a286a1c message=loop session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 step=2
-timestamp=2026-08-05T10:09:02.931Z level=INFO run=3a286a1c message="touching file" file=/changes/file_01/diff.txt
-timestamp=2026-08-05T10:09:02.943Z level=INFO run=3a286a1c message=process session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 messageID=msg_fd165e1d1001LCrv3xWxy03vcP
-timestamp=2026-08-05T10:09:02.944Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:09:02.945Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:09:05.672Z level=ERROR run=3a286a1c message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T10:09:07.680Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:09:07.683Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:09:09.570Z level=INFO run=3a286a1c message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-08-05T10:09:09.570Z level=INFO run=3a286a1c message=asking id=per_fd165fbc2001XGq6dnrNfK7SI3 permission=external_directory patterns="[\"/changes/file_02/*\"]"
-timestamp=2026-08-05T10:09:09.572Z level=INFO run=3a286a1c message=evaluated permission=read pattern=changes/file_02/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T10:09:09.582Z level=INFO run=3a286a1c message=loop session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 step=3
-timestamp=2026-08-05T10:09:09.586Z level=INFO run=3a286a1c message="touching file" file=/changes/file_02/diff.txt
-timestamp=2026-08-05T10:09:09.597Z level=INFO run=3a286a1c message=process session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 messageID=msg_fd165fbcf001t6Tm855433LkG0
-timestamp=2026-08-05T10:09:09.598Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:09:09.599Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T10:09:11.042Z level=INFO run=3a286a1c message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.pattern=* action.action=ask
-timestamp=2026-08-05T10:09:11.042Z level=INFO run=3a286a1c message=asking id=per_fd1660182001jci2OEkfEXavj1 permission=external_directory patterns="[\"/changes/file_03/*\"]"
-timestamp=2026-08-05T10:09:11.043Z level=INFO run=3a286a1c message=evaluated permission=read pattern=changes/file_03/diff.txt action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T10:09:11.052Z level=INFO run=3a286a1c message="touching file" file=/changes/file_03/diff.txt
-timestamp=2026-08-05T10:09:11.062Z level=INFO run=3a286a1c message=loop session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 step=4
-timestamp=2026-08-05T10:09:11.077Z level=INFO run=3a286a1c message=process session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 messageID=msg_fd1660197001MMW0xKz7SVgp0C
-timestamp=2026-08-05T10:09:11.077Z level=INFO run=3a286a1c message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e9a3502ffeFLnCBqXxB6QLC8 small=false agent=reviewer mode=primary
-timestamp=2026-08-05T10:09:11.078Z level=INFO run=3a286a1c message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:33.995Z level=INFO run=6528d515 message="creating instance" directory=/work
+timestamp=2026-08-07T23:35:33.996Z level=INFO run=6528d515 message=fromDirectory directory=/work
+timestamp=2026-08-07T23:35:34.001Z level=INFO run=6528d515 message=bootstrapping directory=/work
+timestamp=2026-08-07T23:35:34.009Z level=INFO run=6528d515 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-07T23:35:34.010Z level=INFO run=6528d515 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-07T23:35:34.010Z level=INFO run=6528d515 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-07T23:35:34.010Z level=ERROR run=6528d515 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-07T23:35:34.011Z level=INFO run=6528d515 message=loading path=/opencode.json
+timestamp=2026-08-07T23:35:34.016Z level=INFO run=6528d515 message=loading path=/opencode.json
+timestamp=2026-08-07T23:35:34.138Z level=INFO run=6528d515 message="all LSPs are disabled"
+timestamp=2026-08-07T23:35:34.139Z level=INFO run=6528d515 message="all formatters are disabled"
+timestamp=2026-08-07T23:35:34.139Z level=INFO run=6528d515 message=init
+timestamp=2026-08-07T23:35:34.264Z level=INFO run=6528d515 message=created id=ses_0216b0187ffehkNHU7IcUYofgF slug=jolly-star version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-07T23:35:34.264Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786145734264 time.updated=1786145734264
+timestamp=2026-08-07T23:35:34.288Z level=INFO run=6528d515 message="event connected"
+timestamp=2026-08-07T23:35:34.450Z level=WARN run=6528d515 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-07T23:35:34.453Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=0
+timestamp=2026-08-07T23:35:34.462Z level=INFO run=6528d515 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-07T23:35:34.467Z level=INFO run=6528d515 message=init count=1
+timestamp=2026-08-07T23:35:34.468Z level=INFO run=6528d515 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-07T23:35:34.485Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=true agent=title mode=primary
+timestamp=2026-08-07T23:35:34.528Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:34.545Z level=INFO run=6528d515 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-07T23:35:34.673Z level=INFO run=6528d515 message="project copy refresh started" projectID=global
+timestamp=2026-08-07T23:35:34.674Z level=INFO run=6528d515 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-07T23:35:34.926Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde94ff37001EzANgyvh8U5iK0
+timestamp=2026-08-07T23:35:34.927Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:35.042Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:39.074Z level=INFO run=6528d515 message=evaluated permission=bash pattern="ls -R /changes" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:39.134Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=1
+timestamp=2026-08-07T23:35:39.150Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde95117f001McpV5PuPPqAbw1
+timestamp=2026-08-07T23:35:39.151Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:39.152Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:40.082Z level=INFO run=6528d515 message=evaluated permission=external_directory pattern=/changes/file_01/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:40.082Z level=INFO run=6528d515 message=evaluated permission=read pattern=changes/file_01/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:40.087Z level=INFO run=6528d515 message="touching file" file=/changes/file_01/diff.txt
+timestamp=2026-08-07T23:35:40.115Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=2
+timestamp=2026-08-07T23:35:40.128Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde951554001SAbIvE0Wph3Dl4
+timestamp=2026-08-07T23:35:40.129Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:40.129Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:41.375Z level=INFO run=6528d515 message=evaluated permission=bash pattern="ls /changes/file_01 /changes/file_02 /changes/file_03" action.permission=bash action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:41.400Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=3
+timestamp=2026-08-07T23:35:41.414Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde951a580019t5w0kCIkbjHmP
+timestamp=2026-08-07T23:35:41.414Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:41.415Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:43.379Z level=INFO run=6528d515 message=evaluated permission=external_directory pattern=/changes/file_02/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:43.379Z level=INFO run=6528d515 message=evaluated permission=read pattern=changes/file_02/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:43.386Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=4
+timestamp=2026-08-07T23:35:43.389Z level=INFO run=6528d515 message="touching file" file=/changes/file_02/diff.txt
+timestamp=2026-08-07T23:35:43.399Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde95221b001EHIg21AfGkr7EV
+timestamp=2026-08-07T23:35:43.399Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:43.400Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:45.502Z level=INFO run=6528d515 message=evaluated permission=external_directory pattern=/changes/file_03/* action.permission=external_directory action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:45.503Z level=INFO run=6528d515 message=evaluated permission=read pattern=changes/file_03/diff.txt action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:45.509Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=5
+timestamp=2026-08-07T23:35:45.512Z level=INFO run=6528d515 message="touching file" file=/changes/file_03/diff.txt
+timestamp=2026-08-07T23:35:45.515Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde952a65001yTMF3z7wLnpsF4
+timestamp=2026-08-07T23:35:45.516Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:45.516Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:46.632Z level=INFO run=6528d515 message=evaluated permission=glob pattern=**/recursive_url.ts action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:46.654Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=6
+timestamp=2026-08-07T23:35:46.669Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde952edf0015UZUct7k4505Pt
+timestamp=2026-08-07T23:35:46.670Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:46.670Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-07T23:35:47.857Z level=INFO run=6528d515 message=evaluated permission=read pattern=work/libs/langchain-community/src/document_loaders/web/recursive_url.ts action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-07T23:35:47.862Z level=INFO run=6528d515 message="touching file" file=/work/libs/langchain-community/src/document_loaders/web/recursive_url.ts
+timestamp=2026-08-07T23:35:47.869Z level=INFO run=6528d515 message=loop session.id=ses_0216b0187ffehkNHU7IcUYofgF step=7
+timestamp=2026-08-07T23:35:47.882Z level=INFO run=6528d515 message=process session.id=ses_0216b0187ffehkNHU7IcUYofgF messageID=msg_fde95339e001TOKMpaty4009co
+timestamp=2026-08-07T23:35:47.882Z level=INFO run=6528d515 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_0216b0187ffehkNHU7IcUYofgF small=false agent=reviewer mode=primary
+timestamp=2026-08-07T23:35:47.883Z level=INFO run=6528d515 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b

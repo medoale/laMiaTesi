@@ -1,20 +1,29 @@
-I have explored the provided repository and identified several instances of an **Open Redirect** vulnerability.
+The analysis focused on the authorization and verification system within the `decidim-verifications` module, specifically how users are granted authorizations through various handlers (SMS, Postal Letter, CSV Census).
 
-In `decidim-verifications`, multiple controllers use the `redirect_to` method with a URL provided directly from the `params[:redirect_url]` parameter without any validation or sanitization to ensure the destination is a local or trusted path.
+A critical vulnerability was found in the `ConfirmUserAuthorization` command, which is used by several verification workflows (SMS, Postal Letter, and CSV Census) to grant final authorization to a user.
 
-Specifically:
-1.  **`Decidim::Verifications::AuthorizationsController#create`**:
-    ```ruby
-    redirect_to params[:redirect_url] || authorizations_path
-    ```
-2.  **`Decidim::Verifications::Sms::AuthorizationsController#update`**:
-    ```ruby
-    if params[:redirect_url]
-      redirect_to params[:redirect_url]
-    ```
+In `ConfirmUserAuthorization#confirmation_successful?`, the system verifies the provided authorization data against the stored `verification_metadata`:
 
-An attacker could craft a malicious link containing a `redirect_url` pointing to an external domain (e.g., `https://malicious-site.com`). When a victim clicks this link and completes the authorization process, they will be redirected to the attacker's site, which could be used for phishing or distributing malware.
+```ruby
+def confirmation_successful?
+  form.verification_metadata.all? do |key, value|
+    authorization.verification_metadata[key] == value
+  end
+end
+```
+
+The `form.verification_metadata` is derived from the form submitted by the user. In the case of `CsvCensus::CensusForm`, it inherits from `AuthorizationHandler`, and since `CensusForm` does not override `verification_metadata`, it uses the default implementation:
+
+```ruby
+def verification_metadata
+  {}
+end
+```
+
+When `ConfirmCensusAuthorization` (which inherits from `ConfirmUserAuthorization`) is called, `form.verification_metadata` returns an empty hash `{}`. In Ruby, calling `.all?` on an empty hash always returns `true`. Consequently, `confirmation_successful?` returns `true` regardless of the user's status, as long as the form is valid. This allows any user to bypass the CSV Census verification process and be granted authorization simply by visiting the verification page, provided they have an account in the organization.
+
+This is a classic authorization bypass where a failure to properly define the verification criteria results in a "truthy" check by default.
 
 VULNERABILITY_FOUND: yes
-CWE_ID: CWE-601
-CWE_NAME: URL Redirection to Untrusted Site
+CWE_ID: CWE-287
+CWE_NAME: Improper Authentication

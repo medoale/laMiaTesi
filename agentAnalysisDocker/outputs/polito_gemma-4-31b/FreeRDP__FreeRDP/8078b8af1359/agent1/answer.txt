@@ -1,10 +1,8 @@
-The commit modifies multiple files (`file_01` through `file_05`) to ensure that security handles (credentials and security contexts) are invalidated immediately after their internal pointers are retrieved, typically within "Free" or "Delete" functions.
+The provided diffs across multiple files (`file_01` to `file_05`) show a consistent pattern: the addition of calls to `sspi_SecureHandleInvalidate()` immediately after retrieving the underlying pointer from a handle via `sspi_SecureHandleGetLowerPointer()`. 
 
-In the `before` state, the code would retrieve the internal pointer using `sspi_SecureHandleGetLowerPointer` and then perform cleanup operations. However, the handle itself remained "valid" (from the perspective of the handle management system) until the end of the function, or in some cases, the `sspi_SecureHandleInvalidate` call was placed at the end of the function or missing from certain error paths.
+These functions (`credssp_FreeCredentialsHandle`, `ntlm_FreeCredentialsHandle`, `negotiate_DeleteSecurityContext`, `schannel_DeleteSecurityContext`, etc.) are responsible for freeing or deleting security handles. By calling `sspi_SecureHandleInvalidate(phCredential)` or `sspi_SecureHandleInvalidate(phContext)` before the underlying memory is fully released or just as the process begins, the code ensures that the handle is marked as invalid. 
 
-By moving `sspi_SecureHandleInvalidate(phCredential)` or `sspi_SecureHandleInvalidate(phContext)` to immediately follow the pointer retrieval, the commit prevents a race condition or a "use-after-free" scenario where another thread might attempt to use the same handle while it is being freed. More importantly, it ensures that the handle is marked as invalid as early as possible, preventing any subsequent calls using that handle from succeeding while the cleanup is in progress. This pattern is a classic fix for Use-After-Free (UAF) or Double Free vulnerabilities in handle-based APIs.
-
-Specifically, if a handle is not invalidated before the internal object it points to is destroyed, there is a window where the handle is still considered valid but points to memory that is being freed or has already been freed.
+This prevents **Use-After-Free (UAF)** vulnerabilities. If the handle was not invalidated immediately, a concurrent thread or a subsequent call might attempt to use the handle while it is being freed, leading to a race condition and potential arbitrary code execution or crashes. Invaliding the handle first ensures that any subsequent attempts to use that handle will fail early (e.g., returning `SEC_E_INVALID_HANDLE`) rather than operating on memory that is in the process of being deallocated.
 
 VULNERABILITY_FOUND: yes
 CWE_ID: CWE-416

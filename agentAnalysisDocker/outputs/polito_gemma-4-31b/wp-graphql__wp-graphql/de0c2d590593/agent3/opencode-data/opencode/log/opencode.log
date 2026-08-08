@@ -1,107 +1,98 @@
-timestamp=2026-08-05T11:08:44.846Z level=INFO run=16180522 message="creating instance" directory=/work
-timestamp=2026-08-05T11:08:44.847Z level=INFO run=16180522 message=fromDirectory directory=/work
-timestamp=2026-08-05T11:08:44.858Z level=INFO run=16180522 message=bootstrapping directory=/work
-timestamp=2026-08-05T11:08:44.862Z level=INFO run=16180522 message=loading path=/home/agent/.config/opencode/config.json
-timestamp=2026-08-05T11:08:44.863Z level=INFO run=16180522 message=loading path=/home/agent/.config/opencode/opencode.json
-timestamp=2026-08-05T11:08:44.863Z level=INFO run=16180522 message=loading path=/home/agent/.config/opencode/opencode.jsonc
-timestamp=2026-08-05T11:08:44.863Z level=INFO run=16180522 message=loading path=/opencode.json
-timestamp=2026-08-05T11:08:44.872Z level=INFO run=16180522 message=loading path=/opencode.json
-timestamp=2026-08-05T11:08:44.872Z level=ERROR run=16180522 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
-timestamp=2026-08-05T11:08:44.997Z level=INFO run=16180522 message="all LSPs are disabled"
-timestamp=2026-08-05T11:08:44.998Z level=INFO run=16180522 message="all formatters are disabled"
-timestamp=2026-08-05T11:08:44.998Z level=INFO run=16180522 message=init
-timestamp=2026-08-05T11:08:45.138Z level=INFO run=16180522 message=created id=ses_02e63752dffeY2zp4b92cLKr3j slug=crisp-engine version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-05T11:08:45.138Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1785928125138 time.updated=1785928125138
-timestamp=2026-08-05T11:08:45.165Z level=INFO run=16180522 message="event connected"
-timestamp=2026-08-05T11:08:45.346Z level=WARN run=16180522 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
-timestamp=2026-08-05T11:08:45.348Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=0
-timestamp=2026-08-05T11:08:45.357Z level=INFO run=16180522 message="shell tool using shell" shell=/usr/bin/bash
-timestamp=2026-08-05T11:08:45.361Z level=INFO run=16180522 message=init count=1
-timestamp=2026-08-05T11:08:45.363Z level=INFO run=16180522 message="booting location services" directory=/work workspaceID=undefined
-timestamp=2026-08-05T11:08:45.379Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=true agent=title mode=primary
-timestamp=2026-08-05T11:08:45.414Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:08:45.439Z level=INFO run=16180522 message="watcher backend" directory=/work platform=linux backend=inotify
-timestamp=2026-08-05T11:08:45.850Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19c8ba6001MWdytixTcJXswY
-timestamp=2026-08-05T11:08:45.851Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:08:45.851Z level=INFO run=16180522 message="project copy refresh started" projectID=global
-timestamp=2026-08-05T11:08:45.853Z level=INFO run=16180522 message="project copy refresh done" projectID=global updated=[] removed=[]
-timestamp=2026-08-05T11:08:45.962Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:08:50.469Z level=INFO run=16180522 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-08-05T11:08:50.487Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=1
-timestamp=2026-08-05T11:08:50.503Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19c9fb8001MpZ1d02ic5vVHq
-timestamp=2026-08-05T11:08:50.504Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:08:50.505Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:08:51.504Z level=INFO run=16180522 message=evaluated permission=glob pattern=plugins/wp-graphql/src/**/* action.permission=glob action.action=allow action.pattern=*
-timestamp=2026-08-05T11:08:51.527Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=2
-timestamp=2026-08-05T11:08:51.543Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19ca3c8001qgMyjIIF6hY09z
-timestamp=2026-08-05T11:08:51.544Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:08:51.544Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:08:54.118Z level=ERROR run=16180522 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T11:08:56.130Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:08:56.132Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:01.695Z level=INFO run=16180522 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:01.738Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=3
-timestamp=2026-08-05T11:09:01.748Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19ccbab001vodjRlPmHvqhjV
-timestamp=2026-08-05T11:09:01.748Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:01.749Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:02.941Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Router.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:02.962Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=4
-timestamp=2026-08-05T11:09:02.966Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Router.php
-timestamp=2026-08-05T11:09:02.980Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19cd074001s6Tc8GAPjTWEk5
-timestamp=2026-08-05T11:09:02.980Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:02.981Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:09.072Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Request.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:09.085Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=5
-timestamp=2026-08-05T11:09:09.088Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Request.php
-timestamp=2026-08-05T11:09:09.100Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19ce85e0011dWDxFziGVkx8I
-timestamp=2026-08-05T11:09:09.101Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:09.101Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:17.082Z level=INFO run=16180522 message=evaluated permission=grep pattern=wp_query|wpdb|prepare|query|sql action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:17.116Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=6
-timestamp=2026-08-05T11:09:17.131Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d07bd001RfdZEn6NSyklE7
-timestamp=2026-08-05T11:09:17.131Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:17.132Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:19.619Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Data/Loader/UserLoader.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:19.625Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Data/Loader/UserLoader.php
-timestamp=2026-08-05T11:09:19.646Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=7
-timestamp=2026-08-05T11:09:19.658Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d119f001QObroDhuGJYSmq
-timestamp=2026-08-05T11:09:19.658Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:19.659Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:27.295Z level=INFO run=16180522 message=evaluated permission=todowrite pattern=* action.permission=* action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:27.305Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=8
-timestamp=2026-08-05T11:09:27.321Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d2f8a001pMCH85Xgm1wqGa
-timestamp=2026-08-05T11:09:27.321Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:27.322Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:29.857Z level=INFO run=16180522 message=evaluated permission=grep pattern=update_option|update_user_meta|update_post_meta|wp_update_user|wp_update_post action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:29.886Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=9
-timestamp=2026-08-05T11:09:29.905Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d39a00015IA0JHLbRlRkWc
-timestamp=2026-08-05T11:09:29.905Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:29.906Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:32.215Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Mutation/UserUpdate.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:32.320Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=10
-timestamp=2026-08-05T11:09:32.324Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Mutation/UserUpdate.php
-timestamp=2026-08-05T11:09:32.335Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d4321001CuaDvW56OsqcmQ
-timestamp=2026-08-05T11:09:32.336Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:32.337Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:35.605Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Data/UserMutation.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:35.616Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Data/UserMutation.php
-timestamp=2026-08-05T11:09:35.632Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=11
-timestamp=2026-08-05T11:09:35.646Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d5011001GUwWuPbp7zwAUV
-timestamp=2026-08-05T11:09:35.647Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:35.647Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:40.814Z level=INFO run=16180522 message=evaluated permission=grep pattern="\\$wpdb->prepare\\(.*\\$ids.*\\)|\\$wpdb->get_results\\(.*\\$ids.*\\)" action.permission=grep action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:40.832Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=12
-timestamp=2026-08-05T11:09:40.848Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d6461001fiu4ZRGh2tFTMa
-timestamp=2026-08-05T11:09:40.848Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:40.849Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:43.474Z level=ERROR run=16180522 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T11:09:45.484Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:45.486Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:46.868Z level=INFO run=16180522 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Data/Loader/UserLoader.php action.permission=read action.action=allow action.pattern=*
-timestamp=2026-08-05T11:09:46.890Z level=INFO run=16180522 message=loop session.id=ses_02e63752dffeY2zp4b92cLKr3j step=13
-timestamp=2026-08-05T11:09:46.894Z level=INFO run=16180522 message="touching file" file=/work/plugins/wp-graphql/src/Data/Loader/UserLoader.php
-timestamp=2026-08-05T11:09:46.906Z level=INFO run=16180522 message=process session.id=ses_02e63752dffeY2zp4b92cLKr3j messageID=msg_fd19d7c0c001HM1MsZMKRIppBj
-timestamp=2026-08-05T11:09:46.907Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:46.907Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
-timestamp=2026-08-05T11:09:49.528Z level=ERROR run=16180522 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
-timestamp=2026-08-05T11:09:51.536Z level=INFO run=16180522 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02e63752dffeY2zp4b92cLKr3j small=false agent=reviewer mode=primary
-timestamp=2026-08-05T11:09:51.537Z level=INFO run=16180522 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:21.730Z level=INFO run=0926ed87 message="creating instance" directory=/work
+timestamp=2026-08-08T00:47:21.731Z level=INFO run=0926ed87 message=fromDirectory directory=/work
+timestamp=2026-08-08T00:47:21.741Z level=INFO run=0926ed87 message=bootstrapping directory=/work
+timestamp=2026-08-08T00:47:21.745Z level=INFO run=0926ed87 message=loading path=/home/agent/.config/opencode/config.json
+timestamp=2026-08-08T00:47:21.745Z level=INFO run=0926ed87 message=loading path=/home/agent/.config/opencode/opencode.json
+timestamp=2026-08-08T00:47:21.746Z level=INFO run=0926ed87 message=loading path=/home/agent/.config/opencode/opencode.jsonc
+timestamp=2026-08-08T00:47:21.746Z level=INFO run=0926ed87 message=loading path=/opencode.json
+timestamp=2026-08-08T00:47:21.754Z level=ERROR run=0926ed87 message="Failed to fetch models.dev" cause="Cause([Fail(HttpClientError: StatusCode: non 2xx status code (403 GET https://models.dev/api.json))])"
+timestamp=2026-08-08T00:47:21.755Z level=INFO run=0926ed87 message=loading path=/opencode.json
+timestamp=2026-08-08T00:47:21.799Z level=INFO run=0926ed87 message="all LSPs are disabled"
+timestamp=2026-08-08T00:47:21.800Z level=INFO run=0926ed87 message="all formatters are disabled"
+timestamp=2026-08-08T00:47:21.800Z level=INFO run=0926ed87 message=init
+timestamp=2026-08-08T00:47:21.989Z level=INFO run=0926ed87 message=created id=ses_02129467affeVHfqKzSIyvO1Xs slug=glowing-falcon version=1.17.11 projectID=global directory=/work path=work workspaceID=undefined parentID=undefined title="New session - 2026-08-08T00:47:21.989Z" agent=undefined model=undefined metadata=undefined permission="[{\"permission\":\"question\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_enter\",\"pattern\":\"*\",\"action\":\"deny\"},{\"permission\":\"plan_exit\",\"pattern\":\"*\",\"action\":\"deny\"}]" cost=0 tokens.input=0 tokens.output=0 tokens.reasoning=0 tokens.cache.read=0 tokens.cache.write=0 time.created=1786150041989 time.updated=1786150041989
+timestamp=2026-08-08T00:47:22.015Z level=INFO run=0926ed87 message="event connected"
+timestamp=2026-08-08T00:47:22.179Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=0
+timestamp=2026-08-08T00:47:22.189Z level=INFO run=0926ed87 message="shell tool using shell" shell=/usr/bin/bash
+timestamp=2026-08-08T00:47:22.193Z level=INFO run=0926ed87 message=init count=1
+timestamp=2026-08-08T00:47:22.194Z level=INFO run=0926ed87 message="booting location services" directory=/work workspaceID=undefined
+timestamp=2026-08-08T00:47:22.203Z level=WARN run=0926ed87 message="background dependency install failed" dir=/home/agent/.config/opencode error="Cause([Fail(NpmInstallFailedError (cause: rF: 403 Forbidden - GET https://registry.npmjs.org/@opencode-ai%2fplugin))])"
+timestamp=2026-08-08T00:47:22.211Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=true agent=title mode=primary
+timestamp=2026-08-08T00:47:22.253Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:22.278Z level=INFO run=0926ed87 message="watcher backend" directory=/work platform=linux backend=inotify
+timestamp=2026-08-08T00:47:22.402Z level=INFO run=0926ed87 message="project copy refresh started" projectID=global
+timestamp=2026-08-08T00:47:22.403Z level=INFO run=0926ed87 message="project copy refresh done" projectID=global updated=[] removed=[]
+timestamp=2026-08-08T00:47:22.751Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6ba46001CqSUG67sTz17xX
+timestamp=2026-08-08T00:47:22.751Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:22.970Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:23.812Z level=INFO run=0926ed87 message=evaluated permission=glob pattern="\"plugins/wp-graphql/src/**/*.php\"" action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:23.836Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=1
+timestamp=2026-08-08T00:47:23.855Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6c0bd001620l3ouDVW7eUp
+timestamp=2026-08-08T00:47:23.855Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:23.856Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:24.687Z level=INFO run=0926ed87 message=evaluated permission=glob pattern=plugins/wp-graphql/src/**/*.php action.permission=glob action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:24.717Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=2
+timestamp=2026-08-08T00:47:24.732Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6c42e001HxLr2MIPitTGhL
+timestamp=2026-08-08T00:47:24.732Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:24.733Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:28.811Z level=INFO run=0926ed87 message=evaluated permission=grep pattern=(current_user_can|wp_verify_nonce|check_admin_referer|absint|sanitize_text_field|esc_html|esc_attr|update_option|update_post_meta|update_user_meta|wp_update_post) action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:28.847Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=3
+timestamp=2026-08-08T00:47:28.860Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6d450001Eh12TqzyYbgkcX
+timestamp=2026-08-08T00:47:28.861Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:28.861Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:32.804Z level=INFO run=0926ed87 message=evaluated permission=grep pattern="(\\$_GET|\\$_POST|\\$_REQUEST|\\$_COOKIE)" action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:32.821Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=4
+timestamp=2026-08-08T00:47:32.836Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6e3d60013b2yukApH4hB64
+timestamp=2026-08-08T00:47:32.836Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:32.837Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:34.898Z level=ERROR run=0926ed87 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-08T00:47:36.906Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:36.907Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:39.257Z level=INFO run=0926ed87 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Data/NodeResolver.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:39.270Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=5
+timestamp=2026-08-08T00:47:39.273Z level=INFO run=0926ed87 message="touching file" file=/work/plugins/wp-graphql/src/Data/NodeResolver.php
+timestamp=2026-08-08T00:47:39.286Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded6fd070015IQB14snVVDsXx
+timestamp=2026-08-08T00:47:39.286Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:39.287Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:41.714Z level=ERROR run=0926ed87 message="stream error" providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary error.error="AI_APICallError: litellm.InternalServerError: InternalServerError: OpenAIException - Connection error.. Received Model Group=gemma-4-31b\nAvailable Model Group Fallbacks=None"
+timestamp=2026-08-08T00:47:43.720Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:43.721Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:46.628Z level=INFO run=0926ed87 message=evaluated permission=grep pattern=(update_option|update_post_meta|update_user_meta|wp_update_post|wp_insert_post) action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:46.643Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=6
+timestamp=2026-08-08T00:47:46.657Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded719d4001MAO26MIRZZXzRj
+timestamp=2026-08-08T00:47:46.657Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:46.658Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:48.998Z level=INFO run=0926ed87 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Mutation/UpdateSettings.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:49.040Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=7
+timestamp=2026-08-08T00:47:49.043Z level=INFO run=0926ed87 message="touching file" file=/work/plugins/wp-graphql/src/Mutation/UpdateSettings.php
+timestamp=2026-08-08T00:47:49.054Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded72331001NzxpFdZtN6h5to
+timestamp=2026-08-08T00:47:49.054Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:49.055Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:51.443Z level=INFO run=0926ed87 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Data/DataSource.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:51.453Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=8
+timestamp=2026-08-08T00:47:51.457Z level=INFO run=0926ed87 message="touching file" file=/work/plugins/wp-graphql/src/Data/DataSource.php
+timestamp=2026-08-08T00:47:51.468Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded72c9f001SD6T36y52Q1APR
+timestamp=2026-08-08T00:47:51.469Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:51.470Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:47:58.119Z level=INFO run=0926ed87 message=evaluated permission=grep pattern=(current_user_can|wp_verify_nonce|check_admin_referer) action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-08T00:47:58.136Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=9
+timestamp=2026-08-08T00:47:58.153Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded746ba001W6gjCe6rkept1u
+timestamp=2026-08-08T00:47:58.154Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:47:58.155Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:48:01.375Z level=INFO run=0926ed87 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Router.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-08T00:48:01.404Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=10
+timestamp=2026-08-08T00:48:01.408Z level=INFO run=0926ed87 message="touching file" file=/work/plugins/wp-graphql/src/Router.php
+timestamp=2026-08-08T00:48:01.419Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded7537e00179maCupzvhbt6B
+timestamp=2026-08-08T00:48:01.419Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:48:01.420Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:48:04.446Z level=INFO run=0926ed87 message=evaluated permission=grep pattern=(update_option|update_post_meta|update_user_meta|wp_update_post|wp_insert_post) action.permission=grep action.action=allow action.pattern=*
+timestamp=2026-08-08T00:48:04.463Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=11
+timestamp=2026-08-08T00:48:04.480Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded75f71001JQbedFEjaR5HqN
+timestamp=2026-08-08T00:48:04.480Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:48:04.480Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b
+timestamp=2026-08-08T00:48:06.086Z level=INFO run=0926ed87 message=evaluated permission=read pattern=work/plugins/wp-graphql/src/Mutation/PostObjectCreate.php action.permission=read action.action=allow action.pattern=*
+timestamp=2026-08-08T00:48:06.094Z level=INFO run=0926ed87 message=loop session.id=ses_02129467affeVHfqKzSIyvO1Xs step=12
+timestamp=2026-08-08T00:48:06.097Z level=INFO run=0926ed87 message="touching file" file=/work/plugins/wp-graphql/src/Mutation/PostObjectCreate.php
+timestamp=2026-08-08T00:48:06.102Z level=INFO run=0926ed87 message=process session.id=ses_02129467affeVHfqKzSIyvO1Xs messageID=msg_fded765cf001zPpOf2N6z9EXdp
+timestamp=2026-08-08T00:48:06.103Z level=INFO run=0926ed87 message=stream providerID=polito modelID=gemma-4-31b session.id=ses_02129467affeVHfqKzSIyvO1Xs small=false agent=reviewer mode=primary
+timestamp=2026-08-08T00:48:06.109Z level=INFO run=0926ed87 message="llm runtime selected" llm.runtime=ai-sdk llm.provider=polito llm.model=gemma-4-31b

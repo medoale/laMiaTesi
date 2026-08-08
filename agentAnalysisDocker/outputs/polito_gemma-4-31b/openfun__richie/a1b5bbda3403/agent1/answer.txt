@@ -1,8 +1,8 @@
-The commit replaces a standard equality comparison (`==`) with `hmac.compare_digest()` when verifying the authentication signature in the `sync_course_runs_from_request` view. 
+The commit replaces a standard equality comparison (`==`) with `hmac.compare_digest()` when verifying an authentication signature in the `sync_course_runs_from_request` function.
 
-In the original code, `authorization_header == get_signature(message, secret)` is susceptible to a **timing attack**. Standard string comparison returns `False` as soon as it finds the first differing character, meaning the time taken to perform the comparison depends on how many leading characters of the provided signature match the correct one. An attacker can use this timing difference to brute-force the signature character by character.
+Standard string comparison in Python (and many other languages) returns `False` as soon as it finds a character mismatch. This means the time it takes to complete the comparison is proportional to the length of the common prefix between the two strings. An attacker can exploit this timing difference to guess the correct signature character by character, a technique known as a timing attack.
 
-`hmac.compare_digest()` is designed specifically to mitigate this by performing a constant-time comparison, ensuring that the time taken does not reveal information about the content of the strings.
+`hmac.compare_digest()` is specifically designed to perform a "constant-time" comparison, meaning it takes the same amount of time regardless of where the first difference occurs, thereby preventing these timing leaks.
 
 This is a classic fix for a timing side-channel vulnerability.
 

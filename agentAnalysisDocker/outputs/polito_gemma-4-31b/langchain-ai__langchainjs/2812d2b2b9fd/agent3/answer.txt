@@ -1,11 +1,32 @@
-I have conducted a security review of the provided codebase. During my exploration, I focused on high-risk patterns such as dynamic code execution (`eval`, `Function`), shell command execution (`child_process`), and insecure input handling.
+The security review of the repository identified a critical SQL injection vulnerability in the `@langchain/google-cloud-sql-pg` package.
 
-One point of interest was the `Calculator` tool in `libs/langchain-community/src/tools/calculator.ts`, which uses the `math-expression-evaluator` library to evaluate mathematical expressions. I investigated whether this library could be exploited for remote code execution (RCE). However, `math-expression-evaluator` is designed as a mathematical expression parser and does not execute arbitrary JavaScript code like `eval()` does.
+Specifically, in `libs/providers/langchain-google-cloud-sql-pg/src/vectorstore.ts`, the `PostgresVectorStore` class uses unsanitized string interpolation to construct SQL queries using the `tableName` and `schemaName` parameters.
 
-I also reviewed the codebase for potential command injection vulnerabilities in areas where `child_process` is used (e.g., in the integration creation helpers), but found that these usages are restricted to internal build/setup scripts and use hardcoded or strictly controlled arguments.
+For example, in the `initialize` method:
+```typescript
+const { rows } = await engine.pool.raw(
+  `SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '${tableName}' AND table_schema = '${schemaName}'`
+);
+```
 
-After a thorough search for common vulnerability patterns across the monorepo, including checking for prototype pollution, SSRF in network utilities, and insecure deserialization, I have not found any confident evidence of a security vulnerability.
+And in the `isValidIndex` method:
+```typescript
+const stmt = `SELECT tablename, indexname
+              FROM pg_indexes
+              WHERE tablename = '${this.tableName}' AND schemaname = '${this.schemaName}' AND indexname = '${idxName}';`;
+const { rows } = await this.engine.pool.raw(stmt);
+```
 
-VULNERABILITY_FOUND: no
-CWE_ID: none
-CWE_NAME: none
+Since these parameters are passed directly into the SQL query string without any sanitization or use of parameterized queries, an attacker who can control the `tableName` or `schemaName` (for instance, via a configuration file or an API endpoint that initializes the vector store) can execute arbitrary SQL commands on the underlying PostgreSQL database.
+
+Additionally, other methods such as `dropVectorIndex` and `reIndex` also interpolate `idxName` (which is derived from `tableName`) directly into the query:
+```typescript
+const query = `DROP INDEX IF EXISTS ${idxName};`;
+await this.engine.pool.raw(query);
+```
+
+While some identifiers are wrapped in double quotes in other parts of the code (e.g., `"${this.tableName}"`), the examples above show clear cases of single-quote interpolation for values and unquoted interpolation for identifiers, both of which are susceptible to SQL injection.
+
+VULNERABILITY_FOUND: yes
+CWE_ID: CWE-89
+CWE_NAME: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')

@@ -1,0 +1,1758 @@
+Stream);
+/changes/file_07/diff.txt:         }
+/changes/file_07/diff.txt: 
+/changes/file_07/diff.txt:         public static Uri Expand(JToken context, string term)
+/changes/file_07/diff.txt:@@ -203,14 +212,17 @@ public static NupkgMetadata GetNupkgMetadata(Stream stream, string packageHash)
+/changes/file_07/diff.txt:             stream.Seek(0, SeekOrigin.Begin);
+/changes/file_07/diff.txt: 
+/changes/file_07/diff.txt:             using (var package = new ZipArchive(stream, ZipArchiveMode.Read, leaveOpen: true))
+/changes/file_07/diff.txt:+            using (var packageArchiveReader = new PackageArchiveReader(package))
+/changes/file_07/diff.txt:             {
+/changes/file_07/diff.txt:-                var nuspec = GetNuspec(package);
+/changes/file_07/diff.txt:-
+/changes/file_07/diff.txt:-                if (nuspec == null)
+/changes/file_07/diff.txt:+                var identity = packageArchiveReader.GetIdentity();
+/changes/file_07/diff.txt:+                AssertValidPackageId(identity.Id);
+/changes/file_07/diff.txt:+                if (identity.Version is null)
+/changes/file_07/diff.txt:                 {
+/changes/file_07/diff.txt:-                    throw new InvalidDataException("Unable to find nuspec");
+/changes/file_07/diff.txt:+                    throw new InvalidOperationException("The version from the package identity must not be null.");
+/changes/file_07/diff.txt:                 }
+/changes/file_07/diff.txt: 
+/changes/file_07/diff.txt:+                var nuspec = GetNuspecXDocument(packageArchiveReader);
+/changes/file_07/diff.txt:+
+/changes/file_07/diff.txt:                 var entries = GetEntries(package);
+/changes/file_07/diff.txt: 
+/changes/file_07/diff.txt:                 return new NupkgMetadata(nuspec, entries, packageSize, packageHash);
+/changes/file_08/diff.txt:@@ -1,8 +1,9 @@
+/changes/file_08/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_08/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_08/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_08/diff.txt: 
+/changes/file_08/diff.txt: using System.Xml;
+/changes/file_08/diff.txt: using System.Xml.XPath;
+/changes/file_08/diff.txt:+using NuGet.Packaging;
+/changes/file_08/diff.txt: using NuGet.Services.Metadata.Catalog.Helpers;
+/changes/file_08/diff.txt: using NuGet.Versioning;
+/changes/file_08/diff.txt: 
+/changes/file_08/diff.txt:@@ -40,6 +41,16 @@ public string LowerCase(string original)
+/changes/file_08/diff.txt:             return original.ToLowerInvariant();
+/changes/file_08/diff.txt:         }
+/changes/file_08/diff.txt: 
+/changes/file_08/diff.txt:+        public bool IsValidPackageId(string original)
+/changes/file_08/diff.txt:+        {
+/changes/file_08/diff.txt:+            return PackageIdValidator.IsValidPackageId(original);
+/changes/file_08/diff.txt:+        }
+/changes/file_08/diff.txt:+
+/changes/file_08/diff.txt:+        public bool IsValidVersion(string original)
+/changes/file_08/diff.txt:+        {
+/changes/file_08/diff.txt:+            return NuGetVersion.TryParse(original, out _);
+/changes/file_08/diff.txt:+        }
+/changes/file_08/diff.txt:+
+/changes/file_08/diff.txt:         public string NormalizeVersion(string original)
+/changes/file_08/diff.txt:         {
+/changes/file_08/diff.txt:             return NuGetVersionUtility.NormalizeVersion(original);
+/changes/file_09/diff.txt:@@ -438,13 +438,7 @@ protected override async Task OnDeleteAsync(Uri resourceUri, DeleteRequestOption
+/changes/file_09/diff.txt:         public override Uri GetUri(string name)
+/changes/file_09/diff.txt:         {
+/changes/file_09/diff.txt:             var baseUri = RemoveQueryString(_directory.Uri);
+/changes/file_09/diff.txt:-
+/changes/file_09/diff.txt:-            if (baseUri.EndsWith("/"))
+/changes/file_09/diff.txt:-            {
+/changes/file_09/diff.txt:-                return new Uri($"{baseUri}{name}", UriKind.Absolute);
+/changes/file_09/diff.txt:-            }
+/changes/file_09/diff.txt:-
+/changes/file_09/diff.txt:-            return new Uri($"{baseUri}/{name}", UriKind.Absolute);
+/changes/file_09/diff.txt:+            return new Uri(baseUri.TrimEnd('/') + '/' + name.TrimStart('/'), UriKind.Absolute);
+/changes/file_09/diff.txt:         }
+/changes/file_09/diff.txt: 
+/changes/file_09/diff.txt:         public override async Task<bool> AreSynchronized(Uri firstResourceUri, Uri secondResourceUri)
+/changes/file_10/diff.txt:@@ -181,7 +181,7 @@ public virtual Task<bool> UpdateCacheControlAsync(Uri resourceUri, string cacheC
+/changes/file_10/diff.txt: 
+/changes/file_10/diff.txt:         public Uri ResolveUri(string relativeUri)
+/changes/file_10/diff.txt:         {
+/changes/file_10/diff.txt:-            return new Uri(BaseAddress, relativeUri);
+/changes/file_10/diff.txt:+            return Services.Storage.Storage.ResolveUri(BaseAddress, relativeUri);
+/changes/file_10/diff.txt:         }
+/changes/file_10/diff.txt: 
+/changes/file_10/diff.txt:         /// <summary>
+/changes/file_10/diff.txt:@@ -197,39 +197,7 @@ public virtual Task<bool> AreSynchronized(Uri firstResourceUri, Uri secondResour
+/changes/file_10/diff.txt: 
+/changes/file_10/diff.txt:         public string GetName(Uri uri)
+/changes/file_10/diff.txt:         {
+/changes/file_10/diff.txt:-            if (uri is null)
+/changes/file_10/diff.txt:-            { 
+/changes/file_10/diff.txt:-                throw new ArgumentNullException(nameof(uri));
+/changes/file_10/diff.txt:-            }
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            if (BaseAddress is null)
+/changes/file_10/diff.txt:-            {
+/changes/file_10/diff.txt:-                throw new InvalidOperationException("BaseAddress must be set.");
+/changes/file_10/diff.txt:-            }
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            // The GetLeftPart method performs encoding under the hood, which could be problematic if it contains Unicode characters.
+/changes/file_10/diff.txt:-            // It doesn't perform double encoding; the Uri object knows if it's already encoded and skips encoding it again.
+/changes/file_10/diff.txt:-            // Decoding the base address to remove any encoded characters.
+/changes/file_10/diff.txt:-            string address = Uri.UnescapeDataString(BaseAddress.GetLeftPart(UriPartial.Path)); // Remove potential query or SAS from the URI
+/changes/file_10/diff.txt:-            if (!address.EndsWith("/"))
+/changes/file_10/diff.txt:-            {
+/changes/file_10/diff.txt:-                address += "/";
+/changes/file_10/diff.txt:-            }
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            // Do the same with the above to get it decoded.
+/changes/file_10/diff.txt:-            string fullPath = Uri.UnescapeDataString(uri.GetLeftPart(UriPartial.Path)); // Remove potential query or SAS from the URI
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            // handle mismatched scheme (http vs https)
+/changes/file_10/diff.txt:-            int schemeLengthDifference = uri.Scheme.Length - BaseAddress.Scheme.Length;
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            string name = fullPath.Substring(address.Length + schemeLengthDifference);
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            if (name.Contains("#"))
+/changes/file_10/diff.txt:-            {
+/changes/file_10/diff.txt:-                name = name.Substring(0, name.IndexOf("#"));
+/changes/file_10/diff.txt:-            }
+/changes/file_10/diff.txt:-
+/changes/file_10/diff.txt:-            return name;
+/changes/file_10/diff.txt:+            return Services.Storage.Storage.GetName(BaseAddress, uri);
+/changes/file_10/diff.txt:         }
+/changes/file_10/diff.txt: 
+/changes/file_10/diff.txt:         public virtual Uri GetUri(string name)
+/changes/file_11/diff.txt:@@ -1,4 +1,4 @@
+/changes/file_11/diff.txt:-﻿<?xml version="1.0" encoding="utf-8" ?>
+/changes/file_11/diff.txt:+<?xml version="1.0" encoding="utf-8" ?>
+/changes/file_11/diff.txt: <xsl:stylesheet
+/changes/file_11/diff.txt:   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+/changes/file_11/diff.txt:   xmlns:nuget="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd"
+/changes/file_11/diff.txt:@@ -115,6 +115,7 @@
+/changes/file_11/diff.txt:             </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:             <xsl:when test="self::nuget:owners">
+/changes/file_11/diff.txt:+              <!-- owners is deprecated and ignored -->
+/changes/file_11/diff.txt:             </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:             <xsl:when test="self::nuget:license">
+/changes/file_11/diff.txt:@@ -168,13 +169,55 @@
+/changes/file_11/diff.txt:               </ng:requireLicenseAcceptance>
+/changes/file_11/diff.txt:             </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:-            <xsl:when test="self::nuget:id">
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:developmentDependency">
+/changes/file_11/diff.txt:+              <ng:developmentDependency rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:developmentDependency>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:serviceable">
+/changes/file_11/diff.txt:+              <ng:serviceable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:serviceable>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:repository">
+/changes/file_11/diff.txt:+              <ng:repository>
+/changes/file_11/diff.txt:+                <rdf:Description>
+/changes/file_11/diff.txt:+                  <xsl:attribute name="rdf:about">
+/changes/file_11/diff.txt:+                    <xsl:value-of select="obj:LowerCase(concat($base, $path, $extension, '#repository'))"/>
+/changes/file_11/diff.txt:+                  </xsl:attribute>
+/changes/file_11/diff.txt:+                  <xsl:if test="@type">
+/changes/file_11/diff.txt:+                    <ng:type>
+/changes/file_11/diff.txt:+                      <xsl:value-of select="@type"/>
+/changes/file_11/diff.txt:+                    </ng:type>
+/changes/file_11/diff.txt:+                  </xsl:if>
+/changes/file_11/diff.txt:+                  <xsl:if test="@url">
+/changes/file_11/diff.txt:+                    <ng:url>
+/changes/file_11/diff.txt:+                      <xsl:value-of select="@url"/>
+/changes/file_11/diff.txt:+                    </ng:url>
+/changes/file_11/diff.txt:+                  </xsl:if>
+/changes/file_11/diff.txt:+                  <xsl:if test="@branch">
+/changes/file_11/diff.txt:+                    <ng:branch>
+/changes/file_11/diff.txt:+                      <xsl:value-of select="@branch"/>
+/changes/file_11/diff.txt:+                    </ng:branch>
+/changes/file_11/diff.txt:+                  </xsl:if>
+/changes/file_11/diff.txt:+                  <xsl:if test="@commit">
+/changes/file_11/diff.txt:+                    <ng:commit>
+/changes/file_11/diff.txt:+                      <xsl:value-of select="@commit"/>
+/changes/file_11/diff.txt:+                    </ng:commit>
+/changes/file_11/diff.txt:+                  </xsl:if>
+/changes/file_11/diff.txt:+                </rdf:Description>
+/changes/file_11/diff.txt:+              </ng:repository>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:id and obj:IsValidPackageId(.)">
+/changes/file_11/diff.txt:               <ng:id>
+/changes/file_11/diff.txt:                 <xsl:value-of select="."/>
+/changes/file_11/diff.txt:               </ng:id>
+/changes/file_11/diff.txt:             </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:-            <xsl:when test="self::nuget:version">
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:version and obj:IsValidVersion(.)">
+/changes/file_11/diff.txt:               <ng:version>
+/changes/file_11/diff.txt:                 <xsl:value-of select="obj:GetFullVersionString(.)"/>
+/changes/file_11/diff.txt:               </ng:version>
+/changes/file_11/diff.txt:@@ -192,11 +235,65 @@
+/changes/file_11/diff.txt:               </xsl:apply-templates>
+/changes/file_11/diff.txt:             </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:-            <xsl:otherwise>
+/changes/file_11/diff.txt:-              <xsl:element name="{concat('ng:', local-name())}">
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:authors">
+/changes/file_11/diff.txt:+              <ng:authors>
+/changes/file_11/diff.txt:                 <xsl:value-of select="."/>
+/changes/file_11/diff.txt:-              </xsl:element>
+/changes/file_11/diff.txt:-            </xsl:otherwise>
+/changes/file_11/diff.txt:+              </ng:authors>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:description">
+/changes/file_11/diff.txt:+              <ng:description>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:description>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:copyright">
+/changes/file_11/diff.txt:+              <ng:copyright>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:copyright>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:projectUrl">
+/changes/file_11/diff.txt:+              <ng:projectUrl>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:projectUrl>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:releaseNotes">
+/changes/file_11/diff.txt:+              <ng:releaseNotes>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:releaseNotes>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:title">
+/changes/file_11/diff.txt:+              <ng:title>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:title>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:summary">
+/changes/file_11/diff.txt:+              <ng:summary>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:summary>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:language">
+/changes/file_11/diff.txt:+              <ng:language>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:language>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:iconUrl">
+/changes/file_11/diff.txt:+              <ng:iconUrl>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:iconUrl>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt:+
+/changes/file_11/diff.txt:+            <xsl:when test="self::nuget:licenseUrl">
+/changes/file_11/diff.txt:+              <ng:licenseUrl>
+/changes/file_11/diff.txt:+                <xsl:value-of select="."/>
+/changes/file_11/diff.txt:+              </ng:licenseUrl>
+/changes/file_11/diff.txt:+            </xsl:when>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:           </xsl:choose>
+/changes/file_11/diff.txt:         </xsl:for-each>
+/changes/file_11/diff.txt:@@ -383,4 +480,4 @@
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:   </xsl:template>
+/changes/file_11/diff.txt: 
+/changes/file_11/diff.txt:-</xsl:stylesheet>
+/changes/file_11/diff.txt:\ No newline at end of file
+/changes/file_11/diff.txt:+</xsl:stylesheet>
+/changes/file_12/diff.txt:@@ -0,0 +1,268 @@
+/changes/file_12/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_12/diff.txt:+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+using System;
+/changes/file_12/diff.txt:+using System.Collections.Generic;
+/changes/file_12/diff.txt:+using System.Globalization;
+/changes/file_12/diff.txt:+using System.IO;
+/changes/file_12/diff.txt:+using System.Linq;
+/changes/file_12/diff.txt:+using System.Text;
+/changes/file_12/diff.txt:+using Microsoft.Extensions.CommandLineUtils;
+/changes/file_12/diff.txt:+using NuGet.Packaging;
+/changes/file_12/diff.txt:+using NuGet.Packaging.Core;
+/changes/file_12/diff.txt:+using NuGet.Services.Entities;
+/changes/file_12/diff.txt:+using NuGet.Versioning;
+/changes/file_12/diff.txt:+using NuGetGallery;
+/changes/file_12/diff.txt:+using NuGetGallery.Packaging;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+namespace GalleryTools.Commands
+/changes/file_12/diff.txt:+{
+/changes/file_12/diff.txt:+	public static class ValidatePackageIdsCommand
+/changes/file_12/diff.txt:+	{
+/changes/file_12/diff.txt:+		private const string PathOption = "--path";
+/changes/file_12/diff.txt:+		private const string OutputOption = "--output";
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		public static void Configure(CommandLineApplication config)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			config.Description = "Validate package IDs from a CSV file against the package ID normalization validation rules";
+/changes/file_12/diff.txt:+			config.HelpOption("-? | -h | --help");
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			var pathOption = config.Option(
+/changes/file_12/diff.txt:+				$"-p | {PathOption}",
+/changes/file_12/diff.txt:+				"Path to a CSV file with an 'IdVariant' column containing package IDs to validate",
+/changes/file_12/diff.txt:+				CommandOptionType.SingleValue);
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			var outputOption = config.Option(
+/changes/file_12/diff.txt:+				$"-o | {OutputOption}",
+/changes/file_12/diff.txt:+				"Optional: Path to output CSV file with validation results. If not specified, results are written to console.",
+/changes/file_12/diff.txt:+				CommandOptionType.SingleValue);
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			config.OnExecute(() =>
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				return Execute(pathOption, outputOption);
+/changes/file_12/diff.txt:+			});
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static int Execute(CommandOption pathOption, CommandOption outputOption)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			if (!pathOption.HasValue())
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				Console.WriteLine($"The '{PathOption}' parameter is required.");
+/changes/file_12/diff.txt:+				return 1;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			var inputPath = pathOption.Value();
+/changes/file_12/diff.txt:+			if (!File.Exists(inputPath))
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				Console.WriteLine($"File not found: {inputPath}");
+/changes/file_12/diff.txt:+				return 1;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			Console.WriteLine($"Reading package IDs from: {inputPath}");
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			var results = new List<ValidationResult>();
+/changes/file_12/diff.txt:+			var validCount = 0;
+/changes/file_12/diff.txt:+			var invalidCount = 0;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			try
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				using (var reader = new StreamReader(inputPath, Encoding.UTF8))
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					string line;
+/changes/file_12/diff.txt:+					int lineNumber = 0;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+					// Read header
+/changes/file_12/diff.txt:+					line = reader.ReadLine();
+/changes/file_12/diff.txt:+					lineNumber++;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+					if (line == null || !line.Contains("IdVariant"))
+/changes/file_12/diff.txt:+					{
+/changes/file_12/diff.txt:+						Console.WriteLine("Error: CSV file must have an 'IdVariant' column header");
+/changes/file_12/diff.txt:+						return 1;
+/changes/file_12/diff.txt:+					}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+					// Find the index of IdVariant column
+/changes/file_12/diff.txt:+					var headers = line.Split(',');
+/changes/file_12/diff.txt:+					var idVariantIndex = Array.FindIndex(headers, h => h.Trim() == "IdVariant");
+/changes/file_12/diff.txt:+					if (idVariantIndex < 0)
+/changes/file_12/diff.txt:+					{
+/changes/file_12/diff.txt:+						Console.WriteLine("Error: 'IdVariant' column not found in CSV header");
+/changes/file_12/diff.txt:+						return 1;
+/changes/file_12/diff.txt:+					}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+					// Process data rows
+/changes/file_12/diff.txt:+					while ((line = reader.ReadLine()) != null)
+/changes/file_12/diff.txt:+					{
+/changes/file_12/diff.txt:+						lineNumber++;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						if (string.IsNullOrWhiteSpace(line))
+/changes/file_12/diff.txt:+							continue;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						var columns = ParseCsvLine(line);
+/changes/file_12/diff.txt:+						if (columns.Count <= idVariantIndex)
+/changes/file_12/diff.txt:+							continue;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						var packageId = columns[idVariantIndex].Trim();
+/changes/file_12/diff.txt:+						if (string.IsNullOrEmpty(packageId))
+/changes/file_12/diff.txt:+							continue;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						var validationResult = ValidatePackageId(packageId);
+/changes/file_12/diff.txt:+						results.Add(validationResult);
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						if (validationResult.IsValid)
+/changes/file_12/diff.txt:+							validCount++;
+/changes/file_12/diff.txt:+						else
+/changes/file_12/diff.txt:+							invalidCount++;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+						// Progress indicator
+/changes/file_12/diff.txt:+						if (results.Count % 100 == 0)
+/changes/file_12/diff.txt:+							Console.Write(".");
+/changes/file_12/diff.txt:+					}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+					Console.WriteLine();
+/changes/file_12/diff.txt:+					Console.WriteLine($"Processed {results.Count} package IDs");
+/changes/file_12/diff.txt:+					Console.WriteLine($"Valid: {validCount}, Invalid: {invalidCount}");
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				// Output results
+/changes/file_12/diff.txt:+				if (outputOption.HasValue())
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					var outputPath = outputOption.Value();
+/changes/file_12/diff.txt:+					WriteResultsToFile(outputPath, results);
+/changes/file_12/diff.txt:+					Console.WriteLine($"Results written to: {outputPath}");
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+				else
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					WriteResultsToConsole(results);
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				return 0;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+			catch (Exception ex)
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				Console.WriteLine($"Error processing file: {ex.Message}");
+/changes/file_12/diff.txt:+				return 1;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static ValidationResult ValidatePackageId(string packageId)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			var result = new ValidationResult { PackageId = packageId };
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			try
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				var packageMetadata = new PackageMetadata(
+/changes/file_12/diff.txt:+                    new Dictionary<string, string> { { "id", packageId }, { "version", "1.0.0" } },
+/changes/file_12/diff.txt:+                    [], [], [], null, null, null);
+/changes/file_12/diff.txt:+				var validationResult = PackageMetadataValidationService.CheckPackageIdForBannedCharacters(
+/changes/file_12/diff.txt:+                    packageMetadata,
+/changes/file_12/diff.txt:+                    new PackageIdentity(packageId, new NuGetVersion("1.0.0")));
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				if (validationResult != null)
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					result.IsValid = false;
+/changes/file_12/diff.txt:+					result.ErrorMessage = validationResult.Message?.PlainTextMessage ?? "Invalid package ID";
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+				else
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					result.IsValid = true;
+/changes/file_12/diff.txt:+					result.ErrorMessage = null;
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				return result;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+			catch (ArgumentNullException ex)
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				result.IsValid = false;
+/changes/file_12/diff.txt:+				result.ErrorMessage = ex.Message;
+/changes/file_12/diff.txt:+				return result;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+			catch (Exception ex)
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				result.IsValid = false;
+/changes/file_12/diff.txt:+				result.ErrorMessage = $"Exception: {ex.Message}";
+/changes/file_12/diff.txt:+				return result;
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static List<string> ParseCsvLine(string line)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			var result = new List<string>();
+/changes/file_12/diff.txt:+			var current = new StringBuilder();
+/changes/file_12/diff.txt:+			var inQuotes = false;
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			foreach (var c in line)
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				if (c == '"')
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					inQuotes = !inQuotes;
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+				else if (c == ',' && !inQuotes)
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					result.Add(current.ToString());
+/changes/file_12/diff.txt:+					current.Clear();
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+				else
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					current.Append(c);
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			result.Add(current.ToString());
+/changes/file_12/diff.txt:+			return result;
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static void WriteResultsToConsole(List<ValidationResult> results)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			var invalidResults = results.Where(r => !r.IsValid).ToList();
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			if (invalidResults.Any())
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				Console.WriteLine("\n=== INVALID PACKAGE IDs ===");
+/changes/file_12/diff.txt:+				foreach (var result in invalidResults.Take(50))
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					Console.WriteLine($"ID: {result.PackageId}");
+/changes/file_12/diff.txt:+					Console.WriteLine($"   Error: {result.ErrorMessage}\n");
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				if (invalidResults.Count > 50)
+/changes/file_12/diff.txt:+					Console.WriteLine($"... and {invalidResults.Count - 50} more invalid IDs");
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+			else
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				Console.WriteLine("\n=== All package IDs are VALID ===");
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static void WriteResultsToFile(string outputPath, List<ValidationResult> results)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			using (var writer = new StreamWriter(outputPath, false, Encoding.UTF8))
+/changes/file_12/diff.txt:+			{
+/changes/file_12/diff.txt:+				// Write header
+/changes/file_12/diff.txt:+				writer.WriteLine("PackageId,IsValid,ErrorMessage");
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+				// Write results
+/changes/file_12/diff.txt:+				foreach (var result in results)
+/changes/file_12/diff.txt:+				{
+/changes/file_12/diff.txt:+					var csvLine = $"\"{EscapeCsvField(result.PackageId)}\",{result.IsValid},{EscapeCsvField(result.ErrorMessage ?? "")}";
+/changes/file_12/diff.txt:+					writer.WriteLine(csvLine);
+/changes/file_12/diff.txt:+				}
+/changes/file_12/diff.txt:+			}
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private static string EscapeCsvField(string field)
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			if (string.IsNullOrEmpty(field))
+/changes/file_12/diff.txt:+				return "";
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+			return field.Replace("\"", "\"\"");
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+
+/changes/file_12/diff.txt:+		private class ValidationResult
+/changes/file_12/diff.txt:+		{
+/changes/file_12/diff.txt:+			public string PackageId { get; set; }
+/changes/file_12/diff.txt:+			public bool IsValid { get; set; }
+/changes/file_12/diff.txt:+			public string ErrorMessage { get; set; }
+/changes/file_12/diff.txt:+		}
+/changes/file_12/diff.txt:+	}
+/changes/file_12/diff.txt:+}
+/changes/file_13/diff.txt:@@ -23,6 +23,7 @@ public static int Main(params string[] args)
+/changes/file_13/diff.txt:             commandLineApplication.Command("verifyapikey", VerifyApiKeyCommand.Configure);
+/changes/file_13/diff.txt:             commandLineApplication.Command("updateIsLatest", UpdateIsLatestCommand.Configure);
+/changes/file_13/diff.txt:             commandLineApplication.Command("reservenamespaces", ReserveNamespacesCommand.Configure);
+/changes/file_13/diff.txt:+            commandLineApplication.Command("validatepackageids", ValidatePackageIdsCommand.Configure);
+/changes/file_13/diff.txt: 
+/changes/file_13/diff.txt:             try
+/changes/file_13/diff.txt:             {
+/changes/file_14/diff.txt:@@ -433,7 +433,7 @@ private BlockBlobClient GetBlobReference(string blobName)
+/changes/file_14/diff.txt:         // This method is a helper to insert the _path into the resolved Uri for the file so we get the correct full path.
+/changes/file_14/diff.txt:         private Uri ResolvePathedUri(string filename)
+/changes/file_14/diff.txt:         {
+/changes/file_14/diff.txt:-            return ResolveUri(Path.Combine(_path, filename));
+/changes/file_14/diff.txt:+            return ResolveUri(_path.TrimEnd('/') + '/' + filename.TrimStart('/'));
+/changes/file_14/diff.txt:         }
+/changes/file_14/diff.txt: 
+/changes/file_14/diff.txt:         // Returns the primary blob service URI from the connection string
+/changes/file_15/diff.txt:@@ -5,6 +5,7 @@
+/changes/file_15/diff.txt: using System.Collections.Generic;
+/changes/file_15/diff.txt: using System.Diagnostics;
+/changes/file_15/diff.txt: using System.IO;
+/changes/file_15/diff.txt:+using System.Linq;
+/changes/file_15/diff.txt: using System.Net;
+/changes/file_15/diff.txt: using System.Threading;
+/changes/file_15/diff.txt: using System.Threading.Tasks;
+/changes/file_15/diff.txt:@@ -189,35 +190,113 @@ public void ResetStatistics()
+/changes/file_15/diff.txt:             DeleteCount = 0;
+/changes/file_15/diff.txt:         }
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:+        /// <summary>
+/changes/file_15/diff.txt:+        /// Validate that relative URI is a simple, additive path and add it to a base address. Reject non-relative URIs or badly formed relative URIs.
+/changes/file_15/diff.txt:+        /// </summary>
+/changes/file_15/diff.txt:+        public static Uri ResolveUri(Uri baseAddress, string relativeUri)
+/changes/file_15/diff.txt:+        {
+/changes/file_15/diff.txt:+            AssertSimpleBlobName(relativeUri);
+/changes/file_15/diff.txt:+            return new Uri(baseAddress.GetLeftPart(UriPartial.Path).TrimEnd('/') + "/" + relativeUri.TrimStart('/'));
+/changes/file_15/diff.txt:+        }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:         public Uri ResolveUri(string relativeUri)
+/changes/file_15/diff.txt:         {
+/changes/file_15/diff.txt:-            return new Uri(BaseAddress.GetLeftPart(UriPartial.Path).TrimEnd('/') + "/" + relativeUri.TrimStart('/'));
+/changes/file_15/diff.txt:+            return ResolveUri(BaseAddress, relativeUri);
+/changes/file_15/diff.txt:         }
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:-        protected string GetName(Uri uri)
+/changes/file_15/diff.txt:+        public static string GetName(Uri baseAddress, Uri uri)
+/changes/file_15/diff.txt:         {
+/changes/file_15/diff.txt:-            var address = Uri.UnescapeDataString(BaseAddress.GetLeftPart(UriPartial.Path));
+/changes/file_15/diff.txt:-            if (!address.EndsWith("/"))
+/changes/file_15/diff.txt:+            if (uri is null)
+/changes/file_15/diff.txt:             {
+/changes/file_15/diff.txt:-                address += "/";
+/changes/file_15/diff.txt:+                throw new ArgumentNullException(nameof(uri));
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            if (baseAddress is null)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                throw new ArgumentNullException(nameof(baseAddress));
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            if (!uri.IsAbsoluteUri)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                throw new ArgumentException($"'{nameof(uri)}' must be an absolute URI.", nameof(uri));
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            if (!baseAddress.IsAbsoluteUri)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                throw new ArgumentException($"'{nameof(baseAddress)}' must be an absolute URI.", nameof(baseAddress));
+/changes/file_15/diff.txt:             }
+/changes/file_15/diff.txt:-            var uriString = uri.ToString();
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:-            int baseAddressLength = address.Length;
+/changes/file_15/diff.txt:+            if (uri.AbsoluteUri.IndexOf("%2F", StringComparison.OrdinalIgnoreCase) >= 0 // Encoded forward slash
+/changes/file_15/diff.txt:+                || uri.AbsoluteUri.IndexOf("%5C", StringComparison.OrdinalIgnoreCase) >= 0) // Encoded backslash
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                throw new ArgumentException("The input URI must not contain encoded forward slashes or back slashes.", nameof(uri));
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:-            var name = uriString.Substring(baseAddressLength);
+/changes/file_15/diff.txt:-            if (name.Contains("?"))
+/changes/file_15/diff.txt:+            // The GetLeftPart method performs encoding under the hood, which could be problematic if it contains Unicode characters.
+/changes/file_15/diff.txt:+            // It doesn't perform double encoding; the Uri object knows if it's already encoded and skips encoding it again.
+/changes/file_15/diff.txt:+            // Decoding the base address to remove any encoded characters.
+/changes/file_15/diff.txt:+            var baseAddressStr = Uri.UnescapeDataString(baseAddress.GetLeftPart(UriPartial.Path)); // Remove potential query or SAS from the URI
+/changes/file_15/diff.txt:+            if (!baseAddressStr.EndsWith("/"))
+/changes/file_15/diff.txt:             {
+/changes/file_15/diff.txt:-                name = name.Substring(0, name.IndexOf("?"));
+/changes/file_15/diff.txt:+                baseAddressStr += "/";
+/changes/file_15/diff.txt:             }
+/changes/file_15/diff.txt:-            else if (name.Contains("#"))
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            // Do the same with the above to get it decoded.
+/changes/file_15/diff.txt:+            string uriStr = Uri.UnescapeDataString(uri.GetLeftPart(UriPartial.Path)); // Remove potential query or SAS from the URI
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            // handle mismatched scheme (http vs https)
+/changes/file_15/diff.txt:+            if (uri.Scheme != baseAddress.Scheme)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                uriStr = baseAddress.Scheme + uriStr.Substring(uri.Scheme.Length);
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            if (!uriStr.StartsWith(baseAddressStr, StringComparison.OrdinalIgnoreCase))
+/changes/file_15/diff.txt:             {
+/changes/file_15/diff.txt:-                name = name.Substring(0, name.IndexOf("#"));
+/changes/file_15/diff.txt:+                throw new ArgumentException($"The input {nameof(uri)} '{uri.AbsoluteUri}' must start with the base address '{baseAddress.AbsoluteUri}'.", nameof(uri));
+/changes/file_15/diff.txt:             }
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:+            string name = uriStr.Substring(baseAddressStr.Length);
+/changes/file_15/diff.txt:+            name = name.TrimStart('/');
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            AssertSimpleBlobName(name);
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:             return name;
+/changes/file_15/diff.txt:         }
+/changes/file_15/diff.txt: 
+/changes/file_15/diff.txt:+        protected string GetName(Uri uri)
+/changes/file_15/diff.txt:+        {
+/changes/file_15/diff.txt:+            return GetName(BaseAddress, uri);
+/changes/file_15/diff.txt:+        }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+        private static void AssertSimpleBlobName(string relativeUri)
+/changes/file_15/diff.txt:+        {
+/changes/file_15/diff.txt:+            if (relativeUri.IndexOfAny(['?', '#']) >= 0)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                throw new ArgumentException($"{nameof(relativeUri)} '{relativeUri}' must not contain a fragment or query string.");
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+            // Enforce https://learn.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names
+/changes/file_15/diff.txt:+            var pieces = relativeUri.TrimStart('/').Split('/');
+/changes/file_15/diff.txt:+            foreach (var piece in pieces)
+/changes/file_15/diff.txt:+            {
+/changes/file_15/diff.txt:+                if (piece.Length == 0)
+/changes/file_15/diff.txt:+                {
+/changes/file_15/diff.txt:+                    throw new ArgumentException($"{nameof(relativeUri)} '{relativeUri}' must not have an empty path segment.");
+/changes/file_15/diff.txt:+                }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+                var decoded = Uri.UnescapeDataString(piece);
+/changes/file_15/diff.txt:+                if (decoded.StartsWith(".") || decoded.EndsWith("."))
+/changes/file_15/diff.txt:+                {
+/changes/file_15/diff.txt:+                    throw new ArgumentException($"{nameof(relativeUri)} '{relativeUri}' must not have a path segment ending in a dot.");
+/changes/file_15/diff.txt:+                }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:+                if (decoded.Contains("\\") || decoded.Contains("/"))
+/changes/file_15/diff.txt:+                {
+/changes/file_15/diff.txt:+                    throw new ArgumentException($"{nameof(relativeUri)} '{relativeUri}' must not have a path segment containing a forward slash or backslash.");
+/changes/file_15/diff.txt:+                }
+/changes/file_15/diff.txt:+            }
+/changes/file_15/diff.txt:+        }
+/changes/file_15/diff.txt:+
+/changes/file_15/diff.txt:         protected Uri GetUri(string name)
+/changes/file_15/diff.txt:         {
+/changes/file_15/diff.txt:             string address = BaseAddress.ToString();
+/changes/file_16/diff.txt:@@ -1,4 +1,4 @@
+/changes/file_16/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_16/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_16/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_16/diff.txt: 
+/changes/file_16/diff.txt: using System;
+/changes/file_16/diff.txt:@@ -98,6 +98,11 @@ public ActionResult Add()
+/changes/file_16/diff.txt:         [ValidateAntiForgeryToken]
+/changes/file_16/diff.txt:         public async Task<ActionResult> Add(AddOrganizationViewModel model)
+/changes/file_16/diff.txt:         {
+/changes/file_16/diff.txt:+            if (!ModelState.IsValid)
+/changes/file_16/diff.txt:+            {
+/changes/file_16/diff.txt:+                return View(model);
+/changes/file_16/diff.txt:+            }
+/changes/file_16/diff.txt:+
+/changes/file_16/diff.txt:             var organizationName = model.OrganizationName;
+/changes/file_16/diff.txt:             var organizationEmailAddress = model.OrganizationEmailAddress;
+/changes/file_16/diff.txt:             var adminUser = GetCurrentUser();
+/changes/file_16/diff.txt:@@ -484,4 +489,4 @@ private OrganizationMemberViewModel ToOrganizationMemberViewModel(MembershipRequ
+/changes/file_16/diff.txt:             return new OrganizationMemberViewModel(membershipRequest, avatarUrl);
+/changes/file_16/diff.txt:         }
+/changes/file_16/diff.txt:     }
+/changes/file_16/diff.txt:-}
+/changes/file_16/diff.txt:\ No newline at end of file
+/changes/file_16/diff.txt:+}
+/changes/file_17/diff.txt:@@ -12,6 +12,7 @@
+/changes/file_17/diff.txt: using Newtonsoft.Json;
+/changes/file_17/diff.txt: using Newtonsoft.Json.Linq;
+/changes/file_17/diff.txt: using NuGet.Packaging;
+/changes/file_17/diff.txt:+using NuGet.Packaging.Core;
+/changes/file_17/diff.txt: using NuGet.Packaging.Licenses;
+/changes/file_17/diff.txt: using NuGet.Services.Entities;
+/changes/file_17/diff.txt: using NuGet.Versioning;
+/changes/file_17/diff.txt:@@ -117,7 +118,7 @@ public async Task<PackageValidationResult> ValidateMetadataBeforeUploadAsync(
+/changes/file_17/diff.txt:             {
+/changes/file_17/diff.txt:                 return result;
+/changes/file_17/diff.txt:             }
+/changes/file_17/diff.txt:-            
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:             var nuspecFileEntry = nuGetPackage.GetEntry(nuGetPackage.GetNuspecFile());
+/changes/file_17/diff.txt:             using (var nuspecFileStream = await nuGetPackage.GetNuspecAsync(CancellationToken.None))
+/changes/file_17/diff.txt:             {
+/changes/file_17/diff.txt:@@ -127,6 +128,13 @@ public async Task<PackageValidationResult> ValidateMetadataBeforeUploadAsync(
+/changes/file_17/diff.txt:                 }
+/changes/file_17/diff.txt:             }
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:+            result = CheckNuspecCount(nuGetPackage);
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            if (result != null)
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                return result;
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:             result = CheckNuspecNormalized(nuGetPackage, warnings);
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:             if (result != null)
+/changes/file_17/diff.txt:@@ -134,6 +142,13 @@ public async Task<PackageValidationResult> ValidateMetadataBeforeUploadAsync(
+/changes/file_17/diff.txt:                 return result;
+/changes/file_17/diff.txt:             }
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:+            result = CheckPackageIdForBannedCharacters(packageMetadata, nuGetPackage.GetIdentity());
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            if (result != null)
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                return result;
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:             result = await CheckForUnsignedPushAfterAuthorSignedAsync(
+/changes/file_17/diff.txt:                 nuGetPackage,
+/changes/file_17/diff.txt:                 warnings);
+/changes/file_17/diff.txt:@@ -189,6 +204,22 @@ public async Task<PackageValidationResult> ValidateMetadataBeforeUploadAsync(
+/changes/file_17/diff.txt:             return PackageValidationResult.AcceptedWithWarnings(warnings);
+/changes/file_17/diff.txt:         }
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:+        private PackageValidationResult CheckNuspecCount(PackageArchiveReader nuGetPackage)
+/changes/file_17/diff.txt:+        {
+/changes/file_17/diff.txt:+            var numNuspecCandidates = nuGetPackage.GetFiles().Count(filename => filename.EndsWith(PackagingCoreConstants.NuspecExtension, StringComparison.OrdinalIgnoreCase));
+/changes/file_17/diff.txt:+            if (numNuspecCandidates > 1)
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                return PackageValidationResult.Invalid(Strings.UploadPackage_TooManyNuspecs);
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+            if (numNuspecCandidates < 1)
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                // this should have been caught earlier, but just in case, will recheck here, too
+/changes/file_17/diff.txt:+                return PackageValidationResult.Invalid(Strings.FailedToReadUploadFile);
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            return null;
+/changes/file_17/diff.txt:+        }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:         private PackageValidationResult CheckNuspecNormalized(PackageArchiveReader nuGetPackage, List<IValidationMessage> warnings)
+/changes/file_17/diff.txt:         {
+/changes/file_17/diff.txt:             try
+/changes/file_17/diff.txt:@@ -209,6 +240,77 @@ private PackageValidationResult CheckNuspecNormalized(PackageArchiveReader nuGet
+/changes/file_17/diff.txt:             return null;
+/changes/file_17/diff.txt:         }
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:+        public static PackageValidationResult CheckPackageIdForBannedCharacters(PackageMetadata packageMetadata, PackageIdentity packageIdentity)
+/changes/file_17/diff.txt:+        {
+/changes/file_17/diff.txt:+            var packageId = packageMetadata?.Id;
+/changes/file_17/diff.txt:+            if (string.IsNullOrWhiteSpace(packageId))
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                throw new ArgumentNullException(nameof(packageId));
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            // this is a sanity check to make sure that the package ID from the metadata matches the package ID from the archive reader
+/changes/file_17/diff.txt:+            if (!StringComparer.Ordinal.Equals(packageId, packageIdentity.Id))
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                throw new InvalidOperationException("The package identity in the package metadata does not match the package archive reader.");
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            // we use both the Gallery validator and the NuGet packaging validator to ensure both pass
+/changes/file_17/diff.txt:+            // these should have the same definition but we check both as a defensive measure
+/changes/file_17/diff.txt:+            if (!NuGet.Packaging.PackageIdValidator.IsValidPackageId(packageId)
+/changes/file_17/diff.txt:+                || !NuGetGallery.Packaging.PackageIdValidator.IsValidPackageId(packageId))
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            // reject package IDs that normalize using Form C to different strings
+/changes/file_17/diff.txt:+            var normalizedPackageId = packageId.Normalize(NormalizationForm.FormC);
+/changes/file_17/diff.txt:+            if (!string.Equals(packageId, normalizedPackageId, StringComparison.Ordinal))
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            foreach (var character in packageId)
+/changes/file_17/diff.txt:+            {
+/changes/file_17/diff.txt:+                // reject surrogate characters, should not be allowed by PackageIdValidator, here for defensiveness
+/changes/file_17/diff.txt:+                if (char.IsSurrogate(character))
+/changes/file_17/diff.txt:+                {
+/changes/file_17/diff.txt:+                    return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+                }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+                var lower = character.ToString().ToLowerInvariant();
+/changes/file_17/diff.txt:+                var upper = character.ToString().ToUpperInvariant();
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+                // don't allow characters that fold to multiple characters
+/changes/file_17/diff.txt:+                if (lower.Length != 1 || upper.Length != 1)
+/changes/file_17/diff.txt:+                {
+/changes/file_17/diff.txt:+                    return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+                }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+                // don't allow non separator characters that fold to invalid characters (should not be possible in practice)
+/changes/file_17/diff.txt:+                if (lower != "." && lower != "_" && lower != "-")
+/changes/file_17/diff.txt:+                {
+/changes/file_17/diff.txt:+                    if (!NuGet.Packaging.PackageIdValidator.IsValidPackageId(lower)
+/changes/file_17/diff.txt:+                        || !NuGet.Packaging.PackageIdValidator.IsValidPackageId(upper)
+/changes/file_17/diff.txt:+                        || !NuGetGallery.Packaging.PackageIdValidator.IsValidPackageId(lower)
+/changes/file_17/diff.txt:+                        || !NuGetGallery.Packaging.PackageIdValidator.IsValidPackageId(upper))
+/changes/file_17/diff.txt:+                    {
+/changes/file_17/diff.txt:+                        return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+                    }
+/changes/file_17/diff.txt:+                }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+                if (character > 0x7F)
+/changes/file_17/diff.txt:+                {
+/changes/file_17/diff.txt:+                    // don't allow non-ASCII characters that fold to ASCII
+/changes/file_17/diff.txt:+                    if (lower[0] <= 0x7F || upper[0] <= 0x7F)
+/changes/file_17/diff.txt:+                    {
+/changes/file_17/diff.txt:+                        return PackageValidationResult.Invalid(Strings.UploadPackage_PackageIdNormalizationInvalid);
+/changes/file_17/diff.txt:+                    }
+/changes/file_17/diff.txt:+                }
+/changes/file_17/diff.txt:+            }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:+            return null;
+/changes/file_17/diff.txt:+        }
+/changes/file_17/diff.txt:+
+/changes/file_17/diff.txt:         private async Task<PackageValidationResult> CheckLicenseMetadataAsync(PackageArchiveReader nuGetPackage, List<IValidationMessage> warnings, User user)
+/changes/file_17/diff.txt:         {
+/changes/file_17/diff.txt:             var nuspecReader = GetNuspecReader(nuGetPackage);
+/changes/file_17/diff.txt:@@ -645,7 +747,7 @@ private bool IsMalformedDeprecationUrl(string licenseUrl)
+/changes/file_17/diff.txt:             // nuget.exe 4.9.0 and its dotnet and msbuild counterparts encode spaces as "+"
+/changes/file_17/diff.txt:             // when generating legacy license URL, which is bad. We explicitly forbid such
+/changes/file_17/diff.txt:             // URLs. On the other hand, if license expression does not contain spaces they
+/changes/file_17/diff.txt:-            // generate good URLs which we don't want to reject. This method detects the 
+/changes/file_17/diff.txt:+            // generate good URLs which we don't want to reject. This method detects the
+/changes/file_17/diff.txt:             // case when spaces are in the expression in a meaningful way.
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:             if (Uri.TryCreate(licenseUrl, UriKind.Absolute, out var url))
+/changes/file_17/diff.txt:@@ -805,7 +907,7 @@ private PackageValidationResult CheckPackageDuplicatedEntries(PackageArchiveRead
+/changes/file_17/diff.txt:         }
+/changes/file_17/diff.txt: 
+/changes/file_17/diff.txt:         /// <summary>
+/changes/file_17/diff.txt:-        /// Validate repository metadata: 
+/changes/file_17/diff.txt:+        /// Validate repository metadata:
+/changes/file_17/diff.txt:         /// 1. If the type is "git" - allow the URL scheme "git://" or "https://". We will translate "git://" to "https://" at display time for known domains.
+/changes/file_17/diff.txt:         /// 2. For types other then "git" - URL scheme should be "https://"
+/changes/file_17/diff.txt:         /// </summary>
+/changes/file_18/diff.txt:@@ -3083,6 +3083,15 @@ public static string UploadPackage_PackageContainsTooManyEntries {
+/changes/file_18/diff.txt:             }
+/changes/file_18/diff.txt:         }
+/changes/file_18/diff.txt:         
+/changes/file_18/diff.txt:+        /// <summary>
+/changes/file_18/diff.txt:+        ///   Looks up a localized string similar to The package ID must be Unicode normalized, must not contain surrogate pairs, and must not expand or create invalid characters when converted to upper or lower case..
+/changes/file_18/diff.txt:+        /// </summary>
+/changes/file_18/diff.txt:+        public static string UploadPackage_PackageIdNormalizationInvalid {
+/changes/file_18/diff.txt:+            get {
+/changes/file_18/diff.txt:+                return ResourceManager.GetString("UploadPackage_PackageIdNormalizationInvalid", resourceCulture);
+/changes/file_18/diff.txt:+            }
+/changes/file_18/diff.txt:+        }
+/changes/file_18/diff.txt:+        
+/changes/file_18/diff.txt:         /// <summary>
+/changes/file_18/diff.txt:         ///   Looks up a localized string similar to This package must be signed with a registered certificate..
+/changes/file_18/diff.txt:         /// </summary>
+/changes/file_18/diff.txt:@@ -3156,6 +3165,15 @@ public static string UploadPackage_SymbolsPackageNotAllowed {
+/changes/file_18/diff.txt:             }
+/changes/file_18/diff.txt:         }
+/changes/file_18/diff.txt:         
+/changes/file_18/diff.txt:+        /// <summary>
+/changes/file_18/diff.txt:+        ///   Looks up a localized string similar to The package contains multiple nuspec files. Please make sure only one nuspec file is present in the package..
+/changes/file_18/diff.txt:+        /// </summary>
+/changes/file_18/diff.txt:+        public static string UploadPackage_TooManyNuspecs {
+/changes/file_18/diff.txt:+            get {
+/changes/file_18/diff.txt:+                return ResourceManager.GetString("UploadPackage_TooManyNuspecs", resourceCulture);
+/changes/file_18/diff.txt:+            }
+/changes/file_18/diff.txt:+        }
+/changes/file_18/diff.txt:+        
+/changes/file_18/diff.txt:         /// <summary>
+/changes/file_18/diff.txt:         ///   Looks up a localized string similar to Unsupported icon image format. Only PNG and JPG images are supported..
+/changes/file_18/diff.txt:         /// </summary>
+/changes/file_19/diff.txt:@@ -1272,6 +1272,9 @@ The {1} Team</value>
+/changes/file_19/diff.txt:   <data name="UploadPackage_NuspecIsNotNormalized" xml:space="preserve">
+/changes/file_19/diff.txt:     <value>The package nuspec file is not compliant with the normalization form C (NFC).</value>
+/changes/file_19/diff.txt:   </data>
+/changes/file_19/diff.txt:+  <data name="UploadPackage_PackageIdNormalizationInvalid" xml:space="preserve">
+/changes/file_19/diff.txt:+    <value>The package ID must be Unicode normalized, must not contain surrogate pairs, and must not expand or create invalid characters when converted to upper or lower case.</value>
+/changes/file_19/diff.txt:+  </data>
+/changes/file_19/diff.txt:   <data name="SearchResult_ExactMatch" xml:space="preserve">
+/changes/file_19/diff.txt:     <value>exact match</value>
+/changes/file_19/diff.txt:   </data>
+/changes/file_19/diff.txt:@@ -1305,4 +1308,7 @@ The {1} Team</value>
+/changes/file_19/diff.txt:   <data name="TrustedPublisher_Unexpected" xml:space="preserve">
+/changes/file_19/diff.txt:     <value>Unexpected trusted publisher.</value>
+/changes/file_19/diff.txt:   </data>
+/changes/file_19/diff.txt:-</root>
+/changes/file_19/diff.txt:+  <data name="UploadPackage_TooManyNuspecs" xml:space="preserve">
+/changes/file_19/diff.txt:+    <value>The package contains multiple nuspec files. Please make sure only one nuspec file is present in the package.</value>
+/changes/file_19/diff.txt:+  </data>
+/changes/file_19/diff.txt:+</root>
+/changes/file_19/diff.txt:\ No newline at end of file
+/changes/file_20/diff.txt:@@ -135,6 +135,12 @@
+/changes/file_20/diff.txt:     <None Update="TestData\PackageTypeWhiteSpaceVersion.nupkg.testdata">
+/changes/file_20/diff.txt:       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+/changes/file_20/diff.txt:     </None>
+/changes/file_20/diff.txt:+    <None Update="TestData\RepositoryServiceableDevDependency.json">
+/changes/file_20/diff.txt:+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+/changes/file_20/diff.txt:+    </None>
+/changes/file_20/diff.txt:+    <None Update="TestData\RepositoryServiceableDevDependency.nupkg.testdata">
+/changes/file_20/diff.txt:+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+/changes/file_20/diff.txt:+    </None>
+/changes/file_20/diff.txt:     <None Update="TestData\TestPackage.IconAndIconUrl.0.4.2.nupkg.testdata">
+/changes/file_20/diff.txt:       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+/changes/file_20/diff.txt:     </None>
+/changes/file_21/diff.txt:@@ -20,6 +20,7 @@
+/changes/file_21/diff.txt: using NgTests;
+/changes/file_21/diff.txt: using NgTests.Data;
+/changes/file_21/diff.txt: using NgTests.Infrastructure;
+/changes/file_21/diff.txt:+using NuGet.Packaging.Core;
+/changes/file_21/diff.txt: using NuGet.Protocol.Catalog;
+/changes/file_21/diff.txt: using NuGet.Services.Metadata.Catalog;
+/changes/file_21/diff.txt: using NuGet.Services.Metadata.Catalog.Dnx;
+/changes/file_21/diff.txt:@@ -30,8 +31,17 @@ namespace CatalogTests.Dnx
+/changes/file_21/diff.txt: {
+/changes/file_21/diff.txt:     public class DnxCatalogCollectorTests
+/changes/file_21/diff.txt:     {
+/changes/file_21/diff.txt:-        private static readonly Uri _baseUri = new Uri("https://nuget.test");
+/changes/file_21/diff.txt:-        private const string _nuspecData = "nuspec data";
+/changes/file_21/diff.txt:+        private static readonly Uri _baseUri = new Uri("https://tempuri.org");
+/changes/file_21/diff.txt:+        private const string _nuspecData =
+/changes/file_21/diff.txt:+            """
+/changes/file_21/diff.txt:+            <?xml version="1.0" encoding="utf-8"?>
+/changes/file_21/diff.txt:+            <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+/changes/file_21/diff.txt:+                <metadata>
+/changes/file_21/diff.txt:+                    <id>UnlistedPackage</id>
+/changes/file_21/diff.txt:+                    <version>1.0.0</version>
+/changes/file_21/diff.txt:+                </metadata>
+/changes/file_21/diff.txt:+            </package>
+/changes/file_21/diff.txt:+            """;
+/changes/file_21/diff.txt:         private const int _maxDegreeOfParallelism = 20;
+/changes/file_21/diff.txt:         private static readonly HttpContent _noContent = new ByteArrayContent(new byte[0]);
+/changes/file_21/diff.txt:         private const IAzureStorage _nullPreferredPackageSourceStorage = null;
+/changes/file_21/diff.txt:@@ -135,7 +145,7 @@ public void Constructor_WhenStorageFactoryIsNull_Throws()
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 var exception = Assert.Throws<ArgumentNullException>(
+/changes/file_21/diff.txt:                     () => new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                        new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                        new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                         storageFactory,
+/changes/file_21/diff.txt:                         _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                         contentBaseAddress: null,
+/changes/file_21/diff.txt:@@ -157,7 +167,7 @@ public void Constructor_WhenTelemetryServiceIsNull_Throws()
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 var exception = Assert.Throws<ArgumentNullException>(
+/changes/file_21/diff.txt:                     () => new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                        new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                        new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                         new TestStorageFactory(),
+/changes/file_21/diff.txt:                         _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                         contentBaseAddress: null,
+/changes/file_21/diff.txt:@@ -181,7 +191,7 @@ public void Constructor_WhenLoggerIsNull_Throws()
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 var exception = Assert.Throws<ArgumentNullException>(
+/changes/file_21/diff.txt:                     () => new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                        new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                        new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                         new TestStorageFactory(),
+/changes/file_21/diff.txt:                         _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                         null,
+/changes/file_21/diff.txt:@@ -205,7 +215,7 @@ public void Constructor_WhenMaxDegreeOfParallelismIsLessThanOne_Throws(int maxDe
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 var exception = Assert.Throws<ArgumentOutOfRangeException>(
+/changes/file_21/diff.txt:                     () => new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                        new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                        new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                         new TestStorageFactory(),
+/changes/file_21/diff.txt:                         _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                         contentBaseAddress: null,
+/changes/file_21/diff.txt:@@ -228,7 +238,7 @@ public void Constructor_WhenCatalogClientFactoryIsNull_Throws()
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 var exception = Assert.Throws<ArgumentNullException>(
+/changes/file_21/diff.txt:                     () => new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                        new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                        new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                         new TestStorageFactory(),
+/changes/file_21/diff.txt:                         _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                         null,
+/changes/file_21/diff.txt:@@ -247,7 +257,7 @@ public void Constructor_WhenCatalogClientFactoryIsNull_Throws()
+/changes/file_21/diff.txt:         public void Constructor_WhenHandlerFuncIsNull_InstantiatesClass()
+/changes/file_21/diff.txt:         {
+/changes/file_21/diff.txt:             new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                 new TestStorageFactory(),
+/changes/file_21/diff.txt:                 _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                 contentBaseAddress: null,
+/changes/file_21/diff.txt:@@ -265,7 +275,7 @@ public void Constructor_WhenHttpClientTimeoutIsNull_InstantiatesClass()
+/changes/file_21/diff.txt:             using (var clientHandler = new HttpClientHandler())
+/changes/file_21/diff.txt:             {
+/changes/file_21/diff.txt:                 new DnxCatalogCollector(
+/changes/file_21/diff.txt:-                    new Uri("https://nuget.test"),
+/changes/file_21/diff.txt:+                    new Uri("https://tempuri.org"),
+/changes/file_21/diff.txt:                     new TestStorageFactory(),
+/changes/file_21/diff.txt:                     _nullPreferredPackageSourceStorage,
+/changes/file_21/diff.txt:                     contentBaseAddress: null,
+/changes/file_21/diff.txt:@@ -279,7 +289,7 @@ public void Constructor_WhenHttpClientTimeoutIsNull_InstantiatesClass()
+/changes/file_21/diff.txt:         }
+/changes/file_21/diff.txt: 
+/changes/file_21/diff.txt:         [Fact]
+/changes/file_21/diff.txt:-        public async Task RunAsync_WhenPackageDoesNotHaveNuspec_SkipsPackage()
+/changes/file_21/diff.txt:+        public async Task RunAsync_WhenPackageDoesNotHaveNuspec_ErrorsOut()
+/changes/file_21/diff.txt:         {
+/changes/file_21/diff.txt:             var zipWithNoNuspec = CreateZipStreamWithEntry("readme.txt", "content");
+/changes/file_21/diff.txt:             var indexJsonUri = _catalogToDnxStorage.ResolveUri("/listedpackage/index.json");
+/changes/file_21/diff.txt:@@ -294,13 +304,10 @@ public async Task RunAsync_WhenPackageDoesNotHaveNuspec_SkipsPackage()
+/changes/file_21/diff.txt:             var front = new DurableCursor(_cursorJsonUri, _catalogToDnxStorage, MemoryCursor.MinValue);
+/changes/file_21/diff.txt:             ReadCursor back = MemoryCursor.CreateMax();
+/changes/file_21/diff.txt: 
+/changes/file_21/diff.txt:-            await _target.RunAsync(front, back, CancellationToken.None);
+/changes/file_21/diff.txt:-
+/changes/file_21/diff.txt:-            Assert.Single(_catalogToDnxStorage.Content);
+/changes/file_21/diff.txt:-            Assert.True(_catalogToDnxStorage.Content.ContainsKey(_cursorJsonUri));
+/changes/file_21/diff.txt:-            Assert.False(_catalogToDnxStorage.Content.ContainsKey(indexJsonUri));
+/changes/file_21/diff.txt:-            Assert.True(_catalogToDnxStorage.ContentBytes.ContainsKey(_cursorJsonUri));
+/changes/file_21/diff.txt:-            Assert.False(_catalogToDnxStorage.ContentBytes.ContainsKey(indexJsonUri));
+/changes/file_21/diff.txt:+            var ex = await Assert.ThrowsAsync<BatchProcessingException>(() => _target.RunAsync(front, back, CancellationToken.None));
+/changes/file_21/diff.txt:+            var innerEx = Assert.IsType<PackagingException>(ex.InnerException);
+/changes/file_21/diff.txt:+            Assert.StartsWith("The package is missing the required nuspec file.", innerEx.Message);
+/changes/file_21/diff.txt:+            Assert.Empty(_catalogToDnxStorage.Content);
+/changes/file_21/diff.txt:         }
+/changes/file_21/diff.txt: 
+/changes/file_21/diff.txt:         [Fact]
+/changes/file_21/diff.txt:@@ -777,7 +784,7 @@ public async Task RunAsync_WhenExceptionOccurs_DoesNotSkipPackage(string catalog
+/changes/file_21/diff.txt:                 request => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(File.OpenRead("Packages\\ListedPackage.1.0.1.zip")) }));
+/changes/file_21/diff.txt:             _mockServer.SetAction(
+/changes/file_21/diff.txt:                 "/packages/anotherpackage.1.0.0.nupkg",
+/changes/file_21/diff.txt:-                request => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(File.OpenRead("Packages\\ListedPackage.1.0.0.zip")) }));
+/changes/file_21/diff.txt:+                request => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(File.OpenRead("Packages\\AnotherPackage.1.0.0.zip")) }));
+/changes/file_21/diff.txt: 
+/changes/file_21/diff.txt:             // Make the first request for a catalog leaf node fail. This will cause the registration collector
+/changes/file_21/diff.txt:             // to fail the first time but pass the second time.
+/changes/file_21/diff.txt:@@ -1245,4 +1252,4 @@ public Task<bool> HasPropertiesAsync(Uri blobUri, string contentType, string cac
+/changes/file_21/diff.txt:             }
+/changes/file_21/diff.txt:         }
+/changes/file_21/diff.txt:     }
+/changes/file_21/diff.txt:-}
+/changes/file_21/diff.txt:\ No newline at end of file
+/changes/file_21/diff.txt:+}
+/changes/file_22/diff.txt:@@ -1,6 +1,7 @@
+/changes/file_22/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_22/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_22/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_22/diff.txt: 
+/changes/file_22/diff.txt:+using System;
+/changes/file_22/diff.txt: using NuGet.Services.Metadata.Catalog.Helpers;
+/changes/file_22/diff.txt: using Xunit;
+/changes/file_22/diff.txt: 
+/changes/file_22/diff.txt:@@ -13,7 +14,6 @@ public class NuGetVersionUtilityTests
+/changes/file_22/diff.txt:         [InlineData("1.0.0-alpha.1", "1.0.0-alpha.1")]
+/changes/file_22/diff.txt:         [InlineData("1.0.0-alpha+githash", "1.0.0-alpha")]
+/changes/file_22/diff.txt:         [InlineData("1.0.0.0", "1.0.0")]
+/changes/file_22/diff.txt:-        [InlineData("invalid", "invalid")]
+/changes/file_22/diff.txt:         public void NormalizeVersion(string input, string expected)
+/changes/file_22/diff.txt:         {
+/changes/file_22/diff.txt:             // Arrange & Act
+/changes/file_22/diff.txt:@@ -23,6 +23,15 @@ public void NormalizeVersion(string input, string expected)
+/changes/file_22/diff.txt:             Assert.Equal(expected, actual);
+/changes/file_22/diff.txt:         }
+/changes/file_22/diff.txt: 
+/changes/file_22/diff.txt:+        [Theory]
+/changes/file_22/diff.txt:+        [InlineData("")]
+/changes/file_22/diff.txt:+        [InlineData("invalid")]
+/changes/file_22/diff.txt:+        public void NormalizeVersion_Invalid(string input)
+/changes/file_22/diff.txt:+        {
+/changes/file_22/diff.txt:+            // Arrange & Act & Assert
+/changes/file_22/diff.txt:+            Assert.Throws<InvalidOperationException>(() => NuGetVersionUtility.NormalizeVersion(input));
+/changes/file_22/diff.txt:+        }
+/changes/file_22/diff.txt:+
+/changes/file_22/diff.txt:         [Theory]
+/changes/file_22/diff.txt:         [InlineData("[1.0.0-alpha, )", "[1.0.0-alpha, )")]
+/changes/file_22/diff.txt:         [InlineData("1.0.0-alpha.1", "[1.0.0-alpha.1, )")]
+/changes/file_23/diff.txt:@@ -1,4 +1,4 @@
+/changes/file_23/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_23/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_23/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_23/diff.txt: 
+/changes/file_23/diff.txt: using System;
+/changes/file_23/diff.txt:@@ -32,8 +32,8 @@ public void GetPackageFileName_WhenPackageVersionIsNullOrEmpty_Throws(string pac
+/changes/file_23/diff.txt:         }
+/changes/file_23/diff.txt: 
+/changes/file_23/diff.txt:         [Theory]
+/changes/file_23/diff.txt:-        [InlineData("a", "b")]
+/changes/file_23/diff.txt:-        [InlineData("A", "B")]
+/changes/file_23/diff.txt:+        [InlineData("a", "1.0.0")]
+/changes/file_23/diff.txt:+        [InlineData("A", "2.0.0")]
+/changes/file_23/diff.txt:         public void GetPackageFileName_WithValidArguments_ReturnsFileName(string packageId, string packageVersion)
+/changes/file_23/diff.txt:         {
+/changes/file_23/diff.txt:             var packageFileName = PackageUtility.GetPackageFileName(packageId, packageVersion);
+/changes/file_23/diff.txt:@@ -41,4 +41,4 @@ public void GetPackageFileName_WithValidArguments_ReturnsFileName(string package
+/changes/file_23/diff.txt:             Assert.Equal($"{packageId}.{packageVersion}.nupkg", packageFileName);
+/changes/file_23/diff.txt:         }
+/changes/file_23/diff.txt:     }
+/changes/file_23/diff.txt:-}
+/changes/file_23/diff.txt:\ No newline at end of file
+/changes/file_23/diff.txt:+}
+/changes/file_24/diff.txt:@@ -5,9 +5,10 @@
+/changes/file_24/diff.txt: using System.IO;
+/changes/file_24/diff.txt: using System.IO.Compression;
+/changes/file_24/diff.txt: using System.Linq;
+/changes/file_24/diff.txt:+using NuGet.Packaging.Core;
+/changes/file_24/diff.txt: using NuGet.Services.Metadata.Catalog;
+/changes/file_24/diff.txt:-using Xunit;
+/changes/file_24/diff.txt: using VDS.RDF;
+/changes/file_24/diff.txt:+using Xunit;
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt: namespace CatalogTests.Helpers
+/changes/file_24/diff.txt: {
+/changes/file_24/diff.txt:@@ -62,10 +63,10 @@ public void GetNupkgMetadata_WhenNuspecNotFound_Throws()
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:                 stream.Position = 0;
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                var exception = Assert.Throws<InvalidDataException>(
+/changes/file_24/diff.txt:+                var exception = Assert.Throws<PackagingException>(
+/changes/file_24/diff.txt:                       () => Utils.GetNupkgMetadata(stream, packageHash: null));
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                Assert.StartsWith("Unable to find nuspec", exception.Message);
+/changes/file_24/diff.txt:+                Assert.StartsWith("The package is missing the required nuspec file.", exception.Message);
+/changes/file_24/diff.txt:             }
+/changes/file_24/diff.txt:         }
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:@@ -108,10 +109,10 @@ public void GetNupkgMetadata_WhenNuspecInSubdirectoryWithForwardSlash_Throws()
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:                 stream.Position = 0;
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                var exception = Assert.Throws<InvalidDataException>(
+/changes/file_24/diff.txt:+                var exception = Assert.Throws<PackagingException>(
+/changes/file_24/diff.txt:                       () => Utils.GetNupkgMetadata(stream, packageHash: null));
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                Assert.StartsWith("Unable to find nuspec", exception.Message);
+/changes/file_24/diff.txt:+                Assert.StartsWith("The package is missing the required nuspec file.", exception.Message);
+/changes/file_24/diff.txt:             }
+/changes/file_24/diff.txt:         }
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:@@ -131,10 +132,10 @@ public void GetNupkgMetadata_WhenNuspecInSubdirectoryWithBackslash_Throws()
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:                 stream.Position = 0;
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                var exception = Assert.Throws<InvalidDataException>(
+/changes/file_24/diff.txt:+                var exception = Assert.Throws<PackagingException>(
+/changes/file_24/diff.txt:                       () => Utils.GetNupkgMetadata(stream, packageHash: null));
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:-                Assert.StartsWith("Unable to find nuspec", exception.Message);
+/changes/file_24/diff.txt:+                Assert.StartsWith("The package is missing the required nuspec file.", exception.Message);
+/changes/file_24/diff.txt:             }
+/changes/file_24/diff.txt:         }
+/changes/file_24/diff.txt: 
+/changes/file_24/diff.txt:@@ -321,4 +322,4 @@ public void GetNupkgMetadataWithReadme_ProcessesCorrectly(string packageFilename
+/changes/file_24/diff.txt:             Assert.Equal("readme.md", result.Value);
+/changes/file_24/diff.txt:         }
+/changes/file_24/diff.txt:     }
+/changes/file_24/diff.txt:-}
+/changes/file_24/diff.txt:\ No newline at end of file
+/changes/file_24/diff.txt:+}
+/changes/file_25/diff.txt:@@ -41,6 +41,7 @@ public class PackageCatalogItemTests
+/changes/file_25/diff.txt:         [InlineData("TestPackageReadmeFileWithFileType")]
+/changes/file_25/diff.txt:         [InlineData("DuplicateReadmeFiles")]
+/changes/file_25/diff.txt:         [InlineData("DuplicateLibFilesDifferentPathSeparators")]
+/changes/file_25/diff.txt:+        [InlineData("RepositoryServiceableDevDependency")]
+/changes/file_25/diff.txt:         public void CreateContent_ProducesExpectedJson(string packageName)
+/changes/file_25/diff.txt:         {
+/changes/file_25/diff.txt:             // Arrange
+/changes/file_26/diff.txt:@@ -17,7 +17,10 @@
+/changes/file_26/diff.txt:   "packageHashAlgorithm": "SHA512",
+/changes/file_26/diff.txt:   "packageSize": 5226,
+/changes/file_26/diff.txt:   "published": "2017-01-03T08:15:00Z",
+/changes/file_26/diff.txt:-  "repository": "",
+/changes/file_26/diff.txt:+  "repository": {
+/changes/file_26/diff.txt:+    "@id": "http://example/data/2017.01.04.08.15.00/duplicatelibfilesdifferentpathseparators.1.0.0.json#repository",
+/changes/file_26/diff.txt:+    "type": "git"
+/changes/file_26/diff.txt:+  },
+/changes/file_26/diff.txt:   "verbatimVersion": "1.0.0",
+/changes/file_26/diff.txt:   "version": "1.0.0",
+/changes/file_26/diff.txt:   "dependencyGroups": [
+/changes/file_27/diff.txt:@@ -18,7 +18,10 @@
+/changes/file_27/diff.txt:   "packageSize": 3599,
+/changes/file_27/diff.txt:   "published": "2017-01-03T08:15:00Z",
+/changes/file_27/diff.txt:   "readmeFile": "README.md",
+/changes/file_27/diff.txt:-  "repository": "",
+/changes/file_27/diff.txt:+  "repository": {
+/changes/file_27/diff.txt:+    "@id": "http://example/data/2017.01.04.08.15.00/duplicatereadmefiles.1.0.0.json#repository",
+/changes/file_27/diff.txt:+    "type": "git"
+/changes/file_27/diff.txt:+  },
+/changes/file_27/diff.txt:   "verbatimVersion": "1.0.0",
+/changes/file_27/diff.txt:   "version": "1.0.0",
+/changes/file_27/diff.txt:   "dependencyGroups": [
+/changes/file_28/diff.txt:@@ -0,0 +1,107 @@
+/changes/file_28/diff.txt:+{
+/changes/file_28/diff.txt:+  "@id": "http://example/data/2017.01.04.08.15.00/repositoryserviceabledevdependency.1.0.0.json",
+/changes/file_28/diff.txt:+  "@type": [
+/changes/file_28/diff.txt:+    "PackageDetails",
+/changes/file_28/diff.txt:+    "catalog:Permalink"
+/changes/file_28/diff.txt:+  ],
+/changes/file_28/diff.txt:+  "authors": "RepositoryServiceableDevDependency",
+/changes/file_28/diff.txt:+  "catalog:commitId": "4aee0ef4-a039-4460-bd5f-98f944e33289",
+/changes/file_28/diff.txt:+  "catalog:commitTimeStamp": "2017-01-04T08:15:00Z",
+/changes/file_28/diff.txt:+  "created": "2017-01-01T08:15:00Z",
+/changes/file_28/diff.txt:+  "description": "Package Description",
+/changes/file_28/diff.txt:+  "developmentDependency": true,
+/changes/file_28/diff.txt:+  "id": "RepositoryServiceableDevDependency",
+/changes/file_28/diff.txt:+  "isPrerelease": false,
+/changes/file_28/diff.txt:+  "lastEdited": "2017-01-02T08:15:00Z",
+/changes/file_28/diff.txt:+  "licenseExpression": "MIT",
+/changes/file_28/diff.txt:+  "licenseUrl": "https://licenses.nuget.org/MIT",
+/changes/file_28/diff.txt:+  "listed": true,
+/changes/file_28/diff.txt:+  "packageHash": "jmtrYklD4l0bPFSk+SM4K+zqhxyQDYq1eO6+ecVRXhIqsvFH0y4JKYQ22cb4SGNRSWamYV2f+FgLzb+1Wg1G9A==",
+/changes/file_28/diff.txt:+  "packageHashAlgorithm": "SHA512",
+/changes/file_28/diff.txt:+  "packageSize": 5411,
+/changes/file_28/diff.txt:+  "published": "2017-01-03T08:15:00Z",
+/changes/file_28/diff.txt:+  "repository": {
+/changes/file_28/diff.txt:+    "@id": "http://example/data/2017.01.04.08.15.00/repositoryserviceabledevdependency.1.0.0.json#repository",
+/changes/file_28/diff.txt:+    "branch": "main",
+/changes/file_28/diff.txt:+    "commit": "9e6e7580dbcb7176f5cf0626854374af7a382acc",
+/changes/file_28/diff.txt:+    "type": "git",
+/changes/file_28/diff.txt:+    "url": "https://github.com/NuGet/NuGetGallery.git"
+/changes/file_28/diff.txt:+  },
+/changes/file_28/diff.txt:+  "requireLicenseAcceptance": true,
+/changes/file_28/diff.txt:+  "serviceable": true,
+/changes/file_28/diff.txt:+  "verbatimVersion": "1.0.0",
+/changes/file_28/diff.txt:+  "version": "1.0.0",
+/changes/file_28/diff.txt:+  "dependencyGroups": [
+/changes/file_28/diff.txt:+    {
+/changes/file_28/diff.txt:+      "@id": "http://example/data/2017.01.04.08.15.00/repositoryserviceabledevdependency.1.0.0.json#dependencygroup/net8.0",
+/changes/file_28/diff.txt:+      "@type": "PackageDependencyGroup",
+/changes/file_28/diff.txt:+      "targetFramework": "net8.0"
+/changes/file_28/diff.txt:+    }
+/changes/file_28/diff.txt:+  ],
+/changes/file_28/diff.txt:+  "packageEntries": [
+/changes/file_28/diff.txt:+    {
+/changes/file_28/diff.txt:+      "@id": "http://example/data/2017.01.04.08.15.00/repositoryserviceabledevdependency.1.0.0.json#RepositoryServiceableDevDependency.nuspec",
+/changes/file_28/diff.txt:+      "@type": "PackageEntry",
+/changes/file_28/diff.txt:+      "compressedLength": 430,
+/changes/file_28/diff.txt:+      "fullName": "RepositoryServiceableDevDependency.nuspec",
+/changes/file_28/diff.txt:+      "length": 839,
+/changes/file_28/diff.txt:+      "name": "RepositoryServiceableDevDependency.nuspec"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    {
+/changes/file_28/diff.txt:+      "@id": "http://example/data/2017.01.04.08.15.00/repositoryserviceabledevdependency.1.0.0.json#lib/net8.0/DuplicateLibFilesDifferentPathSeparators.dll",
+/changes/file_28/diff.txt:+      "@type": "PackageEntry",
+/changes/file_28/diff.txt:+      "compressedLength": 1484,
+/changes/file_28/diff.txt:+      "fullName": "lib/net8.0/DuplicateLibFilesDifferentPathSeparators.dll",
+/changes/file_28/diff.txt:+      "length": 4608,
+/changes/file_28/diff.txt:+      "name": "DuplicateLibFilesDifferentPathSeparators.dll"
+/changes/file_28/diff.txt:+    }
+/changes/file_28/diff.txt:+  ],
+/changes/file_28/diff.txt:+  "@context": {
+/changes/file_28/diff.txt:+    "@vocab": "http://schema.nuget.org/schema#",
+/changes/file_28/diff.txt:+    "catalog": "http://schema.nuget.org/catalog#",
+/changes/file_28/diff.txt:+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+/changes/file_28/diff.txt:+    "dependencies": {
+/changes/file_28/diff.txt:+      "@id": "dependency",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "dependencyGroups": {
+/changes/file_28/diff.txt:+      "@id": "dependencyGroup",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "packageEntries": {
+/changes/file_28/diff.txt:+      "@id": "packageEntry",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "packageTypes": {
+/changes/file_28/diff.txt:+      "@id": "packageType",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "supportedFrameworks": {
+/changes/file_28/diff.txt:+      "@id": "supportedFramework",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "tags": {
+/changes/file_28/diff.txt:+      "@id": "tag",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "vulnerabilities": {
+/changes/file_28/diff.txt:+      "@id": "vulnerability",
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "published": {
+/changes/file_28/diff.txt:+      "@type": "xsd:dateTime"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "created": {
+/changes/file_28/diff.txt:+      "@type": "xsd:dateTime"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "lastEdited": {
+/changes/file_28/diff.txt:+      "@type": "xsd:dateTime"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "catalog:commitTimeStamp": {
+/changes/file_28/diff.txt:+      "@type": "xsd:dateTime"
+/changes/file_28/diff.txt:+    },
+/changes/file_28/diff.txt:+    "reasons": {
+/changes/file_28/diff.txt:+      "@container": "@set"
+/changes/file_28/diff.txt:+    }
+/changes/file_28/diff.txt:+  }
+/changes/file_28/diff.txt:+}
+/changes/file_28/diff.txt:\ No newline at end of file
+/changes/file_29/diff.txt:Binary files /dev/null and b/tests/CatalogTests/TestData/RepositoryServiceableDevDependency.nupkg.testdata differ
+/changes/file_30/diff.txt:@@ -1,4 +1,4 @@
+/changes/file_30/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_30/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_30/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_30/diff.txt: 
+/changes/file_30/diff.txt: using System;
+/changes/file_30/diff.txt:@@ -1439,7 +1439,7 @@ private PackageDeletion AddDeletedPackage(
+/changes/file_30/diff.txt:             var packageId = operation.Package.Id.ToLowerInvariant();
+/changes/file_30/diff.txt:             var packageVersion = operation.Package.Version.ToNormalizedString().ToLowerInvariant();
+/changes/file_30/diff.txt:             var fileNamePostfix = isSoftDelete ? "softdelete.audit.v1.json" : "Deleted.audit.v1.json";
+/changes/file_30/diff.txt:-            var uri = new Uri($"https://nuget.test/auditing/{packageId}/{packageVersion}-{fileNamePostfix}");
+/changes/file_30/diff.txt:+            var uri = new Uri($"https://unit.test/auditing/{packageId}/{packageVersion}-{fileNamePostfix}");
+/changes/file_30/diff.txt: 
+/changes/file_30/diff.txt:             _auditingStorage.Content.TryAdd(uri, new JTokenStorageContent(auditRecord));
+/changes/file_30/diff.txt: 
+/changes/file_30/diff.txt:@@ -2121,4 +2121,4 @@ internal PackageDeletion(Uri uri, JObject json, DateTimeOffset deletionTime)
+/changes/file_30/diff.txt:             }
+/changes/file_30/diff.txt:         }
+/changes/file_30/diff.txt:     }
+/changes/file_30/diff.txt:-}
+/changes/file_30/diff.txt:\ No newline at end of file
+/changes/file_30/diff.txt:+}
+/changes/file_31/diff.txt:@@ -19,6 +19,9 @@
+/changes/file_31/diff.txt:       <Link>Packages\TestPackage.SemVer2.1.0.0-alpha.1.nupkg</Link>
+/changes/file_31/diff.txt:       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+/changes/file_31/diff.txt:     </None>
+/changes/file_31/diff.txt:+    <None Update="Packages\AnotherPackage.1.0.0.zip">
+/changes/file_31/diff.txt:+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+/changes/file_31/diff.txt:+    </None>
+/changes/file_31/diff.txt:     <None Update="Packages\ListedPackage.1.0.0.zip">
+/changes/file_31/diff.txt:       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+/changes/file_31/diff.txt:     </None>
+/changes/file_32/diff.txt:Binary files /dev/null and b/tests/NgTests/Packages/AnotherPackage.1.0.0.zip differ
+/changes/file_33/diff.txt:@@ -217,7 +217,7 @@ public async Task Save(bool overwrite, bool exists, int calledTimes)
+/changes/file_33/diff.txt:                 .Returns(_blobClientMock.Object);
+/changes/file_33/diff.txt:             var azureStorage = new AzureStorage(_blobServiceClientFactoryMock.Object, "containerName", "path", new Uri("http://baseAddress"), initializeContainer: true, enablePublicAccess: false, _loggerMock.Object);
+/changes/file_33/diff.txt: 
+/changes/file_33/diff.txt:-            await azureStorage.Save(new Uri("http://testUri.com/blob.json"), new StringStorageContent("content"), overwrite: overwrite, CancellationToken.None);
+/changes/file_33/diff.txt:+            await azureStorage.Save(new Uri("http://baseAddress/blob.json"), new StringStorageContent("content"), overwrite: overwrite, CancellationToken.None);
+/changes/file_33/diff.txt: 
+/changes/file_33/diff.txt:             _blobClientMock.Verify(bcm => bcm.SetHttpHeadersAsync(It.IsAny<BlobHttpHeaders>(), It.IsAny<BlobRequestConditions>(), It.IsAny<CancellationToken>()), Times.Exactly(calledTimes));
+/changes/file_33/diff.txt:             _blobClientMock.Verify(bcm => bcm.UploadAsync(It.IsAny<Stream>(), It.IsAny<BlobUploadOptions>(), It.IsAny<CancellationToken>()), Times.Exactly(calledTimes));
+/changes/file_34/diff.txt:@@ -0,0 +1,159 @@
+/changes/file_34/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_34/diff.txt:+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+using System;
+/changes/file_34/diff.txt:+using Xunit;
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+namespace NuGet.Services.Storage.Tests
+/changes/file_34/diff.txt:+{
+/changes/file_34/diff.txt:+    public class StorageFacts
+/changes/file_34/diff.txt:+    {
+/changes/file_34/diff.txt:+        public class TheGetNameMethod
+/changes/file_34/diff.txt:+        {
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/foo/bar/file.txt", "foo/bar/file.txt")]
+/changes/file_34/diff.txt:+            public void ExtractsNameFromUri(string uri, string expectedName)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri("https://example.com/storage/"), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal(expectedName, result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage", "https://example.com/storage/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            public void HandlesBaseAddressWithAndWithoutTrailingSlash(string baseAddress, string uri, string expectedName)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri(baseAddress), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal(expectedName, result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("http://example.com/storage/", "https://example.com/storage/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "http://example.com/storage/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            public void HandlesSchemeMismatch(string baseAddress, string uri, string expectedName)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri(baseAddress), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal(expectedName, result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file%20name.txt", "file name.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/%E6%96%87%E4%BB%B6.txt", "文件.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage%20with%20spaces/", "https://example.com/storage%20with%20spaces/file.txt", "file.txt")]
+/changes/file_34/diff.txt:+            public void HandlesUrlEncodedCharacters(string baseAddress, string uri, string expectedName)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri(baseAddress), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal(expectedName, result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file.txt?sv=2021-01-01&sig=abc", "file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/?sv=2021-01-01", "https://example.com/storage/file.txt?sig=xyz", "file.txt")]
+/changes/file_34/diff.txt:+            public void IgnoresQueryStrings(string baseAddress, string uri, string expectedName)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri(baseAddress), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal(expectedName, result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void ThrowsArgumentNullExceptionWhenUriIsNull()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var exception = Assert.Throws<ArgumentNullException>(() => Storage.GetName(new Uri("https://example.com/storage/"), null));
+/changes/file_34/diff.txt:+                Assert.Equal("uri", exception.ParamName);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void ThrowsArgumentNullExceptionWhenBaseAddressIsNull()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var exception = Assert.Throws<ArgumentNullException>(() => Storage.GetName(null, new Uri("https://example.com/storage/file.txt")));
+/changes/file_34/diff.txt:+                Assert.Equal("baseAddress", exception.ParamName);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void ThrowsArgumentExceptionWhenUriIsNotAbsolute()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var exception = Assert.Throws<ArgumentException>(() => Storage.GetName(new Uri("https://example.com/storage/"), new Uri("file.txt", UriKind.Relative)));
+/changes/file_34/diff.txt:+                Assert.Equal("uri", exception.ParamName);
+/changes/file_34/diff.txt:+                Assert.Contains("must be an absolute URI", exception.Message);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void ThrowsArgumentExceptionWhenBaseAddressIsNotAbsolute()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var exception = Assert.Throws<ArgumentException>(() => Storage.GetName(new Uri("storage/", UriKind.Relative), new Uri("https://example.com/storage/file.txt")));
+/changes/file_34/diff.txt:+                Assert.Equal("baseAddress", exception.ParamName);
+/changes/file_34/diff.txt:+                Assert.Contains("must be an absolute URI", exception.Message);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void ThrowsArgumentExceptionWhenUriDoesNotStartWithBaseAddress()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var exception = Assert.Throws<ArgumentException>(() => Storage.GetName(new Uri("https://example.com/storage/"), new Uri("https://example.com/other/file.txt")));
+/changes/file_34/diff.txt:+                Assert.Equal("uri", exception.ParamName);
+/changes/file_34/diff.txt:+                Assert.Contains("must start with the base address", exception.Message);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file.txt#fragment")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file.txt?query=value")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/file.txt?query=value#fragment")]
+/changes/file_34/diff.txt:+            public void StripsFragmentsAndQueryStringsFromUri(string baseAddress, string uri)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.GetName(new Uri(baseAddress), new Uri(uri));
+/changes/file_34/diff.txt:+                Assert.Equal("file.txt", result);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/.hidden/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/folder./file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/foo%5Cbar/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/storage/", "https://example.com/storage/foo%2Fbar/file.txt")]
+/changes/file_34/diff.txt:+            public void ThrowsInvalidOperationExceptionForInvalidBlobNames(string baseAddress, string uri)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                Assert.Throws<ArgumentException>(() => Storage.GetName(new Uri(baseAddress), new Uri(uri)));
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+        }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+        public class TheResolveUriMethod
+/changes/file_34/diff.txt:+        {
+/changes/file_34/diff.txt:+            [Fact]
+/changes/file_34/diff.txt:+            public void TrimsSlashOnBaseUri()
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.ResolveUri(new Uri("https://example.com/storage/"), "file.txt");
+/changes/file_34/diff.txt:+                Assert.Equal("https://example.com/storage/file.txt", result.AbsoluteUri);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("file.txt", "https://example.com/storage/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("/file.txt", "https://example.com/storage/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/file.txt", "https://example.com/storage/foo/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/bar/file.txt", "https://example.com/storage/foo/bar/file.txt")]
+/changes/file_34/diff.txt:+            public void ResolvesRelativeUri(string relativeUri, string expectedUri)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                var result = Storage.ResolveUri(new Uri("https://example.com/storage"), relativeUri);
+/changes/file_34/diff.txt:+                Assert.Equal(expectedUri, result.AbsoluteUri);
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+
+/changes/file_34/diff.txt:+            [Theory]
+/changes/file_34/diff.txt:+            [InlineData("https://example.com/other/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("ftp://example.com/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("file:///C:/file.txt")]
+/changes/file_34/diff.txt:+            [InlineData("../foo.txt")]
+/changes/file_34/diff.txt:+            [InlineData("bar//foo.txt")]
+/changes/file_34/diff.txt:+            [InlineData("bar\\foo.txt")]
+/changes/file_34/diff.txt:+            [InlineData("bar%5Cfoo.txt")]
+/changes/file_34/diff.txt:+            [InlineData("bar%2Ffoo.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/../bar.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/./bar.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/.nupkg/bar.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo/nupkg./bar.txt")]
+/changes/file_34/diff.txt:+            [InlineData("foo.txt#bar")]
+/changes/file_34/diff.txt:+            [InlineData("foo.txt?version=1.0")]
+/changes/file_34/diff.txt:+            public void RejectsInvalidRelativeUri(string invalidUri)
+/changes/file_34/diff.txt:+            {
+/changes/file_34/diff.txt:+                Assert.Throws<ArgumentException>(() => Storage.ResolveUri(new Uri("https://example.com/storage/"), invalidUri));
+/changes/file_34/diff.txt:+            }
+/changes/file_34/diff.txt:+        }
+/changes/file_34/diff.txt:+    }
+/changes/file_34/diff.txt:+}
+/changes/file_35/diff.txt:@@ -1,8 +1,9 @@
+/changes/file_35/diff.txt:-﻿// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_35/diff.txt:+// Copyright (c) .NET Foundation. All rights reserved.
+/changes/file_35/diff.txt: // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+/changes/file_35/diff.txt: 
+/changes/file_35/diff.txt: using System;
+/changes/file_35/diff.txt: using System.Collections.Generic;
+/changes/file_35/diff.txt:+using System.ComponentModel.DataAnnotations;
+/changes/file_35/diff.txt: using System.Globalization;
+/changes/file_35/diff.txt: using System.IO;
+/changes/file_35/diff.txt: using System.Linq;
+/changes/file_35/diff.txt:@@ -450,6 +451,54 @@ public TheAddAction()
+/changes/file_35/diff.txt:                 Admin = Fakes.User;
+/changes/file_35/diff.txt:             }
+/changes/file_35/diff.txt: 
+/changes/file_35/diff.txt:+            [Fact]
+/changes/file_35/diff.txt:+            public async Task WhenViewModelIsInvalid_ReturnsView()
+/changes/file_35/diff.txt:+            {
+/changes/file_35/diff.txt:+                var token = "token";
+/changes/file_35/diff.txt:+                var org = new Organization("newlyCreated")
+/changes/file_35/diff.txt:+                {
+/changes/file_35/diff.txt:+                    UnconfirmedEmailAddress = OrgEmail,
+/changes/file_35/diff.txt:+                    EmailConfirmationToken = token
+/changes/file_35/diff.txt:+                };
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                var mockUserService = GetMock<IUserService>();
+/changes/file_35/diff.txt:+                mockUserService
+/changes/file_35/diff.txt:+                    .Setup(x => x.AddOrganizationAsync(OrgName, OrgEmail, Admin))
+/changes/file_35/diff.txt:+                    .Returns(Task.FromResult(org));
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                var controller = GetController<OrganizationsController>();
+/changes/file_35/diff.txt:+                controller.SetCurrentUser(Admin);
+/changes/file_35/diff.txt:+                controller.ModelState.AddModelError("key", "Invalid model");
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                var result = await controller.Add(Model);
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                ResultAssert.IsView<AddOrganizationViewModel>(result);
+/changes/file_35/diff.txt:+            }
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+            [Theory]
+/changes/file_35/diff.txt:+            [InlineData("foo%bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo`bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo/bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo\\bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo|bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo(bar)", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo*bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foo&bar", "test@example.com")]
+/changes/file_35/diff.txt:+            [InlineData("foobar", "testexample.com")]
+/changes/file_35/diff.txt:+            public void ValidatorCatchesInvalidOrganizationViewModel(string organizationName, string email)
+/changes/file_35/diff.txt:+            {
+/changes/file_35/diff.txt:+                Model.OrganizationName = organizationName;
+/changes/file_35/diff.txt:+                Model.OrganizationEmailAddress = email;
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                var validationResults = new List<ValidationResult>();
+/changes/file_35/diff.txt:+                var validationContext = new ValidationContext(Model);
+/changes/file_35/diff.txt:+                var isValid = Validator.TryValidateObject(Model, validationContext, validationResults, validateAllProperties: true);
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:+                // Assert
+/changes/file_35/diff.txt:+                Assert.False(isValid);
+/changes/file_35/diff.txt:+                Assert.NotEmpty(validationResults);
+/changes/file_35/diff.txt:+            }
+/changes/file_35/diff.txt:+
+/changes/file_35/diff.txt:             [Fact]
+/changes/file_35/diff.txt:             public async Task WhenAddOrganizationThrowsEntityException_ReturnsViewWithMessage()
+/changes/file_35/diff.txt:             {
+/changes/file_35/diff.txt:@@ -2556,4 +2605,4 @@ public void DeleteHappyAccount()
+/changes/file_35/diff.txt:             }
+/changes/file_35/diff.txt:         }
+/changes/file_35/diff.txt:     }
+/changes/file_35/diff.txt:-}
+/changes/file_35/diff.txt:\ No newline at end of file
+/changes/file_35/diff.txt:+}
+/changes/file_36/diff.txt:@@ -13,6 +13,7 @@
+/changes/file_36/diff.txt: using NuGet.Packaging;
+/changes/file_36/diff.txt: using NuGet.Packaging.Core;
+/changes/file_36/diff.txt: using NuGet.Services.Entities;
+/changes/file_36/diff.txt:+using NuGet.Versioning;
+/changes/file_36/diff.txt: using NuGetGallery.Configuration;
+/changes/file_36/diff.txt: using NuGetGallery.Diagnostics;
+/changes/file_36/diff.txt: using NuGetGallery.Packaging;
+/changes/file_36/diff.txt:@@ -266,6 +267,62 @@ public async Task WarnsOnMalformedRepositoryMetadata(string repositoryType, stri
+/changes/file_36/diff.txt:                 }
+/changes/file_36/diff.txt:             }
+/changes/file_36/diff.txt: 
+/changes/file_36/diff.txt:+            [Theory]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.Nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib\\foo.nuspec")]
+/changes/file_36/diff.txt:+            public async Task RejectsManyNuspecs(string extraFilename)
+/changes/file_36/diff.txt:+            {
+/changes/file_36/diff.txt:+                _nuGetPackage = GeneratePackage(isSigned: false);
+/changes/file_36/diff.txt:+                var files = _nuGetPackage.Object.GetFiles().ToList();
+/changes/file_36/diff.txt:+                files.Add(extraFilename);
+/changes/file_36/diff.txt:+                _nuGetPackage
+/changes/file_36/diff.txt:+                    .Setup(p => p.GetFiles())
+/changes/file_36/diff.txt:+                    .Returns(files);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                var result = await _target.ValidateMetadataBeforeUploadAsync(
+/changes/file_36/diff.txt:+                    _nuGetPackage.Object,
+/changes/file_36/diff.txt:+                    GetPackageMetadata(_nuGetPackage),
+/changes/file_36/diff.txt:+                    _currentUser);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                Assert.Equal(PackageValidationResultType.Invalid, result.Type);
+/changes/file_36/diff.txt:+                Assert.NotNull(result.Message);
+/changes/file_36/diff.txt:+                Assert.Contains("multiple nuspec files", result.Message.PlainTextMessage);
+/changes/file_36/diff.txt:+            }
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+            [Theory]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib//foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("./lib/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("../lib/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("/lib/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.Nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/net45/foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib\\foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib\\\\foo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib%2Ffoo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib%5Cfoo.nuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo%2Enuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.%6Euspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib/foo.%4Euspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib%2Ffoo%2Enuspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib%2Ffoo.%6Euspec")]
+/changes/file_36/diff.txt:+            [InlineData("lib%2Ffoo.%4Euspec")]
+/changes/file_36/diff.txt:+            [InlineData("%6C%69%62%2F%66%6F%6F%2E%6E%75%73%70%65%63")]
+/changes/file_36/diff.txt:+            public async Task RejectsManyNuspecsInZipFile(string extraFilename)
+/changes/file_36/diff.txt:+            {
+/changes/file_36/diff.txt:+                _nuGetPackage = GeneratePackage(isSigned: false, entryNames: [extraFilename]);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                var result = await _target.ValidateMetadataBeforeUploadAsync(
+/changes/file_36/diff.txt:+                    _nuGetPackage.Object,
+/changes/file_36/diff.txt:+                    GetPackageMetadata(_nuGetPackage),
+/changes/file_36/diff.txt:+                    _currentUser);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                Assert.Equal(PackageValidationResultType.Invalid, result.Type);
+/changes/file_36/diff.txt:+                Assert.NotNull(result.Message);
+/changes/file_36/diff.txt:+                Assert.Contains("multiple nuspec files", result.Message.PlainTextMessage);
+/changes/file_36/diff.txt:+            }
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:             [Fact]
+/changes/file_36/diff.txt:             public async Task AggregatesWarnings()
+/changes/file_36/diff.txt:             {
+/changes/file_36/diff.txt:@@ -420,6 +477,78 @@ public async Task WithNonNormalizeNuspec_ReturnsAcceptedPackageWithWarnings()
+/changes/file_36/diff.txt:                 Assert.Equal("The package nuspec file is not compliant with the normalization form C (NFC).", result.Warnings[0].PlainTextMessage);
+/changes/file_36/diff.txt:             }
+/changes/file_36/diff.txt: 
+/changes/file_36/diff.txt:+            [Theory]
+/changes/file_36/diff.txt:+            [InlineData("Test.\U0001F600")] // surrogate pair
+/changes/file_36/diff.txt:+            [InlineData("Test.\u212A")] // maps to ASCII with Invariant
+/changes/file_36/diff.txt:+            public async Task RejectsInvalidPackage(string id)
+/changes/file_36/diff.txt:+            {
+/changes/file_36/diff.txt:+                // Arrange
+/changes/file_36/diff.txt:+                var packageStream = PackageServiceUtility.CreateNuGetPackageStream(
+/changes/file_36/diff.txt:+                    id: id,
+/changes/file_36/diff.txt:+                    version: "1.0.0",
+/changes/file_36/diff.txt:+                    licenseUrl: new Uri("https://licenses.nuget.org/MIT"),
+/changes/file_36/diff.txt:+                    licenseExpression: "MIT",
+/changes/file_36/diff.txt:+                    isSigned: true);
+/changes/file_36/diff.txt:+                var package = PackageServiceUtility.CreateNuGetPackage(packageStream);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                // Act
+/changes/file_36/diff.txt:+                var result = await _target.ValidateMetadataBeforeUploadAsync(
+/changes/file_36/diff.txt:+                    package.Object,
+/changes/file_36/diff.txt:+                    GetPackageMetadata(package),
+/changes/file_36/diff.txt:+                    _currentUser);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                // Assert
+/changes/file_36/diff.txt:+                Assert.Equal(PackageValidationResultType.Invalid, result.Type);
+/changes/file_36/diff.txt:+                Assert.Equal(Strings.UploadPackage_PackageIdNormalizationInvalid, result.Message.PlainTextMessage);
+/changes/file_36/diff.txt:+            }
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+            [Theory]
+/changes/file_36/diff.txt:+            [InlineData(null)]
+/changes/file_36/diff.txt:+            [InlineData("")]
+/changes/file_36/diff.txt:+            [InlineData(" ")]
+/changes/file_36/diff.txt:+            [InlineData("\t")]
+/changes/file_36/diff.txt:+            public void WithNullOrWhitespacePackageId_ThrowsArgumentNullException(string packageId)
+/changes/file_36/diff.txt:+            {
+/changes/file_36/diff.txt:+                // Arrange
+/changes/file_36/diff.txt:+                var packageMetadata = new PackageMetadata(
+/changes/file_36/diff.txt:+                    new Dictionary<string, string> { { "id", packageId }, { "version", "1.0.0" } },
+/changes/file_36/diff.txt:+                    [], [], [], null, null, null);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                // Act & Assert
+/changes/file_36/diff.txt:+                Assert.Throws<ArgumentNullException>(() =>
+/changes/file_36/diff.txt:+                {
+/changes/file_36/diff.txt:+                    PackageMetadataValidationService.CheckPackageIdForBannedCharacters(packageMetadata, new PackageIdentity(packageId, new NuGetVersion("1.0.0")));
+/changes/file_36/diff.txt:+                });
+/changes/file_36/diff.txt:+            }
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+            [Theory]
+/changes/file_36/diff.txt:+            [InlineData("NuGet.Versioning")]
+/changes/file_36/diff.txt:+            [InlineData("Caf\u00E9.Package")]
+/changes/file_36/diff.txt:+            [InlineData("My_P\u00F6ckage-Test")]
+/changes/file_36/diff.txt:+            [InlineData("Test.\u00DF")] // case expanding in some locales, but not Invariant
+/changes/file_36/diff.txt:+            [InlineData("Test.\u017F")] // case mapping to ASCII in some locales, but not Invariant
+/changes/file_36/diff.txt:+            public async Task WithValidNonAsciiPackageId_ReturnsNull(string id)
+/changes/file_36/diff.txt:+            {
+/changes/file_36/diff.txt:+                // Arrange - using valid non-ASCII characters (é, ö, ü) that don't trigger vulnerabilities
+/changes/file_36/diff.txt:+                var packageStream = PackageServiceUtility.CreateNuGetPackageStream(
+/changes/file_36/diff.txt:+                    id: id,
+/changes/file_36/diff.txt:+                    version: "1.0.0",
+/changes/file_36/diff.txt:+                    licenseUrl: new Uri("https://licenses.nuget.org/MIT"),
+/changes/file_36/diff.txt:+                    licenseExpression: "MIT",
+/changes/file_36/diff.txt:+                    isSigned: true);
+/changes/file_36/diff.txt:+                var package = PackageServiceUtility.CreateNuGetPackage(packageStream);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                // Act
+/changes/file_36/diff.txt:+                var result = await _target.ValidateMetadataBeforeUploadAsync(
+/changes/file_36/diff.txt:+                    package.Object,
+/changes/file_36/diff.txt:+                    GetPackageMetadata(package),
+/changes/file_36/diff.txt:+                    _currentUser);
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:+                // Assert
+/changes/file_36/diff.txt:+                Assert.Equal(PackageValidationResultType.Accepted, result.Type);
+/changes/file_36/diff.txt:+                Assert.Null(result.Message);
+/changes/file_36/diff.txt:+            }
+/changes/file_36/diff.txt:+
+/changes/file_36/diff.txt:             [Theory]
+/changes/file_36/diff.txt:             [InlineData("duplicatedFile.txt", "duplicatedFile.txt")]
+/changes/file_36/diff.txt:             [InlineData("./temp/duplicatedFile.txt", "./temp/duplicatedFile.txt")]
