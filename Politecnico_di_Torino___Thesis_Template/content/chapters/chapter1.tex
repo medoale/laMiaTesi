@@ -4,7 +4,56 @@
 
 % use [] to set name for ToC
 \section[Problem \& Motivation]{Problem \& Motivation} % ok with fontsize=12pt
-\section[Methodolgy]{Methodolgy}
+    Open-source software is the foundation of modern computing. 
+    Individual users and companies alike rely on openly available source code, maintained by
+    communities of volunteers and by companies alike.
+    Open-source has become effectively universal: about 98\% of the audited codebases contain open source components~\cite{ossra2026}.
+
+    Open-source security is a double-edged sword: while extreme transparency enables faster bug detection and patching by the community,
+     it also provides attackers with everything they needed to hunt for vulnerabilities.
+    In addition, Open-source dependencies are nested in the majority of software projects, leading to possible supply-chain attacks.
+
+    The most important and known service in term of OSS\footnote{OSS stands for open-source software.} is GitHub: a global platform for software development based on version control and collaboration.
+    It contains countless open-source repositories where developers can share and review code. 
+    At the base of the platform there is the concept of commit: a snapshot of the source code at a specific point of time.
+    The direct consequence of the structure of this framework is the possibility of inspecting any change made to the repository as soon as it is published.
+    The nature of the commit can be various, from bug correction to code refactoring. For the scope of this thesis, the attention will be posed on secuirity updates.
+
+    Security fixes, however, do not reach the public in the same way as ordinary changes.
+    Under the CVD\footnote{CVD stands for Coordinated Vulnerability Disclosure.} model, a vulnerability is corrected before it is
+    announced, so that a remedy already exists by the time users learn that they are at risk.
+    During this embargo period the fix is committed like any other change, but the commit message is
+    kept vague or generic, so that the change does not attract the attention of anyone watching the
+    repository~\cite{colefunda2023}.
+    All of this happens inside the window of exposure, which opens when the flaw is discovered and
+    closes only once the correction has been distributed and applied.
+    What makes this period peculiar is that the code repairing the flaw is public and readable by
+    anyone from the moment it is pushed, while the information needed to recognise it as a security
+    fix is not.
+
+    Between the moment a fix is written and the moment it actually protects anyone there are two
+    distinct delays~\cite{imtiaz2023opensneaky}.
+    The first one lies between the commit and the release: the correction is already in the
+    repository, but it only becomes installable when the maintainers publish a new version of the
+    package.
+    The second one lies between that release and the publication of a security advisory, which is
+    what tells the automated tools used by client projects that they should update.
+    In both cases the code of the fix is already public, while the projects that depend on it are
+    still exposed and have no way of knowing it.
+
+    This practice is known as a silent patch: the vulnerability is fixed, but nothing in the commit
+    says that a vulnerability was ever there.
+    A direct consequence is that users keep running vulnerable software, because they receive no
+    signal telling them that a specific update matters more than the others.
+    Outdated code is the norm rather than the exception: one study of more than 4,600 GitHub
+    projects found that 81.5\% of them kept dependencies that were no longer up to
+    date~\cite{ayala2025disclosures}, and about 92\% of the audited codebases contain components
+    that are ten or more versions behind the current release~\cite{ossra2026}.
+    A silent patch therefore lands on a population of projects that is already far behind, and does
+    nothing to tell them that this time they should hurry. 
+
+
+
 \section[Thesis Organization]{Thesis Organization}
 
 

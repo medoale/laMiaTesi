@@ -1,10 +1,14 @@
-# Scaletta — Introduzione, domande 1–3
+# Scaletta — Introduzione, domande 1–5
 
 Traccia operativa per la sezione *Problem & Motivation*. Ogni punto riporta la
-chiave BibTeX da citare e il numero esatto. Le domande 4 e 5 sono da definire.
+chiave BibTeX da citare e il numero esatto.
+
+Q1–Q4 stanno in *Problem & Motivation*; **Q5 apre la sezione *Methodology***.
 
 **Regola di ingaggio:** l'introduzione deve *convincere*, non documentare. Il
-Background documenta. Dove un punto è segnato → *Background*, il numero non va
+Background documenta. **Nessuna cifra prodotta da questo lavoro compare in
+introduzione**: le misure nostre stanno nei capitoli di metodo, dati e risultati;
+qui si citano solo numeri della letteratura. Dove un punto è segnato → *Background*, il numero non va
 messo qui.
 
 ---
@@ -41,22 +45,27 @@ messo qui.
   **non dichiari** di essere una correzione di sicurezza: niente parole chiave,
   niente riferimenti alla CVE. Sono le cosiddette **silent fix**.
   → `colefunda2023`
-- **Esempio portante da usare in apertura — Log4Shell / CVE-2021-44228:**
-  divulgata il **10 dicembre 2021**, ma la fix era pubblica dal **29 novembre
-  2021**, **11 giorni prima**. Il messaggio di commit diceva soltanto
-  *"Restrict LDAP access via JNDI"*, senza alcun riferimento alla sicurezza.
-  → `colefunda2023`
+- 📌 **DECISO: l'esempio Log4Shell NON va in introduzione, ma nella literature
+  review.** L'introduzione spiega il meccanismo in astratto; il caso concreto
+  serve dove si discute la letteratura sulle silent fix.
+  Materiale, da riusare lì: **Log4Shell / CVE-2021-44228**, divulgata il
+  **10 dicembre 2021**, con la fix pubblica dal **29 novembre 2021**, **11
+  giorni prima**. Il messaggio di commit diceva soltanto *"Restrict LDAP access
+  via JNDI"*, senza alcun riferimento alla sicurezza. → `colefunda2023`
 - Il paradosso da esplicitare: **la misura pensata per proteggere gli utenti
   li lascia all'oscuro**, mentre chi sa leggere il codice vede tutto.
 
-### Dato originale della tesi (anticiparlo qui, misurarlo nel capitolo dati)
+### Rimando al dato originale (senza cifre)
 
-- Sul campione di **51 CVE pubblicate nel 2026** usato in questo lavoro, il
-  **92% delle fix precede la pubblicazione della CVE**, con una **mediana di 15
-  giorni** e un caso estremo di **2.500 giorni** (fix del 2019 per una CVE
-  divulgata nel 2026).
-- Serve a due cose: conferma su dati recenti e indipendenti la premessa di
-  `colefunda2023`, e annuncia che la tesi *misura* il fenomeno, non lo assume.
+> ⚠️ **Nessun numero nostro in introduzione.** Le misure prodotte da questo
+> lavoro — divario fix→pubblicazione, copertura, accuratezza CWE — appartengono
+> ai capitoli dei dati e dei risultati.
+
+- Qui basta un **rimando qualitativo**: il fenomeno descritto da `colefunda2023`
+  non viene assunto ma *verificato* su un campione recente e indipendente, e la
+  misura è riportata nel capitolo dedicato.
+- Formulazione possibile: *"Questo lavoro conferma il fenomeno su un campione di
+  CVE recenti, come mostrato nel Capitolo N."* Nessuna cifra.
 
 ### Gli utenti restano su software vulnerabile
 
@@ -75,7 +84,7 @@ messo qui.
 |---|---|---|---|
 | 1 | commit di fix → **release** che la contiene | mediana **4 giorni**, **25% oltre 20 giorni** | `imtiaz2023opensneaky` |
 | 2 | release → **advisory** (Snyk, NVD) | mediana **17 giorni** → *Background* | `imtiaz2023opensneaky` |
-| 3 | commit di fix → **pubblicazione CVE** | mediana 15 giorni (dato nostro) | `colefunda2023` + dato originale |
+| 3 | commit di fix → **pubblicazione CVE** | mediana > 1 settimana | `colefunda2023` (la nostra misura va nel capitolo dei dati) |
 
 ### Il punto centrale: nella finestra 1 l'utente non può aggiornare
 
@@ -199,10 +208,242 @@ Resta correttamente fuori dalla bibliografia.)*
 - Conclusione da trarre: i numeri pubblicati vanno presi con cautela, e serve una
   valutazione costruita con attenzione — che è ciò che questa tesi fa.
 
-### 6. Farlo a mano non scala
+### 6. Costruire una ground truth su cui misurare è a sua volta un problema aperto
+
+- Per valutare qualunque approccio automatico serve un insieme di riferimento:
+  coppie **(vulnerabilità, commit che la corregge)**. Ma collegare una CVE al
+  commit GitHub che la risolve **non è un'informazione già disponibile**.
+- Due ostacoli documentati:
+  - molte voci CVE **non riportano affatto il commit di patch**;
+  - tra quelle che lo riportano, una quota significativa dei commit diventa
+    **irraggiungibile** nel tempo, perché i repository vengono rinominati,
+    archiviati o riscritti (*link rot*).
+  → `gitpatchdb2026`
+- La difficoltà è tale che esiste una linea di ricerca dedicata al solo compito
+  di **tracciare la patch di una CVE**. → `liu2025sitpatchtracer`
+- **Come lo risolviamo:** la ground truth di questo lavoro non è costruita a
+  mano ma tramite **CVEfixes**, che automatizza la raccolta delle CVE e dei loro
+  commit di fix a partire da NVD e dai repository. → `cvefixes2021`
+- ⚠️ *Se serve una percentuale precisa sulle CVE prive di riferimento alla patch,
+  va estratta dal corpo di GitPatchDB: l'abstract parla di "many" e "a
+  significant share", senza cifre.*
+
+### 7. Farlo a mano non scala
 
 - L'analisi manuale di ogni commit richiede competenze di sicurezza e tempo
   proporzionale al volume: impraticabile su 200 milioni di repository.
+
+---
+
+## Q4 — Cosa è stato fatto finora, e perché non basta
+
+**Tenere breve e impreciso**: qui bastano due paragrafi con citazioni raggruppate
+e zero numeri. Lo stato dell'arte vero è compito del capitolo Background. Il
+materiale sotto è il serbatoio da cui pescare, non tutto va scritto.
+
+### Fase 1 — Identificare le fix silenziose (pre-LLM)
+
+- `vulfixminer2021` apre il filone: transformer sulle modifiche a livello di
+  commit per riconoscere le silent fix. Il titolo stesso — *Finding a Needle in
+  a Haystack* — dichiara la difficoltà.
+- `colefunda2023` è il lavoro concettualmente più vicino all'intero sistema:
+  - argomenta che **identificare la fix è solo il primo passo**: senza sapere
+    *quale* debolezza e quanto sia sfruttabile, l'utente non sa che farsene
+    dell'allarme. Da qui la pipeline a tre task (identificazione, CWE,
+    exploitability);
+  - risolve la sparsità delle CWE **aggregando per antenato** su CWE-1000: da 89
+    tipi a 22 categorie;
+  - il suo user study è l'unico termine di paragone numerico onesto che abbiamo:
+    **37,5% al primo suggerimento, 62,5% entro i primi due**;
+  - dichiara esplicitamente il problema del **doppio uso**: precedente utile per
+    la nostra nota etica (§Q2).
+  - **Limiti dichiarati dagli autori**: solo Java, analisi a livello di funzione
+    (fallisce sulle fix multi-file), nessun LLM e nessun agente.
+
+### Fase 2 — LLM e agenti
+
+- `han2025llmsagents` confronta Plain LLM, Data-Aug LLM e ReAct Agent sullo
+  stesso task: il Data-Aug vince sull'accuratezza complessiva, ma **l'agente
+  ReAct ha il false positive rate più basso**. Usa DeepSeek e Gemma, gli stessi
+  due modelli che confrontiamo noi.
+- `yildiz2025jitvul` è il più vicino al nostro impianto e merita una frase
+  propria, non una parentesi:
+  - costruisce **JitVul**: 879 CVE, 91 tipi di CWE, ogni funzione collegata
+    **sia al commit che introduce la vulnerabilità sia a quello che la corregge**;
+  - si posiziona contro ReposVul (6.134 CVE) e VulEval (4.196) rivendicando due
+    cose che quelli non hanno: **valutazione a coppie** e **valutazione di agenti**;
+  - **risultato metodologico centrale**: un F1 più alto **non** indica una
+    migliore capacità di cogliere la vulnerabilità. I metodi LLM predicono
+    "vulnerabile" in oltre il **90%** dei casi in certe configurazioni: recall
+    altissimo, precisione ferma intorno al **50%**, F1 gonfiato. Da qui la
+    **pairwise accuracy (pAcc)**, ispirata a PrimeVul, che conta solo le coppie
+    in cui **entrambe** le versioni sono etichettate correttamente;
+  - **gli agenti ReAct vincono su pAcc** (+9,46% e +8,42% sugli LLM con contesto
+    pre-caricato) grazie al recupero **adattivo**: invocano gli strumenti una-tre
+    volte per prendere i chiamanti che servono, invece di scaricare i Top-5 per
+    similarità Jaccard introducendo rumore;
+  - CoT e few-shot migliorano gli LLM su pAcc (1,26%–17,76%) ma non
+    sistematicamente su F1;
+  - concludono che entrambi gli approcci mostrano **analisi incoerenti** tra
+    versione vulnerabile e corretta: manca robustezza.
+
+### Fase 3 — Repository interi e zero-day
+
+- `vulngym2026`: 184 advisory, 408 voci, 23 repository con annotazioni a livello
+  di riga. Motivazione dichiarata: i benchmark esistenti classificano **snippet
+  preselezionati**, mentre un agente deve esplorare il repository da sé. È il
+  setting di agent3.
+- `zerodaybench2026`: 22 vulnerabilità critiche nuove, trapiantate in repository
+  diversi per evitare la contaminazione. Conclusione: **i modelli di frontiera
+  non sono ancora in grado di risolvere autonomamente i task**.
+- `fuzzingbrain2026` e `codeaugur2026` mostrano il contrario, ma con sistemi
+  pesanti (multi-agente, OSS-Fuzz, analisi dinamica): **29 zero-day reali in 12
+  progetti, 2 con CVE assegnata**.
+
+### Fase 4 — L'affidabilità della valutazione
+
+- `reveal2022`: le prestazioni dei modelli DL calano di oltre il 50% in scenari
+  realistici, perché imparavano artefatti dei dataset.
+- `primevul2025`: stesso fenomeno un'era dopo — F1 dal 68% al 3% cambiando
+  dataset. Introduce la valutazione a coppie che JitVul poi adotta.
+- `javavulbench2026`: la contaminazione da pre-training, con la partizione
+  "risky" / "clean" rispetto al cutoff del modello.
+
+### Perché il problema non è chiuso
+
+Da usare come **una sola frase di tensione** in chiusura di sezione;
+l'argomentazione completa va in Q5.
+
+- Chi **riesce** a trovare zero-day usa sistemi specializzati e costosi; i
+  modelli generici da soli **non ci riescono**. La fascia intermedia — modello
+  accessibile, ciclo agentico standard, soli strumenti di lettura — non risulta
+  misurata, ed è quella realisticamente disponibile a un attaccante.
+- Ogni lavoro **fissa un'unità di analisi** e misura lì dentro. Nessuno tiene
+  fermo il commit variando **soltanto** quanto l'agente vede.
+- Quasi tutti si fermano al **binario**; la classificazione CWE resta appannaggio
+  dei lavori pre-LLM.
+- Lo dicono gli autori stessi: JitVul chiude affermando che gli agenti ReAct
+  necessitano di design più mirati e che manca robustezza.
+
+> ⚠️ **Non scrivere "nessuno ha mai fatto X".** Usare *"per quanto ci risulta"*,
+> o meglio girare in positivo: *"questi lavori rispondono a domande diverse"*.
+> Più difficile da smentire e altrettanto efficace.
+
+### Due elementi emersi dalla lettura di JitVul
+
+- **Il problema di formato è documentato in letteratura.** JitVul riporta che
+  gli agenti ReAct con **Llama3.1-8B** mostrano prestazioni molto inferiori, con
+  il processo che **spesso fallisce per problemi di formattazione e parsing**.
+  Il nostro 22% di run non conformi su deepseek non è un'anomalia del setup: è
+  un fenomeno osservato indipendentemente. Citazione preziosa, da affiancare a
+  `agentif2025` e `firebench2026`.
+- ⚠️ **Obiezione da anticipare.** Il messaggio centrale di JitVul è che l'F1
+  inganna quando il modello dice "vulnerabile" quasi sempre, e che il rimedio è
+  la **valutazione a coppie**. È esattamente la nostra situazione: agent1 e
+  agent2 rispondono "sì" nel 96–100% dei casi. Un revisore che conosce JitVul
+  chiederà perché non abbiamo valutato a coppie, **avendo i commit di fix**:
+  basterebbe far girare l'agente anche sulla versione corretta e verificare che
+  risponda "no". Da valutare prima della stesura definitiva.
+
+---
+
+## Q5 — Cosa abbiamo fatto, e a cosa risponde
+
+Apre la sezione **Methodology**. Per decisione presa: **il gap si argomenta qui**,
+non in Q4, così da essere adiacente al contributo. In fondo a Q4 resta solo una
+frase di tensione.
+
+### 1. Aprire con il gap, non con la descrizione tecnica
+
+Prima frase della sezione, altrimenti il lettore arriva agli agenti Docker senza
+sapere che problema risolvono. Due gap, non di più:
+
+- **Gap A — la fascia intermedia non è misurata.** I sistemi che trovano zero-day
+  sono pesanti e specializzati (`fuzzingbrain2026`, `codeaugur2026`); i modelli di
+  frontiera da soli non ci riescono (`zerodaybench2026`). Nessuno misura la
+  configurazione **realisticamente disponibile a un attaccante**: modello
+  accessibile, ciclo agentico standard, soli strumenti di lettura.
+- **Gap B — nessuno isola il contesto come variabile.** I lavori esistenti fissano
+  un'unità di analisi e misurano lì dentro: la funzione con contesto
+  interprocedurale (`yildiz2025jitvul`), il repository intero (`vulngym2026`), il
+  diff (`han2025llmsagents`). **Nessuno tiene fermo il commit variando soltanto
+  quanto l'agente vede.**
+
+> ⚠️ Formulare i gap in modo **neutro rispetto all'esito**: *"nessuno ha misurato
+> cosa un'AI accessibile riesca a fare"*, **non** *"nessuno ha dimostrato che
+> riesca"*. La seconda crea un'aspettativa che i dati poi deludono.
+
+### 2. Il disegno sperimentale: tre scenari, una sola variabile
+
+Il cuore del contributo. Stesso commit, tre livelli di contesto:
+
+| Agente | Cosa vede | Domanda | Chi simula |
+|---|---|---|---|
+| agent1 | solo il diff (before / after / diff) | il segnale della patch basta? | attaccante che weaponizza una silent patch |
+| agent2 | repository + diff | il contesto aggiunge qualcosa? | attaccante con più contesto / difensore in triage |
+| agent3 | solo il repository | si può trovare senza indizi? | cacciatore di zero-day |
+
+**Tutto il resto è tenuto costante**: stesso prompt, stesso modello,
+`temperature 0`, stesso tetto di 200 tool round, stesso isolamento, stesso
+formato di output richiesto. È ciò che rende l'impianto un **esperimento
+controllato** e non un ennesimo benchmark — ed è la risposta diretta al Gap B.
+
+### 3. I controlli che rendono i numeri credibili
+
+Da elencare in modo compatto, sono quattro:
+
+- **Contaminazione risolta per costruzione**: il campione è ristretto alle sole
+  CVE **pubblicate nel 2026** (filtro `published_date` a monte della pipeline),
+  quindi successive al cutoff dei modelli. Confronto utile: `javavulbench2026`
+  partiziona in "risky"/"clean", il nostro campione è interamente clean.
+  *(Le numerosità esatte vanno nel capitolo della metodologia.)*
+- **Isolamento di rete**: container su rete Docker `--internal`, proxy con
+  allowlist verso il solo endpoint del modello. **L'agente non può cercare la CVE
+  online**, nemmeno avendo `bash`.
+- **Ground truth non costruita a mano** ma con `cvefixes2021`, che risolve il
+  problema di tracciabilità CVE↔commit documentato in `gitpatchdb2026`.
+- **Nessun sotto-agente**: vietato per non concedere a un modello un budget di
+  contesto maggiore di un altro.
+
+### 4. Cosa misuriamo, e cosa no
+
+Da dichiarare subito, perché è una scelta onesta che previene obiezioni:
+
+- **Il dataset è composto solo da istanze positive.** Ogni commit corregge una CVE
+  reale e il repository è montato al commit padre: la vulnerabilità c'è sempre.
+- Conseguenza: si misurano **recall** e **accuratezza della classificazione CWE**.
+  **Non** si misurano accuratezza, precisione di detection, falsi positivi,
+  specificità.
+- Due stadi:
+  - **Stadio 1 — copertura**: su tutte le istanze, in quale frazione l'agente
+    riconosce che c'è qualcosa. Il trend fra i tre scenari è già un risultato.
+  - **Stadio 2 — accuratezza CWE condizionata**: solo dove l'agente ha prodotto
+    una CWE, quanto è corretta. Metriche multi-etichetta (hit, top-1, exact set,
+    F1 per esempio).
+
+### 5. I contributi, in forma di elenco
+
+- Un **impianto sperimentale controllato** che isola il contesto come unica
+  variabile, su ground truth priva di contaminazione.
+- La **prima misura della configurazione "accessibile"**: modello generico,
+  harness standard, soli strumenti di lettura.
+- Una lettura in chiave **offensiva**: il costo misurato (tempo, token) è una
+  stima del costo per l'attaccante.
+- La **valutazione congiunta di rilevamento e classificazione CWE**, dove quasi
+  tutta la letteratura si ferma al binario.
+- L'**aderenza al formato trattata come risultato** e non come rumore, con
+  `agentif2025`, `firebench2026` e l'osservazione analoga in `yildiz2025jitvul`.
+
+### 6. La frase conclusiva — lasciare segnaposto
+
+L'esito va scritto **per ultimo**, quando l'analisi è chiusa. Il gap non dipende
+dai risultati, la frase di chiusura sì: cambia il verbo (*"mostriamo che è
+possibile"* contro *"mostriamo i limiti di"*), non la premessa.
+
+Direzione che i dati preliminari suggeriscono, **da esprimere in forma
+qualitativa e senza cifre**: l'AI accessibile è una minaccia concreta per
+weaponizzare una patch già pubblicata, molto meno per scoprire vulnerabilità da
+zero. Più interessante di entrambi gli estremi — ma da confermare.
 
 ---
 
@@ -216,7 +457,7 @@ Tenere **poche cifre, scelte per colpire**. Proposta:
 | Log4Shell: 11 giorni | timeline completa a tre finestre |
 | 4 giorni mediani fix → release | 17 giorni release → advisory, coda dei 20 giorni |
 | 61,5% release note | 197.609 advisory non revisionati |
-| 15 giorni mediani (dato nostro) | 92% e caso da 2.500 giorni |
+| *(nessuna cifra nostra)* | tutte le misure prodotte da questo lavoro |
 | 1,71% fix sui commit | 0,35% mediana per progetto, 52,8% sparsità CWE |
 | 68% → 3% di F1 | calo >50% di ReVeal |
 
