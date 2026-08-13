@@ -1,1 +1,49 @@
 % abstract, choose between abstract and summary
+
+Open source software is the foundation of modern computing, and almost every codebase
+in use today depends on it. The way vulnerabilities are handled in this ecosystem
+creates a structural problem. Under the Coordinated Vulnerability Disclosure model a
+flaw is corrected before it is announced, and the fixing commit on GitHub is deliberately kept
+quiet, carrying no reference to security. The correction is therefore public and
+readable in the repository, while the information needed to recognise it as a security
+fix is not.
+
+This opens a window in which the projects that depend on that code are exposed: 
+the fix cannot be installed until a new release is published, and nothing
+notifies users until an advisory is issued. Meanwhile, the change itself describes the
+vulnerability, showing which lines were wrong and how they were repaired, so that
+anyone who reads it can work backwards to the flaw. 
+Reading unfamiliar code and judging its security has always required expertise and time but 
+general purpose language models may be lowering both barriers. 
+
+Investigating this question requires a collection of repositories whose vulnerabilities
+are known, and assembling one is far from simple. 
+Public vulnerability records rarely
+point to the commit that resolves them, and when they do the reference is often broken,
+while the fixing commits cannot be found by searching either, if they are silent patch, then
+there is no sign of what it fixes.
+
+Earlier approaches applied deep learning to source code, while more recent ones 
+turn language models into agents that explore a
+repository by themselves, and some of these systems have already found real
+vulnerabilities. The systems that succeed, however, rely on specialised infrastructure, 
+while a model operating on its own performs considerably worse. This thesis examines the 
+intermediate configuration, which reflects the resources realistically available to an ordinary user.
+
+This thesis proposes an architecture based on AI agents that inspect a repository on
+their own, decide whether it contains a vulnerability and classify it with the
+corresponding CWE. Each agent runs inside a disposable container, with read-only access
+to the code and no access to the web. Three configurations are compared, differing only
+in what the agent is allowed to access: the code changed by a commit together with its
+diff file, those same changes plus the whole repository, and the repository alone with no
+indication that a fix exists, which reproduces the search for an unknown vulnerability.
+The dataset is built from repositories that still contained the
+vulnerability, one commit before the fix, and is restricted to recent disclosures so
+that the answers cannot simply be retrived from training data.
+
+As a secondary contribution, the thesis prepares the basis for a real-time extension. A
+monitoring tool selects the repositories that are worth tracking, 
+recording which of them end up with a published vulnerability and how long after
+the selection. This is the component on which a continuous version of the analysis would
+be built, moving it from vulnerabilities that are already known to code that has not yet been the
+subject of any report.

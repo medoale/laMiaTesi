@@ -53,14 +53,14 @@
 % either a blank page or a back is needed to have double-sided printing
 % pay attention to leave the space for the page
 
-%\paginavuota % clears a page
+\paginavuota % clears a page
 
 \frontmatter % not strictly needed, as toptesi takes care of it already
 
 % abstract if needed
-% \begin{abstract}
-%     \input{content/abstract.tex}
-% \end{abstract}
+ \begin{abstract}
+     \input{content/abstract.tex}
+ \end{abstract}
 
 % to create blank pages for openright in frontmatter
 % use one of the following two methods
@@ -82,8 +82,8 @@
 
 %\ringraziamenti % acknowledgements
 %\input{content/acknowledgements}
-
-\paginavuota
+\newpage
+%\paginavuota
 \tableofcontents
 
 \listoftables % ToC for tables
@@ -112,7 +112,7 @@
 
 % chapters go here
 \input{content/chapters/chapter1}
-\input{content/chapters/chapter2}
+%\input{content/chapters/chapter2}
 %\input{content/chapters/chapter3}
 %\input{content/chapters/chapter4}
 %\input{content/chapters/chapter5}

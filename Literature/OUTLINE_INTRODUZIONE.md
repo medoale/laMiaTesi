@@ -198,17 +198,9 @@ Resta correttamente fuori dalla bibliografia.)*
 - **52,8%** delle categorie CWE ha meno di 3 CVE associate: le classi sono
   estremamente sbilanciate e sparse. → `colefunda2023`
 
-### 5. Gli strumenti automatici esistenti sono meno affidabili di quanto sembri
 
-- Passando da un dataset "facile" a uno costruito con criteri realistici, l'F1
-  crolla da **68% a 3%**. → `primevul2025`
-- Non è un caso isolato: già nell'era pre-LLM le prestazioni calavano di **oltre
-  il 50%** in scenari realistici, perché i modelli imparavano artefatti dei
-  dataset invece che vulnerabilità. → `reveal2022`
-- Conclusione da trarre: i numeri pubblicati vanno presi con cautela, e serve una
-  valutazione costruita con attenzione — che è ciò che questa tesi fa.
 
-### 6. Costruire una ground truth su cui misurare è a sua volta un problema aperto
+### 5. Costruire una ground truth su cui misurare è a sua volta un problema aperto
 
 - Per valutare qualunque approccio automatico serve un insieme di riferimento:
   coppie **(vulnerabilità, commit che la corregge)**. Ma collegare una CVE al
@@ -228,10 +220,6 @@ Resta correttamente fuori dalla bibliografia.)*
   va estratta dal corpo di GitPatchDB: l'abstract parla di "many" e "a
   significant share", senza cifre.*
 
-### 7. Farlo a mano non scala
-
-- L'analisi manuale di ogni commit richiede competenze di sicurezza e tempo
-  proporzionale al volume: impraticabile su 200 milioni di repository.
 
 ---
 
